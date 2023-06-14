@@ -14,6 +14,12 @@ const RENAME_FORM = document.getElementById("renameForm");
 const DELETE_FORM = document.getElementById("deleteForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
+const ADD_INPUT = document.getElementById("addInput");
+const ADD_ASSET_INPUT = document.getElementById("addAssetInput");
+const REMOVE_INPUT = document.getElementById("removeInput");
+const REMOVE_ASSET_INPUT = document.getElementById("removeAssetInput");
+const RENAME_INPUT = document.getElementById("renameInput");
+const DELETE_INPUT = document.getElementById("deleteInput");
 
 sessionStorage.clear();
 
@@ -39,25 +45,39 @@ CREATE_FORM.addEventListener("submit", function (event)
 ADD_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
-    addForm();
+
+    let assetGroup = ADD_INPUT.value;
+    let assets = ADD_ASSET_INPUT.value;
+
+    addForm(assetGroup, assets);
 });
 
 REMOVE_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
-    removeForm();
+
+    let assetGroup = REMOVE_INPUT.value;
+    let assets = REMOVE_ASSET_INPUT.value
+
+    removeForm(assetGroup, assets);
 });
 
 RENAME_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
-    renameForm();
+
+    let assetGroup = RENAME_INPUT.value;
+
+    renameForm(assetGroup);
 });
 
 DELETE_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
-    deleteForm();
+
+    let assetGroup = DELETE_INPUT.value
+
+    deleteForm(assetGroup);
 });
 
 async function getForm()
@@ -98,7 +118,7 @@ async function createForm()
     }
 }
 
-async function addForm()
+async function addForm(ASSET_GROUP, ASSETS)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -107,8 +127,8 @@ async function addForm()
 
     try
     {
-        console.log("Adding asset groups");
-        const ASSET_GROUPS = await addAssetToAssetGroup(sessionStorage.getItem("token"));
+        console.log("Adding assets to asset group");
+        const ASSET_GROUPS = await addAssetToAssetGroup(sessionStorage.getItem("token"), ASSET_GROUP, ASSETS.split(","));
         console.log(JSON.stringify(ASSET_GROUPS, null, 4));
     }
     catch (error)
@@ -117,7 +137,7 @@ async function addForm()
     }
 }
 
-async function removeForm()
+async function removeForm(ASSET_GROUP, ASSETS)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -127,7 +147,7 @@ async function removeForm()
     try
     {
         console.log("Removeing asset groups");
-        const ASSET_GROUPS = await removeAssetFromAssetGroup(sessionStorage.getItem("token"));
+        const ASSET_GROUPS = await removeAssetFromAssetGroup(sessionStorage.getItem("token"), ASSET_GROUP, ASSETS.split(","));
         console.log(JSON.stringify(ASSET_GROUPS, null, 4));
     }
     catch (error)
@@ -136,7 +156,7 @@ async function removeForm()
     }
 }
 
-async function renameForm()
+async function renameForm(ASSET_GROUP)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -146,7 +166,7 @@ async function renameForm()
     try
     {
         console.log("Renaming asset groups");
-        const ASSET_GROUPS = await renameAssetGroup(sessionStorage.getItem("token"));
+        const ASSET_GROUPS = await renameAssetGroup(sessionStorage.getItem("token"), ASSET_GROUP);
         console.log(JSON.stringify(ASSET_GROUPS, null, 4));
     }
     catch (error)
@@ -155,7 +175,7 @@ async function renameForm()
     }
 }
 
-async function deleteForm()
+async function deleteForm(ASSET_GROUP)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -165,7 +185,7 @@ async function deleteForm()
     try
     {
         console.log("Deleting asset groups");
-        const ASSET_GROUPS = await deleteAssetGroup(sessionStorage.getItem("token"));
+        const ASSET_GROUPS = await deleteAssetGroup(sessionStorage.getItem("token"), ASSET_GROUP);
         console.log(JSON.stringify(ASSET_GROUPS, null, 4));
     }
     catch (error)
