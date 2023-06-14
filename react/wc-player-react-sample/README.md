@@ -23,26 +23,24 @@ You have to set the `vep-config` property of `<wc-player>` so that the player ca
 <wc-player 
     vep-config='{
         "application": "Embedded",
-        "customer": "dev-05",
-        "siteName": "Dev-05",
-        "hideSidebar": true,
-        "googleTagManager": "GTM-NFWDGJB",
-        "players": [{ "format": "hls", "player": "bitmovin" } ],
-        "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
-        "bitmovinLicenseKey": "f507de7a-720a-4b61-9698-94dc4a014479",
-        "liveMode": false,
-        "vepModules": [
-            {
-                "moduleType": "streams",
-                "isEnabled": true,
-                "streams": [
+              "customer": "acme-customer",
+              "siteName": "Acme Main Site",
+              "hideSidebar": true,
+              "googleTagManager": "GTM-TAGGOESHERE",
+              "players": [{ "format": "hls", "player": "videojs" } ],
+              "liveMode": false,
+              "vepModules": [
+                {
+                  "moduleType": "streams",
+                  "isEnabled": true,
+                  "streams": [
                     {
-                      "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+                      "streamUrl": "stream URL goes here",
                       "autoplay": true
                     }
-                ]
-            }
-        ]
+                  ]
+                }
+              ]
     }'></wc-player>
 ```
 
