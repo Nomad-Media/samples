@@ -108,7 +108,7 @@ async function completeUploadMain(ASSET_UPLOAD_ID)
     try
     {
         console.log("Uploading complete asset");
-        COMPLETE_INFO = completeUpload(ASSET_UPLOAD_ID);
+        COMPLETE_INFO = completeUpload(sessionStorage.getItem("token"), ASSET_UPLOAD_ID);
         console.log(JSON.stringify(COMPLETE_INFO, null, 4));
     }
     catch (error)
