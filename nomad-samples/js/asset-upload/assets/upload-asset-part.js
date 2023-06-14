@@ -1,12 +1,12 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function uploadAssetPart(authToken, PART_ID, ETAG) 
+export default async function uploadAssetPart(AUTH_TOKEN, PART_ID, ETAG) 
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
     const BODY = {
         etag: ETAG

@@ -1,15 +1,15 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function startUpload(authToken, PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID) 
+export default async function startUpload(AUTH_TOKEN, PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID) 
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
     const BODY = {
-        "parentId": PARENT_ASSET_ID,
+        "parentId": PARENT_ID,
         "contentLength": CONTENT_LENGTH,
         "uploadOverwriteOption": UPLOAD_OVERWRITE_OPTION,
         "chunkSize": CHUNK_SIZE,
