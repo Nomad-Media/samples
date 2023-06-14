@@ -31,5 +31,5 @@ export default async function guestInvite(AUTH_TOKEN, EMAILS)
     }
 		
   	// There was an error
-    await await apiExceptionHandler(RESPONSE, "Guest Invite failed");
+    await apiExceptionHandler(RESPONSE, "Guest Invite failed");
 }

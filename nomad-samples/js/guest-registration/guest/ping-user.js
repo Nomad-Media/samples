@@ -6,7 +6,7 @@ export default async function ping(AUTH_TOKEN, APPLICATION_ID, USER_SESSION_ID)
 		// Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
         applicationId: APPLICATION_ID,
