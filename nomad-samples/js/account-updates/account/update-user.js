@@ -19,7 +19,7 @@ export default async function updateUser(AUTH_TOKEN)
     // Post
     const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/account`, {
         method: "PUT",
-        headers: headers,
+        headers: HEADERS,
         body: JSON.stringify(body)
     }).catch((exception) => {
         throw exception;
