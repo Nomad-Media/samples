@@ -25,5 +25,5 @@ export default async function getAssetGroups(authToken)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Failed to get asset group");
+    await apiExceptionHandler(RESPONSE, "Failed to get asset group");
 }

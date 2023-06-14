@@ -25,5 +25,5 @@ export default async function completeUpload(authToken)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Upload complete asset failed");
+    await apiExceptionHandler(RESPONSE, "Upload complete asset failed");
 }

@@ -35,5 +35,5 @@ export default async function startUpload(authToken, PARENT_ID, CONTENT_LENGTH, 
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Start asset upload failed");
+    await apiExceptionHandler(RESPONSE, "Start asset upload failed");
 }

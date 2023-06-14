@@ -30,5 +30,5 @@ export default async function addAssetToAssetGroup(authToken)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Failed to add asset to asset group");
+    await apiExceptionHandler(RESPONSE, "Failed to add asset to asset group");
 }
