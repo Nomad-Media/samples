@@ -123,7 +123,8 @@ async function contentSearchMain(INPUTS, RETURNED_FIELD_NAME, FIELD_NAME, SORT_T
         const FILTERS = [];
         let filtersMap = {}
 
-        INPUTS.forEach(function (input) {
+        INPUTS.forEach(function (input)
+        {
             if(input.name === "fieldNameInput")
             {
                 filtersMap.fieldName = input.value;
