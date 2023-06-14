@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Event Instance Scheduler</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="event-instance-scheduler.css">
+
+    <!-- JS -->
+    <script type="module" src="event-instance-scheduler.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Event Instance Scheduler</h1>
+
+    <form id="authForm">
+        <label for="authInput">Authorization Token:</label>
+        <input type="auth" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Creating and Updating Instance</h2>
+
+    <form id="createForm">
+        <label for="createIdInput">Id:</label>
+        <input type="createId" id="createIdInput" required>
+
+        <label for="contentIdInput">Content Id:</label>
+        <input type="contentId" id="contentIdInput" required>
+
+        <label for="contentDefinitionIdInput">Content Definition Id:</label>
+        <input type="contentDefinitionId" id="contentDefinitionIdInput" required>
+
+        <label for="instanceNameInput">Instance Name:</label>
+        <input type="instanceName" id="instanceNameInput" required>
+
+        <label for="startDatetimeInput">Start Datetime:</label>
+        <input type="datetime-local" id="startDatetimeInput" required>
+
+        <label for="endDatetimeInput">End Datetime:</label>
+        <input type="datetime-local" id="endDatetimeInput" required>
+        
+        <label for="disabledInput">Disabled:</label>
+        <select id="disabledInput">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="descriptionInput">Description:</label>
+        <input type="description" id="descriptionInput" required>
+
+        <label for="slateVideoIdInput">Slate Video Id (optional):</label>
+        <input type="slateVideoId" id="slateVideoIdInput">
+
+        <label for="prerollVideoIdInput">Preroll Video Id:</label>
+        <input type="prerollVideoId" id="prerollVideoIdInput" required>
+
+        <label for="postrollVideoIdInput">Postroll Video Id:</label>
+        <input type="postrollVideoId" id="postrollVideoIdInput" required>
+
+        <label for="isSecureOutputInput">Is Secure Output:</label>
+        <select id="isSecureOutputInput">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="archiveFolderInput">Archive Folder (optional):</label>
+        <input type="archiveFolder" id="archiveFolderInput">
+
+        <label for="liveInputAIdInput">Live Input A (optional):</label>
+        <input type="liveInputAId" id="liveInputAIdInput">
+
+        <label for="liveInputBIdInput">Live Input B (optional):</label>
+        <input type="liveInputBId" id="liveInputBIdInput">
+
+        <label for="primaryLivestreamUrlInput">Primary Live Stream Input Url:</label>
+        <input type="primaryLivestreamUrl" id="primaryLivestreamUrlInput" required>
+
+        <label for="backupLivestreamUrlInput">Backup Live Stream Input Url (optional):</label>
+        <input type="backupLivestreamUrl" id="backupLivestreamUrlInput">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Delete Event Instance</h2>
+    
+    <form id="deleteForm">
+        <label for="deleteIdInput">Id:</label>
+        <input type="deleteId" id="deleteIdInput" required>
+
+        <label for="deleteContentDefinitionIdInput">Content Definition Id:</label>
+        <input type="deleteContentDefinitionId" id="deleteContentDefinitionIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register Guest User</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="account-authentication.css">
+
+    <!-- JS -->
+    <script type="module" src="account-authentication.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Login</h1>
+    <div class="container">
+        <form id="loginForm">
+            <label for="usernameInput">Enter Username:</label>
+            <input type="text" placeholder="Enter Username" id="usernameInput" required>
+
+            <label for="passwordInput">Enter Password:</label>
+            <input type="text" placeholder="Enter Password" id="passwordInput" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <form id="forgotPassForm">
+            <button type="submit">Forgot Password</button>
+        </form>
+        <form id="resetPassForm">
+            <label for="resetPasswordInput">Enter Code:</label>
+            <input type="text" placeholder="Enter Code" id="resetPasswordInput" required>
+            <br>
+            <button type="submit">Login</button>
+        </form>
+        <form id="logoutForm">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+        
+    </div>
+</body>
+</html>
