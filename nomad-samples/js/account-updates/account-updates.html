@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Update User</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="account-updates.css">
+
+    <!-- JS -->
+    <script type="module" src="account-updates.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Update User</h1>
+
+    <form id="updateForm">
+        <label for="emailInput">Email:</label>
+        <input type="email" id="emailInput">
+        <label for="firstNameInput">First Name:</label>
+        <input type="firstName" id="firstNameInput">
+        <label for="lastNameInput">Last Name:</label>
+        <input type="lastName" id="lastNameInput">
+        <label for="phoneNumberInput">Phone Number:</label>
+        <input type="phoneNumber" id="phoneNumberInput">
+        <br>
+        <button type="submit">Update</button>
+    </form>
+
+    <form id="changeEmailForm">
+        <label for="changeEmailInput">Change Email:</label>
+        <input type="email" id="emailInput">
+        <button type="submit">Submit</button>
+    </form>
+
+    <form id="changePassForm">
+        <label for="changePassInput">Change Password:</label>
+        <input type="password" id="passwordInput">
+        <button type="submit">Submit</button>
+    </form>
+
+    <form id="authForm">
+        <label for="authInput">Authorization Token:</label>
+        <input type="auth" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
