@@ -22,5 +22,5 @@ export default async function getVideoTrackingService(AUTH_TOKEN, ASSET_ID, TRAC
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Video tracking failed");
+    await apiExceptionHandler(RESPONSE, "Video tracking failed");
 }

@@ -28,5 +28,5 @@ export default async function changePassword(AUTH_TOKEN)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Change password failed");
+    await apiExceptionHandler(RESPONSE, "Change password failed");
 }

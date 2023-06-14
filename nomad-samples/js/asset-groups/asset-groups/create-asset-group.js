@@ -25,5 +25,5 @@ export default async function createAssetGroup(authToken)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Failed to create asset group");
+    await apiExceptionHandler(RESPONSE, "Failed to create asset group");
 }

@@ -37,5 +37,5 @@ export default async function contentSearch(AUTH_TOKEN, FILTERS, RETURNED_FIELD_
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Content search failed");
+    await apiExceptionHandler(RESPONSE, "Content search failed");
 }

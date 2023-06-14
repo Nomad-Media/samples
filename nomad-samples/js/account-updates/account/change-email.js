@@ -28,5 +28,5 @@ export default async function changeEmail(AUTH_TOKEN)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Change email failed");
+    await apiExceptionHandler(RESPONSE, "Change email failed");
 }

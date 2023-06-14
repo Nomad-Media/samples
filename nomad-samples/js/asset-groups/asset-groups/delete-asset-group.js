@@ -26,5 +26,5 @@ export default async function deleteAssetGroup(authToken)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Failed to delete asset group");
+    await apiExceptionHandler(RESPONSE, "Failed to delete asset group");
 }

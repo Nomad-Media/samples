@@ -30,5 +30,5 @@ export default async function renameAssetGroup(authToken)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Failed to rename asset group");
+    await apiExceptionHandler(RESPONSE, "Failed to rename asset group");
 }
