@@ -30,5 +30,5 @@ export default async function uploadAssetPart(authToken, PART_ID, ETAG)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Upload asset part failed");
+    await apiExceptionHandler(RESPONSE, "Upload asset part failed");
 }

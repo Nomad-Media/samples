@@ -21,5 +21,5 @@ export default async function deletingEventInstance(AUTH_TOKEN, ID, CONTENT_DEFI
         return RESPONSE.status;
     }
   	// There was an error
-    await apiExceptionHandler(RESPONSE, "Deleting event instance failed");
+    await await apiExceptionHandler(RESPONSE, "Deleting event instance failed");
 }

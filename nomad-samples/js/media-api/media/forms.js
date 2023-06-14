@@ -37,5 +37,5 @@ export default async function forms(AUTH_TOKEN, FIRST_NAME, LAST_NAME, ACTIVE, S
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Forms failed");
+    await apiExceptionHandler(RESPONSE, "Forms failed");
 }
