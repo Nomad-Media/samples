@@ -34,5 +34,5 @@ export default async function updateUser(AUTH_TOKEN)
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Update user failed");
+    await apiExceptionHandler(RESPONSE, "Update user failed");
 }

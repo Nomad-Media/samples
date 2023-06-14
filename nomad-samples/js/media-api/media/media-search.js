@@ -40,5 +40,5 @@ export default async function mediaSearch(AUTH_TOKEN, SEARCH_QUERY, IDS, FIELD_N
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Media search failed");
+    await apiExceptionHandler(RESPONSE, "Media search failed");
 }
