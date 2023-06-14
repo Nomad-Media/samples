@@ -1,19 +1,17 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function removeAssetFromAssetGroup(authToken) 
+export default async function removeAssetFromAssetGroup(AUTH_TOKEN, ASSET_GROUP_ID, ASSETS) 
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
-    const BODY = [
-        "9e92b187-745d-4c35-8265-088415dea57b"
-    ];
+    const BODY = ASSETS;
   
   // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/assetgroup/remove/{assetGroupId}`, {
+    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/assetgroup/remove/${ASSET_GROUP_ID}`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)

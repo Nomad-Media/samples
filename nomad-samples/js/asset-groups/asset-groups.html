@@ -38,33 +38,45 @@
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Get Asset Groups</h3>
     <form id="getForm">
-        <label for="getInput">Get Asset Groups:</label>
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Create Asset Group</h3>
     <form id="createForm">
-        <label for="createInput">Create Asset Groups:</label>
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Add Asset To Asset Group:</h3>
     <form id="addForm">
-        <label for="addInput">Add Asset To Asset Groups:</label>
+        <label for="addInput">Asset Group Id:</label>
+        <input type="add" id="addInput" required>
+        <label for="addAssetInput">Asset Ids(separate by comma):</label>
+        <input type="addAsset" id="addAssetInput" required>
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Remove Asset From Asset Group</h3>
     <form id="removeForm">
-        <label for="removeInput">Remove Asset From Asset Groups:</label>
+        <label for="removeInput">Asset Group Id:</label>
+        <input type="remove" id="removeInput" required>
+        <label for="removeAssetInput">Asset Ids(separate by comma):</label>
+        <input type="removeAsset" id="removeAssetInput" required>
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Rename Asset Group</h3>
     <form id="renameForm">
-        <label for="renameInput">Rename Asset Groups:</label>
+        <label for="renameInput">Asset Group Id:</label>
+        <input type="rename" id="renameInput" required>
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Delete Asset Group</h3>
     <form id="deleteForm">
-        <label for="deleteInput">Delete Asset Groups:</label>
+        <label for="deleteInput">Asset Group Id:</label>
+        <input type="delete" id="de;eteInput" required>
         <button type="submit">Submit</button>
     </form>
 </body>
