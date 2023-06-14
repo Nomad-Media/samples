@@ -33,11 +33,9 @@ AUTH_FORM.addEventListener("submit", function (event)
     console.log("Successfuly updated token");
 });
 
-let inputCount = 1
 ADD_BUTTON.addEventListener('click', function(event)
 {
     event.preventDefault();
-    ++inputCount;
 
     let fieldNameLabel = document.createElement('label');
     fieldNameLabel.setAttribute("for", "fieldNameInput");
