@@ -6,7 +6,7 @@ from exceptions.api_exception_handler import *
 import json
 import requests
 
-def register() -> dict:
+def register(FIRST_NAME: str, LAST_NAME: str, EMAIL: str, PASSWORD: str) -> dict:
 
     API_URL = PORTAL_API_URL + "/account/register"
 
@@ -16,10 +16,10 @@ def register() -> dict:
     
     # replace username and password with your username and password
     BODY = {
-    	"firstName": "Test",
-    	"lastName": "Account",
-    	"email": "test@testmail.com",
-    	"password": "Securepass$$23hh"
+    	"firstName": FIRST_NAME,
+    	"lastName": LAST_NAME,
+    	"email": EMAIL,
+    	"password": PASSWORD
     }
 
     try:
