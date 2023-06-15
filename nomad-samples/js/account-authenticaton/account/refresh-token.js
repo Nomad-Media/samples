@@ -23,7 +23,7 @@ export default async function REFRESH_TOKEN() {
 
     // Build the payload body
     const BODY = {
-        refreshToken: refreshToken
+        refreshToken: REFRESH_TOKEN
     };
 
     // Send the request
@@ -42,9 +42,6 @@ export default async function REFRESH_TOKEN() {
         if (REFRESH_TOKEN_RESPONSE) {
             // Update the token
             sessionStorage.setItem("token", REFRESH_TOKEN_RESPONSE.token);
-
-            // Give feedback to the console
-            console.info("Token refreshed: ", REFRESH_TOKEN_RESPONSE);
 
             // Return the token
             return REFRESH_TOKEN_RESPONSE.token;
