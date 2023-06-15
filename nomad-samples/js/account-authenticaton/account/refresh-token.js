@@ -42,9 +42,6 @@ export default async function REFRESH_TOKEN() {
         if (REFRESH_TOKEN_RESPONSE) {
             // Update the token
             sessionStorage.setItem("token", REFRESH_TOKEN_RESPONSE.token);
-
-            // Return the token
-            return REFRESH_TOKEN_RESPONSE.token;
         }
     }
 
