@@ -9,8 +9,9 @@ const FORGOT_PASS_FORM = document.getElementById("forgotPassForm");
 const RESET_PASS_FORM = document.getElementById("resetPassForm");
 
 const USERNAME_INPUT = document.getElementById("usernameInput");
+const FORGOT_PASSWORD_USERNAME_INPUT = document.getElementById("forgotPasswordUsernameInput");
 const PASSWORD_INPUT = document.getElementById("passwordInput");
-const RESET_PASS_CODE_INPUT = document.getElementById("resetPassInput");
+const RESET_PASSWORD_INPUT = document.getElementById("resetPasswordInput");
 
 sessionStorage.clear();
 
@@ -25,7 +26,7 @@ LOGIN_FORM.addEventListener("submit", function (event)
 FORGOT_PASS_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
-    let username = USERNAME_INPUT.value;
+    let username = FORGOT_PASSWORD_USERNAME_INPUT.value;
     forgotPass(username);
 });
 
@@ -33,7 +34,7 @@ RESET_PASS_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
     let username = USERNAME_INPUT.value;
-    let code = RESET_PASS_CODE_INPUT.value;
+    let code = RESET_PASSWORD_INPUT.value;
     resetPass(username, code);
 });
 
