@@ -6,9 +6,7 @@ from exceptions.api_exception_handler import *
 import json
 import requests
 
-def register(EMAIL: str) -> dict:
-    if not EMAIL:
-        raise Exception("Email: The email is invalid")
+def register() -> dict:
 
     API_URL = PORTAL_API_URL + "/account/register"
 
@@ -20,7 +18,7 @@ def register(EMAIL: str) -> dict:
     BODY = {
     	"firstName": "Test",
     	"lastName": "Account",
-    	"email": EMAIL,
+    	"email": "test@testmail.com",
     	"password": "Securepass$$23hh"
     }
 
