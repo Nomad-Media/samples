@@ -1,16 +1,20 @@
 import login from "./account/login.js";
 import logout from "./account/logout.js";
+import refreshToken from "./account/refresh-token.js";
 import forgotPassword from "./account/forgot-password.js";
 import resetPassword from "./account/reset-password.js";
 
 const LOGIN_FORM = document.getElementById("loginForm");
 const LOGOUT_FORM = document.getElementById("logoutForm");
+const AUTH_FORM = document.getElementById("authForm");
+const REFRESH_AUTH_FORM = document.getElementById("refreshAuthForm");
 const FORGOT_PASS_FORM = document.getElementById("forgotPassForm");
 const RESET_PASS_FORM = document.getElementById("resetPassForm");
 
 const USERNAME_INPUT = document.getElementById("usernameInput");
-const FORGOT_PASSWORD_USERNAME_INPUT = document.getElementById("forgotPasswordUsernameInput");
 const PASSWORD_INPUT = document.getElementById("passwordInput");
+const TOKEN_INPUT = document.getElementById("authInput");
+const FORGOT_PASSWORD_USERNAME_INPUT = document.getElementById("forgotPasswordUsernameInput");
 const RESET_PASSWORD_INPUT = document.getElementById("resetPasswordInput");
 
 sessionStorage.clear();
@@ -21,6 +25,19 @@ LOGIN_FORM.addEventListener("submit", function (event)
     let username = USERNAME_INPUT.value;
     let password = PASSWORD_INPUT.value;
     loginUser(username, password);
+});
+
+AUTH_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+    sessionStorage.setItem("token", TOKEN_INPUT.value);
+    console.log("Successfuly updated token");
+});
+
+REFRESH_AUTH_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+    refreshTokenMain();
 });
 
 FORGOT_PASS_FORM.addEventListener("submit", function (event) 
@@ -46,16 +63,6 @@ LOGOUT_FORM.addEventListener("submit", function (event)
 
 async function loginUser(USERNAME, PASSWORD)
 {
-    if (!USERNAME) 
-    {
-        throw new Error("Username: The username is empty");
-    }
-
-    if (!PASSWORD) 
-    {
-        throw new Error("Password: The password is empty");
-    }
-
     try
     {
         console.log("Logging in");
@@ -69,13 +76,27 @@ async function loginUser(USERNAME, PASSWORD)
     }
 }
 
-async function forgotPass(USERNAME)
+async function refreshTokenMain()
 {
-    if (!USERNAME) 
+    if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Username: The username is empty");
+        throw new Error("Authorization token: The authorization token is empty");
     }
 
+    try
+    {
+        console.log("Refreshing token");
+        await refreshToken();
+        console.log(`Token: ${sessionStorage.getItem("token")}`);
+    }
+    catch (error)
+    {
+        throw new Error(error)
+    }
+}
+
+async function forgotPass(USERNAME)
+{
     try
     {
         console.log("Sending code");
@@ -90,16 +111,6 @@ async function forgotPass(USERNAME)
 
 async function resetPass(USERNAME, CODE)
 {
-    if (!USERNAME) 
-    {
-        throw new Error("Username: The username is empty");
-    }
-
-    if (!CODE)
-    {
-        throw new Error("Code: The code is empty");
-    }
-
     try
     {
         console.log("Resetting password");
