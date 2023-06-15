@@ -30,33 +30,40 @@
 
 <body>
 
-    <h1>Login</h1>
-    <div class="container">
-        <form id="loginForm">
-            <label for="usernameInput">Enter Username:</label>
-            <input type="text" placeholder="Enter Username" id="usernameInput" required>
+    <h1>Account Authentication</h1>
+    
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="usernameInput">Enter Username:</label>
+        <input type="text" placeholder="Enter Username" id="usernameInput" required>
 
-            <label for="passwordInput">Enter Password:</label>
-            <input type="text" placeholder="Enter Password" id="passwordInput" required>
-            <br>
-            <button type="submit">Login</button>
-        </form>
-    </div>
+        <label for="passwordInput">Enter Password:</label>
+        <input type="text" placeholder="Enter Password" id="passwordInput" required>
+        <br>
+        <button type="submit">Login</button>
+    </form>
 
-    <div class="container">
-        <form id="forgotPassForm">
-            <button type="submit">Forgot Password</button>
-        </form>
-        <form id="resetPassForm">
-            <label for="resetPasswordInput">Enter Code:</label>
-            <input type="text" placeholder="Enter Code" id="resetPasswordInput" required>
-            <br>
-            <button type="submit">Send Code</button>
-        </form>
-        <form id="logoutForm">
-            <button type="submit">Logout</button>
-        </form>
-    </div>
+    <h2>Forgot Password</h2>
+    <form id="forgotPassForm">
+        <label for="forgotPasswordUsernameInput">Enter Username</label>
+        <input type="text" placeholder="Enter Username" id="forgotPasswordUsernameInput" required>
+
+        <br><br>
+        <button type="submit">Forgot Password</button>
+    </form>
+
+    <h2>Reset Password</h2>
+    <form id="resetPassForm">
+        <label for="resetPasswordInput">Enter Code:</label>
+        <input type="text" placeholder="Enter Code" id="resetPasswordInput" required>
+        <br><br>
+        <button type="submit">Send Code</button>
+    </form>
+
+    <h2>Logout</h2>
+    <form id="logoutForm">
+        <button type="submit">Logout</button>
+    </form>
         
     </div>
 </body>
