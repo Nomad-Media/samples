@@ -4,13 +4,11 @@ from account.resend_code import *
 
 import json
 
-def register_user(EMAIL: str):
-    if not EMAIL:
-        raise Exception("Email: The email is invalid")
+def register_user():
 
     try:
         print("Starting Restration process")
-        REGISTER_INFO = register(EMAIL)
+        REGISTER_INFO = register()
         print(json.dumps(REGISTER_INFO, indent=4))
 
         print("An email has been sent to you with a 6 digit code")
@@ -26,7 +24,7 @@ def register_user(EMAIL: str):
                         IS_INT = False
                     if len(CODE) == 6 and IS_INT:
                         try:
-                            verify(EMAIL, CODE)
+                            verify(REGISTER_INFO["email"], CODE)
                             print("Account now verified")
                             break
                         except:
@@ -45,5 +43,4 @@ def register_user(EMAIL: str):
     
 
 if __name__ == "__main__":
-    EMAIL = "test@test.com"
-    register_user(EMAIL)
+    register_user()
