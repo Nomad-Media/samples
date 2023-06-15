@@ -14,8 +14,7 @@ This walkthrough outlines how to use the sample code for authentication process 
 > You can download Live Server [here](https://ritwickdey.github.io/vscode-live-server/).
 
 ## Step 1
-
-Download the Nomad Registration from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/js/account-authenticaton) and unzip it. Once unzipped you should see this:
+Open the folder samples/nomad-samples/js/account-authentication. You should see this:
 
 ![](https://files.readme.io/efea088-authdirjs.png)
 
