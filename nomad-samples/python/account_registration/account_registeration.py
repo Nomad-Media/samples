@@ -8,7 +8,12 @@ def register_user():
 
     try:
         print("Starting Restration process")
-        REGISTER_INFO = register()
+        FIRST_NAME = input("Enter first name: ")
+        LAST_NAME = input("Enter last name: ")
+        EMAIL = input("Enter email: ")
+        PASSWORD = input("Enter password: ")
+
+        REGISTER_INFO = register(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD)
         print(json.dumps(REGISTER_INFO, indent=4))
 
         print("An email has been sent to you with a 6 digit code")
@@ -24,7 +29,7 @@ def register_user():
                         IS_INT = False
                     if len(CODE) == 6 and IS_INT:
                         try:
-                            verify(REGISTER_INFO["email"], CODE)
+                            verify(EMAIL, CODE)
                             print("Account now verified")
                             break
                         except:
@@ -34,7 +39,7 @@ def register_user():
                 break
             else:
                 print("Resending 6 digit code")
-                resend_code(REGISTER_INFO["email"])
+                resend_code(EMAIL)
                 print("An email has been sent to you with a 6 digit code")
 
     except:
