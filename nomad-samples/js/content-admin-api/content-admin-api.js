@@ -45,6 +45,10 @@ const SAMPLE_TEMPLATE_INPUT = document.getElementById("sampleTemplateInput");
 const IS_SYSTEM_MODULE_INPUT = document.getElementById("isSystemModuleInput");
 const USE_EDITOR_FORM_OVERRIDE_INPUT = document.getElementById("isuseEditorFormOverrideInput");
 const TEMPLATE_FOLDER_ASSET_ID_INPUT = document.getElementById("templateFolderAssetIdInput");
+const CONTENT_TYPE_ID_DESCRIPTION_INPUT = document.getElementById("contentTypeIdDescriptionInput");
+const CONTENT_TYPE_ID_ID_INPUT = document.getElementById("contentTypeIdIdInput");
+const CONTENT_DEFINITION_GROUP_ID_DESCRIPTION_INPUT = document.getElementById("contentDefinitionGroupIdDescriptionInput");
+const CONTENT_DEFINITION_GROUP_ID_ID_INPUT = document.getElementById("contentDefinitionGroupIdIdInput");
 
 sessionStorage.clear();
 
@@ -133,15 +137,19 @@ UPDATE_CONTENT_DEFINITIONS_FORM.addEventListener("submit", function (event)
     let isSystemModule = (IS_SYSTEM_MODULE_INPUT.value === "true" ? true : false);
     let useEditorFormOverride = (USE_EDITOR_FORM_OVERRIDE_INPUT.value === "true" ? true : false);
     let templateFolderAssetId = TEMPLATE_FOLDER_ASSET_ID_INPUT.value;
+    let contentTypeIdDescription = CONTENT_TYPE_ID_DESCRIPTION_INPUT.value;
+    let contentTypeIdId = CONTENT_TYPE_ID_ID_INPUT.value;
+    let contentDefinitionGroupIdDescription = CONTENT_DEFINITION_GROUP_ID_DESCRIPTION_INPUT.value;
+    let contentDefinitionGroupIdIdInput = CONTENT_DEFINITION_GROUP_ID_ID_INPUT.value;
 
-    updateContentDefinitionMain(contentDefinitionId, createDate, lastModifiedDate, editorTemplate, sampleTemplate, isSystemModule, useEditorFormOverride, templateFolderAssetId);
+    updateContentDefinitionMain(contentDefinitionId, createDate, lastModifiedDate, editorTemplate, sampleTemplate, isSystemModule, useEditorFormOverride, templateFolderAssetId, contentDefinitionGroupIdDescription, contentDefinitionGroupIdIdInput, contentTypeIdDescription, contentTypeIdId);
 });
 
 async function addTagOrCollectionMain(TAG_OR_COLLECTION, CONTENT_ID, TAG_ID, CONTENT_DEFINITION, TAG_NAME, CREATE_NEW)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -160,7 +168,7 @@ async function deleteTagOrCollectionMain(TAG_OR_COLLECTION, CONTENT_ID, TAG_ID, 
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -180,7 +188,7 @@ async function addRelatedContentMain(CONTENT_ID, RELATED_CONTENT_ID, CONTENT_DEF
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -199,7 +207,7 @@ async function deleteRelatedContentMain(CONTENT_ID, RELATED_CONTENT_ID, CONTENT_
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -218,11 +226,11 @@ async function customPropertiesMain(ID, NAME, CUSTOM_PROPERTY_NAMES, CUSTOM_PROP
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
-    const CUSTOM_PROPERTY_NAMES_ARRAY = CUSTOM_PROPERTY_NAMES.split(", ");
-    const CUSTOM_PROPERTIES_ARRAY = CUSTOM_PROPERTIES.split(", ");
+    const CUSTOM_PROPERTY_NAMES_ARRAY = CUSTOM_PROPERTY_NAMES.split(",");
+    const CUSTOM_PROPERTIES_ARRAY = CUSTOM_PROPERTIES.split(",");
     if (CUSTOM_PROPERTY_NAMES_ARRAY.length != CUSTOM_PROPERTIES_ARRAY.length)
     {
         throw new Error("Custom Properties: The number of custom property names and the number of custom properties do not match");
@@ -244,7 +252,7 @@ async function createContentDefinitionMain()
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -259,17 +267,37 @@ async function createContentDefinitionMain()
     }
 }
 
-async function updateContentDefinitionMain(CONTENT_DEFINITION_ID, CREATE_DATE, LAST_MODIFIED_DATE, EDITOR_TEMPLATE, SAMPLE_TEMPLATE, IS_SYSTEM_MODULE, USE_EDITOR_FORM_OVERRIDE, TEMPLATE_FOLDER_ASSET_ID)
+async function updateContentDefinitionMain(CONTENT_DEFINITION_ID, CREATE_DATE, LAST_MODIFIED_DATE, EDITOR_TEMPLATE, SAMPLE_TEMPLATE, IS_SYSTEM_MODULE, USE_EDITOR_FORM_OVERRIDE, TEMPLATE_FOLDER_ASSET_ID, CONTENT_DEFINITION_GROUP_ID_DESCRIPTION, CONTENT_DEFINITION_GROUP_ID_ID, CONTENT_TYPE_ID_DESCRIPTION, CONTENT_TYPE_ID_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
     {
+        const CONTENT_DEFINITION_GROUP = {};
+        if (CONTENT_DEFINITION_GROUP_ID_DESCRIPTION != "")
+        {
+            CONTENT_DEFINITION_GROUP["description"] = CONTENT_DEFINITION_GROUP_ID_DESCRIPTION;
+        }
+        if (CONTENT_DEFINITION_GROUP_ID_ID != "")
+        {
+            CONTENT_DEFINITION_GROUP["id"] = CONTENT_DEFINITION_GROUP_ID_ID;
+        }
+
+        const CONTENT_TYPE_GROUP = {};
+        if (CONTENT_TYPE_ID_DESCRIPTION != "")
+        {
+            CONTENT_TYPE_GROUP["description"] = CONTENT_TYPE_ID_DESCRIPTION;
+        } 
+        if (CONTENT_TYPE_ID_ID != "")
+        {
+            CONTENT_TYPE_GROUP["id"] = CONTENT_TYPE_ID_ID;
+        }
+
         console.log("Updating content definition");
-        const INFO = await updateContentDefinition(sessionStorage.getItem("token"), CONTENT_DEFINITION_ID, CREATE_DATE, LAST_MODIFIED_DATE, EDITOR_TEMPLATE, SAMPLE_TEMPLATE, IS_SYSTEM_MODULE, USE_EDITOR_FORM_OVERRIDE, TEMPLATE_FOLDER_ASSET_ID);
+        const INFO = await updateContentDefinition(sessionStorage.getItem("token"), CONTENT_DEFINITION_ID, CREATE_DATE, LAST_MODIFIED_DATE, EDITOR_TEMPLATE, SAMPLE_TEMPLATE, IS_SYSTEM_MODULE, USE_EDITOR_FORM_OVERRIDE, TEMPLATE_FOLDER_ASSET_ID, CONTENT_DEFINITION_GROUP, CONTENT_TYPE_GROUP);
         console.log(JSON.stringify(INFO, null, 4));
     }
     catch (error)
