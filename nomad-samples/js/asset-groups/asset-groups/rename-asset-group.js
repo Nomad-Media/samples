@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function renameAssetGroup(AUTH_TOKEN, ASSET_GROUP_ID) 
+export default async function renameAssetGroup(AUTH_TOKEN, ASSET_GROUP_ID, NAME) 
 {
     // Create header for the request
     const HEADERS = new Headers();
@@ -9,11 +9,11 @@ export default async function renameAssetGroup(AUTH_TOKEN, ASSET_GROUP_ID)
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
-        Name: "New Asset Group"
+        Name: NAME
     };
   
     // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/assetgroup/${assetGroupId}`, {
+    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/assetgroup/${ASSET_GROUP_ID}`, {
         method: "PATCH",
         headers: HEADERS,
         body: JSON.stringify(BODY)
