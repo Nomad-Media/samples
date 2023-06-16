@@ -12,6 +12,8 @@ This walkthrough outlines how to use the sample code for the asset group API pro
 > 📘 Note
 > 
 > You can download Visual Studio code [here](https://code.visualstudio.com/).
+> 
+> You can download Live Server [here](https://ritwickdey.github.io/vscode-live-server/).
 
 ## Step 1
 
