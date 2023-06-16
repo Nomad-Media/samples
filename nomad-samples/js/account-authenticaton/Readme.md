@@ -3,7 +3,7 @@ Learning to user the Nomad API account path to authenticate a user in Javascript
 
 ## Account Authentication Sample Code
 
-This walkthrough outlines how to use the sample code for authentication process that Nomad provides using Python.
+This walkthrough outlines how to use the sample code for authentication process that Nomad provides using Javascript.
 
 ## Prerequisites
 
