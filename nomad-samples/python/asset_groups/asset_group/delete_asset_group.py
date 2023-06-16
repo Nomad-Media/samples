@@ -14,13 +14,9 @@ def delete_asset_group(AUTH_TOKEN: str, ASSET_GROUP_ID) -> dict:
         "Content-Type": "application/json",
         "Authorization": "Bearer " + AUTH_TOKEN
     }
-    
-    BODY = {
-        "Name": "New Asset Group"
-    }
 
     try:
-        RESPONSE = requests.delete(API_URL, headers=HEADERS, data=json.dumps(BODY))
+        RESPONSE = requests.delete(API_URL, headers=HEADERS)
         if RESPONSE.status_code != 200:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
