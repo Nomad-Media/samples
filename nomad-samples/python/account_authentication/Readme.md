@@ -1,3 +1,6 @@
+# Account Authentication
+Learning to use the Nomad API account path to authenticate a user in Python
+
 ## Account AuthenticationSample Code
 
 This walkthrough outlines how to use the sample code for authenticationprocess that Nomad provides using Python.
