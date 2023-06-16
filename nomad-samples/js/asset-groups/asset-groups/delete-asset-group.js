@@ -11,8 +11,7 @@ export default async function deleteAssetGroup(AUTH_TOKEN, ASSET_GROUP_ID)
   // Post
     const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/assetgroup/${ASSET_GROUP_ID}`, {
         method: "DELETE",
-        headers: HEADERS,
-        body: JSON.stringify(BODY)
+        headers: HEADERS
     }).catch((exception) => {
         throw exception;
     });
