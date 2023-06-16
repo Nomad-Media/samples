@@ -1,17 +1,18 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function createAssetGroup(AUTH_TOKEN) 
+export default async function createAssetGroup(AUTH_TOKEN, BODY) 
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
-  
-  // Post
+
+    // Post
     const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/assetgroup`, {
         method: "POST",
-        headers: HEADERS
+        headers: HEADERS,
+        body: JSON.stringify(BODY)
     }).catch((exception) => {
         throw exception;
     });
