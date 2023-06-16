@@ -4,7 +4,7 @@ from exceptions.api_exception_handler import *
 import json
 import requests
 
-def create_asset_group(AUTH_TOKEN: str) -> dict:
+def create_asset_group(AUTH_TOKEN: str, BODY: dict) -> dict:
     if not AUTH_TOKEN:
         raise Exception("Authentication token not found")
   
@@ -15,8 +15,10 @@ def create_asset_group(AUTH_TOKEN: str) -> dict:
         "Authorization": "Bearer " + AUTH_TOKEN
     }
 
+    BODY = BODY
+
     try:
-        RESPONSE = requests.get(API_URL, headers=HEADERS)
+        RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         if RESPONSE.status_code != 200:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
