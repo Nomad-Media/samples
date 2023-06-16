@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def update_user(AUTH_TOKEN: str) -> dict:
+def update_user(AUTH_TOKEN: str, BODY: dict) -> dict:
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
   
@@ -12,15 +12,6 @@ def update_user(AUTH_TOKEN: str) -> dict:
     # Create header for the request
     HEADERS = {
         "Content-Type": "application/json"
-    }
-
-    # Build the payload body
-    BODY = {
-        "id": "990a1ebc-3344-41fc-a331-4009b3773229",
-        "email": "d.fletcher@example.net",
-        "firstName": "Deanna ",
-        "lastName": "Fletcher",
-        "mobilePhone": "949-555-4545"
     }
     
     try:
