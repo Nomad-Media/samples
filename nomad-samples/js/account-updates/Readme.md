@@ -1,9 +1,9 @@
 # Account Updates
 Learning to user the Nomad API account path to update a user in Javascript
 
-## Account Authentication Sample Code
+## Account Updates Sample Code
 
-This walkthrough outlines how to use the sample code for authentication process that Nomad provides using Python.
+This walkthrough outlines how to use the sample code for account update process that Nomad provides using Python.
 
 ## Prerequisites
 
