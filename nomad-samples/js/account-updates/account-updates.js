@@ -55,7 +55,7 @@ async function updateUserVals(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PHONE_NU
 {
     if (!AUTH_TOKEN) 
     {
-        throw new Error("Authorization token: The authorization token is invalid");
+        throw new Error("Authentication token: The authentication token is invalid");
     }
 
     try
@@ -74,7 +74,7 @@ async function changeUserEmail(AUTH_TOKEN, EMAIL)
 {
     if (!AUTH_TOKEN) 
     {
-        throw new Error("Authorization token: The authorization token is invalid");
+        throw new Error("Authentication token: The authentication token is invalid");
     }
 
     if (!EMAIL) 
@@ -98,7 +98,7 @@ async function changeUserPassword(AUTH_TOKEN, PASSWORD)
 {
     if (!AUTH_TOKEN) 
     {
-        throw new Error("Authorization token: The authorization token is invalid");
+        throw new Error("Authentication token: The authentication token is invalid");
     }
 
     if (!PASSWORD) 

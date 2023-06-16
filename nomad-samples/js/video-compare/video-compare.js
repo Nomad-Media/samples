@@ -202,7 +202,7 @@ async function getListCurrentVideoTrackingJobsMain()
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -223,7 +223,7 @@ async function createVideoTrackingJobMain(CHANNEL_GROUPS, DEFAULT_THRESHOLD_INFO
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -283,7 +283,7 @@ async function getSpecificVideoTrackingJobMain(GET_SPECIFIC_VIDEO_EXTERNAL_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -304,7 +304,7 @@ async function getVideoTrackingAlertMain(GET_ALERT_EXTERNAL_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -325,7 +325,7 @@ async function getManifestChannelGroupMain(GET_MANIFEST_TRACKING_ID, GET_MANIFES
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -346,7 +346,7 @@ async function stopVideoTrackingJobMain(STOP_JOB_EXTERNAL_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -367,7 +367,7 @@ async function deleteVideoTrackingJobMain(DELETE_JOB_EXTERNAL_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -388,7 +388,7 @@ async function getSpecificVideoTrackingJobManifetsMain(GET_VIDEO_MANIFEST_VIDEO_
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     

@@ -3,7 +3,7 @@ from live_input.get_live_input import *
 '''
  * Get Live Input Status Message
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} INPUT_ID      | The input ID for which to get the status message
 '''
 async def get_live_input_status_message(AUTH_TOKEN, INPUT_ID):

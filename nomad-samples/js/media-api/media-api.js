@@ -114,7 +114,7 @@ async function contentSearchMain(INPUTS, RETURNED_FIELD_NAME, FIELD_NAME, SORT_T
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     
@@ -154,7 +154,7 @@ async function mediaSearchMain(SEARCH_QUERY, IDS, FIELD_NAME, SORT_TYPE)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -172,7 +172,7 @@ async function formsMain(FIRST_NAME, LAST_NAME, ACTIVE, START_DATE, LOOKUP_ID, D
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try

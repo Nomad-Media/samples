@@ -8,7 +8,7 @@ import refreshToken from "./refresh-token.js";
  * @param {string} username | The username
  * @param {string} password | The password
  *
- * @returns {string} Authorization token
+ * @returns {string} Authentication token
  */
 export default async function login(USERNAME, PASSWORD) {
 

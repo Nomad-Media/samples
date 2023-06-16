@@ -9,7 +9,7 @@ import requests, json
  * @param {string} username | The username
  * @param {string} password | The password
  *
- * @returns {string} Authorization token
+ * @returns {string} Authentication token
 '''
 def login(USERNAME, PASSWORD):
     # Check for valid parameters

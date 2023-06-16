@@ -10,7 +10,7 @@ from libraries import requests, json, asyncio
  * @param {string} username | The username
  * @param {string} password | The password
  *
- * @returns {string} Authorization token
+ * @returns {string} Authentication token
 '''
 async def login(username, password):
     # Check for valid parameters

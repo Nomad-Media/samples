@@ -9,7 +9,7 @@ from libraries import json, requests
  * Note: Live Inputs are direct calls,
  *       they are not indexed, thus, the Search API cannot be used.
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @returns JSON Object containing a list of live inputs
 '''
 async def get_live_inputs(AUTH_TOKEN):

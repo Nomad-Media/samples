@@ -220,7 +220,7 @@ async def sign_in():
 
         print("Logging in...")
 
-        # Login and get/set the authorization token
+        # Login and get/set the authentication token
         AUTH_TOKEN = await login(user, password)
         
         if AUTH_TOKEN == None:

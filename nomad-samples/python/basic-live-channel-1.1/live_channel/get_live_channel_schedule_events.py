@@ -9,7 +9,7 @@ import json, requests
  * Note: Schedule Events are direct calls,
  *       they are not indexed, thus, the Search API cannot be used
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} CHANNEL_ID    | The ID of the channel
  *
  * @returns {Object} containing list of live schedule events

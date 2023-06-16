@@ -6,7 +6,7 @@ from live_channel.wait_live_channel_status import *
 '''
  * Stop a live channel
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} CHANNEL_ID    | The ID of the channel to stop
 '''
 async def stop_live_channel(AUTH_TOKEN, CHANNEL_ID):

@@ -6,7 +6,7 @@ import requests
 
 def create_asset_group(AUTH_TOKEN: str) -> dict:
     if not AUTH_TOKEN:
-        raise Exception("Authorization token not found")
+        raise Exception("Authentication token not found")
   
     API_URL = PORTAL_API_URL + "/assetgroup"
     

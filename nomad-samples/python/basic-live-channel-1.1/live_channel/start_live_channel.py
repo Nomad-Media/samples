@@ -7,7 +7,7 @@ from libraries import json, requests
 '''
  * Start a live channel
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} CHANNEL_ID    | The ID of the channel to start
 '''
 async def start_live_channel(AUTH_TOKEN, CHANNEL_ID):

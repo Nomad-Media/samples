@@ -6,7 +6,7 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  *
  * @param {string} refreshToken | The refresh token
  *
- * @returns {string} Authorization token
+ * @returns {string} Authentication token
  */
 export default async function REFRESH_TOKEN() {
     // Get the refresh token
