@@ -66,3 +66,4 @@ If you forgot your password, enter your email under "Enter Username" under "Forg
 ![](https://files.readme.io/e95dbba-email.png)
 
  Enter your code into "Enter Code" under "Reset Password" and your password will be reset.
+ ![](https://files.readme.io/635f072-image.png)
