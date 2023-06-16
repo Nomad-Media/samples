@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def change_email(AUTH_TOKEN: str) -> dict:
+def change_email(AUTH_TOKEN: str, EMAIL: str, PASSWORD: str) -> dict:
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
   
@@ -16,8 +16,8 @@ def change_email(AUTH_TOKEN: str) -> dict:
 
     # Build the payload body
     BODY = {
-        "password": "currentPassword",
-        "newEmail": "newEmail@newEmail.net"
+        "password": PASSWORD,
+        "newEmail": EMAIL
     }
     
     try:
