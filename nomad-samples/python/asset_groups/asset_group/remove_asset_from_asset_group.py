@@ -4,7 +4,7 @@ from exceptions.api_exception_handler import *
 import json
 import requests
 
-def remove_asset_to_asset_group(AUTH_TOKEN: str, ASSET_GROUP_ID) -> dict:
+def remove_asset_to_asset_group(AUTH_TOKEN: str, ASSET_GROUP_ID, ASSETS: list) -> dict:
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
   
@@ -15,15 +15,13 @@ def remove_asset_to_asset_group(AUTH_TOKEN: str, ASSET_GROUP_ID) -> dict:
         "Authorization": "Bearer " + AUTH_TOKEN
     }
     
-    BODY = [
-        "9e92b187-745d-4c35-8265-088415dea57b"
-    ]
+    BODY = ASSETS
 
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         
         if RESPONSE.status_code != 200:
-            raise Exception("Response returned " + str(RESPONSE.tatus_code))
+            raise Exception("Response returned " + str(RESPONSE.status_code))
         
 
         return json.loads(RESPONSE.text)

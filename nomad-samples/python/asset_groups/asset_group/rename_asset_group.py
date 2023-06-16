@@ -4,7 +4,7 @@ from exceptions.api_exception_handler import *
 import json
 import requests
 
-def rename_asset_group(AUTH_TOKEN: str, ID: str) -> dict:
+def rename_asset_group(AUTH_TOKEN: str, ID: str, NAME: str) -> dict:
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
   
@@ -16,7 +16,7 @@ def rename_asset_group(AUTH_TOKEN: str, ID: str) -> dict:
     }
     
     BODY = {
-        "Name": "New Asset Group"
+        "Name": NAME
     }
 
     try:
