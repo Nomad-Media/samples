@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function updateContentDefinition(AUTH_TOKEN, CONTENT_DEFINITION_ID, CREATE_DATE, LAST_MODIFIED_DATE, EDITOR_TEMPLATE, SAMPLE_TEMPLATE, IS_SYSTEM_MODULE, USE_EDITOR_FORM_OVERRIDE, TEMPLATE_FOLDER_ASSET_ID) 
+export default async function updateContentDefinition(AUTH_TOKEN, CONTENT_DEFINITION_ID, CREATE_DATE, LAST_MODIFIED_DATE, EDITOR_TEMPLATE, SAMPLE_TEMPLATE, IS_SYSTEM_MODULE, USE_EDITOR_FORM_OVERRIDE, TEMPLATE_FOLDER_ASSET_ID, CONTENT_DEFINITION_GROUP, CONTENT_TYPE_GROUP) 
 {
     // Create header for the request
     const HEADERS = new Headers();
@@ -18,6 +18,16 @@ export default async function updateContentDefinition(AUTH_TOKEN, CONTENT_DEFINI
         {
             BODY[ARGUMENTS[argNum]] = arguments[argsNum];
         }
+    }
+
+    BODY["properties"] = {};
+    if (CONTENT_DEFINITION_GROUP != null)
+    {
+        BODY.properties["ContentDefinitionGroupId"] = CONTENT_DEFINITION_GROUP;
+    }
+    if (CONTENT_TYPE_GROUP != null)
+    {
+        BODY.properties["ContentTypeId"] = CONTENT_TYPE_GROUP;
     }
 
     // Post
