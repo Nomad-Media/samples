@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Update User</title>
+    <title>Account Updates</title>
 
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,8 +29,15 @@
 </head>
 
 <body>
-
-    <h1>Update User</h1>
+    <h1>Account Updates</h1>
+    
+    <form id="authForm">
+        <label for="authInput">Authentication Token:</label>
+        <input type="auth" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <h2>Update User</h2>
 
     <form id="updateForm">
         <label for="emailInput">Email:</label>
@@ -45,21 +52,19 @@
         <button type="submit">Update</button>
     </form>
 
+    <h2> Change Email </h2>
     <form id="changeEmailForm">
         <label for="changeEmailInput">Change Email:</label>
-        <input type="email" id="emailInput">
+        <input type="email" id="changeEmailInput" required>
+        <br><br>
         <button type="submit">Submit</button>
     </form>
 
+    <h2> Change Password </h2>
     <form id="changePassForm">
         <label for="changePassInput">Change Password:</label>
-        <input type="password" id="passwordInput">
-        <button type="submit">Submit</button>
-    </form>
-
-    <form id="authForm">
-        <label for="authInput">Authorization Token:</label>
-        <input type="auth" id="authInput" required>
+        <input type="password" id="changePassInput" required>
+        <br><br>
         <button type="submit">Submit</button>
     </form>
 
