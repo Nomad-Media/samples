@@ -9,7 +9,7 @@ from libraries import json, requests
 '''
  * Create or Update a Live Input
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {Object} DATA         | BODY
 '''
 async def create_live_input(AUTH_TOKEN, DATA):

@@ -3,7 +3,7 @@ from live_channel.get_live_channel import *
 '''
  * Get Live Channel Status Messages
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} CHANNEL_ID    | The CHANNEL ID for which to get the status messages
 '''
 async def get_live_channel_status_message(AUTH_TOKEN, CHANNEL_ID):

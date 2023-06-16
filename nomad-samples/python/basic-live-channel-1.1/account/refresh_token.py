@@ -8,7 +8,7 @@ from libraries import asyncio, json, requests
  *
  * @param {string} REFRESH_TOKEN | The refresh token
  *
- * @returns {string} Authorization token
+ * @returns {string} Authentication token
 '''
 async def refresh_token(REFRESH_TOKEN):
 

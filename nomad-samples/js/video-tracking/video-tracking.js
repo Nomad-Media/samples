@@ -30,7 +30,7 @@ async function getVideoTrackingServiceMain(ASSET_ID, TRACKING_EVENT, SECOND)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try

@@ -8,7 +8,7 @@ from libraries import json, requests
 '''
  *  Create or Update a Live Channel
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {object} DATA         | BODY
 '''
 async def create_live_channel(AUTH_TOKEN, DATA):

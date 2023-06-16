@@ -9,7 +9,7 @@ from libraries import json, requests
  * Note: Live Inputs are direct calls,
  *       they are not indexed, thus, the Search API cannot be used.
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} INPUT_ID      | The ID of the live input to get
  *
  * @returns JSON Object containing the requested live input

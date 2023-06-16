@@ -10,7 +10,7 @@ from libraries import requests, json
 '''
  * Delete Live Channel and optionally delete its Live Inputs
  *
- * @param {string} AUTH_TOKEN        | Authorization token
+ * @param {string} AUTH_TOKEN        | Authentication token
  * @param {string} CHANNEL_ID        | The ID of the Live Channel to delete
  * @param {Boolean} DELETE_INPUTS    | Flag to delete Live Channel's Live Inputs or not
 '''
