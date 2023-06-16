@@ -7,7 +7,7 @@ from libraries import json, requests
 '''
  * Add Asset Schedule Event
  *
- * @param {string} AUTH_TOKEN    | Authorization Token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {Object} DATA         | BODY
  *
  * @returns JSON Object

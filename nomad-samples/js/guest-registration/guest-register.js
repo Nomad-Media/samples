@@ -56,7 +56,7 @@ async function inviteGuestUser()
 {
     if (!AUTH_TOKEN)
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     if (!EMAIL) 
@@ -83,7 +83,7 @@ async function removeGuestUser(CONTENT_DEFINITION_ID, USER_ID)
 {
     if (!AUTH_TOKEN)
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     if (!CONTENT_DEFINITION_ID)
@@ -112,7 +112,7 @@ async function registerGuestUser()
 {
     if (!AUTH_TOKEN)
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     if (!EMAIL) 
@@ -142,7 +142,7 @@ async function pingUser(APPLICATION_ID, USER_SESSION_ID)
 {
     if (!AUTH_TOKEN)
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     if (!APPLICATION_ID) 
@@ -171,7 +171,7 @@ async function ppq(ID)
 {
     if (!AUTH_TOKEN)
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     if (!ID) 

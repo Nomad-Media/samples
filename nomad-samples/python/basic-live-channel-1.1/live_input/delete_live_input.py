@@ -10,7 +10,7 @@ from libraries import json, requests
  *
  * NOTE: Live inputs being used in live channels can't be deleted
  *
- * @param {string} AUTH_TOKEN    | Authorization token
+ * @param {string} AUTH_TOKEN    | Authentication token
  * @param {string} INPUT_ID      | The ID of the input to delete
 '''
 async def delete_live_input(AUTH_TOKEN, INPUT_ID):

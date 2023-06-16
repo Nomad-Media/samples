@@ -6,7 +6,7 @@ from libraries import requests, json
 '''
  * GET Live Channel
  *
- * @param {string} AUTH_TOKEN      | Authorization token
+ * @param {string} AUTH_TOKEN      | Authentication token
  * @param {string} CHANNEL_ID      | The ID of the live channel to get
  *
  * @returns JSON Object containing the requested live channel
