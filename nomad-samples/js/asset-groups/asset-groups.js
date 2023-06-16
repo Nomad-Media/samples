@@ -84,7 +84,7 @@ async function getForm()
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -103,7 +103,7 @@ async function createForm()
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -122,7 +122,7 @@ async function addForm(ASSET_GROUP, ASSETS)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -141,7 +141,7 @@ async function removeForm(ASSET_GROUP, ASSETS)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -160,7 +160,7 @@ async function renameForm(ASSET_GROUP)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -179,7 +179,7 @@ async function deleteForm(ASSET_GROUP)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try

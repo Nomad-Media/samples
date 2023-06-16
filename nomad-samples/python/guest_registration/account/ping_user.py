@@ -4,11 +4,11 @@ from exceptions.api_exception_handler import *
 import json
 import requests
 
-# @param {string} AUTH_TOKEN - The authorization token
+# @param {string} AUTH_TOKEN - The authentication token
 
 def ping_user(AUTH_TOKEN: str, CONTENT_DEFINITION_ID: str, USER_ID: str) -> dict:
     if not AUTH_TOKEN:
-        raise Exception("Authorization token not found")
+        raise Exception("Authentication token not found")
         
     API_URL = "https://" + PORTAL_API_URL + "/account/remove-user"
 

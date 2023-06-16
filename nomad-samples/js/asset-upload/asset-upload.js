@@ -64,7 +64,7 @@ async function startUploadMain(PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTIO
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -83,7 +83,7 @@ async function uploadAssetPartMain(PART_ID, ETAG)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
@@ -102,7 +102,7 @@ async function completeUploadMain(ASSET_UPLOAD_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
-        throw new Error("Authorization token: The authorization token is empty");
+        throw new Error("Authentication token: The authentication token is empty");
     }
 
     try
