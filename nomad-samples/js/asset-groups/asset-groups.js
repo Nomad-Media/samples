@@ -14,11 +14,15 @@ const RENAME_FORM = document.getElementById("renameForm");
 const DELETE_FORM = document.getElementById("deleteForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
+const ID_INPUT = document.getElementById("idInput");
+const NAME_INPUT = document.getElementById("nameInput");
+const ASSETS_INPUT = document.getElementById("assetsInput");
 const ADD_INPUT = document.getElementById("addInput");
 const ADD_ASSET_INPUT = document.getElementById("addAssetInput");
 const REMOVE_INPUT = document.getElementById("removeInput");
 const REMOVE_ASSET_INPUT = document.getElementById("removeAssetInput");
-const RENAME_INPUT = document.getElementById("renameInput");
+const RENAME_GROUP_ID_INPUT = document.getElementById("renameInput");
+const RENAME_GROUP_INPUT = document.getElementById("renameGroupInput");
 const DELETE_INPUT = document.getElementById("deleteInput");
 
 sessionStorage.clear();
@@ -39,7 +43,12 @@ GET_FORM.addEventListener("submit", function (event)
 CREATE_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
-    createForm();
+
+    let id = ID_INPUT.value;
+    let name = NAME_INPUT.value;
+    let assets = ASSETS_INPUT.value;
+
+    createForm(id, name, assets);
 });
 
 ADD_FORM.addEventListener("submit", function (event)
@@ -66,9 +75,10 @@ RENAME_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let assetGroup = RENAME_INPUT.value;
+    let assetGroupId = RENAME_GROUP_ID_INPUT.value;
+    let renameGroup = RENAME_GROUP_INPUT.value;
 
-    renameForm(assetGroup);
+    renameForm(assetGroupId, renameGroup);
 });
 
 DELETE_FORM.addEventListener("submit", function (event)
@@ -99,7 +109,7 @@ async function getForm()
     }
 }
 
-async function createForm()
+async function createForm(ID, NAME, ASSETS)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -108,8 +118,22 @@ async function createForm()
 
     try
     {
+        const BODY = {};
+        if (ID != "")
+        {  
+            BODY.id = ID;
+        }
+        if (NAME != "")
+        {
+            BODY.name = NAME;
+        }
+        if (ASSETS != "")
+        {
+            BODY.assets = ASSETS.split(",");
+        }
+
         console.log("Creating asset groups");
-        const ASSET_GROUPS = await createAssetGroup(sessionStorage.getItem("token"));
+        const ASSET_GROUPS = await createAssetGroup(sessionStorage.getItem("token"), BODY);
         console.log(JSON.stringify(ASSET_GROUPS, null, 4));
     }
     catch (error)
@@ -156,7 +180,7 @@ async function removeForm(ASSET_GROUP, ASSETS)
     }
 }
 
-async function renameForm(ASSET_GROUP)
+async function renameForm(ASSET_GROUP, NAME)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -166,7 +190,7 @@ async function renameForm(ASSET_GROUP)
     try
     {
         console.log("Renaming asset groups");
-        const ASSET_GROUPS = await renameAssetGroup(sessionStorage.getItem("token"), ASSET_GROUP);
+        const ASSET_GROUPS = await renameAssetGroup(sessionStorage.getItem("token"), ASSET_GROUP, NAME);
         console.log(JSON.stringify(ASSET_GROUPS, null, 4));
     }
     catch (error)
