@@ -1,3 +1,6 @@
+# Account Registration
+Learning to use the Nomad API Register path to regester a user in Javascript
+
 ## Account Registration Sample Code
 
 This walkthrough outlines how to use the sample code for registration process that Nomad provides using Javascript.
