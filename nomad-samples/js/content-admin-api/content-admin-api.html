@@ -33,7 +33,7 @@
     <h1>Content Admin</h1>
 
     <form id="authForm">
-        <label for="authInput">Authorization Token:</label>
+        <label for="authInput">Authentication Token:</label>
         <input type="auth" id="authInput" required>
         <button type="submit">Submit</button>
     </form>
@@ -56,7 +56,7 @@
         <label for="addContentDefinitionInput">Content Definition:</label>
         <input type="addContentDefinition" id="addContentDefinitionInput" required>
         
-        <label for="tagNameInput">Tag Name:</label>
+        <label for="tagNameInput">Tag/Collection Name:</label>
         <input type="tagName" id="tagNameInput" required>
 
         <label for="createNewInput">Create New:</label>
@@ -95,7 +95,7 @@
         <label for="addRelatedContentIdInput">Content Id:</label>
         <input type="addRelatedContentId" id="addRelatedContentIdInput" required>
 
-        <label for="addRelatedRelatedContentInput">Related Content:</label>
+        <label for="addRelatedRelatedContentInput">Related Content Id:</label>
         <input type="addRelatedRelatedContentId" id="addRelatedRelatedContentIdInput" required>
 
         <label for="addRelatedContentDefinitionInput">Content Definition:</label>
@@ -128,7 +128,7 @@
         <label for="nameInput">Display Name:</label>
         <input type="name" id="nameInput">
 
-        <label for="customPropNameInput">Custom Property Names (seperated by comma):<br>Ex: Prop1, Prop2, Prop3</label>
+        <label for="customPropNameInput">Custom Property Names (seperated by comma):</label>
         <input type="customPropName" id="customPropNameInput">
 
         <label for="customPropInput">Custom Properties (seperated by comma)</label>
@@ -148,10 +148,10 @@
         <input type="contentDefId" id="contentDefIdInput" required>
 
         <label for="createDateInput">Created Date (optional):</label>
-        <input type="createdDate" id="createDateInput">
+        <input type="datetime-local" id="createDateInput">
 
         <label for="lastModifiedDateInput">Last Modified Date (optional):</label>
-        <input type="lastModifiedDate" id="lastModifiedDateInput">
+        <input type="datetime-local" id="lastModifiedDateInput">
 
         <label for="editorTemplateInput">Editor Template (optional):</label>
         <input type="editorTemplate" id="editorTemplateInput">
@@ -172,6 +172,21 @@
 
         <label for="templateFolderAssetIdInput">Template Folder Asset Id (optional):</label>
         <input type="templateFolderAssetId" id="templateFolderAssetIdInput">
+
+        <h3>Content Type Id</h3>
+        <label for="contentTypeIdDescriptionInput">Content Type Id Description (optional):</label>
+        <input type="contentTypeIdDescription" id="contentTypeIdDescriptionInput">
+
+        <label for="contentTypeIdIdInput">Content Type Id Id (optional):</label>
+        <input type="contentTypeIdId" id="contentTypeIdIdInput">
+
+        <h3>Content Definition Group Id</h3>
+        <label for="contentDefinitionGroupIdDescriptionInput">Content Definition Group Id Description (optional):</label>
+        <input type="contentDefinitionGroupIdDescription" id="contentDefinitionGroupIdDescriptionInput">
+
+        <label for="contentDefinitionGroupIdIdInput">Content Definition Group Id Id (optional):</label>
+        <input type="contentDefinitionGroupIdId" id="contentDefinitionGroupIdIdInput">
+
         <br><br>
         <button type="submit">Submit</button>
     </form>
