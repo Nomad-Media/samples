@@ -61,7 +61,7 @@ async function updateUserVals(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PHONE_NU
     try
     {
         console.log("Updating users");
-        updateUser(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PHONE_NUMBER);
+        await updateUser(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PHONE_NUMBER);
         console.log("Successfully updated users");
     }
     catch (error)
@@ -85,7 +85,7 @@ async function changeUserEmail(AUTH_TOKEN, EMAIL)
     try
     {
         console.log("Changing email");
-        changeEmail(AUTH_TOKEN, EMAIL);
+        await changeEmail(AUTH_TOKEN, EMAIL);
         console.log("Email successfully changed");
     }
     catch (error)
@@ -109,7 +109,7 @@ async function changeUserPassword(AUTH_TOKEN, PASSWORD)
     try
     {
         console.log("Changing password");
-        changePassword(AUTH_TOKEN, PASSWORD);
+        //await changePassword(AUTH_TOKEN, PASSWORD);
         console.log("Password successfully changed");
     }
     catch (error)
