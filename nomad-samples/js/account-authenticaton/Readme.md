@@ -14,7 +14,8 @@ This walkthrough outlines how to use the sample code for authentication process 
 > You can download Live Server [here](https://ritwickdey.github.io/vscode-live-server/).
 
 ## Step 1
-Open the folder samples/nomad-samples/js/account-authentication. You should see this:
+
+Download the Nomad Registration from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/js/account-authenticaton) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/efea088-authdirjs.png)
 
@@ -56,8 +57,12 @@ Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the
 
 Enter your Username and Password and click login. If your credentials are correct, you will receive a token.
 
-![](https://files.readme.io/68de97d-authlogin.png)
+![](https://files.readme.io/5dc7eec-image.png)
 
 ## Step 7
 
-If you forgot your password, enter your email under "Enter Username" under "Forgot Password". You should get a 6 digit code. Enter your code into "Enter Code" under "Reset Password" and your password will be reset.
+If you forgot your password, enter your email under "Enter Username" under "Forgot Password". You should get emailed a 6 digit code.
+
+![](https://files.readme.io/e95dbba-email.png)
+
+ Enter your code into "Enter Code" under "Reset Password" and your password will be reset.
