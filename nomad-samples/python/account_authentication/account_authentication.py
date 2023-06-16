@@ -8,25 +8,35 @@ from exceptions.api_exception_handler import *
 
 import json
 
-def account_authentication(USERNAME, PASSWORD):
-    if not USERNAME:
-        raise Exception("USENAME: The USENAME is invalid")
-    if (not PASSWORD):
-        raise Exception("Password: The password is invalid")
-    
+def login_main():
     try:
-        print("Logging in")
-        LOGIN_INFO = login(USERNAME, PASSWORD)  
-        print(json.dumps(LOGIN_INFO, indent=4))
-        token = LOGIN_INFO["token"]
-
+        while True:
+            USERNAME = input("Enter your username: ")
+            PASSWORD = input("Enter your password: ")
+            print("Logging in")
+            LOGIN_INFO = login(USERNAME, PASSWORD)  
+            if LOGIN_INFO != "Login info incorrect":
+                break
+            print("Login credentials are incorrect.")
+        
+        print(f"Token: {LOGIN_INFO['token']}")
+        LOGIN_INFO["username"] = USERNAME
+        return LOGIN_INFO
+    except:
+        raise Exception()
+    
+def refresh_token_main(REFRESH_TOKEN):
+    try:
         print("Refreshing token")
-        REFRESH_INFO = refresh_token(LOGIN_INFO["refreshToken"])
-        print(json.dumps(REFRESH_INFO, indent=4))
+        REFRESH_INFO = refresh_token(REFRESH_TOKEN)
+        print(f"Token: {REFRESH_INFO['token']}")
         token = REFRESH_INFO["token"]
+    except:
+        raise Exception
 
-        print("Forgot password")
-        forgot_password(USERNAME, token)
+def reset_password_main(AUTH_TOKEN, USERNAME):
+    try:
+        forgot_password(USERNAME, AUTH_TOKEN)
 
         print("An email has been sent to you with a 6 digit code")
         while True:
@@ -42,7 +52,7 @@ def account_authentication(USERNAME, PASSWORD):
                     if len(CODE) == 6 and IS_INT:
                         try:
                             print("Resetting password")
-                            NEW_PASSWORD = "NewPassword123!"
+                            NEW_PASSWORD = input("Enter new password: ")
                             reset_password(USERNAME, CODE, NEW_PASSWORD)
                             print("Password Reset")
                             break
@@ -53,20 +63,24 @@ def account_authentication(USERNAME, PASSWORD):
                 break
             else:
                 print("Resending 6 digit code")
-                forgot_password(USERNAME, token)
+                forgot_password(USERNAME, AUTH_TOKEN)
                 print("An email has been sent to you with a 6 digit code")
-
-        print("Logging out")
-        LOGOUT_INFO = logout(LOGIN_INFO["userSessionId"], token, USERNAME)
-        print(json.dumps(LOGIN_INFO, indent=4))
-        
-
     except:
-        raise Exception("Account authentification failed")
+        raise Exception()
 
 if __name__ == "__main__":
-    USERNAME = "sfaludi@nomad-cms.com"
-    PASSWORD = "N0madInternshipPassword!!"
-
-    account_authentication(USERNAME, PASSWORD)
+    LOGIN_INFO = login_main()
+    while True:
+        print("Do you want to refresh your token, reset your password, or logout?")
+        USER_INPUT = input("Enter refresh to refresh token, reset to reset your password or logout: ")
+        auth_token = LOGIN_INFO["token"]
+        if USER_INPUT == "refresh":
+            auth_token = refresh_token_main(LOGIN_INFO["refreshToken"])
+        elif USER_INPUT == "reset":
+            reset_password_main(auth_token, LOGIN_INFO["username"])
+        elif USER_INPUT == "logout":
+            print("Logged out successfully")
+            break
+        else:
+            print("The input is incorrect")
 
