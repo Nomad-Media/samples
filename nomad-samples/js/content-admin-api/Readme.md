@@ -3,7 +3,7 @@ Learning to user the Nomad API content and contentDefinition path to work with t
 
 ## Admin and Content Definition API Sample Code
 
-This walkthrough outlines how to use the sample code for the admin and contentDefinition API process that Nomad provides using JavaScript.
+This walkthrough outlines how to use the sample code for the content and contentDefinition API process that Nomad provides using JavaScript.
 
 ## Prerequisites
 
