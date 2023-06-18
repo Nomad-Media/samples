@@ -45,9 +45,19 @@ On the Explorer tab on the left, right-click on account-register.html and click 
 
 This will redirect you to a browser with the html page.
 
+
+![](https://files.readme.io/1fd9741-image.png)
+
 ## Step 5
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
+
+
+![](https://files.readme.io/a5733d4-contentadminweb.png)
+
+
+
+![](https://files.readme.io/b263cb2-contentadminlh.png)
 
 ## Step 6
 
