@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def add_custom_properties(AUTH_TOKEN: str, ID: str) -> dict:
+def add_custom_properties(AUTH_TOKEN: str, ID: str, NAME: str, CUSTOM_PROPERTIES: dict) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -19,11 +19,8 @@ def add_custom_properties(AUTH_TOKEN: str, ID: str) -> dict:
 
     # Build the payload BODY
     BODY = {
-        "displayName": "new name goes here",
-        "customProperties": {
-            "customProp1": "new value",
-          	"customProp2": None
-        }
+        "displayName": NAME,
+        "customProperties": CUSTOM_PROPERTIES
     }
 
     try:

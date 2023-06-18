@@ -1,42 +1,128 @@
 from content.add_custom_properties import *
 from content.add_related_content import *
-from content.add_tags_and_collections import *
+from content.add_tag_or_collection import *
 from content.delete_related_content import *
-from content.delete_tags_and_collections import *
-from content.get_content_definition import *
+from content.delete_tag_or_collection import *
+from content.create_content_definition import *
 from content.update_content_definition import *
 
 import json
 
-def content(AUTH_TOKEN):
+def add_tag_or_collection_main(AUTH_TOKEN):
     try:
-        print("Creating Tag")
-        TAG_INFO = add_tag_or_collection(AUTH_TOKEN, "tag")
+        TYPE = input("Enter tag or collection for what type of content you want to add: ")
+        CONTENT_ID = input("Enter the content id of the tag/collection: ")
+        CONTENT_DEFINITION = input("Enter content definition of the tag/collecion: ")
+        NAME = input("Enter the name of the tag/collection: ")
+        TAG_ID = input("Enter the tag id (optional): ")
+        CREATE_NEW = input("Enter true/false for if you want to create a new tag/collection: ")
+        CREATE_NEW_BOOL = True if CREATE_NEW == "true" else False
+
+        print("Adding Tag/Collection")
+        TAG_INFO = add_tag_or_collection(AUTH_TOKEN, TYPE, CONTENT_ID, CONTENT_DEFINITION, NAME, TAG_ID, CREATE_NEW_BOOL)
         print(json.dumps(TAG_INFO, indent=4))
+    except:
+        raise Exception()
+    
+def delete_tag_or_collection_main(AUTH_TOKEN):
+    try:
+        TYPE = input("Enter tag or collection for what type of content you want to delete: ")
+        CONTENT_ID = input("Enter the content id of the tag/collection: ")
+        TAG_ID = input("Enter the tag id (optional): ")
+        CONTENT_DEFINITION = input("Enter content definition of the tag/collecion: ")
 
         print("Deleting Tag")
-        DELETE_TAG_INFO = delete_tag_or_collection(AUTH_TOKEN, "tag", TAG_INFO["items"][0]["id"], TAG_INFO["items"][0]["tagId"])
+        DELETE_TAG_INFO = delete_tag_or_collection(AUTH_TOKEN, TYPE, CONTENT_ID, TAG_ID, CONTENT_DEFINITION)
         print(json.dumps(DELETE_TAG_INFO, indent=4))
+    except:
+        raise Exception()
+
+def add_related_content_main(AUTH_TOKEN):
+    try:
+        CONTENT_ID = input("Enter the content id: ")
+        RELATED_CONTENT_ID = input("Enter the content id of the related content: ")
+        CONTENT_DEFINITION = input("Enter content definition: ")
 
         print("Creating related content")
-        RELATED_CONTENT_INFO = add_related_content(AUTH_TOKEN)
+        RELATED_CONTENT_INFO = add_related_content(AUTH_TOKEN, CONTENT_ID, RELATED_CONTENT_ID, CONTENT_DEFINITION)
         print(json.dumps(RELATED_CONTENT_INFO, indent=4))
+    except:
+        raise Exception()
+    
+def delete_related_content_main(AUTH_TOKEN):
+    try:
+        CONTENT_ID = input("Enter the content id: ")
+        RELATED_CONTENT_ID = input("Enter the content id of the related content: ")
+        CONTENT_DEFINITION = input("Enter content definition: ")
 
         print("Deleting related content")
-        delete_related_content(AUTH_TOKEN, RELATED_CONTENT_INFO["items"][0]["id"], RELATED_CONTENT_INFO["items"][0]["relatedContentId"])
+        INFO = delete_related_content(AUTH_TOKEN, CONTENT_ID, RELATED_CONTENT_ID, CONTENT_DEFINITION)
+        print(json.dumps(INFO, indent=4))
+    except:
+        raise Exception()
 
-        #add_custom_properties(AUTH_TOKEN, ID)
+def add_custom_properties_main(AUTH_TOKEN):
+    try:
+        ASSET_ID = input("Enter the asset id of the asset you want to add the custom property to: ")
+        DISPLAY_NAME = input("Enter the name of the asset you want to add the custom property to: ")
+        CUSTOM_PROPERTIES = {}
+        while True:
+            propertyName = input("Enter the name for the property: ")
+            propertyValue = input("Enter the value for the property: ")
+            CUSTOM_PROPERTIES[propertyName] = propertyValue
 
+            USER_INPUT = input("Do you want to add another property (y/n): ")
+            if USER_INPUT == "n":
+                break
+            
+        INFO = add_custom_properties(AUTH_TOKEN, ASSET_ID, DISPLAY_NAME, CUSTOM_PROPERTIES)
+        print(json.dumps(INFO, indent=4))
+    except:
+        raise Exception()
+
+def create_content_definition_main(AUTH_TOKEN):
+    try:
         print("Getting content definition")
-        CONTENT_DEFINITION_INFO = get_content_definition(AUTH_TOKEN)
+        CONTENT_DEFINITION_INFO = create_content_definition(AUTH_TOKEN)
         print(json.dumps(CONTENT_DEFINITION_INFO, indent = 4))
+    except:
+        raise Exception()
 
-        #print("Updating content defintion")
-        #UPDATED_CONTENT_DEFINTION_INFO = update_content_definition(AUTH_TOKEN, CONTENT_DEFINITION_INFO["contentDefinitionId"])
-
+def update_content_definition_main(AUTH_TOKEN):
+    try:
+        print("Updating content defintion")
+        UPDATED_CONTENT_DEFINTION_INFO = update_content_definition(AUTH_TOKEN)
+        print(json.dumps(UPDATED_CONTENT_DEFINTION_INFO, indent=4))
     except:
         raise Exception()
 
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiOTE3ODQzN2YtYzhjNC00ODBhLWExMjYtMzc0NDI0ZTBmY2JkIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6IjUzMzZkYTQwLWEyYzktNDJmNS1iMGJiLTUwZGM5YWZlMTEyMCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjg2Njg4MDAxLCJleHAiOjE2ODY2OTE2MDEsImlhdCI6MTY4NjY4ODAwMSwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiI5YTYxZjRkZS02NDk2LTQ5NWMtOTY0NC05ZmQ2ZmQyMzdiZTQiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.P1GrcD88rGMlS2Zlo04X6CeAr-28Q7lpQLktbjmOGczqJfQW7iPyp3GL77FBpf6Ox7CYlGaTvhU_sVALYHmkRY65eeUeaALTKH5VprzO19Z6A1xRWsqir6I8aBvNCA_oE6bCr2uScG-Dyafa4F0aiZDIRjNXjDmYmHxIKYsomm-Z75NLXx_LXMUBmR3Ulcswq8PhY0tUFJw3dqsvDHuNaYVC2p9jBl6TOz84NjveFLq5pvryZlVijlvEaCeVBY-RoEjBRTPpx3yf5RtU4yBMRubm8ynS6mv7Ie1kqQ8W4KVbRyVA-TZJg7yCwXXb7tEN3T3sxbDPmd7hiJG8iGhttg"
-    content(AUTH_TOKEN)
+    AUTH_TOKEN = input("Enter your authentication token: ")
+
+    while True:
+        print("Do you want to add a tag/collection, delete a tag/collection, "\
+              "add related content, delete related content, add custom properties, "\
+              "create a content defintion, update a content definition, or exit")
+        USER_INPUT = input("Enter add tag/collection, delete tag/collection, add related, "\
+                           "delete related, add custom, create def, update def, exit "\
+                           "for each option above respetively: ")
+        
+        if USER_INPUT == "add tag/collection":
+            add_tag_or_collection_main(AUTH_TOKEN)
+        elif USER_INPUT == "delete tag/collection":
+            delete_tag_or_collection_main(AUTH_TOKEN)
+        elif USER_INPUT == "add related":
+            add_related_content_main(AUTH_TOKEN)
+        elif USER_INPUT == "delete related":
+            delete_related_content_main(AUTH_TOKEN)
+        elif USER_INPUT == "add custom":
+            add_custom_properties_main(AUTH_TOKEN)
+        elif USER_INPUT == "create def":
+            create_content_definition_main(AUTH_TOKEN)
+        elif USER_INPUT == "update def":
+            update_content_definition_main(AUTH_TOKEN)
+        elif USER_INPUT == "exit":
+            break
+        else:
+            print("Input incorrect")
+    
