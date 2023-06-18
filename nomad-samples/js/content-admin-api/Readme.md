@@ -1,5 +1,5 @@
 # Content Admin API JavaScript
-Learning to user the Nomad API content and contentDefinition path to update a user in Javascript
+Learning to user the Nomad API content and contentDefinition path to work with tags/collections, related content, custom properties, and content defintions in Javascript
 
 ## Admin and Content Definition API Sample Code
 
