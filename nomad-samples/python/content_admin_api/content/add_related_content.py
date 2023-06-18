@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def add_related_content(AUTH_TOKEN: str) -> dict:
+def add_related_content(AUTH_TOKEN: str, CONTENT_ID: str, RELATED_CONTENT_ID: str, CONTENT_DEFINITION: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -21,9 +21,9 @@ def add_related_content(AUTH_TOKEN: str) -> dict:
     BODY = {
         "items": [
             {
-                "contentDefinition": "asset",
-                "contentId": "1030c066-d875-490b-8e02-e093c7ce042f",
-                "relatedContentId": "b943c762-1fb3-449e-9012-54dec10f1925"
+                "contentDefinition": CONTENT_DEFINITION,
+                "contentId": CONTENT_ID,
+                "relatedContentId": RELATED_CONTENT_ID
             }
         ]
     }
