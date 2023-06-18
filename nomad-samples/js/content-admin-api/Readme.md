@@ -17,7 +17,7 @@ This walkthrough outlines how to use the sample code for the admin and contentDe
 
 ## Step 1
 
-Open the folder  samples/nomad-samples/python/content-admin. You should see this:
+Open the folder  samples/nomad-samples/js/content-admin. You should see this:
 
 ![](https://files.readme.io/31bc0f2-image.png)
 
