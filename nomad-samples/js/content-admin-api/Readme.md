@@ -1,5 +1,5 @@
 # Content Admin API JavaScript
-Learning to user the Nomad API admin and contentDefinition path to update a user in Javascript
+Learning to user the Nomad API content and contentDefinition path to update a user in Javascript
 
 ## Admin and Content Definition API Sample Code
 
