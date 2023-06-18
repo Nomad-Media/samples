@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def delete_related_content(AUTH_TOKEN: str, CONTENT_ID: str, RELATED_CONTENT_ID: str) -> dict:
+def delete_related_content(AUTH_TOKEN: str, CONTENT_ID: str, RELATED_CONTENT_ID: str, CONTENT_DEFINITION: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -21,7 +21,7 @@ def delete_related_content(AUTH_TOKEN: str, CONTENT_ID: str, RELATED_CONTENT_ID:
     BODY = {
         "items": [
             {
-                "contentDefinition": "asset",
+                "contentDefinition": CONTENT_DEFINITION,
                 "contentId": CONTENT_ID,
                 "relatedContentId": RELATED_CONTENT_ID
             }
