@@ -1,5 +1,5 @@
 # AssetGroups API
-Learning to use the Nomad API assetGroup path to update a user in Python
+Learning to use the Nomad API assetGroup path to work with asset groups in JavaScript
 
 ## AssetGroups API Sample Code
 
