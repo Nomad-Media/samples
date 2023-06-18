@@ -1,5 +1,5 @@
 # Content Admin API Python
-Learning to use the Nomad API content and contentDefinition path to update a user in Python
+Learning to use the Nomad API content and contentDefinition path to work with tags/collections, related content, custom properties, and content defintions in Python
 
 ## Admin and Content Definition API Sample Code
 
