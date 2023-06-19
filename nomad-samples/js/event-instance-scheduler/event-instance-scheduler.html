@@ -44,8 +44,8 @@
         <label for="createIdInput">Id:</label>
         <input type="createId" id="createIdInput" required>
 
-        <label for="contentIdInput">Content Id:</label>
-        <input type="contentId" id="contentIdInput" required>
+        <label for="contentIdInput">Content Id (optional):</label>
+        <input type="contentId" id="contentIdInput">
 
         <label for="contentDefinitionIdInput">Content Definition Id:</label>
         <input type="contentDefinitionId" id="contentDefinitionIdInput" required>
@@ -98,6 +98,12 @@
         <label for="backupLivestreamUrlInput">Backup Live Stream Input Url (optional):</label>
         <input type="backupLivestreamUrl" id="backupLivestreamUrlInput">
 
+        <label for="seriesDescriptionInput">Series Description (optional):</label>
+        <input type="seriesDescription" id="seriesDescriptionInput">
+
+        <label for="seriesIdInput">Series Id (optional):</label>
+        <input type="seriesId" id="seriesIdInput">
+
         <br><br>
         <button type="submit">Submit</button>
     </form>
@@ -105,7 +111,7 @@
     <h2>Delete Event Instance</h2>
     
     <form id="deleteForm">
-        <label for="deleteIdInput">Id:</label>
+        <label for="deleteIdInput">Content Id:</label>
         <input type="deleteId" id="deleteIdInput" required>
 
         <label for="deleteContentDefinitionIdInput">Content Definition Id:</label>
