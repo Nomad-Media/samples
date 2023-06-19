@@ -32,6 +32,10 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
             series: {
                 properties: {}
             }
+        },
+
+        series: {
+            properties: {}
         }
     };
 
@@ -73,7 +77,7 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
 
     if (SERIES_ID != "")
     {
-        BODY.properties.series.id = SERIES_ID;
+        BODY.propertie.series.id = SERIES_ID;
     }
 
     // Post
