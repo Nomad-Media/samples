@@ -50,3 +50,5 @@ If you didn't get your code, enter "n" when prompted "Did you receive the 6 digi
 ## Step 6
 
 To logout, enter logout at the prompt. You will receive a message stating that you successfully logged out.
+
+![](https://files.readme.io/ea1a234-image.png)
