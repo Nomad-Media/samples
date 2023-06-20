@@ -20,9 +20,14 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
             startDatetime: START_DATETIME,
             endDatetime: END_DATETIME,
             disabled: DISABLED,
+            description: DESCRIPTION,
             overrideSeriesDetails: OVERRIDE_SERIES_DETAILS,
             isSecureOutput: IS_SECURE_OUTPUT,
+            primaryLiveStreamInputUrl: PRIMARY_LIVE_STREAM_URL,
+            backupLiveStreamInputUrl: BACKUP_LIVESTREAM_URL,
             series: {
+                description: SERIES_DESCRIPTION,
+                id: SERIES_ID,
                 properties: {}
             }
         },
@@ -32,14 +37,10 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
         }
     };
 
-    DESCRIPTION != "" ? BODY.description = DESCRIPTION : BODY.description = "";
-
     PREROLL_VIDEO_ID != "" ? BODY.properties.prerollVideo = { id: PREROLL_VIDEO_ID } : BODY.properties.prerollVideo = "";
 
     POSTROLL_VIDEO_ID != "" ? BODY.properties.postrollVideo = { id: POSTROLL_VIDEO_ID } : BODY.properties.postrollVideo = "";
     
-    PRIMARY_LIVE_STREAM_URL != "" ? BODY.properties.primaryLiveStreamInputUrl = PRIMARY_LIVE_STREAM_URL : BODY.properties.primaryLiveStreamInputUrl = "";
-
     if (CONTENT_ID != "")
     { 
         BODY.contentId = CONTENT_ID 
@@ -52,12 +53,6 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
     LIVE_INPUT_A_ID != "" ? BODY.properties.liveInputA = { id: LIVE_INPUT_A_ID } : BODY.properties.liveInputA = "";
 
     LIVE_INPUT_B_ID != "" ? BODY.properties.liveInputB = { id: LIVE_INPUT_B_ID } : BODY.properties.liveInputB = "";
-
-    BACKUP_LIVESTREAM_URL != "" ? BODY.properties.backupLiveStreamInputUrl = LIVE_INPUT_B_ID : BODY.properties.backupLiveStreamInputUrl = "";
-
-    SERIES_DESCRIPTION != "" ? BODY.properties.series.description = SERIES_DESCRIPTION : BODY.properties.series.description = "";
-
-    SERIES_ID != "" ?  BODY.properties.series.id = SERIES_ID : BODY.properties.series.id = "";
 
     // Post
     const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/${ID}`, {
