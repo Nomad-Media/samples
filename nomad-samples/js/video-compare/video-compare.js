@@ -321,7 +321,7 @@ async function getVideoTrackingAlertMain(GET_ALERT_EXTERNAL_ID)
 
 }
 
-async function getManifestChannelGroupMain(GET_MANIFEST_TRACKING_ID, GET_MANIFEST_FRAME_DT_UTC);
+async function getManifestChannelGroupMain(GET_MANIFEST_TRACKING_ID, GET_MANIFEST_FRAME_DT_UTC)
 {
     if (!sessionStorage.getItem("token"))
     {
