@@ -1,5 +1,5 @@
 # Video Tracking Python
-Learning to use the Nomad API asset/tracking paths to update a user in Javascript
+Learning to use the Nomad API asset/tracking paths to track videos in Javascript
 
 ## Asset/Tracking API Sample Code
 
