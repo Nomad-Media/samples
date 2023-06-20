@@ -51,6 +51,10 @@ This will redirect you to a browser with the html page.
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
 
+![](https://files.readme.io/3883009-videotrackingweb.png)
+
+![](https://files.readme.io/4b3a6c6-videotrackinglh.png)
+
 ## Step 6
 
 To use any of the API calls here, you need to input your authentication token. You can find out how to get your authentication token [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Once you enter your authentication token into the field and click submit, it will update the token in the program so that you can use the other functions.
