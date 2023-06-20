@@ -5,7 +5,7 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
     CONTENT_DEFINITION_ID, INSTANCE_NAME, START_DATETIME, END_DATETIME, DISABLED, DESCRIPTION, 
     SLATE_VIDEO_ID, PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, IS_SECURE_OUTPUT, ARCHIVE_FOLDER, 
     LIVE_INPUT_A_ID, LIVE_INPUT_B_ID, PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL, 
-    SERIES_DESCRIPTION, SERIES_ID) 
+    OVERRIDE_SERIES_DETAILS, SERIES_DESCRIPTION, SERIES_ID) 
 {
 		// Create header for the request
     const HEADERS = new Headers();
@@ -20,15 +20,8 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
             startDatetime: START_DATETIME,
             endDatetime: END_DATETIME,
             disabled: DISABLED,
-            description: DESCRIPTION,
-            prerollVideo: {
-                id: PREROLL_VIDEO_ID
-            },
-            postrollVideo: {
-                id: POSTROLL_VIDEO_ID
-            },
+            overrideSeriesDetails: OVERRIDE_SERIES_DETAILS,
             isSecureOutput: IS_SECURE_OUTPUT,
-            primaryLiveStreamInputUrl: PRIMARY_LIVE_STREAM_URL,
             series: {
                 properties: {}
             }
@@ -39,46 +32,32 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
         }
     };
 
+    DESCRIPTION != "" ? BODY.description = DESCRIPTION : BODY.description = "";
+
+    PREROLL_VIDEO_ID != "" ? BODY.properties.prerollVideo = { id: PREROLL_VIDEO_ID } : BODY.properties.prerollVideo = "";
+
+    POSTROLL_VIDEO_ID != "" ? BODY.properties.postrollVideo = { id: POSTROLL_VIDEO_ID } : BODY.properties.postrollVideo = "";
+    
+    PRIMARY_LIVE_STREAM_URL != "" ? BODY.properties.primaryLiveStreamInputUrl = PRIMARY_LIVE_STREAM_URL : BODY.properties.primaryLiveStreamInputUrl = "";
+
     if (CONTENT_ID != "")
-    {
-        BODY.contentId = CONTENT_ID;
+    { 
+        BODY.contentId = CONTENT_ID 
     }
 
-    if (ARCHIVE_FOLDER != "")
-    {
-        BODY.properties.archiveFolder = { id: ARCHIVE_FOLDER }; 
-    }
+    ARCHIVE_FOLDER != "" ? BODY.properties.archiveFolder = { id: ARCHIVE_FOLDER } : BODY.properties.archiveFolder = "";
 
-    if (SLATE_VIDEO_ID != "")
-    {
-        BODY.properties.slateVideo = { id: SLATE_ID }
-    }
+    SLATE_VIDEO_ID != "" ? BODY.properties.slateVideo = { id: SLATE_ID } : BODY.properties.slateVideo = "";
 
-    if (LIVE_INPUT_A_ID != "")
-    {
-        BODY.properties.liveInputA = { id: LIVE_INPUT_A_ID };
-    }
+    LIVE_INPUT_A_ID != "" ? BODY.properties.liveInputA = { id: LIVE_INPUT_A_ID } : BODY.properties.liveInputA = "";
 
-    if (LIVE_INPUT_B_ID != "")
-    {
-        BODY.properties.liveInputB = { id: LIVE_INPUT_B_ID };
-    }
+    LIVE_INPUT_B_ID != "" ? BODY.properties.liveInputB = { id: LIVE_INPUT_B_ID } : BODY.properties.liveInputB = "";
 
-    if (BACKUP_LIVESTREAM_URL != "")
-    {
-        BODY.properties.backupLiveStreamInputUrl = LIVE_INPUT_B_ID;
-    }
+    BACKUP_LIVESTREAM_URL != "" ? BODY.properties.backupLiveStreamInputUrl = LIVE_INPUT_B_ID : BODY.properties.backupLiveStreamInputUrl = "";
 
-    if (SERIES_DESCRIPTION != "")
-    {
-        //BODY
-        BODY.properties.series.description = SERIES_DESCRIPTION;
-    }
+    SERIES_DESCRIPTION != "" ? BODY.properties.series.description = SERIES_DESCRIPTION : BODY.properties.series.description = "";
 
-    if (SERIES_ID != "")
-    {
-        BODY.propertie.series.id = SERIES_ID;
-    }
+    SERIES_ID != "" ?  BODY.properties.series.id = SERIES_ID : BODY.properties.series.id = "";
 
     // Post
     const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/${ID}`, {

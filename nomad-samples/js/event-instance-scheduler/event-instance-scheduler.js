@@ -25,6 +25,7 @@ const PRIMARY_LIVESTREAM_URL_INPUT = document.getElementById("primaryLivestreamU
 const BACKUP_LIVESTREAM_URL_INPUT = document.getElementById("backupLivestreamUrlInput");
 const DELETE_ID_INPUT = document.getElementById("deleteIdInput");
 const DELETE_CONTENT_DEFINITION_ID = document.getElementById("deleteContentDefinitionIdInput");
+const OVERRIDE_SERIES_DETAILS_INPUT = document.getElementById("overrideSeriesDetailsInput");
 const SERIES_DESCRIPTION_INPUT = document.getElementById("seriesDescriptionInput");
 const SERIES_ID_INPUT = document.getElementById("seriesIdInput");
 
@@ -56,13 +57,14 @@ CREATE_FORM.addEventListener("submit", function (event)
     let liveInputBId = LIVE_INPUT_B_ID_INPUT.value;
     let primaryLiveStreamUrl = PRIMARY_LIVESTREAM_URL_INPUT.value;
     let backupLivestreamUrl = BACKUP_LIVESTREAM_URL_INPUT.value;
+    let overrideSeriesDetails = (OVERRIDE_SERIES_DETAILS_INPUT.value === "true"? true: false);
     let seriesDescription = SERIES_DESCRIPTION_INPUT.value;
     let seriesId = SERIES_ID_INPUT.value;
 
     creatingAndUploadingEventInstanceMain(createId, contentId, contentDefinitionId, instanceName, 
         startDatetime, endDatetime, disabled, description, slateVideoId, prerollVideoId, 
         postrollVideoId, isSecureOutput, archiveFolder, liveInputAId, liveInputBId, 
-        primaryLiveStreamUrl, backupLivestreamUrl, seriesDescription, seriesId);
+        primaryLiveStreamUrl, backupLivestreamUrl, overrideSeriesDetails, seriesDescription, seriesId);
 });
 
 DELETE_FORM.addEventListener("submit", function (event)
@@ -78,7 +80,8 @@ DELETE_FORM.addEventListener("submit", function (event)
 async function creatingAndUploadingEventInstanceMain(CREATE_ID, CONTENT_ID, CONTENT_DEFINITION_ID, 
     INSTANCE_NAME, START_DATETIME, END_DATETIME, DISABLED, DESCRIPTION, SLATE_VIDEO_ID, 
     PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, IS_SECURE_OUTPUT, ARCHIVE_FOLDER, LIVE_INPUT_A_ID, 
-    LIVE_INPUT_B_ID, PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL, SERIES_DESCRIPTION, SERIES_ID)
+    LIVE_INPUT_B_ID, PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL, OVERRIDE_SERIES_DETAILS,
+    SERIES_DESCRIPTION, SERIES_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -92,7 +95,7 @@ async function creatingAndUploadingEventInstanceMain(CREATE_ID, CONTENT_ID, CONT
             CREATE_ID, CONTENT_ID, CONTENT_DEFINITION_ID, INSTANCE_NAME, START_DATETIME, END_DATETIME, 
             DISABLED, DESCRIPTION, SLATE_VIDEO_ID, PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, IS_SECURE_OUTPUT, 
             ARCHIVE_FOLDER, LIVE_INPUT_A_ID, LIVE_INPUT_B_ID, PRIMARY_LIVE_STREAM_URL, 
-            BACKUP_LIVESTREAM_URL, SERIES_DESCRIPTION, SERIES_ID);
+            BACKUP_LIVESTREAM_URL, OVERRIDE_SERIES_DETAILS, SERIES_DESCRIPTION, SERIES_ID);
         console.log(JSON.stringify(CREATE_INFO, null, 4));
     }
     catch (error)
