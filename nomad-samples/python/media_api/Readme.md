@@ -1,5 +1,5 @@
 # Media API Python
-Learning to use the Nomad API portal/search and media/form paths to update a user in Javascript
+Learning to use the Nomad API portal/search and media/form paths to search content and media and create foms in Python
 
 ## Portal/Search and Media/Form API Sample Code
 
