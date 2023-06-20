@@ -1,18 +1,68 @@
 from instance.create_and_upload_instance import *
-from instance.delete_Instance import *
+from instance.delete_instance import *
 
-def event_instance(AUTH_TOKEN: str):
+import json
+
+def create_and_upload_instance_main(AUTH_TOKEN):
     try:
-        ID = "d34f116d-2a51-4d4a-b928-5dd581d9fd5f"
+        ID = input("Enter Id: ")
+        CONTENT_ID = input("Enter Content Id (optional): ")
+        CONTENT_DEFINITION_ID = input("Enter Content Definition Id: ")
+        INSTANCE_NAME = input("Enter Instance Name: ")
+        START_DATETIME = input("Enter Start DateTime (YYYY-MM-DDTHH:MM:SS): ") + "Z"
+        END_DATETIME = input("Enter End DateTime (YYYY-MM-DDTHH:MM:SS): ") + "Z"
+        DISABLED = True if input("Enter Disabled (True/False): ") == "True" else False
+        DESCRIPTION = input("Enter description: ")
+        SLATE_VIDEO_ID = input("Enter Slate Video Id (optional): ")
+        PREROLL_VIDEO_ID = input("Enter Preroll Video: ")
+        POSTROLL_VIDEO_ID = input("Enter Postroll Video: ")
+        IS_SECURE_OUTPUT = True if input("Enter Is Secure Output (True/False): ") == "True" else False
+        ARCHIVE_FOLDER = input("Enter Archive Folder (optional): ")
+        LIVE_INPUT_A = input("Enter Live Input A: ")
+        LIVE_INPUT_B = input("Enter Live Input B (optional): ")
+        PRIMARY_LIVE_STREAM_INPUT_URL = input("Enter Primary Live Stream Input Url: ")
+        BACKUP_LIVE_STREAM_INPUT_URL = input("Enter Backup Live Stream Input Url (optional): ")
+        OVERRIDE_SERIES_DETAILS = True if input("Enter Override Series Details (True/False): ") == "True" else False
+        SERIES_DESCRIPTION = input("Enter Series Description (optional): ")
+        SERIES_ID = input("Enter Series Id (optional): ")
+
         print("Creating event instance")
-        INFO = creating_and_uploading_event_instance(AUTH_TOKEN, ID)
+        INFO = creating_and_uploading_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DEFINITION_ID, 
+                                                     INSTANCE_NAME, START_DATETIME, END_DATETIME, 
+                                                     DISABLED, DESCRIPTION, SLATE_VIDEO_ID, 
+                                                     PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, 
+                                                     IS_SECURE_OUTPUT, ARCHIVE_FOLDER, LIVE_INPUT_A,
+                                                     LIVE_INPUT_B, PRIMARY_LIVE_STREAM_INPUT_URL,
+                                                     BACKUP_LIVE_STREAM_INPUT_URL, OVERRIDE_SERIES_DETAILS,
+                                                     SERIES_DESCRIPTION, SERIES_ID)
         print(json.dumps(INFO, indent=4))
 
-        print("Deleting event instance")
-        DELETE_INFO = deleting_event_instance(AUTH_TOKEN, "00939c2b-d355-44c8-83c3-7700646c96f8", ID) 
     except:
-        raise Exception("Event instance failed")
+        raise Exception()
+
+def delete_instance_main(AUTH_TOKEN: str):
+    try:
+        CONTENT_ID = input("Enter Content Id: ")
+        CONTENT_DEFINITION_ID = input("Enter Content Definition Id: ")
+
+        print("Deleting event instance")
+        deleting_event_instance(AUTH_TOKEN, CONTENT_ID, CONTENT_DEFINITION_ID)
+        print("Deleting event instance successfull")
+    except:
+        raise Exception()
     
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiOWEyZGZhOTgtMGQ3Yi00YmY5LWIxOTEtMzQ4ZGQ0YTdmNGFhIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImM5ZTRmMzY2LWRhOTEtNDVhMC04Y2NmLWY3NTM5ZjkxYWU4MyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjg2NjE2NzAwLCJleHAiOjE2ODY2MjAzMDAsImlhdCI6MTY4NjYxNjcwMCwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiJmMzk3MjM5NC00MWEzLTRjZmUtOWJkMi1jMmMzMTY0NmRiMjkiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.tvyhsJRN-suJnE7tC1B5sPoY_0TEitxZoF9a02eizld_T820aTp24-ce4BNHO2OY6ko7IoIIuHxGavhLrA9cvJyzYNIb4VFLU4htjHYjG6pSQJFe-TUQReI4VqFBJZC5d3V3D4qsChDPeOVAMnVLk2GcpuhCQxnPHF3YuvujK54yS1wA72AwPZmt1b2Q8voxGmdQiXMwZmfJ67vzFowsL7wEcoDjJ0ZkjBx4-f5wyqBgyOnBMsHa7gVG8d9Pyp_jB6abk1nQfM7IJUyjmBxvnKgDLrUqd46OaMts4PWF9l_8aPGHdp4D5Aj-DPvjfWTab1Y_jltyyEZr1ZJjA3Q6Jg"
-    event_instance(AUTH_TOKEN)
+    AUTH_TOKEN = input("Enter your authentication token: ")
+
+    while True:
+        print("Do you want to create/update, delete an instance, or exit?")
+        USER_INPUT = input("Enter create/update, delete, or exit for each option respectively: ")
+        
+        if USER_INPUT == "create/update":
+            create_and_upload_instance_main(AUTH_TOKEN)
+        elif USER_INPUT == "delete":
+            delete_instance_main(AUTH_TOKEN)
+        elif USER_INPUT == "exit":
+            break
+        else:
+            print("Invalid input")
