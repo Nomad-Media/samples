@@ -19,9 +19,6 @@ export default async function mediaSearch(AUTH_TOKEN, SEARCH_QUERY, IDS, FIELD_N
         ]  
     };
 
-    console.log(JSON.stringify(BODY, null, 4));
-    
-
     // Post
     const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/portal/search`, {
         method: "POST",
