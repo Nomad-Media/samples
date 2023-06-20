@@ -8,7 +8,8 @@ const PART_FORM = document.getElementById("partForm");
 const COMPLETE_FORM = document.getElementById("completeForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
-const PARENT_ID_INPUT = document.getElementById("paraneIdInput");
+const NAME_INPUT = document.getElementById("nameInput");
+const PARENT_ID_INPUT = document.getElementById("parentIdInput");
 const CONTENT_LENGTH_INPUT = document.getElementById("contentLengthInput");
 const UPLOAD_OVERWRITE_OPTION_INPUT = document.getElementById("uploadOverwriteOptionInput");
 const CHUNK_SIZE_INPUT = document.getElementById("chunkSizeInput");
@@ -31,6 +32,7 @@ START_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
     
+    let name = NAME_INPUT.value;
     let parentId = PARENT_ID_INPUT.value;
     let contentLength = CONTENT_LENGTH_INPUT.value;
     let uploadOverwriteOption = UPLOAD_OVERWRITE_OPTION_INPUT.value;
@@ -38,7 +40,7 @@ START_FORM.addEventListener("submit", function (event)
     let relativePath = RELATIVE_PATH_INPUT.value;
     let languageId = LANGUAGE_ID_INPUT.value;
 
-    startUploadMain(parentId, contentLength, uploadOverwriteOption, chunkSize, relativePath, languageId);
+    startUploadMain(name, parentId, contentLength, uploadOverwriteOption, chunkSize, relativePath, languageId);
 });
 
 PART_FORM.addEventListener("submit", function (event)
@@ -60,7 +62,7 @@ COMPLETE_FORM.addEventListener("submit", function (event)
     completeUploadMain(assetUploadId);
 });
 
-async function startUploadMain(PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID)
+async function startUploadMain(NAME, PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID)
 {
     if (!sessionStorage.getItem("token"))
     {
@@ -70,7 +72,7 @@ async function startUploadMain(PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTIO
     try
     {
         console.log("Starting asset upload");
-        const START_INFO = startUpload(sessionStorage.getItem("token"), PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID);
+        const START_INFO = await startUpload(sessionStorage.getItem("token"), NAME, PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID);
         console.log(JSON.stringify(START_INFO, null, 4));
     }
     catch (error)
@@ -89,7 +91,7 @@ async function uploadAssetPartMain(PART_ID, ETAG)
     try
     {
         console.log("Uploading asset part");
-        uploadAssetPart(sessionStorage.getItem("token"), PART_ID, ETAG);
+        await uploadAssetPart(sessionStorage.getItem("token"), PART_ID, ETAG);
         console.log("Uploading asset part complete");
     }
     catch (error)
@@ -108,7 +110,7 @@ async function completeUploadMain(ASSET_UPLOAD_ID)
     try
     {
         console.log("Uploading complete asset");
-        COMPLETE_INFO = completeUpload(sessionStorage.getItem("token"), ASSET_UPLOAD_ID);
+        const COMPLETE_INFO = await completeUpload(sessionStorage.getItem("token"), ASSET_UPLOAD_ID);
         console.log(JSON.stringify(COMPLETE_INFO, null, 4));
     }
     catch (error)
