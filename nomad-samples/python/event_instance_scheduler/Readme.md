@@ -1,5 +1,5 @@
 # Event Instance Scheduler Python
-Learning to user the Nomad API content path to create, update, and delete instances in Javascript
+Learning to user the Nomad API content path to create, update, and delete instances in Python
 
 ## Event Instance API Sample Code
 
