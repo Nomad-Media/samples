@@ -44,3 +44,5 @@ To perform a media search, enter media. Enter the search query you want to use, 
 ## Step 5
 
 Before you make a form, you need to create the content definition where you want to post records too first. Follow the instructions [here](doc:content-definitions) on how to create a content definition and find its ID. To make a form enter form. Then enter the id of the content definition you want to use, the first and last name, whether you want it to be active or not, the start date, the lookup id, and the description.
+
+![](https://files.readme.io/993c19e-image.png)
