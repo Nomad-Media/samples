@@ -1,13 +1,6 @@
-# AssetGroups API
-Learning to use the Nomad API assetGroup path to work with asset groups in JavaScript
-
 ## AssetGroups API Sample Code
 
-This walkthrough outlines how to use the sample code for the asset group API process that Nomad provides using Python.
-
-## Prerequisites
-
-- Visual Studio Code or similar code editor
+This walkthrough outlines how to use the sample code for the asset group API process that Nomad provides using Javascript
 
 > 📘 Note
 > 
@@ -17,50 +10,88 @@ This walkthrough outlines how to use the sample code for the asset group API pro
 
 ## Step 1
 
-Open the folder  samples/nomad-samples/python/asset-groups. You should see this:
+Open the folder samples/nomad-samples/js/asset-groups. You should see this:
 
-![](https://files.readme.io/408e073-image.png)
+![](https://files.readme.io/f893270-image.png)
 
 ## Step 2
 
 Open the folder in vscode. You should see the same file contents as above.
 
-![](https://files.readme.io/4544857-image.png)
-
-Go to asset_groups.py and run the code. It should ask for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
-
-![](https://files.readme.io/8d8717a-image.png)
+![](https://files.readme.io/c4fd057-image.png)
 
 ## Step 3
 
-To get your existing asset groups enter get into the terminal.
+In order to run the Nomad API calls, you need to change your port to port 4200. First go to settings (ctrl+,). Then look up port attributes.
 
-![](https://files.readme.io/c27821e-image.png)
+![](https://files.readme.io/7ca4a72-settings.png)
+
+Click on "Edit in settings.json" and change liveServer.settings.port to 4200. Save your changes.
+
+![](https://files.readme.io/199b2b4-liveserver.png)
 
 ## Step 4
 
-To create an asset group, enter create into the terminal. Then you will be prompt to input an asset group id, an asset group name, and assets. You need to enter at least a name, or an id.
+On the Explorer tab on the left, right-click on asset-groups.html and click "Open with Live Server".
 
-![](https://files.readme.io/ef7fe90-image.png)
+![](https://files.readme.io/2e7c7e8-assetgroupls.png)
+
+This will redirect you to a browser with the html page.
+
+![](https://files.readme.io/a6f01bd-image.png)
 
 ## Step 5
 
-To add an asset to an asset group, enter add into the terminal. Then you will be prompted for an asset group id and asset ids.
+Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
 
-![](https://files.readme.io/7b06281-image.png)
+![](https://files.readme.io/60ced4b-assetgroupweb.png)
+
+![](https://files.readme.io/c360c2b-assetgrouplh.png)
 
 ## Step 6
 
-To remove an asset from an asset group, enter remove into the terminal. Then you will be prompted for an asset group id and asset ids.
+To use any of the API calls here, you need to input your authentication token. You can find out how to get your authentication token [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Once you enter your authentication token into the field and click submit, it will update the token in the program so that you can use the other functions.
 
-![](https://files.readme.io/d38de49-image.png)
+![](https://files.readme.io/01ac6d3-image.png)
 
 ## Step 7
 
-To rename an asset group, enter rename into the terminal. Then you will be prompted for an asset group id and a new name for the asset group.
+To get all of the current asset groups, all you need to do is click the submit button under Get Asset Groups. Once you click submit, you will get a list of current asset groups.
 
-![](https://files.readme.io/6299f7c-image.png)
+![](https://files.readme.io/9ac03ee-image.png)
 
 ## Step 8
 
-To delete an asset group, enter delete into the terminal. Then you will be prompted for the asset group id for the asset group you want to delete.
+To create an asset group, enter a name, or an id, and any assets you have.
+
+![](https://files.readme.io/ba60680-image.png)
+
+## Step 9
+
+To add assets to your asset group, enter the id of the asset group you want to add the assets to under "Asset Group Id:". Then input the asset ids of the assets you want to add to the asset group under "Asset Ids" and click submit. Separate the values by a comma with no space after the comma.
+
+![](https://files.readme.io/8ad40e3-image.png)
+
+![](https://files.readme.io/32aa396-image.png)
+
+## Step 10
+
+To remove assets from your asset group, enter the id of the asset group you want to remove the assets from under "Asset Group Id:". Then input the asset ids of the assets you want to remove from the asset group under "Asset Ids" and click submit. Separate the values by a comma with no space after the comma.
+
+![](https://files.readme.io/013ba80-image.png)
+
+![](https://files.readme.io/fc207b7-image.png)
+
+## Step 11
+
+To rename your asset group, enter the id of the asset group you want to rename the assets from under "Asset Group Id:". Then enter the new name for the asset group and click submit.
+
+![](https://files.readme.io/a84be63-image.png)
+
+![](https://files.readme.io/fe90f45-image.png)
+
+## Step 12
+
+To delete your asset group, enter the id of the asset group you want to delete under "Asset Group Id:". Then click submit.
+
+![](https://files.readme.io/42b3a00-image.png)
