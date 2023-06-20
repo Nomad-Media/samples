@@ -24,7 +24,7 @@ export default async function getVideoTrackingService(AUTH_TOKEN, ASSET_ID, TRAC
 
     // Check for success
     if (RESPONSE.ok) {
-        return RESPONSE.text;
+        return RESPONSE.status;
     }
 		
   	// There was an error
