@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def upload_complete_asset(AUTH_TOKEN: str, ID: str) -> dict:
+async def upload_complete_asset(AUTH_TOKEN: str, ID: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
