@@ -23,6 +23,18 @@ input {
     width: 300px;
 }
 
+input[type="file"] {
+    text-align: center;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 5px 15px;
+    background-color: #064d8e;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
 button[type="submit"] {
     padding: 10px 20px;
     background-color: #4CAF50;
