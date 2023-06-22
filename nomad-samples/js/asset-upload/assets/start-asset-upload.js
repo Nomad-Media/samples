@@ -1,21 +1,28 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function startUpload(AUTH_TOKEN, NAME, PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID) 
+export default async function startUpload(AUTH_TOKEN, NAME, UPLOAD_OVERWRITE_OPTION, FILE, RELATED_CONTENT_ID) 
 {
+    const AWS_MIN_LIMIT = 5242880;
+    let chunkSize = FILE.size / 10000;
+    
+    if (chunkSize < (AWS_MIN_LIMIT * 4))
+    {
+        chunkSize = 20971520;
+    }
+
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
     const BODY = {
-        "displayName": NAME,
-        "parentId": PARENT_ID,
-        "contentLength": CONTENT_LENGTH,
-        "uploadOverwriteOption": UPLOAD_OVERWRITE_OPTION,
-        "chunkSize": CHUNK_SIZE,
-        "relativePath": RELATIVE_PATH,
-        "languageId": LANGUAGE_ID
+        displayName: NAME || FILE.name,
+        contentLength: FILE.size,
+        uploadOverwriteOption: UPLOAD_OVERWRITE_OPTION,
+        relativePath: FILE.name,
+        relatedContentId: RELATED_CONTENT_ID === "" ? "" : RELATED_CONTENT_ID,
+        chunkSize: chunkSize
     };
 
     // Post
