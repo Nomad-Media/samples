@@ -1,7 +1,6 @@
 import multiThreadUpload from "./assets/multi-thread-upload.js";
 import singleThreadUpload from "./assets/single-thread-upload.js";
 import startUpload from "./assets/start-asset-upload.js";
-import uploadAssetPart from "./assets/upload-asset-part.js";
 import completeUpload from "./assets/upload-complete-asset.js";
 
 const AUTH_FORM = document.getElementById("authForm");
