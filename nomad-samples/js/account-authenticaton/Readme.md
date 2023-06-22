@@ -40,7 +40,7 @@ Click on "Edit in settings.json" and change liveServer.settings.port to 4200. Sa
 
 ## Step 4
 
-On the Explorer tab on the left, right-click on account-register.html and click "Open with Live Server".
+On the Explorer tab on the left, right-click on account-authentication.html and click "Open with Live Server".
 
 ![](https://files.readme.io/58cbd20-lsauthjs.png)
 
