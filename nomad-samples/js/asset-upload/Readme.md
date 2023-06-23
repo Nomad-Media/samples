@@ -45,9 +45,15 @@ On the Explorer tab on the left, right-click on asset-uploads.html and click "Op
 
 This will redirect you to a browser with the html page.
 
+![image](https://github.com/Nomad-Media/samples/assets/47163171/f0b20f08-9069-418c-b2f5-79acba4e08d3)
+
 ## Step 5
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
+
+![](https://files.readme.io/7754ab4-assetuploadweb.png)
+
+![](https://files.readme.io/e79abb2-assset-upload.png)
 
 ## Step 6
 
