@@ -83,5 +83,5 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
     }
 		
   	// There was an error
-    await await apiExceptionHandler(RESPONSE, "Creating/Updating event instance failed");
+    await apiExceptionHandler(RESPONSE, "Creating/Updating event instance failed");
 }
