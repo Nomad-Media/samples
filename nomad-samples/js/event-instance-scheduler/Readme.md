@@ -45,15 +45,15 @@ On the Explorer tab on the left, right-click on event-instance-scheduler.html an
 
 This will redirect you to a browser with the html page.
 
-![](https://files.readme.io/285b866-image.png)
+![](https://files.readme.io/aed0900-image.png)
 
 ## Step 5
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
 
-![](https://files.readme.io/b931255-eventinstanceweb.png)
+![](https://files.readme.io/86db6ff-eventinstanceweb.png)
 
-![](https://files.readme.io/ce02634-eventinstancelh.png)
+![](https://files.readme.io/53a3ba4-eventinstancelh.png)
 
 ## Step 6
 
@@ -63,14 +63,27 @@ To use any of the API calls here, you need to input your authentication token. Y
 
 ## Step 7
 
-To create an instance, fill at minimum all of the required fields. If you don't insert a slate video id, the default one will be used. If you want to update an instance, you need to fill in the content id of the instance you want to update in addition to at least the required fields. You can only enter either a primary live stream input or a primary live steam url. If you select "Override Series Default" to false, you only need to enter the id, the content definition id, the instance name, the start and end datetime, and primary stream input/url.
+To create an instance, fill at minimum all of the required fields. If you don't insert a slate video id, the default one will be used. If you want to update an instance, you need to fill in the content id of the instance you want to update in addition to at least the required fields. You can only enter either a primary live stream input or a primary live steam url. If you want to have recurring instances, put true for recurring. You will see that a couple of fields have changed and some have been added. Enter the start and end time, and the days that you want to have the instance recur. If you want to use an existing series to populate the fields, Put yes for "Do you want to use an existing series". Then all you have to do is enter the series description and id. If you want to use a series, but put in your own values for the other fields, put false for "Override Series Details".
 
-![](https://files.readme.io/a00e12c-image.png)
+![](https://files.readme.io/e6405d6-image.png)
+
+*Default output*
+
+![](https://files.readme.io/0452932-image.png)
+
+*Recurring equals True*
+
+![](https://files.readme.io/30e4455-image.png)
+
+*Existing series equals Yes*
+
 
 ![](https://files.readme.io/b57f411-image.png)
 
 ## Step 8
 
 To delete an instance, you need the content id, and the content definition id.
+
+![](https://files.readme.io/6fc0429-image.png)
 
 ![](https://files.readme.io/6fc0429-image.png)
