@@ -19,7 +19,7 @@ This walkthrough outlines how to use the sample code for the content API process
 
 Open the folder  samples/nomad-samples/js/event-instance-scheduler. You should see this:
 
-![](https://files.readme.io/33e6487-image.png)
+![image](https://github.com/Nomad-Media/samples/assets/47163171/5253486a-5253-4fb7-87e5-d8ae362ce5db)
 
 ## Step 2
 
