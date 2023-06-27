@@ -109,7 +109,7 @@ async function changeUserPassword(AUTH_TOKEN, PASSWORD)
     try
     {
         console.log("Changing password");
-        //await changePassword(AUTH_TOKEN, PASSWORD);
+        await changePassword(AUTH_TOKEN, PASSWORD);
         console.log("Password successfully changed");
     }
     catch (error)
