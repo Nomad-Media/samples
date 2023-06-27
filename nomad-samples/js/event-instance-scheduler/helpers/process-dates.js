@@ -41,8 +41,20 @@ export default function getCheckboxDates(DATE_CHECKBOX, startTime)
     */ 
     const DATE = new Date();
     
-    let minimum = DAY_OF_WEEK[DATE_CHECKBOX[0].value].key % 7 - DATE.getDay()
-    for(let dateIdx = 1; dateIdx < DATE_CHECKBOX.length; ++dateIdx)
+    let startIdx = 1;
+    let minimum = DAY_OF_WEEK[DATE_CHECKBOX[0].value].key - DATE.getDay();
+    
+    while (minimum < 0)
+    {
+        let diff = DAY_OF_WEEK[DATE_CHECKBOX[dateIdx].value].key - DATE.getDay();
+        if (diff > 0 || (diff === 0 && parseInt(startTime.substr(0,2)) - DATE.getHours() >= 1))
+        {
+            minimum = diff;
+        }
+    }
+
+    console.log(minimum);
+    for(let dateIdx = startIdx; dateIdx < DATE_CHECKBOX.length; ++dateIdx)
     {
         if (DATE_CHECKBOX[dateIdx].checked)
         {
