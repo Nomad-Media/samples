@@ -31,8 +31,10 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
 
     if (RECURRING)
     {
-        BODY.recurringDays = DATE_CHECKBOX.dates;
-        BODY.recurringWeeks = RECURRING_WEEKS;
+        BODY.properties = {
+            recurringDays: DATE_CHECKBOX.dates,
+            recurringWeeks: RECURRING_WEEKS
+        }
     }
 
     if (IS_CURRENT_SERIES)
