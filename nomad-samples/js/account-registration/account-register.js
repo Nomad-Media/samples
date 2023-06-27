@@ -42,7 +42,7 @@ async function registerUser(EMAIL)
 
     try {
         console.log("Starting Registration process");
-        const REGISTER_INFO = await register(EMAIL);
+        await register(EMAIL);
         console.log("An email has been sent to you with a 6 digit code");
     } catch (error) {
         throw new Error("Register user failed");
