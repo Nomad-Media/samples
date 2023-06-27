@@ -46,7 +46,6 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
 
     if (OVERRIDE_SERIES_DETAILS || !IS_CURRENT_SERIES)
     {
-        console.log(`Override : ${OVERRIDE_SERIES_DETAILS} Series: ${IS_CURRENT_SERIES}`);
         BODY.description = DESCRIPTION;
         BODY.isSecureOutput = IS_SECURE_OUTPUT;
         BODY.primaryLiveStreamInputUrl = PRIMARY_LIVE_STREAM_URL;
