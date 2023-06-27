@@ -29,11 +29,14 @@ Go to event_instance.py and run the code.  It should ask for your authentication
 
 ![](https://files.readme.io/52e05c7-image.png)
 
+
 ## Step 3:
 
-To create/update an instance enter create/update. Then you will be asked for a series of inputs. For the live series a and primary live stream url, you only enter one or the other. If you are going to create an instance using a series and don't override the series, you only need to enter the id, content definition id, instance name, start and end datetime, disabled, and the primary live stream url along with the slate description and id. If you are updating an instance, then you need to enter the content id. Otherwise enter at minimum the values that aren't marked optional.
+To create/update an instance enter create/update. Then you will be asked for a series of inputs. If you don't insert a slate video id, the default one will be used. If you want to update an instance, you need to fill in the content id of the instance you want to update. For the live series A and primary live stream url, you only enter one or the other. If you are going to create an instance using a series and don't override the series, you only need to enter the id, content definition id, instance name, start and end datetime, disabled, and the primary live stream url along with the slate description and id. If you are updating an instance, then you need to enter the content id. Otherwise enter at minimum the values that aren't marked optional.
 
-![](https://files.readme.io/55a7d13-image.png)
+![image](https://github.com/Nomad-Media/samples/assets/47163171/7fa87cc8-138a-4b69-858a-5c58e9817eb6)
+
+![image](https://github.com/Nomad-Media/samples/assets/47163171/d35642cc-d590-46e9-880e-14d267be3ae9)
 
 ## Step 4
 
