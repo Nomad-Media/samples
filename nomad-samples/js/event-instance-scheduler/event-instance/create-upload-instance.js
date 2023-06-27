@@ -31,15 +31,13 @@ export default async function creatingAndUploadingEventInstance(AUTH_TOKEN, ID, 
 
     if (RECURRING)
     {
-        BODY.properties = {
-            recurringDays: DATE_CHECKBOX.dates,
-            recurringWeeks: RECURRING_WEEKS
-        }
+        BODY.properties.recurringDays = DATE_CHECKBOX.dates;
+        BODY.properties.recurringWeeks = RECURRING_WEEKS;
     }
 
     if (IS_CURRENT_SERIES)
     {
-        BODY.series = {
+        BODY.properties.series = {
             description: SERIES_DESCRIPTION,
             id: SERIES_ID,
             properties: {}
