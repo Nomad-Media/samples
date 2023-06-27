@@ -5,12 +5,14 @@ import json, requests
 
 def creating_and_uploading_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DEFINITION_ID, 
                                           INSTANCE_NAME, START_DATETIME, END_DATETIME, 
-                                          DISABLED, DESCRIPTION, SLATE_VIDEO_ID, 
+                                          DISABLED, SERIES_OVERWRITE,
+                                          RECURRING, SERIES_DESCRIPTION, SERIES_ID, 
+                                          EXISTING_SERIES, DESCRIPTION, SLATE_VIDEO_ID, 
                                           PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, 
                                           IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ID, LIVE_INPUT_A,
                                           LIVE_INPUT_B, PRIMARY_LIVE_STREAM_INPUT_URL,
-                                          BACKUP_LIVE_STREAM_INPUT_URL, OVERRIDE_SERIES_DETAILS,
-                                          SERIES_DESCRIPTION, SERIES_ID) -> dict:
+                                          BACKUP_LIVE_STREAM_INPUT_URL, RECURRING_WEEKS, 
+                                          RECURRING_DAYS) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -33,33 +35,43 @@ def creating_and_uploading_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DE
             "startDatetime": START_DATETIME,
             "endDatetime": END_DATETIME,
             "disabled": DISABLED,
-            "description": DESCRIPTION,
-            "isSecureOutput": IS_SECURE_OUTPUT,
-            "primaryLiveStreamInputUrl": PRIMARY_LIVE_STREAM_INPUT_URL,
-            "backupLiveStreamIputUrl": BACKUP_LIVE_STREAM_INPUT_URL,
-            "overrideSeriesDetails": OVERRIDE_SERIES_DETAILS,
-            "series": {
-                "description": SERIES_DESCRIPTION,
-                "id": SERIES_ID,
-                "properties": {}
-            }
+            "overrideSeriesDetails": SERIES_OVERWRITE,
+            "isRecurring": RECURRING
         }
     }
 
     if CONTENT_ID != "":
         BODY["contentId"] = CONTENT_ID
 
-    BODY["properties"]["prerollVideo"] = { "id": PREROLL_VIDEO_ID } if PREROLL_VIDEO_ID != "" else ""
+    if not EXISTING_SERIES or SERIES_OVERWRITE:
+        BODY["isSecureOutput"] = IS_SECURE_OUTPUT
+        BODY["description"] = DESCRIPTION
+        BODY["primaryLiveStreamInputUrl"] = PRIMARY_LIVE_STREAM_INPUT_URL
+        BODY["backupLiveStreamIputUrl"] = BACKUP_LIVE_STREAM_INPUT_URL
+        BODY["properties"] = {
+            "prerollVideo": { "id": PREROLL_VIDEO_ID } if PREROLL_VIDEO_ID != "" else "",
+            "prerollVideo": { "id": POSTROLL_VIDEO_ID } if POSTROLL_VIDEO_ID != "" else "",
+            "archiveFolder": { "id": ARCHIVE_FOLDER_ID } if ARCHIVE_FOLDER_ID != "" else "",
+            "slateVideo": { "id": SLATE_VIDEO_ID } if SLATE_VIDEO_ID != "" else "",
+            "liveInputA": { "id": LIVE_INPUT_A } if LIVE_INPUT_A != "" else "",
+            "liveInputB": { "id": LIVE_INPUT_B } if LIVE_INPUT_B != "" else ""
+        }
+
+    print(RECURRING_DAYS)
     
-    BODY["properties"]["prerollVideo"] = { "id": POSTROLL_VIDEO_ID } if POSTROLL_VIDEO_ID != "" else ""
+    if RECURRING:
+        BODY["properties"]["recurringDays"] = RECURRING_DAYS,
+        BODY["properties"]["recurringDays"] = BODY["properties"]["recurringDays"][0]
+        BODY["properties"]["recurringWeeks"] = int(RECURRING_WEEKS)
 
-    BODY["properties"]["archiveFolder"] = { "id": ARCHIVE_FOLDER_ID } if ARCHIVE_FOLDER_ID != "" else ""
+    if EXISTING_SERIES:
+        BODY["properties"]["series"] = {
+            "description": SERIES_DESCRIPTION,
+            "id": SERIES_ID,
+            "properties": {}
+        }
 
-    BODY["properties"]["slateVideo"] = { "id": SLATE_VIDEO_ID } if SLATE_VIDEO_ID != "" else ""
-
-    BODY["properties"]["liveInputA"] = { "id": LIVE_INPUT_A } if LIVE_INPUT_A != "" else ""
-
-    BODY["properties"]["liveInputB"] = { "id": LIVE_INPUT_B } if LIVE_INPUT_B != "" else ""
+    print(json.dumps(BODY, indent=4))
 
     try:
         # Send the request
