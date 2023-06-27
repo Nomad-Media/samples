@@ -1,4 +1,4 @@
-from libraries import uuid
+import uuid
 
 '''
  * New GUID
