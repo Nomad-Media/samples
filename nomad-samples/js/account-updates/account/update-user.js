@@ -1,7 +1,8 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function updateUser(AUTH_TOKEN) 
+export default async function updateUser(AUTH_TOKEN, ADDRESS1, ADDRESS2, CITY, COUNTRY, FIRST_NAME, LAST_NAME, 
+    ORGANIZATION, PHONE_NUMBER, PHONE_EXT, POSTAL_CODE, STATE) 
 {
     // Create header for the request
     const HEADERS = new Headers();
@@ -9,18 +10,24 @@ export default async function updateUser(AUTH_TOKEN)
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
-        id: "990a1ebc-3344-41fc-a331-4009b3773229",
-        email: "d.fletcher@example.net",
-        firstName: "Deanna ",
-        lastName: "Fletcher",
-        mobilePhone: "949-555-4545"
+        address: ADDRESS1,
+        address2: ADDRESS2,
+        city: CITY,
+        state: STATE,
+        country: COUNTRY,
+        firstName: FIRST_NAME,
+        lastName: LAST_NAME,
+        phoneExt: PHONE_EXT,
+        phone: PHONE_NUMBER,
+        postalCode: POSTAL_CODE,
+        organization: ORGANIZATION
     };
   
     // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/account`, {
+    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/account/user`, {
         method: "PUT",
         headers: HEADERS,
-        body: JSON.stringify(body)
+        body: JSON.stringify(BODY)
     }).catch((exception) => {
         throw exception;
     });

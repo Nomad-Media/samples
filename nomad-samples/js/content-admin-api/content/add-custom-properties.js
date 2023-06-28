@@ -3,17 +3,19 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
 export default async function addCustomProperties(AUTH_TOKEN, ID, NAME, CUSTOM_PROPERTY_NAMES, CUSTOM_PROPERTIES) 
 {
-		// Create header for the request
+    // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
+    // Payload
     const BODY = {
         displayName: NAME,
         customProperties: {
         }
     };
 
+    // Adds user custom properties to payload 
     for (let numProps = 0; numProps < CUSTOM_PROPERTIES.length; ++numProps)
     {
         BODY.customProperties[CUSTOM_PROPERTY_NAMES[numProps]] = CUSTOM_PROPERTIES[numProps];

@@ -8,6 +8,7 @@ export default async function addRelatedContent(AUTH_TOKEN, CONTENT_ID, RELATED_
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
+    // Payload
     const BODY = {
         items: [
             {
