@@ -26,6 +26,8 @@ Open the folder samples/nomad-samples/js/account-updates. You should see this:
 
 Open the folder in vscode. You should see the same file contents as above.
 
+![](https://files.readme.io/792f389-image.png)
+
 ## Step 3
 
 In order to run the Nomad API calls, you need to change your port to port 4200. First go to settings (ctrl+,). Then look up port attributes.
@@ -39,6 +41,8 @@ Click on "Edit in settings.json" and change liveServer.settings.port to 4200. Sa
 ## Step 4
 
 On the Explorer tab on the left, right-click on account-updates.html and click "Open with Live Server".
+
+![image](https://github.com/Nomad-Media/samples/assets/47163171/c058d494-35ec-4ec5-9b99-70d4dc729621)
 
 This will redirect you to a browser with the html page.
 
