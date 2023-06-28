@@ -13,7 +13,7 @@ export default async function logout() {
     // Build the POST payload body
     const BODY = {
        "userSessionId": sessionStorage.getItem("userSessionId"),
-       appl
+       "applicationId": "744781f0-f5e4-43ba-9a49-0b5d8dfd86be"
     };
 
     // Send the request
