@@ -13,15 +13,16 @@ def login_main():
         while True:
             USERNAME = input("Enter your username: ")
             PASSWORD = input("Enter your password: ")
+            APPLICATION_ID = input("Enter your application id (optional): ")
             print("Logging in")
-            LOGIN_INFO = login(USERNAME, PASSWORD)  
+            LOGIN_INFO = login(USERNAME, PASSWORD, APPLICATION_ID)  
             if LOGIN_INFO != "Login info incorrect":
                 break
             print("Login credentials are incorrect.")
         
         print(f"Token: {LOGIN_INFO['token']}")
         LOGIN_INFO["username"] = USERNAME
-        return LOGIN_INFO
+        return LOGIN_INFO, APPLICATION_ID
     except:
         raise Exception()
     
@@ -73,13 +74,13 @@ if __name__ == "__main__":
     while True:
         print("Do you want to refresh your token, reset your password, or logout?")
         USER_INPUT = input("Enter refresh to refresh token, reset to reset your password or logout: ")
-        auth_token = LOGIN_INFO["token"]
+        auth_token, APPLICATION_ID = LOGIN_INFO["token"]
         if USER_INPUT == "refresh":
             auth_token = refresh_token_main(LOGIN_INFO["refreshToken"])
         elif USER_INPUT == "reset":
             reset_password_main(auth_token, LOGIN_INFO["username"])
         elif USER_INPUT == "logout":
-            logout(auth_token, LOGIN_INFO["userSessionId"])
+            logout(auth_token, LOGIN_INFO["userSessionId"], APPLICATION_ID)
             print("Logged out successfully")
             break
         else:
