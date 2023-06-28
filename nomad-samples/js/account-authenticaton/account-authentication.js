@@ -134,6 +134,7 @@ async function logoutUser()
     {
         console.log("Logging out");
         logout();
+        console.log("Successfully logged out")
     }
     catch (error)
     {
