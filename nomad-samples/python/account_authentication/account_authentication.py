@@ -70,11 +70,11 @@ def reset_password_main(AUTH_TOKEN, USERNAME):
         raise Exception()
 
 if __name__ == "__main__":
-    LOGIN_INFO = login_main()
+    LOGIN_INFO, APPLICATION_ID = login_main()
     while True:
         print("Do you want to refresh your token, reset your password, or logout?")
         USER_INPUT = input("Enter refresh to refresh token, reset to reset your password or logout: ")
-        auth_token, APPLICATION_ID = LOGIN_INFO["token"]
+        auth_token = LOGIN_INFO["token"]
         if USER_INPUT == "refresh":
             auth_token = refresh_token_main(LOGIN_INFO["refreshToken"])
         elif USER_INPUT == "reset":
