@@ -11,13 +11,7 @@ import requests, json
  *
  * @returns {string} Authentication token
 '''
-def login(USERNAME, PASSWORD):
-    # Check for valid parameters
-    if (not USERNAME):
-        raise Exception("Username: The username is invalid")
-     
-    if (not PASSWORD):
-        raise Exception("Password: The password is invalid")
+def login(USERNAME, PASSWORD, APPLICATION_ID):
         
     API_URL = PORTAL_API_URL + "/account/login"
 
@@ -32,6 +26,7 @@ def login(USERNAME, PASSWORD):
         "password": PASSWORD
     }
 
+    if APPLICATION_ID != "": BODY["applicationId"] = APPLICATION_ID
 
     try:
         # Send the request

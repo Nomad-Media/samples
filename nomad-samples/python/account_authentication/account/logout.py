@@ -6,7 +6,7 @@ import requests, json
  * Logout
  *
 '''
-def logout(AUTH_TOKEN: str, USER_SESSION_ID: str):
+def logout(AUTH_TOKEN: str, USER_SESSION_ID: str, APPLICATION_ID: str) -> bool:
     if not USER_SESSION_ID:
         raise Exception("User Session Id: The user sesssion id is invalid")
 
@@ -22,8 +22,9 @@ def logout(AUTH_TOKEN: str, USER_SESSION_ID: str):
 
     BODY = {
         "userSessionId": USER_SESSION_ID,
-        "applicationId": "744781f0-f5e4-43ba-9a49-0b5d8dfd86be" # value from Nomad
+        
     }
+    BODY["applicationId"] = APPLICATION_ID if APPLICATION_ID != "" else "00000000-0000-0000-0000-000000000000"
 
     try:
         # Send the request
