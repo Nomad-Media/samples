@@ -79,6 +79,7 @@ if __name__ == "__main__":
         elif USER_INPUT == "reset":
             reset_password_main(auth_token, LOGIN_INFO["username"])
         elif USER_INPUT == "logout":
+            logout(auth_token, LOGIN_INFO["userSessionId"])
             print("Logged out successfully")
             break
         else:
