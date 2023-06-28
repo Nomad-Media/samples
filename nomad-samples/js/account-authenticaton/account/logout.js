@@ -5,7 +5,7 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  * Logout
  *
  */
-export default async function logout() {
+export default async function logout(APPLICATION_ID) {
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${sessionStorage.getItem("token")}`);
@@ -13,7 +13,7 @@ export default async function logout() {
     // Build the POST payload body
     const BODY = {
        "userSessionId": sessionStorage.getItem("userSessionId"),
-       "applicationId": "744781f0-f5e4-43ba-9a49-0b5d8dfd86be"
+       "applicationId": APPLICATION_ID
     };
 
     // Send the request
