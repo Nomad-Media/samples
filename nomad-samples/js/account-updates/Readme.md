@@ -26,8 +26,6 @@ Open the folder samples/nomad-samples/js/account-updates. You should see this:
 
 Open the folder in vscode. You should see the same file contents as above.
 
-![](https://files.readme.io/b49e755-image.png)
-
 ## Step 3
 
 In order to run the Nomad API calls, you need to change your port to port 4200. First go to settings (ctrl+,). Then look up port attributes.
@@ -42,19 +40,17 @@ Click on "Edit in settings.json" and change liveServer.settings.port to 4200. Sa
 
 On the Explorer tab on the left, right-click on account-updates.html and click "Open with Live Server".
 
-![](https://files.readme.io/65ce008-updatels.png)
-
 This will redirect you to a browser with the html page.
 
-![](https://files.readme.io/3867c30-image.png)
+![](https://files.readme.io/34ad92d-image.png)
 
 ## Step 5
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
 
-![](https://files.readme.io/726a926-updateweb.png)
+![](https://files.readme.io/12a07de-updateweb.png)
 
-![](https://files.readme.io/4403706-updatelh.png)
+![](https://files.readme.io/c5382cd-updatelh.png)
 
 ## Step 6
 
@@ -64,7 +60,11 @@ To use any of the API calls here, you need to input your authentication token. Y
 
 ## Step 7
 
-To update the user, enter the desired email, first name, last name, and/or phone number and click update. 
+To update the user, enter the user fields you want to change and click update. 
+
+![](https://files.readme.io/ca31e23-image.png)
+
+
 
 ![](https://files.readme.io/858d2c4-image.png)
 
@@ -77,3 +77,5 @@ To change your email, enter the new email you want to use under "Change Email" a
 ## Step 9
 
 To change your password, enter the new password you want to use under "Change Password" and click submit.
+
+![](https://files.readme.io/6fbb436-image.png)
