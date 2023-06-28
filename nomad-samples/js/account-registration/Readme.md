@@ -63,3 +63,9 @@ For the inputs, you first need to enter your email into "Email" and click the "R
 ![](https://files.readme.io/e95dbba-email.png)
 
 Type the code into the "Enter Code" and click "Submit". If done correctly, you should get a message in the console saying "Account now verified".
+
+## Step 8
+
+To logout, simply click submit on the logout button.
+
+![](https://files.readme.io/350537a-image.png)
