@@ -1,7 +1,7 @@
 import updateUser from "./account/update-user.js";
 import changeEmail from "./account/change-email.js";
 import changePassword from "./account/change-password.js";
-import getCountries from "./helpers/get_countries.js";
+import getCountries from "./helpers/get-countries.js";
 
 const AUTH_FORM = document.getElementById("authForm");
 const UPDATE_FORM = document.getElementById("updateForm");
