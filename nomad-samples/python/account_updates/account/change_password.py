@@ -11,7 +11,8 @@ def change_password(AUTH_TOKEN: str, CURRENT_PASSWORD: str, NEW_PASSWORD: str) -
   
     # Create header for the request
     HEADERS = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + AUTH_TOKEN
     }
 
     # Build the payload body
