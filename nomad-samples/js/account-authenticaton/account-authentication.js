@@ -13,9 +13,11 @@ const RESET_PASS_FORM = document.getElementById("resetPassForm");
 
 const USERNAME_INPUT = document.getElementById("usernameInput");
 const PASSWORD_INPUT = document.getElementById("passwordInput");
+const APPLICATION_ID_LOGIN_INPUT = document.getElementById("applicationIdLoginInput");
 const TOKEN_INPUT = document.getElementById("authInput");
 const FORGOT_PASSWORD_USERNAME_INPUT = document.getElementById("forgotPasswordUsernameInput");
 const RESET_PASSWORD_INPUT = document.getElementById("resetPasswordInput");
+const APPLICATION_ID_LOGOUT_INPUT = document.getElementById("applicationIdLogoutInput");
 
 sessionStorage.clear();
 
@@ -24,7 +26,8 @@ LOGIN_FORM.addEventListener("submit", function (event)
     event.preventDefault();
     let username = USERNAME_INPUT.value;
     let password = PASSWORD_INPUT.value;
-    loginUser(username, password);
+    let applicationId = APPLICATION_ID_LOGIN_INPUT.value;
+    loginUser(username, password, applicationId);
 });
 
 AUTH_FORM.addEventListener("submit", function (event)
@@ -58,15 +61,16 @@ RESET_PASS_FORM.addEventListener("submit", function (event)
 LOGOUT_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
-    logoutUser();
+    let applicationId = APPLICATION_ID_LOGOUT_INPUT.value;
+    logoutUser(applicationId);
 });
 
-async function loginUser(USERNAME, PASSWORD)
+async function loginUser(USERNAME, PASSWORD, APPLICATION_ID)
 {
     try
     {
         console.log("Logging in");
-        const TOKEN = await login(USERNAME, PASSWORD);
+        const TOKEN = await login(USERNAME, PASSWORD, APPLICATION_ID);
         console.log("Successfully Logged in");
         console.log(`Token: ${TOKEN}`);
     }
@@ -123,7 +127,7 @@ async function resetPass(USERNAME, CODE)
     }
 }
 
-async function logoutUser()
+async function logoutUser(applicationId)
 {
     if (!sessionStorage.getItem("intervalId"))
     {
@@ -132,8 +136,10 @@ async function logoutUser()
 
     try
     {
+        if (applicationId = "") applicationId = "00000000-0000-0000-0000-000000000000"
+
         console.log("Logging out");
-        logout();
+        logout(applicationId);
         console.log("Successfully logged out")
     }
     catch (error)
