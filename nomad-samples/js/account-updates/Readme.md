@@ -66,6 +66,8 @@ To use any of the API calls here, you need to input your authentication token. Y
 
 To update the user, enter the desired email, first name, last name, and/or phone number and click update. 
 
+![](https://files.readme.io/858d2c4-image.png)
+
 ## Step 8
 
 To change your email, enter the new email you want to use under "Change Email" and click submit.
