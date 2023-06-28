@@ -10,7 +10,7 @@ import refreshToken from "./refresh-token.js";
  *
  * @returns {string} Authentication token
  */
-export default async function login(USERNAME, PASSWORD) {
+export default async function login(USERNAME, PASSWORD, APPLICATION_ID) {
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -21,6 +21,8 @@ export default async function login(USERNAME, PASSWORD) {
         username: USERNAME,
         password: PASSWORD
     };
+
+    if (APPLICATION_ID !== "") BODY.applicationId = APPLICATION_ID;
 
     // Send the request
     const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/account/login`, {
