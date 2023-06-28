@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function updateUser(AUTH_TOKEN, ADDRESS1, ADDRESS2, CITY, COUNTRY, FIRST_NAME, LAST_NAME, 
+export default async function updateUser(AUTH_TOKEN, ADDRESS, ADDRESS2, CITY, COUNTRY, FIRST_NAME, LAST_NAME, 
     ORGANIZATION, PHONE_NUMBER, PHONE_EXT, POSTAL_CODE, STATE) 
 {
     // Create header for the request
@@ -9,19 +9,20 @@ export default async function updateUser(AUTH_TOKEN, ADDRESS1, ADDRESS2, CITY, C
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
-  	const BODY = {
-        address: ADDRESS1,
-        address2: ADDRESS2,
-        city: CITY,
-        state: STATE,
-        country: COUNTRY,
-        firstName: FIRST_NAME,
-        lastName: LAST_NAME,
-        phoneExt: PHONE_EXT,
-        phone: PHONE_NUMBER,
-        postalCode: POSTAL_CODE,
-        organization: ORGANIZATION
-    };
+  	const BODY = {};
+
+    if (ADDRESS !== "") BODY["address"] = ADDRESS;
+    if (ADDRESS2 !== "") BODY["address2"] = ADDRESS2;
+    if (CITY !== "") BODY["city"] = CITY;
+    if (STATE !== "") BODY["state"] = STATE;
+    if (COUNTRY !== "") BODY["country"] = COUNTRY;
+    if (FIRST_NAME !== "") BODY["firstName"] = FIRST_NAME;
+    if (LAST_NAME !== "") BODY["lastName"] = LAST_NAME;
+    if (PHONE_NUMBER !== "") BODY["phone"] = PHONE_NUMBER;
+    if (PHONE_EXT !== "") BODY["phoneExt"] = PHONE_EXT;
+    if (POSTAL_CODE !== "") BODY["postalCode"] = POSTAL_CODE;
+    if (ORGANIZATION !== "") BODY["organization"] = ORGANIZATION;
+
   
     // Post
     const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/account/user`, {
