@@ -13,7 +13,7 @@ from helpers.guid_helpers import *
 
 def get_content_group_main(AUTH_TOKEN):
     try:
-        CONTENT_GROUP_ID = input("Input an content group id (press enter to skip): ")
+        CONTENT_GROUP_ID = input("Input an content group id: ")
 
         print("Getting content groups")
         INFO = get_content_group(AUTH_TOKEN, CONTENT_GROUP_ID)
@@ -112,8 +112,10 @@ def stop_sharing_content_with_user_main(AUTH_TOKEN):
 
 def get_portal_groups_main(AUTH_TOKEN):
     try:
+        RETURNED_GROUP_NAMES = input("Enter the group names you want returned (separated by comma): ").split(",")
+
         print("Getting portal groups")
-        INFO = get_portal_groups(AUTH_TOKEN)
+        INFO = get_portal_groups(AUTH_TOKEN, RETURNED_GROUP_NAMES)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
@@ -132,8 +134,7 @@ def delete_content_group_main(AUTH_TOKEN):
 
 
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiYjdjNDU5ZTQtNWVmNi00MzdhLTgwODAtZjg1YzAxY2JlZTJlIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6IjBhM2U0NWI3LTdiMGItNDI0My04NmM4LWQ1MGNjYjc5MTIzNCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjg4MTcyMTY2LCJleHAiOjE2ODgxNzU3NjYsImlhdCI6MTY4ODE3MjE2NiwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiIxYjJkODU1OC0yNWQyLTQ1M2EtYjE0Zi0wNzFjNjViMzY3YTYiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.GoLWcmX81RIMEtgiN5fqd_b4CmvDeMTrGYa8ftkFMsiEpSaknZteWRMWhA3z8XZgAFeD37PEICAH0cVojIep58XSWhdcGWpL_1NguxNxcNh56AGAiNOZGmanuJ7YteuVnnQP5cxPHIlJN-bwlsz_Wm2Hu9ppCo2dAng1OBiX8nBLFlwZmWVkYxN57-6IHdHizXUneDdXyANVPo9UP3Qsg--kqbUbGq8w1a97Z7zCHE-XneKRcg0cR-pSxBEUUzfEYNpbquBsv-q3xEqZXPEirOy_Kx7uaqZU8jIHP64CWIMPbFkLdUHnUygQcY14bCuqfUWGdQF3u8VWZOeDOaOuAg"
-    print(f"Enter your authentication token: {AUTH_TOKEN}")
+    AUTH_TOKEN = input("Enter your authentication token: ")
     
     while True:
         print("Do you want to get a specific content group, get your content group, create an "\
