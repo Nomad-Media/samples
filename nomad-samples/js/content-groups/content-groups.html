@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Content Groups</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="content-groups.css">
+
+    <!-- JS -->
+    <script type="module" src="content-groups.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Content Groups</h1>
+
+    <form id="authForm">
+        <label for="authInput">Authentication token:</label>
+        <input type="auth" id="authInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Content Group</h3>
+    <form id="getGroupForm">
+        <label for="getGroupIdInput">Content Group Id:</label>
+        <input type="getGroupId" id="getGroupIdInput">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Content Groups</h3>
+    <form id="getGroupsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Content Group</h3>
+    <form id="createForm">
+        <label for="nameInput">Content Group Name:</label>
+        <input type="name" id="nameInput">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Content To Content Group:</h3>
+    <form id="addForm">
+        <label for="addInput">Content Group Id:</label>
+        <input type="add" id="addInput" required>
+        <label for="addContentInput">Content Ids (separate by comma):</label>
+        <input type="addContent" id="addContentInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Remove Content From Content Group</h3>
+    <form id="removeForm">
+        <label for="removeInput">Content Group Id:</label>
+        <input type="remove" id="removeInput" required>
+        <label for="removeContentInput">Content Ids (separate by comma):</label>
+        <input type="removeContent" id="removeContentInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Rename Content Group</h3>
+    <form id="renameForm">
+        <label for="renameInput">Content Group Id:</label>
+        <input type="rename" id="renameInput" required>
+        <label for="renameGroupInput">New Content Group Name:</label>
+        <input type="renameGroup" id="renameGroupInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Portal Groups</h3>
+    <form id="portalForm">
+        <label for="portalGroupInput">Group Names (separated by comma)</label>
+        <input type="portalGroup" id="portalGroupInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Content Group</h3>
+    <form id="deleteForm">
+        <label for="deleteInput">Content Group Id:</label>
+        <input type="delete" id="deleteInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
