@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def get_portal_groups(AUTH_TOKEN: str) -> dict:
+def get_portal_groups(AUTH_TOKEN: str, RETURNED_GROUP_NAMES: list) -> dict:
     if not AUTH_TOKEN:
         raise Exception("Authorization token not found")
   
@@ -15,11 +15,7 @@ def get_portal_groups(AUTH_TOKEN: str) -> dict:
     }
     
     BODY = {
-		"returnedGroupNames":[
-		    "savedSearches",
-		    "contentGroups",
-		    "sharedContentGroups"
-		]
+		"returnedGroupNames": RETURNED_GROUP_NAMES
     }
 
     try:
