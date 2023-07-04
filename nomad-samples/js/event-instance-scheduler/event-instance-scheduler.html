@@ -41,11 +41,8 @@
     <h2>Creating and Updating Instance</h2>
 
     <form id="createForm">
-        <label for="createIdInput">Id:</label>
-        <input type="createId" id="createIdInput" required>
-
-        <label for="contentIdInput">Content Id:</label>
-        <input type="contentId" id="contentIdInput" required>
+        <label for="contentIdInput">Content Id (optional):</label>
+        <input type="contentId" id="contentIdInput">
 
         <label for="contentDefinitionIdInput">Content Definition Id:</label>
         <input type="contentDefinitionId" id="contentDefinitionIdInput" required>
@@ -53,51 +50,126 @@
         <label for="instanceNameInput">Instance Name:</label>
         <input type="instanceName" id="instanceNameInput" required>
 
-        <label for="startDatetimeInput">Start Datetime:</label>
-        <input type="datetime-local" id="startDatetimeInput" required>
+        <div id="isNotRecurring">
+            <label for="startDatetimeInput">Start Datetime:</label>
+            <input type="datetime-local" id="startDatetimeInput">
 
-        <label for="endDatetimeInput">End Datetime:</label>
-        <input type="datetime-local" id="endDatetimeInput" required>
+            <label for="endDatetimeInput">End Datetime:</label>
+            <input type="datetime-local" id="endDatetimeInput">
+        </div>
+
+        <div id="isRecurring">
+            <label for="recurringWeeksInput">Recurring Weeks:</label>
+            <input type="recurringWeeks" id="recurringWeeksInput">
+
+            <label for="startTimeInput">Start Time:</label>
+            <input type="time" id="startTimeInput">
+
+            <label for="endTimeInput">End Time:</label>
+            <input type="time" id="endTimeInput">
+
+            <div class="checkbox-dropdown">
+                <label for="scheduledDateInput">Scheduled Dates:</label>
+                <div id="checkboxList">
+                    <label id="checkbox" for="sundayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Sunday" id="sundayCheckbox">Sunday
+                    </label>
+                
+                    <label id="checkbox" for="mondayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Monday" id="mondayCheckbox">Monday
+                    </label>
+                
+                    <label id="checkbox" for="tuesdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Tuesday" id="tuesdayCheckbox">Tuesday
+                    </label>
+                
+                    <label id="checkbox" for="wednesdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Wednesday" id="wednesdayCheckbox">Wednesday
+                    </label>
+                
+                    <label id="checkbox" for="thursdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Thursday" id="thursdayCheckbox">Thursday
+                    </label>
+                
+                    <label id="checkbox" for="fridayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Friday" id="fridayCheckbox">Friday
+                    </label>
+                
+                    <label id="checkbox" for="saturdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Saturday" id="saturdayCheckbox">Saturday
+                    </label>
+                </div>
+            </div>
+         </div>
+
+
+        <label for="recurringInput">Recurring</label>
+        <select id="recurringInput">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
         
         <label for="disabledInput">Disabled:</label>
         <select id="disabledInput">
             <option value="true">True</option>
-            <option value="false">False</option>
+            <option value="false" selected>False</option>
         </select>
 
-        <label for="descriptionInput">Description:</label>
-        <input type="description" id="descriptionInput" required>
-
-        <label for="slateVideoIdInput">Slate Video Id (optional):</label>
-        <input type="slateVideoId" id="slateVideoIdInput">
-
-        <label for="prerollVideoIdInput">Preroll Video Id:</label>
-        <input type="prerollVideoId" id="prerollVideoIdInput" required>
-
-        <label for="postrollVideoIdInput">Postroll Video Id:</label>
-        <input type="postrollVideoId" id="postrollVideoIdInput" required>
-
-        <label for="isSecureOutputInput">Is Secure Output:</label>
-        <select id="isSecureOutputInput">
-            <option value="true">True</option>
-            <option value="false">False</option>
+        <label for="seriesInput">Do you want to use an existing series:</label>
+        <select id="seriesInput">
+            <option value="yes">Yes</option>
+            <option value="no" selected>No</option>
         </select>
+        
+        <div id="isSeries">
+            <label for="seriesDescriptionInput">Series Description:</label>
+            <input type="seriesDescription" id="seriesDescriptionInput">
 
-        <label for="archiveFolderInput">Archive Folder (optional):</label>
-        <input type="archiveFolder" id="archiveFolderInput">
+            <label for="seriesIdInput">Series Id:</label>
+            <input type="seriesId" id="seriesIdInput">
 
-        <label for="liveInputAIdInput">Live Input A (optional):</label>
-        <input type="liveInputAId" id="liveInputAIdInput">
+            <label for="overrideSeriesDetailsInput">Override Series Details:</label>
+            <select id="overrideSeriesDetailsInput">
+                <option value="true">True</option>
+                <option value="false" selected>False</option>
+            </select>
+        </div>
 
-        <label for="liveInputBIdInput">Live Input B (optional):</label>
-        <input type="liveInputBId" id="liveInputBIdInput">
+        <div id="isNotSeries">
+            <label for="descriptionInput">Description:</label>
+            <input type="description" id="descriptionInput">
 
-        <label for="primaryLivestreamUrlInput">Primary Live Stream Input Url:</label>
-        <input type="primaryLivestreamUrl" id="primaryLivestreamUrlInput" required>
+            <label for="slateVideoIdInput">Slate Video Id (optional):</label>
+            <input type="slateVideoId" id="slateVideoIdInput">
 
-        <label for="backupLivestreamUrlInput">Backup Live Stream Input Url (optional):</label>
-        <input type="backupLivestreamUrl" id="backupLivestreamUrlInput">
+            <label for="prerollVideoIdInput">Preroll Video Id:</label>
+            <input type="prerollVideoId" id="prerollVideoIdInput">
 
+            <label for="postrollVideoIdInput">Postroll Video Id:</label>
+            <input type="postrollVideoId" id="postrollVideoIdInput">
+
+            <label for="isSecureOutputInput">Is Secure Output:</label>
+            <select id="isSecureOutputInput">
+                <option value="true" selected>True</option>
+                <option value="false">False</option>
+            </select>
+        
+            <label for="archiveFolderInput">Archive Folder (optional):</label>
+            <input type="archiveFolder" id="archiveFolderInput">
+        
+            <label for="liveInputAIdInput">Live Input A:</label>
+            <input type="liveInputAId" id="liveInputAIdInput">
+        
+            <label for="liveInputBIdInput">Live Input B (optional):</label>
+            <input type="liveInputBId" id="liveInputBIdInput">
+        
+            <label for="primaryLivestreamUrlInput">Primary Live Stream Input Url:</label>
+            <input type="primaryLivestreamUrl" id="primaryLivestreamUrlInput">
+        
+            <label for="backupLivestreamUrlInput">Backup Live Stream Input Url (optional):</label>
+            <input type="backupLivestreamUrl" id="backupLivestreamUrlInput">
+        </div>
+        
         <br><br>
         <button type="submit">Submit</button>
     </form>
@@ -105,7 +177,7 @@
     <h2>Delete Event Instance</h2>
     
     <form id="deleteForm">
-        <label for="deleteIdInput">Id:</label>
+        <label for="deleteIdInput">Content Id:</label>
         <input type="deleteId" id="deleteIdInput" required>
 
         <label for="deleteContentDefinitionIdInput">Content Definition Id:</label>

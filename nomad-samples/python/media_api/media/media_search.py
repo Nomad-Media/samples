@@ -3,7 +3,8 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def media_search(AUTH_TOKEN: str) -> dict:
+def media_search(AUTH_TOKEN: str, SEARCH_QUERY: str, IDS: list, SORT_FIELDS_NAME: str, 
+                 SORT_FIELDS_ORDER: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -19,14 +20,12 @@ def media_search(AUTH_TOKEN: str) -> dict:
 
     # Build the payload BODY
     BODY = {  
-        "searchQuery": "greatest hits",
-        "ids": [  
-            "a13429e6-85e2-4e38-a4d7-3fe3179a2e99" 
-        ],  
+        "searchQuery": SEARCH_QUERY,
+        "ids": IDS, 
         "sortFields": [  
             {  
-                "fieldName": "createdDate", # This returns the newest videos first  
-                "sortType": "Descending"  
+                "fieldName": SORT_FIELDS_NAME,
+                "sortType": SORT_FIELDS_ORDER  
             }  
         ]  
     }

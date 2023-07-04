@@ -6,7 +6,7 @@ import requests, json
  * Logout
  *
 '''
-def logout(USER_SESSION_ID: str, AUTH_TOKEN: str, USERNAME: str):
+def logout(AUTH_TOKEN: str, USER_SESSION_ID: str, APPLICATION_ID: str) -> bool:
     if not USER_SESSION_ID:
         raise Exception("User Session Id: The user sesssion id is invalid")
 
@@ -21,8 +21,10 @@ def logout(USER_SESSION_ID: str, AUTH_TOKEN: str, USERNAME: str):
     }
 
     BODY = {
-        "userSessionId": USER_SESSION_ID
+        "userSessionId": USER_SESSION_ID,
+        
     }
+    BODY["applicationId"] = APPLICATION_ID if APPLICATION_ID != "" else "00000000-0000-0000-0000-000000000000"
 
     try:
         # Send the request

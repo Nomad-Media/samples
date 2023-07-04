@@ -3,13 +3,13 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def track_video_seconds(AUTH_TOKEN: str) -> dict:
+def track_video_seconds(AUTH_TOKEN: str, ASSET_ID, SECONDS: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
-    API_URL = PORTAL_API_URL + "/asset/tracking?assetId=6ddfce3e-2b5e-4beb-9124-ed73a7a73b6e&trackingEvent=0&second=120"
+    API_URL = f"{PORTAL_API_URL}/asset/tracking?assetId={ASSET_ID}&trackingEvent=0&second={SECONDS}"
         
     # Create header for the request
     HEADERS = {

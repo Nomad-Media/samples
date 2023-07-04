@@ -40,44 +40,24 @@
 
     <h2> Start Asset Upload </h2>
     <form id="startForm">
-        <label for="parentIdInput">Parent Id:</label>
-        <input type="parentId" id="parentIdInput" required>
-
-        <label for="contentLengthInput">Content Length:</label>
-        <input type="contentLength" id="contentLengthInput" required>
+        <label for="nameInput">Asset Name:</label>
+        <input type="name" id="nameInput">
 
         <label for="uploadOverwriteOptionInput">Upload Overwrite Option:</label>
-        <input type="uploadOverwriteOption" id="uploadOverwriteOptionInput" required>
+        <select id="uploadOverwriteOptionInput">
+            <option value="cancel">cancel</option>
+            <option value="continue">continue</option>
+            <option value="replace">replace</option>
+        </select>
 
-        <label for="chunkSizeInput">Chunk Size:</label>
-        <input type="chunkSize" id="chunkSizeInput" required>
+        <label for="nomadFileInput">Choose a file to upload:</label>
+        <input type="file" id="nomadFileInput" required>
 
-        <label for="relativePathInput">Relative Path:</label>
-        <input type="relativePath" id="relativePathInput" required>
+        <label for="relatedContentIdInput">Related Content Id:</label>
+        <input type="relatedContentId" id="relatedContentIdInput">
 
-        <label for="languageIdInput">Language Id:</label>
-        <input type="languageId" id="languageIdInput" required>
-
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
-
-    <h2>Upload Asset Part</h2>
-    <form id="partForm">
-        <label for="partIdInput">Part Id</label>
-        <input type="partId" id="partIdInput" required>
-
-        <label for="etagInput">Etag</label>
-        <input type="etag" id="etagInput" required>
-
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
-
-    <h2>Upload Complete Asset</h2>
-    <form id="completeForm">
-        <label for="assetUploadIdInput">Asset Upload ID:</label>
-        <input type="assetUploadId" id="assetUploadIdInput" required>
+        <label for="nomadUploadType">Use multithreaded upload</label>
+        <input type="checkbox" id="nomadUploadType"></input>
 
         <br><br>
         <button type="submit">Submit</button>

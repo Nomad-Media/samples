@@ -1,22 +1,17 @@
+import multiThreadUpload from "./assets/multi-thread-upload.js";
+import singleThreadUpload from "./assets/single-thread-upload.js";
 import startUpload from "./assets/start-asset-upload.js";
-import uploadAssetPart from "./assets/upload-asset-part.js";
 import completeUpload from "./assets/upload-complete-asset.js";
 
 const AUTH_FORM = document.getElementById("authForm");
 const START_FORM = document.getElementById("startForm");
-const PART_FORM = document.getElementById("partForm");
-const COMPLETE_FORM = document.getElementById("completeForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
-const PARENT_ID_INPUT = document.getElementById("paraneIdInput");
-const CONTENT_LENGTH_INPUT = document.getElementById("contentLengthInput");
+const NAME_INPUT = document.getElementById("nameInput");
 const UPLOAD_OVERWRITE_OPTION_INPUT = document.getElementById("uploadOverwriteOptionInput");
-const CHUNK_SIZE_INPUT = document.getElementById("chunkSizeInput");
-const RELATIVE_PATH_INPUT = document.getElementById("relativePathInput");
-const LANGUAGE_ID_INPUT = document.getElementById("languageIdInput");
-const PART_ID_INPUT = document.getElementById("partIdInput");
-const ETAG_INPUT = document.getElementById("etagInput");
-const ASSET_UPLOAD_ID_INPUT = document.getElementById("assetUploadIdInput");
+const NOMAD_FILE_INPUT = document.getElementById("nomadFileInput");
+const RELATED_CONTENT_ID_INPUT = document.getElementById("relatedContentIdInput");
+const MULTI_THREAD = document.getElementById("nomadUploadType");
 
 sessionStorage.clear();
 
@@ -31,71 +26,34 @@ START_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
     
-    let parentId = PARENT_ID_INPUT.value;
-    let contentLength = CONTENT_LENGTH_INPUT.value;
+    let name = NAME_INPUT.value;
     let uploadOverwriteOption = UPLOAD_OVERWRITE_OPTION_INPUT.value;
-    let chunkSize = CHUNK_SIZE_INPUT.value;
-    let relativePath = RELATIVE_PATH_INPUT.value;
-    let languageId = LANGUAGE_ID_INPUT.value;
+    let nomadFile = NOMAD_FILE_INPUT.files[0];
+    let relatedContentId = RELATED_CONTENT_ID_INPUT.value;
+    let multiThread = MULTI_THREAD.checked;
 
-    startUploadMain(parentId, contentLength, uploadOverwriteOption, chunkSize, relativePath, languageId);
+    uploadFile(name, uploadOverwriteOption, nomadFile, relatedContentId, multiThread);
 });
 
-PART_FORM.addEventListener("submit", function (event)
+async function uploadFile(NAME, UPLOAD_OVERWRITE_OPTION, FILE, RELATED_CONTENT_ID, MULTI_THREAD)
 {
-    event.preventDefault();
-
-    let partId = PART_ID_INPUT.value;
-    let etag = ETAG_INPUT.value;
-    
-    uploadAssetPartMain(partId, etag);
-});
-
-COMPLETE_FORM.addEventListener("submit", function (event)
-{
-    event.preventDefault();
-
-    let assetUploadId = ASSET_UPLOAD_ID_INPUT.value;
-
-    completeUploadMain(assetUploadId);
-});
-
-async function startUploadMain(PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID)
-{
-    if (!sessionStorage.getItem("token"))
+    const AUTH_TOKEN = sessionStorage.getItem("token")
+    if (!AUTH_TOKEN)
     {
         throw new Error("Authentication token: The authentication token is empty");
     }
 
-    try
-    {
-        console.log("Starting asset upload");
-        const START_INFO = startUpload(sessionStorage.getItem("token"), PARENT_ID, CONTENT_LENGTH, UPLOAD_OVERWRITE_OPTION, CHUNK_SIZE, RELATIVE_PATH, LANGUAGE_ID);
-        console.log(JSON.stringify(START_INFO, null, 4));
-    }
-    catch (error)
-    {
-        throw new Error(error);
-    }
-}
+    console.log("Starting asset upload");
+    const RESPONSE = await startUpload(sessionStorage.getItem("token"), NAME, UPLOAD_OVERWRITE_OPTION, FILE, RELATED_CONTENT_ID);
+    console.log(JSON.stringify(RESPONSE, null, 4));
 
-async function uploadAssetPartMain(PART_ID, ETAG)
-{
-    if (!sessionStorage.getItem("token"))
-    {
-        throw new Error("Authentication token: The authentication token is empty");
+    if (MULTI_THREAD === true) {
+        await multiThreadUpload(AUTH_TOKEN, FILE, RESPONSE);
+    } else {
+        await singleThreadUpload(AUTH_TOKEN, FILE, RESPONSE);
     }
 
-    try
-    {
-        console.log("Uploading asset part");
-        uploadAssetPart(sessionStorage.getItem("token"), PART_ID, ETAG);
-        console.log("Uploading asset part complete");
-    }
-    catch (error)
-    {
-        throw new Error(error);
-    }
+    completeUploadMain(RESPONSE.id);
 }
 
 async function completeUploadMain(ASSET_UPLOAD_ID)
@@ -108,7 +66,7 @@ async function completeUploadMain(ASSET_UPLOAD_ID)
     try
     {
         console.log("Uploading complete asset");
-        COMPLETE_INFO = completeUpload(sessionStorage.getItem("token"), ASSET_UPLOAD_ID);
+        const COMPLETE_INFO = await completeUpload(sessionStorage.getItem("token"), ASSET_UPLOAD_ID);
         console.log(JSON.stringify(COMPLETE_INFO, null, 4));
     }
     catch (error)
