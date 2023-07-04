@@ -40,21 +40,21 @@ Click on "Edit in settings.json" and change liveServer.settings.port to 4200. Sa
 
 ## Step 4
 
-On the Explorer tab on the left, right-click on account-register.html and click "Open with Live Server".
+On the Explorer tab on the left, right-click on account-authentication.html and click "Open with Live Server".
 
 ![](https://files.readme.io/58cbd20-lsauthjs.png)
 
 This will redirect you to a browser with the html page.
 
-![](https://files.readme.io/7766ef2-authweb.png)
+![](https://files.readme.io/2b91909-image.png)
 
 ## Step 5
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
 
-![](https://files.readme.io/68c64df-authweb.png)
+![](https://files.readme.io/7bf744c-authweb.png)
 
-![](https://files.readme.io/1d7c930-authwebls.png)
+![](https://files.readme.io/41c5ab6-authwebls.png)
 
 ## Step 6
 
@@ -69,4 +69,13 @@ If you forgot your password, enter your email under "Enter Username" under "Forg
 ![](https://files.readme.io/e95dbba-email.png)
 
  Enter your code into "Enter Code" under "Reset Password" and your password will be reset.
- ![](https://files.readme.io/635f072-image.png)
+
+![](https://files.readme.io/635f072-image.png)
+
+## Step 8
+
+To logout, enter the applicationId of your session if you have one, and click submit on the logout button.
+
+![](https://files.readme.io/70cadcb-image.png)
+
+![](https://files.readme.io/350537a-image.png)

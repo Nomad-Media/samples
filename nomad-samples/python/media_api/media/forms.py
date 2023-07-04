@@ -3,13 +3,14 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def forms(AUTH_TOKEN: str) -> dict:
+def forms(AUTH_TOKEN: str, ID: str, FIRST_NAME: str, LAST_NAME: str, ACTIVE: bool, 
+          START_DATE: str, LOOKUP_ID: str, DESCRIPTION: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
-    API_URL = PORTAL_API_URL + "/media/form/a13429e6-85e2-4e38-a4d7-3fe3179a2e99"
+    API_URL = f"{PORTAL_API_URL}/media/form/{ID}"
         
     # Create header for the request
     HEADERS = {
@@ -19,13 +20,13 @@ def forms(AUTH_TOKEN: str) -> dict:
 
     # Build the payload BODY
     BODY = {
-        "firstName": "Dwight",
-        "lastName": "Fairfield",
-        "active": True,
-        "startDate": "2022-09-12T10:00:00Z",
+        "firstName": FIRST_NAME,
+        "lastName": LAST_NAME,
+        "active": ACTIVE,
+        "startDate": START_DATE,
         "state": {
-            "lookupId": "37ab0b00-8214-4a55-9e67-e9ff7858b29e",
-            "description": "California"
+            "lookupId": LOOKUP_ID,
+            "description": DESCRIPTION
         }
     }
 

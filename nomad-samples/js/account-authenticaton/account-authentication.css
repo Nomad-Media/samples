@@ -3,7 +3,7 @@ body {
     margin: 20px;
 }
 
-h1,h2 {
+h1, h2, h3 {
     text-align: center;
 }
 
@@ -13,14 +13,13 @@ form {
 }
 
 label {
-    display: inline-block;
     margin-top: 10px;
+    display: block;
     margin-bottom: 10px;
-    width: 1000px;
 }
 
-input[type="text"], input[type="password"]{
-    padding: 10px 20px;
+input {
+    padding: 5px;
     width: 300px;
 }
 
@@ -28,15 +27,10 @@ button[type="submit"] {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
-    margin: 8px 0;
     border: none;
     cursor: pointer;
 }
 
 button[type="submit"]:hover {
     background-color: #45a049;
-}
-
-.container {
-    padding: 16px;
 }

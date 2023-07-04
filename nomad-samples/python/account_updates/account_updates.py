@@ -1,32 +1,49 @@
 from account.change_email import *
 from account.change_password import *
 from account.update_user import *
+from helpers.get_countries import *
 
 import json
 
 def update_user_main(AUTH_TOKEN):
     try:
-        print("Updateable values: email, first name, last name, phone number")
-        USER_UPDATES = input("Enter the values you want to update (separated by comma no space): ")
+        print("Leave fields you don't want to update blank")
+        ADDRESS = input("Enter new address: ")
+        ADDRESS2 = input("Enter new second address: ")
+        CITY = input("Enter new city: ")
+        STATE = input("Enter new state: ")
+        FIRST_NAME = input("Enter new first name: ")
+        LAST_NAME = input("Enter new last name: ")
+        PHONE_NUMBER = input("Enter new phone number: ")
+        PHONE_EXT = input("Enter new phone extention: ")
+        POSTAL_CODE = input("Enter new postal code: ")
+        ORGANIZATION = input("Enter new organization: ")
 
-        BODY = {}
-        for update in USER_UPDATES.split(","):
-            if update == "email":
-                EMAIL = input("Enter your new email: ")
-                BODY["email"] = EMAIL
-            elif update == "first name":
-                FIRST_NAME = input("Enter your new first name: ")
-                BODY["firstName"] = FIRST_NAME
-            elif update == "last name":
-                LAST_NAME = input("Enter your new last name: ")
-                BODY["lastName"] = LAST_NAME
-            elif update == "phone number":
-                PHONE_NUMBER = input("Enter your new phone number: ")
-                BODY["mobilePhone"] = PHONE_NUMBER
+        while True:
+            COUNTRIES = get_countries(AUTH_TOKEN)
+
+            COUNTRY = {}
+
+            COUNTRY_INPUT = input("Enter country: ")
+            if COUNTRY_INPUT == "": 
+                COUNTRY = ""
+                break
+
+            for COUNTRY_DICT in COUNTRIES["children"]:
+                if COUNTRY_DICT['label'] == COUNTRY_INPUT:
+                    COUNTRY = COUNTRY_DICT
+                    break
+            if COUNTRY_DICT is not None:
+                break
+
+            print("The country you entered does not exist")
+
 
         print("Updating user")
-        print(json.dumps(BODY, indent=4))
-        #print(json.dumps(update_user(AUTH_TOKEN, BODY), indent=4))
+        INFO = update_user(AUTH_TOKEN, ADDRESS, ADDRESS2, CITY, FIRST_NAME, LAST_NAME, \
+                           PHONE_NUMBER, PHONE_EXT, POSTAL_CODE, ORGANIZATION, COUNTRY, STATE)
+        
+        print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
@@ -47,7 +64,7 @@ def change_password_main(AUTH_TOKEN):
         NEW_PASSWORD = input("Enter your new password: ")
 
         print("Changing password")
-        #change_password(AUTH_TOKEN, CURRENT_PASSWORD, NEW_PASSWORD)
+        change_password(AUTH_TOKEN, CURRENT_PASSWORD, NEW_PASSWORD)
         print("Password changed")
     except:
         raise Exception()

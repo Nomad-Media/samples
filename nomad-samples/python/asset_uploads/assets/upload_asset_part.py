@@ -1,36 +1,24 @@
-from constants.project_constants import *
 from exceptions.api_exception_handler import *
 
-import json, requests
+import requests
 
-def upload_asset_part(AUTH_TOKEN: str, PART_ID: str, ETAG: str) -> dict:
+def upload_asset_part(FILE, URL, PART):
+    if not FILE or not URL or not PART:
+        raise Exception("Upload Part: Invalid API call")
+    
+    OPEN_FILE = open(FILE, "rb")
+    OPEN_FILE.seek(PART["startingPosition"])
+    BODY = OPEN_FILE.read(PART["endingPosition"] + 1 - PART["startingPosition"])
+    OPEN_FILE.close()
+    
 
-    # Check for valid parameters
-    if (not AUTH_TOKEN):
-        raise Exception("Authentication Token: The authentication token is invalid")
-
-    API_URL = ADMIN_API_URL + "/asset/upload/part/" + PART_ID + "/complete"
-        
-    # Create header for the request
-    HEADERS = {
-  	    "Authorization": "Bearer " + AUTH_TOKEN,
-        "Content-Type": "application/json"
+    HEADER = {
+        "Accept": "application/json, text/plain, */*"
     }
 
-    # Build the payload BODY
-    BODY = {
-        "etag": ETAG
-    }
+    RESPONSE = requests.put(URL, headers=HEADER, data=BODY)
 
-    try:
-        # Send the request
-        RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
-
-        if RESPONSE.status_code != 200:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
-
-        return json.loads(RESPONSE.text)
-
-    except:
-        api_exception_handler(RESPONSE, "Upload asset part failed")
-
+    if RESPONSE.ok:
+        return RESPONSE.headers.get("ETag")
+    
+    api_exception_handler(RESPONSE, "Upload part failed")

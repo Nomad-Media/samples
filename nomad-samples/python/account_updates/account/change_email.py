@@ -11,7 +11,8 @@ def change_email(AUTH_TOKEN: str, EMAIL: str, PASSWORD: str) -> dict:
   
     # Create header for the request
     HEADERS = {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + AUTH_TOKEN
     }
 
     # Build the payload body
