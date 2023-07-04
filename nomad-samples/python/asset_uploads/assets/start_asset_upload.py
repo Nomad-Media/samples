@@ -1,15 +1,23 @@
 from constants.project_constants import *
 from exceptions.api_exception_handler import *
 
-import json, requests
+import json, os, requests
 
-def start_upload(AUTH_TOKEN: str) -> dict:
+async def start_upload(AUTH_TOKEN: str, NAME: str, UPLOAD_OVERWRITE_OPTION: str, FILE: str, \
+                 RELATED_CONTENT_ID: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
     API_URL = ADMIN_API_URL + "/asset/upload/start"
+    FILE_STATS = os.stat(FILE)
+
+    AWS_MIN_LIMIT = 5242880
+    chunkSize = FILE_STATS.st_size / 10000
+
+    if (chunkSize < (AWS_MIN_LIMIT * 4)):
+        chunkSize = 20971520
         
     # Create header for the request
     HEADERS = {
@@ -19,12 +27,12 @@ def start_upload(AUTH_TOKEN: str) -> dict:
 
     # Build the payload BODY
     BODY = {
-      	"parentId":"73d06e60-9607-4018-b666-775790c0f0c2",
-      	"contentLength":3136083,
-      	"uploadOverwriteOption":"cancel",
-      	"chunkSize":8388608,
-      	"relativePath":"test.txt",
-        "languageId":"c66131cd-27fc-4f83-9b89-b57575ac0ed8"
+      	"contentLength":FILE_STATS.st_size,
+      	"uploadOverwriteOption": UPLOAD_OVERWRITE_OPTION,
+      	"chunkSize": chunkSize,
+      	"relativePath": FILE,
+        "relatedContentId": "" if RELATED_CONTENT_ID == "" else RELATED_CONTENT_ID,
+        "displayName": os.path.basename(FILE) if NAME == "" else NAME
     }
 
     try:

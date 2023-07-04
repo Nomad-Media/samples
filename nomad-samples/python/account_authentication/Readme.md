@@ -27,9 +27,9 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ## Step 3
 
-Go to account_authentication.py and run the code. It should ask you for your username and password. If your credentials are correct, it will print out your token, which is used for most API calls.
+Go to account_authentication.py and run the code. It should ask you for your username, password, and application id. If your credentials are correct, it will print out your token, which is used for most API calls.
 
-![](https://files.readme.io/b91d36f-authloginterm.png)
+![](https://files.readme.io/f655fb9-authloginterm.png)
 
 ## Step 4
 
@@ -50,3 +50,5 @@ If you didn't get your code, enter "n" when prompted "Did you receive the 6 digi
 ## Step 6
 
 To logout, enter logout at the prompt. You will receive a message stating that you successfully logged out.
+
+![](https://files.readme.io/ea1a234-image.png)

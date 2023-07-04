@@ -3,7 +3,8 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def content_search(AUTH_TOKEN: str) -> dict:
+def content_search(AUTH_TOKEN: str, FILTERS: list, FIELD_NAMES: list, SORT_FIELDS_NAME: str, 
+                   SORT_FIELDS_ORDER: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -19,20 +20,12 @@ def content_search(AUTH_TOKEN: str) -> dict:
 
     # Build the payload BODY
     BODY = {  
-        "filters": [  
-            {  
-                "fieldName": "contentDefinitionId",  
-                "operator": "Equals",  
-                "values": "d34f116d-2a51-4d4a-b928-5dd581d9fd5e"  
-            }  
-        ],  
-        "returnedFieldNames": [  
-            "title"  
-        ],  
+        "filters": FILTERS,
+        "returnedFieldNames": FIELD_NAMES,
         "sortFields": [  
             {  
-                "fieldName": "title",  
-                "sortType": "Ascending"  
+                "fieldName": SORT_FIELDS_NAME,  
+                "sortType": SORT_FIELDS_ORDER 
             }  
         ]  
     }
