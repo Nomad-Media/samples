@@ -17,10 +17,29 @@
 `<wc-player></wc-player>`
 
 ## Configuration of `wc-player`
-You have to set the `vep-config` property of `<wc-player>` so that the player can be initialized, for example:
+You have to set the `vep-config` property of `<wc-player>` so that the player can be initialized. 
+Also you can have a reference to the component like this `ref={this.handleRef}` and then consume the player events in the `App.js`
+
+```
+  componentDidMount() {
+    this.component.addEventListener('playerEventsChanges', this.onPlayerEventChanges);
+  }
+
+  componentWillUnmount() {
+    this.component.addEventListener('playerEventsChanges', this.onPlayerEventChanges);
+  }
+
+  onPlayerEventChanges(event) {
+    // Handle the wc-player events here
+    console.log('React::playerEventsChanges', event);
+  }
+```
+
+Example usage of wc-player:
 
 ```
 <wc-player 
+    ref={this.handleRef}
     vep-config='{
         "application": "Embedded",
               "customer": "acme-customer",
