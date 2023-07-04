@@ -3,7 +3,16 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def creating_and_uploading_event_instance(AUTH_TOKEN: str, ID: str) -> dict:
+def creating_and_uploading_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DEFINITION_ID, 
+                                          INSTANCE_NAME, START_DATETIME, END_DATETIME, 
+                                          DISABLED, SERIES_OVERWRITE,
+                                          RECURRING, SERIES_DESCRIPTION, SERIES_ID, 
+                                          EXISTING_SERIES, DESCRIPTION, SLATE_VIDEO_ID, 
+                                          PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, 
+                                          IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ID, LIVE_INPUT_A,
+                                          LIVE_INPUT_B, PRIMARY_LIVE_STREAM_INPUT_URL,
+                                          BACKUP_LIVE_STREAM_INPUT_URL, RECURRING_WEEKS, 
+                                          RECURRING_DAYS) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
@@ -19,25 +28,50 @@ def creating_and_uploading_event_instance(AUTH_TOKEN: str, ID: str) -> dict:
 
     # Build the payload BODY
     BODY = {
-        "contentId": "00939c2b-d355-44c8-83c3-7700646c96f8",
-        "contentDefinitionId": "d34f116d-2a51-4d4a-b928-5dd581d9fd5e",
+        "contentDefinitionId": CONTENT_DEFINITION_ID,
 
         "properties": {
-            "instanceName": "Test Event Name",
-            "startDatetime": "2023-06-22T00:00:00.000Z",
-            "endDatetime": "2023-06-22T01:00:00.000Z",
-            "disabled": False,
-            "description": "Test Description",
-            "prerollVideo": {
-                "id": "f77d514e-092b-4a37-91e7-9c5d1c7ba7ff"
-            },
-            "postrollVideo": {
-                "id": "a14d9768-7c8e-4387-a95f-7bd8839647b5"
-            },
-            "isSecureOutput": False,
-            "primaryLiveStreamInputUrl": "https://admin.dev-05.demos.media/admin/live-channels/1ee912cf-1c99-4f34-a742-f8d9f6b3baf2"
+            "instanceName": INSTANCE_NAME,
+            "startDatetime": START_DATETIME,
+            "endDatetime": END_DATETIME,
+            "disabled": DISABLED,
+            "overrideSeriesDetails": SERIES_OVERWRITE,
+            "isRecurring": RECURRING
         }
     }
+
+    if CONTENT_ID != "":
+        BODY["contentId"] = CONTENT_ID
+
+    if not EXISTING_SERIES or SERIES_OVERWRITE:
+        BODY["isSecureOutput"] = IS_SECURE_OUTPUT
+        BODY["description"] = DESCRIPTION
+        BODY["primaryLiveStreamInputUrl"] = PRIMARY_LIVE_STREAM_INPUT_URL
+        BODY["backupLiveStreamIputUrl"] = BACKUP_LIVE_STREAM_INPUT_URL
+        BODY["properties"] = {
+            "prerollVideo": { "id": PREROLL_VIDEO_ID } if PREROLL_VIDEO_ID != "" else "",
+            "prerollVideo": { "id": POSTROLL_VIDEO_ID } if POSTROLL_VIDEO_ID != "" else "",
+            "archiveFolder": { "id": ARCHIVE_FOLDER_ID } if ARCHIVE_FOLDER_ID != "" else "",
+            "slateVideo": { "id": SLATE_VIDEO_ID } if SLATE_VIDEO_ID != "" else "",
+            "liveInputA": { "id": LIVE_INPUT_A } if LIVE_INPUT_A != "" else "",
+            "liveInputB": { "id": LIVE_INPUT_B } if LIVE_INPUT_B != "" else ""
+        }
+
+    print(RECURRING_DAYS)
+    
+    if RECURRING:
+        BODY["properties"]["recurringDays"] = RECURRING_DAYS,
+        BODY["properties"]["recurringDays"] = BODY["properties"]["recurringDays"][0]
+        BODY["properties"]["recurringWeeks"] = int(RECURRING_WEEKS)
+
+    if EXISTING_SERIES:
+        BODY["properties"]["series"] = {
+            "description": SERIES_DESCRIPTION,
+            "id": SERIES_ID,
+            "properties": {}
+        }
+
+    print(json.dumps(BODY, indent=4))
 
     try:
         # Send the request

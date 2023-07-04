@@ -1,4 +1,4 @@
-## Account Updates
+![image](https://github.com/Nomad-Media/samples/assets/47163171/5df70874-ba6e-4d4e-bf95-829d78863eb6)## Account Updates
 Learning to use the Nomad API account path to update a user in Python
 
 ## Account Update Sample Code
@@ -33,7 +33,7 @@ Go to account_update.py and run the code. It should ask for your authentication 
 
 To update your user, enter user. You will then be prompted for what parameters you want to update. Enter the parameters from the choices given and enter the new values for the parameters as prompted. Once you input all of your updated parameters, it will update the parameters you have chosen.
 
-![](https://files.readme.io/793a89b-image.png)
+![image](https://github.com/Nomad-Media/samples/assets/47163171/f9b3434a-5851-49a2-8f0c-6849d5d89af4)
 
 ## Step 4
 
