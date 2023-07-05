@@ -20,7 +20,7 @@
 You have to set the `vep-config` property of `<wc-player>` so that the player can be initialized. 
 Also you can have a reference to the component like this `ref={this.handleRef}` and then consume the player events in the `App.js`
 
-There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause`. 
+There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause`, `playbackfinished` and `ended`. Note that `playbackfinished` is for bitmovin and `ended` is for videojs. These events are fired when the playback ends. 
 You can refer to some example screenshots in the `screenshots` folder.
 
 ```
