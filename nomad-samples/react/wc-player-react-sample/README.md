@@ -20,6 +20,9 @@
 You have to set the `vep-config` property of `<wc-player>` so that the player can be initialized. 
 Also you can have a reference to the component like this `ref={this.handleRef}` and then consume the player events in the `App.js`
 
+There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause`. 
+You can refer to some example screenshots in the `screenshots` folder.
+
 ```
   componentDidMount() {
     this.component.addEventListener('playerEventsChanges', this.onPlayerEventChanges);
