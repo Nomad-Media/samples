@@ -1,4 +1,4 @@
-![image](https://github.com/Nomad-Media/samples/assets/47163171/5df70874-ba6e-4d4e-bf95-829d78863eb6)## Account Updates
+## Account Updates
 Learning to use the Nomad API account path to update a user in Python
 
 ## Account Update Sample Code
@@ -44,3 +44,4 @@ To update your email, enter email. You will then be prompted to enter what you w
 ## Step 5
 
 To update your password, enter password. You will then be prompted to enter your current password, and your new password. Once you have entered those in, your password will be updated.
+![](https://files.readme.io/98c192c-image.png)
