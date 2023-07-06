@@ -17,8 +17,10 @@
 `<wc-player></wc-player>`
 
 ## Configuration of `wc-player`
-You have to set the `vep-config` property of `<wc-player>` so that the player can be initialized. 
-Also you can have a reference to the component like this `ref={this.handleRef}` and then consume the player events in the `App.js`
+1. You have to set the `vep-config` property of `<wc-player>` so that the player can be initialized. 
+2. Also you can have a reference to the component like this `ref={this.handleRef}` and then consume the player events in the `App.js`
+3. In order to play/pause from external button controls you have to set the `force-start` and `force-pause` input properties of the wc-player. 
+Then you have to bind the values to a button handler. There is a working example in App.js. You can also see in the example below how the two inputs are bound.
 
 There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause`, `playbackfinished` and `ended`. Note that `playbackfinished` is for bitmovin and `ended` is for videojs. These events are fired when the playback ends. 
 You can refer to some example screenshots in the `screenshots` folder.
@@ -43,6 +45,8 @@ Example usage of wc-player:
 ```
 <wc-player 
     ref={this.handleRef}
+    force-start={this.state.forceStart}
+    force-pause={this.state.forcePause}
     vep-config='{
         "application": "Embedded",
               "customer": "acme-customer",
