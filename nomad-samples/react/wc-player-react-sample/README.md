@@ -22,7 +22,7 @@
 3. In order to play/pause from external button controls you have to set the `force-start` and `force-pause` input properties of the wc-player. 
 Then you have to bind the values to a button handler. There is a working example in App.js. You can also see in the example below how the two inputs are bound.
 
-There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause`, `playbackfinished` and `ended`. Note that `playbackfinished` is for bitmovin and `ended` is for videojs. These events are fired when the playback ends. 
+There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause` and `ended`.
 You can refer to some example screenshots in the `screenshots` folder.
 
 ```
