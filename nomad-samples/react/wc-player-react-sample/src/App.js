@@ -79,7 +79,7 @@ class App extends Component {
                 "siteName": "Dev-05",
                 "hideSidebar": true,
                 "googleTagManager": "GTM-NFWDGJB",
-                "players": [{ "format": "progressive", "player": "videojs" } ],
+                "players": [{ "format": "progressive", "player": "bitmovin" } ],
                 "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
                 "bitmovinLicenseKey": "f507de7a-720a-4b61-9698-94dc4a014479",
                 "liveMode": false,
