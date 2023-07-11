@@ -8,7 +8,6 @@ from content_group.remove_content_from_content_group import *
 from content_group.rename_content_group import *
 from content_group.share_content_group_with_user import *
 from content_group.stop_sharing_content_group_with_user import *
-from helpers.guid_helpers import *
 
 
 def get_content_group_main(AUTH_TOKEN):
