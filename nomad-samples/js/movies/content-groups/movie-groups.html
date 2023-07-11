@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Movie Groups</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="movie-groups.css">
+
+    <!-- JS -->
+    <script type="module" src="movie-groups.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Movie Groups</h1>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="usernameInput">Username:</label>
+        <input type="username" id="usernameInput" required>
+        <label for="passwordInput">Password:</label>
+        <input type="password1" id="passwordInput" required>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Create Movie Group</h2>
+    <form id="createForm">
+        <label for="nameInput">Movie Group Name:</label>
+        <input type="name" id="nameInput">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Get Movie Groups</h2>
+    <form id="getGroupsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Get Movie Group</h2>
+    <form id="getGroupForm">
+        <label for="getGroupIdInput">Movie Group Id:</label>
+        <input type="getGroupId" id="getGroupIdInput">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+
+    <h2>Add Movie To Movie Group</h2>
+    <form id="addForm">
+        <label for="addInput">Movie Group Id:</label>
+        <input type="add" id="addInput" required>
+        <label for="addMovieInput">Movie Ids (separate by comma):</label>
+        <input type="addMovie" id="addMovieInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Remove Movie From Movie Group</h2>
+    <form id="removeForm">
+        <label for="removeInput">Movie Group Id:</label>
+        <input type="remove" id="removeInput" required>
+        <label for="removeMovieInput">Movie Ids (separate by comma):</label>
+        <input type="removeMovie" id="removeMovieInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Rename Movie Group</h2>
+    <form id="renameForm">
+        <label for="renameInput">Movie Group Id:</label>
+        <input type="rename" id="renameInput" required>
+        <label for="renameGroupInput">New Movie Group Name:</label>
+        <input type="renameGroup" id="renameGroupInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Add Shared Users To Movie Group</h2>
+    <form id="shareForm">
+        <label for="shareMovieGroupIdInput">Movie Group Id:</label>
+        <input type="shareMovieGroupId" id="shareMovieGroupIdInput" required>
+        <label for="sharedUserIdInput">User Id:</label>
+        <input type="sharedUserId" id="sharedUserIdInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Remove Shared Users To Movie Group</h2>
+    <form id="stopShareForm">
+        <label for="stopSharingMovieGroupIdInput">Movie Group Id:</label>
+        <input type="stopSharingMovieGroupId" id="stopSharingMovieGroupId" required>
+        <label for="removeSharedUserIdInput">User Id:</label>
+        <input type="removeSharedUserId" id="removeSharedUserIdInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Delete Movie Group</h2>
+    <form id="deleteForm">
+        <label for="deleteInput">Movie Group Id:</label>
+        <input type="delete" id="deleteInput" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
