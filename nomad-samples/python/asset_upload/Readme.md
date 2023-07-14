@@ -15,7 +15,7 @@ Visual Studio Code or similar code editor
 
 ## Step 1
 
-Open the folder  samples/nomad-samples/python/media_api. You should see this:
+Download the code sample from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/python/asset_upload) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/d64022a-image.png)
 
