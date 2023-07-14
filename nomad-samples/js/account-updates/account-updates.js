@@ -99,7 +99,7 @@ async function updateUserMain(ADDRESS1, ADDRESS2, CITY, COUNTRY_ID, FIRST_NAME, 
             if (COUNTRY_MAP[countryIdx].id === COUNTRY_ID)
             {
                 country = COUNTRY_MAP[countryIdx];
-                break
+                break;
             }
         }
 

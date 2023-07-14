@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Movies</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="movies.css">
+
+    <!-- JS -->
+    <script type="module" src="movies.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Movies</h1>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="usernameInput">Username:</label>
+        <input type="username" id="usernameInput" required>
+        <label for="passwordInput">Password:</label>
+        <input type="password1" id="passwordInput" required>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Create/Update Movie</h2>
+    <form id="createForm">
+        <label for="typeSelect">Create or Upload:</label>
+        <select id="typeSelect">
+            <option value="create">Create</option>
+            <option value="upload">Upload</option>
+        </select>
+        <div id="updateIdDiv" hidden="true">
+            <label for="updateIdInput">Movie Id:</label>
+            <input type="updateId" id="updateIdInput">
+        </div>
+
+        <label for="titleInput">Title:</label>
+        <input type="title" id="titleInput">
+        
+        <label for="plotInput">Plot:</label>
+        <input type="plot" id="plotInput">
+
+        <label for="dateInput">Release Date:</label>
+        <input type="date" id="dateInput">
+        
+        <label for="genreSelect">Genre:</label>
+        <select id="genreSelect"></select>
+        <br><br>
+
+        <label for="genreInput" id="genreLabel">Enter Genre:</label>
+        <input type="genre" id="genreInput" hidden="true">
+
+        <label for="imageFileInput">Choose an image file to upload:</label>
+        <input type="file" id="imageFileInput">
+
+        <label for="videoFileInput">Choose a video file to upload:</label>
+        <input type="file" id="videoFileInput">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Search Movie</h2>
+    
+    <form id="searchMoviesForm">
+        <h3>Filters</h3>
+        <div id="filtersContainer">
+           
+        </div>
+        <br><br>
+        <button type="button" id="addButton">Add Filter</button>
+
+        <div class="checkbox-dropdown">
+            <h3>Returned Field Names</h3>
+            <div id="checkboxList">
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="plot">Plot
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="genre">Genre
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="releaseDate">Release Date
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="image">Image
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="movieFile">Movies
+                </label>
+            </div>
+        </div>
+     </div>
+
+
+        <h3>Sort Fields</h3>
+        <label for="contentSortFieldNameInput">Field Name:</label>
+        <input type="contentSortFieldName" id="contentSortFieldNameInput">
+    
+        <label for="contentSortType">Sort By:</label>
+        <select id="contentSortType">
+            <option value="Ascending">Ascending</option>
+            <option value="Descending">Descending</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <h2>Get Movie</h2>
+    <form id="getMovieByIdForm">
+        <label for="getIdInput">Movie Id:</label>
+        <input type="getId" id="getIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Delete Movie</h2>
+    <form id="deleteMovieForm">
+        <label for="deleteIdInput">Movie Id:</label>
+        <input type="deleteId" id="deleteIdInput">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    
+
+    <h2>Livestream</h2>
+
+    <h3>Creating and Updating Instance</h3>
+    <form id="createForm">
+        <label for="contentIdInput">Movie Id (optional):</label>
+        <input type="contentId" id="contentIdInput">
+
+        <label for="contentDefinitionIdInput">Content Definition Id:</label>
+        <input type="contentDefinitionId" id="contentDefinitionIdInput" required>
+
+        <label for="instanceNameInput">Instance Name:</label>
+        <input type="instanceName" id="instanceNameInput" required>
+
+        <div id="isNotRecurring">
+            <label for="startDatetimeInput">Start Datetime:</label>
+            <input type="datetime-local" id="startDatetimeInput">
+
+            <label for="endDatetimeInput">End Datetime:</label>
+            <input type="datetime-local" id="endDatetimeInput">
+        </div>
+
+        <div id="isRecurring">
+            <label for="recurringWeeksInput">Recurring Weeks:</label>
+            <input type="recurringWeeks" id="recurringWeeksInput">
+
+            <label for="startTimeInput">Start Time:</label>
+            <input type="time" id="startTimeInput">
+
+            <label for="endTimeInput">End Time:</label>
+            <input type="time" id="endTimeInput">
+
+            <div class="checkbox-dropdown">
+                <label for="scheduledDateInput">Scheduled Dates:</label>
+                <div id="checkboxList">
+                    <label id="checkbox" for="sundayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Sunday" id="sundayCheckbox">Sunday
+                    </label>
+                
+                    <label id="checkbox" for="mondayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Monday" id="mondayCheckbox">Monday
+                    </label>
+                
+                    <label id="checkbox" for="tuesdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Tuesday" id="tuesdayCheckbox">Tuesday
+                    </label>
+                
+                    <label id="checkbox" for="wednesdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Wednesday" id="wednesdayCheckbox">Wednesday
+                    </label>
+                
+                    <label id="checkbox" for="thursdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Thursday" id="thursdayCheckbox">Thursday
+                    </label>
+                
+                    <label id="checkbox" for="fridayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Friday" id="fridayCheckbox">Friday
+                    </label>
+                
+                    <label id="checkbox" for="saturdayCheckbox">
+                        <input type="checkbox" name="dateCheckbox" value="Saturday" id="saturdayCheckbox">Saturday
+                    </label>
+                </div>
+            </div>
+         </div>
+
+
+        <label for="recurringInput">Recurring</label>
+        <select id="recurringInput">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+        
+        <label for="disabledInput">Disabled:</label>
+        <select id="disabledInput">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="seriesInput">Do you want to use an existing series:</label>
+        <select id="seriesInput">
+            <option value="yes">Yes</option>
+            <option value="no" selected>No</option>
+        </select>
+        
+        <div id="isSeries">
+            <label for="seriesDescriptionInput">Series Description:</label>
+            <input type="seriesDescription" id="seriesDescriptionInput">
+
+            <label for="seriesIdInput">Series Id:</label>
+            <input type="seriesId" id="seriesIdInput">
+
+            <label for="overrideSeriesDetailsInput">Override Series Details:</label>
+            <select id="overrideSeriesDetailsInput">
+                <option value="true">True</option>
+                <option value="false" selected>False</option>
+            </select>
+        </div>
+
+        <div id="isNotSeries">
+            <label for="descriptionInput">Description:</label>
+            <input type="description" id="descriptionInput">
+
+            <label for="slateVideoIdInput">Slate Video Id (optional):</label>
+            <input type="slateVideoId" id="slateVideoIdInput">
+
+            <label for="prerollVideoIdInput">Preroll Video Id:</label>
+            <input type="prerollVideoId" id="prerollVideoIdInput">
+
+            <label for="postrollVideoIdInput">Postroll Video Id:</label>
+            <input type="postrollVideoId" id="postrollVideoIdInput">
+
+            <label for="isSecureOutputInput">Is Secure Output:</label>
+            <select id="isSecureOutputInput">
+                <option value="true" selected>True</option>
+                <option value="false">False</option>
+            </select>
+        
+            <label for="archiveFolderInput">Archive Folder (optional):</label>
+            <input type="archiveFolder" id="archiveFolderInput">
+        
+            <label for="liveInputAIdInput">Live Input A:</label>
+            <input type="liveInputAId" id="liveInputAIdInput">
+        
+            <label for="liveInputBIdInput">Live Input B (optional):</label>
+            <input type="liveInputBId" id="liveInputBIdInput">
+        
+            <label for="primaryLivestreamUrlInput">Primary Live Stream Input Url:</label>
+            <input type="primaryLivestreamUrl" id="primaryLivestreamUrlInput">
+        
+            <label for="backupLivestreamUrlInput">Backup Live Stream Input Url (optional):</label>
+            <input type="backupLivestreamUrl" id="backupLivestreamUrlInput">
+        </div>
+        
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Event Instance</h3>
+    
+    <form id="deleteForm">
+        <label for="deleteIdInput">Movie Id:</label>
+        <input type="deleteId" id="deleteIdInput" required>
+
+        <label for="deleteContentDefinitionIdInput">Content Definition Id:</label>
+        <input type="deleteContentDefinitionId" id="deleteContentDefinitionIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
