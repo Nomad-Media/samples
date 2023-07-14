@@ -108,8 +108,8 @@ CREATE_FORM.addEventListener("submit", function (event)
     let contentId = CONTENT_ID_INPUT.value;
     let contentDefinitionId = CONTENT_DEFINITION_ID_INPUT.value;
     let instanceName = INSTANCE_NAME_INPUT.value;
-    let startDatetime = START_DATETIME_INPUT.value + 'Z';
-    let endDatetime = END_DATETIME_INPUT.value + 'Z';
+    let startDatetime = START_DATETIME_INPUT.value + ':00.000Z';
+    let endDatetime = END_DATETIME_INPUT.value + ':00.000Z';
     let recurringWeeks = parseInt(RECURRING_WEEKS_INPUT.value);
     let startTime = START_TIME_INPUT.value  + ':00.000Z';
     let endTime = END_TIME_INPUT.value + ':00.000Z';
