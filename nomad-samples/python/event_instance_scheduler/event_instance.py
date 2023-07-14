@@ -16,15 +16,11 @@ def create_and_upload_instance_main(AUTH_TOKEN):
         print(f"Enter Instance Name: {INSTANCE_NAME}")
         RECURRING = True if input("Do you want your instance to be recurring? (yes, no): ") == "yes" else False
         if RECURRING:
-            START_TIME = "00:00:00"
-            print(f"Enter start time (HH:MM:SS): {START_TIME}")
-            END_TIME = "12:00:00"
-            print(f"Enter end time (HH:MM:SS): {END_TIME}")
-            RECURRING_WEEKS = "2"
-            print("Enter number of recurring weeks: 2")
-            DAYS = "Thursday,Saturday,Monday"
-            print(f"Enter the days (Monday,Tuesday,etc.) you want your "\
-                    f"instance to recur (separate by comma): {DAYS}")
+            START_TIME = input ("Enter start time (HH:MM:SS): ")
+            END_TIME = ("Enter end time (HH:MM:SS): ")
+            RECURRING_WEEKS = ("Enter number of recurring weeks: ")
+            DAYS = ("Enter the days (Monday,Tuesday,etc.) you want your "\
+                    f"instance to recur (separate by comma): ")
             RECURRING_DAYS = process_dates(DAYS.split(","), START_TIME)
 
             START_DATETIME = f"{RECURRING_DAYS['startDate']}T{START_TIME}Z"
@@ -37,10 +33,8 @@ def create_and_upload_instance_main(AUTH_TOKEN):
         DISABLED = True if input("Enter Disabled (True/False): ") == "True" else False
         EXISTING_SERIES = True if input("Do you want to use an existing series? (yes, no): ") == "yes" else False
         if EXISTING_SERIES:
-            SERIES_DESCRIPTION = "Fourth Testing"
-            print(f"Enter Series Description: {SERIES_DESCRIPTION}")
-            SERIES_ID = "9fbdc0ff-5eed-41e1-b606-93f4fb548952"
-            print(f"Enter Series Id: {SERIES_ID}")
+            SERIES_DESCRIPTION = input("Enter Series Description: ")
+            SERIES_ID = input("Enter Series Id: ")
             SERIES_OVERWRITE = True if input("Do you want to override the series details? (yes, no): ") == "yes" else False
         else:
             SERIES_DESCRIPTION = SERIES_ID = SERIES_OVERWRITE = ""
@@ -90,13 +84,11 @@ def delete_instance_main(AUTH_TOKEN: str):
         raise Exception()
     
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiZjcyMjllMTEtZWRlYy00ZDc2LTk1OGUtOWJlOGNkMzcyZWViIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImE0NTc4YmRkLWVhZjQtNGZlZS1hMWRkLTNhOGVlOWIyZTliOCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjg3ODkzMzAwLCJleHAiOjE2ODc4OTY5MDAsImlhdCI6MTY4Nzg5MzMwMCwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiI4YzQzNDRhZS1hMDk5LTQ5YTItODNjMS1jMGNmZDUyMDU4MWQiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.vcaNE6pQF9ZL6TUH1ZeHDZ4Q8HEwcMoVPB9iEF2mhc8yM6ylhvWU1rO5N4HMp20tZaFjtjgcJxxGY6ek-QB8X6eb_B4t6GeFGKrpO1NiCrIXKSc15gaIhp6jGmhpMvf8egM7iLaoS8j6dw526lV9SDRtiVCa3Rci2ylIpNZqQmoPCABPnT8nIHL8eqqITP8X76YFQhYBILyuGDpb2Q8ZZ_93IPGsKUYVVIWyrBIvInfRFSo9x-n3J3vUxXwdLVgd-eU7Xs1syBASduI3aw2goPt_9UnILwZngVbJv_QpT2PbaZhFB8JSNRzz4F5K1RB8yfq5OgO27-UjKQ46_N_UbA"
-    print(f"Enter your authentication token: {AUTH_TOKEN}")
+    AUTH_TOKEN = input(f"Enter your authentication token: ")
 
     while True:
         print("Do you want to create/update, delete an instance, or exit?")
-        USER_INPUT = "create/update"
-        print("Enter create/update, delete, or exit for each option respectively: create/update")
+        USER_INPUT = input("Enter create/update, delete, or exit for each option respectively: ")
         
         if USER_INPUT == "create/update":
             create_and_upload_instance_main(AUTH_TOKEN)

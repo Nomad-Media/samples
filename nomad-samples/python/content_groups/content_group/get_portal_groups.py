@@ -15,7 +15,7 @@ def get_portal_groups(AUTH_TOKEN: str, RETURNED_GROUP_NAMES: list) -> dict:
     }
     
     BODY = {
-		"returnedGroupNames": RETURNED_GROUP_NAMES
+      "returnedGroupNames": RETURNED_GROUP_NAMES
     }
 
     try:
