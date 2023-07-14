@@ -15,7 +15,7 @@ This walkthrough outlines how to use the sample code for registration process th
 
 ## Step 1
 
-Open the folder samples/nomad-samples/python/account_registration. You should see this:
+Download the sample code from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/python/account_registration) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/8dffbd7-regpy.png)
 
