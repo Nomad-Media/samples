@@ -73,6 +73,7 @@ class App extends Component {
             ref={this.handleRef}
             force-start={this.state.forceStart}
             force-pause={this.state.forcePause}
+            support-sharing="false"
             vep-config='{
               "application": "Embedded",
                 "customer": "dev-05",
