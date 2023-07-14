@@ -1,4 +1,5 @@
 import * as prjConstants from "../constants/project-constants.js";
+import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
 /**
  * Create Genre
@@ -50,4 +51,7 @@ export default async function createGenre(NAME, SLUG, AUTH_TOKEN) {
         // Return the ID
         return id.replaceAll('"', "");
     }
+
+    apiExceptionHandler("Create genre failed");
 }
+
