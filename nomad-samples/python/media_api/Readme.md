@@ -15,7 +15,7 @@ This walk-through outlines how to use the sample code for the portal/search and 
 
 ## Step 1
 
-Open the folder  samples/nomad-samples/python/media_api. You should see this:
+Download the code sample from [here](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2FNomad-Media%2Fsamples%2Ftree%2Fmain%2Fnomad-samples%2Fpython%2Fmedia_api) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/63f49a9-image.png)
 
