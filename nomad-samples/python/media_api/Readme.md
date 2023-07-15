@@ -25,7 +25,7 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ![](https://files.readme.io/fc089a0-image.png)
 
-Go to media_api.py and run the code. It should ask for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
+Go to media_api.py and run the code. It will prompt you for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
 
 ![](https://files.readme.io/50d5c2f-image.png)
 
