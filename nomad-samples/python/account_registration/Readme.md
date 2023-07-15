@@ -27,7 +27,7 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ## Step 3
 
-Go to account_registration.py and run the code. It should ask you for your first and last name, email, and password.
+Go to account_registration.py and run the code. It will prompt you you for your first and last name, email, and password.
 
 ![](https://files.readme.io/a98bbff-regpycodereg.png)
 
