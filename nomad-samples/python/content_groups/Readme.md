@@ -1,5 +1,5 @@
 # Content Groups API
-Learning to use the Nomad API contetnGroups path to work with content groups in Python
+Learning to use the Nomad API contentGroups path to work with content groups in Python
 
 ## Content Groups API Sample Code
 
