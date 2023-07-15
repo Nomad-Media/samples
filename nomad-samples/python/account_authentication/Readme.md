@@ -27,7 +27,7 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ## Step 3
 
-Go to account_authentication.py and run the code. It should ask you for your username, password, and application id. If your credentials are correct, it will print out your token, which is used for most API calls.
+Go to account_authentication.py and run the code. It will prompt you you for your username, password, and application id. If your credentials are correct, it will print out your token, which is used for most API calls.
 
 ![](https://files.readme.io/f655fb9-authloginterm.png)
 
