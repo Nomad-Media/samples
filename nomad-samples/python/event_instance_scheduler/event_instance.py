@@ -84,7 +84,7 @@ def delete_instance_main(AUTH_TOKEN: str):
         raise Exception()
     
 if __name__ == "__main__":
-    AUTH_TOKEN = input(f"Enter your authentication token: ")
+    AUTH_TOKEN = input("Enter your authentication token: ")
 
     while True:
         print("Do you want to create/update, delete an instance, or exit?")
