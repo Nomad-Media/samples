@@ -58,7 +58,7 @@ export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, REL
         const ID = await RESPONSE.text();
 
         // Return the ID
-        return ID.replaceAll('"', "");
+        return ID;
     }
 
     apiExceptionHandler(RESPONSE, "Create/Update movie failed")
