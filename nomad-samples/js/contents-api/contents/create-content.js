@@ -16,10 +16,9 @@ export default async function createContent(AUTH_TOKEN, CONTENT_DEFINITION_ID) {
 
     if (RESPONSE.ok)
     {
-        const ID_JSON = await RESPONSE.json();
-        const ID = ID_JSON.contentId;
+        const INFO = await RESPONSE.json();
     
-        return INFO
+        return INFO;
     }
 
     await apiExceptionHandler(RESPONSE, "Creating content failed")

@@ -29,7 +29,7 @@ export default async function updateContent(AUTH_TOKEN, CONTENT_DEFINITION_ID, I
         const ID = await RESPONSE.text();
 
         // Return the ID
-        return ID.replaceAll('"', "");
+        return ID;
     }
 
     apiExceptionHandler(RESPONSE, "Create/Update movie failed")
