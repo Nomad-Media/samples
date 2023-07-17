@@ -49,7 +49,7 @@ export default async function createGenre(NAME, SLUG, AUTH_TOKEN) {
         const id = await RESPONSE.text();
 
         // Return the ID
-        return id.replaceAll('"', "");
+        return id;
     }
 
     apiExceptionHandler("Create genre failed");
