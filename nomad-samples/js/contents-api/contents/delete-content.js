@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function deleteContent(AUTH_TOKEN, ID, CONTENT_DEFINITION_ID)
+export default async function deleteContent(AUTH_TOKEN, CONTENT_DEFINITION_ID, ID)
 {
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");

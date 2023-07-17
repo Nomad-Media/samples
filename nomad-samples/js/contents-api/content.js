@@ -29,7 +29,7 @@ CREATE_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let contentDefinitionId = CREATE_CONTENT_DEFINITION_ID_INPUT
+    let contentDefinitionId = CREATE_CONTENT_DEFINITION_ID_INPUT.value;
 
     createContentMain(contentDefinitionId);
 });
@@ -88,7 +88,7 @@ async function updateContentMain(CONTENT_DEFINITION_ID, ID, PROPERTIES)
     try
     {
         console.log("Updating Content");
-        const INFO = updateContent(TOKEN, CONTENT_DEFINITION_ID, ID, PROPERTIES)
+        const INFO = await updateContent(TOKEN, CONTENT_DEFINITION_ID, ID, JSON.parse(PROPERTIES))
         console.log(JSON.stringify(INFO, null, 4));
     }
     catch (error)
