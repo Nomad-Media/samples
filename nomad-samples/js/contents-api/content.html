@@ -31,10 +31,47 @@
 <body>
 
     <h1>Content</h1>
-
     <form id="authForm">
         <label for="authInput">Authentication token:</label>
         <input type="auth" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Get Content</h2>
+    <form id="getForm">
+        <label for="getContentDefinitionIdInput">Content Definition Id:</label>
+        <input type="getContentDefinitionId" id="getContentDefinitionIdInput" required>
+
+        <label for="getIdInput">Content Id:</label>
+        <input type="getId" id="getIdInput" required>
+
+        <label for="sortInput">Sort Results:</label>
+        <select id="sortInput">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <div id="sortDiv">
+            <label for="sortColumnInput">Sort Column:</label>
+            <input type="sortColumn" id="sortColumnInput">
+
+            <label for="isDescInput">Sort Order:</label>
+            <select id="isDescInput">
+                <option value="false" selected>Ascending:</option>
+                <option value="true">Descending</option>
+            </select>
+
+            <label for="pageIndexInput">Page Index:</label>
+            <input type="pageIndex" id="pageIndexInput">
+
+            <label for="pageSizeInput">Page Size:</label>
+            <input type="pageSize" id="pageSizeInput">
+
+            <label for="languageIdInput">Language Id:</label>
+            <input type="languageId" id="languageIdInput">
+        </div>
+
+        <br><br>
         <button type="submit">Submit</button>
     </form>
 
