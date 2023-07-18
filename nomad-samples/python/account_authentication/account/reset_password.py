@@ -30,7 +30,7 @@ def reset_password(USENAME: str, TOKEN: str, NEW_PASSWORD: str) -> None:
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         
-        if RESPONSE.status_code != 200:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+        if not RESPONSE.ok:
+            raise Exception()
     except:
         raise Exception("Reset Password failed")

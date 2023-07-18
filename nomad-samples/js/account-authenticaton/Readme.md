@@ -18,7 +18,7 @@ This walkthrough outlines how to use the sample code for authentication process 
 
 ## Step 1
 
-Download the Nomad Registration from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/js/account-authenticaton) and unzip it. Once unzipped you should see this:
+Download the code sample from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/js/account-authenticaton) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/efea088-authdirjs.png)
 

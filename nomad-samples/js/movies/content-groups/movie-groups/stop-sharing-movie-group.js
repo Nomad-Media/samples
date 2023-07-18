@@ -11,7 +11,7 @@ export default async function stopShareMovieGroup(AUTH_TOKEN, GROUP_ID, USER_ID)
     const BODY = USER_ID;
   
   // Post
-    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/contentGroup/stopshare/${GROUP_ID}`, {
+    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/contentGroup/stopshare/${GROUP_ID}`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)

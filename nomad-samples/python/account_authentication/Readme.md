@@ -15,7 +15,7 @@ This walkthrough outlines how to use the sample code for authenticationprocess t
 
 ## Step 1
 
-Open the folder samples/nomad-samples/python/account_authentication. You should see this:
+Download the code sample from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/python/account_authentication) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/29d5505-image.png)
 
@@ -27,7 +27,7 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ## Step 3
 
-Go to account_authentication.py and run the code. It should ask you for your username, password, and application id. If your credentials are correct, it will print out your token, which is used for most API calls.
+Go to account_authentication.py and run the code. It will prompt you you for your username, password, and application id. If your credentials are correct, it will print out your token, which is used for most API calls.
 
 ![](https://files.readme.io/f655fb9-authloginterm.png)
 

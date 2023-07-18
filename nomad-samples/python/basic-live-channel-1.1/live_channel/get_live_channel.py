@@ -30,7 +30,7 @@ async def get_live_channel(AUTH_TOKEN, CHANNEL_ID):
         
         
         # If not found return None
-        if (RESPONSE.status_code != 200):
+        if (not RESPONSE.ok):
             raise Exception()
         
         

@@ -54,7 +54,7 @@ async def create_live_channel(AUTH_TOKEN, DATA):
             await wait_for_live_channel_status(AUTH_TOKEN, INFO["id"], LIVE_CHANNEL_STATUSES["Idle"], 120, 2)
             METHOD = "POST"
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
         
         
