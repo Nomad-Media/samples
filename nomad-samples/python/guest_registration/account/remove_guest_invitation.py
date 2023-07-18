@@ -25,7 +25,7 @@ def remove_guest_invitation(AUTH_TOKEN: str, CONTENT_DEFINITION_ID: str, USER_ID
 
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         return json.loads(RESPONSE.text)

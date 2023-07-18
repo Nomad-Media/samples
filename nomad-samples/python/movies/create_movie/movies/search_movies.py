@@ -48,17 +48,20 @@ def search_movies(AUTH_TOKEN, FILTERS, SEARCH_RESULT_FIELDS, SORT_FIELD, SORT_TY
         ]
     
 
-    # Send POST request
-    RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
+    try:
+        # Send POST request
+        RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-    # Check for success
-    if (RESPONSE.ok):
+        # Check for success
+        if not RESPONSE.ok:
+            raise Exception()
+        
         # Get the response
         MOVIES = RESPONSE.json()
 
         # Return the movies
         return MOVIES
-    
-
-    api_exception_handler(RESPONSE, "Getting movies failed")
+        
+    except:
+        api_exception_handler(RESPONSE, "Getting movies failed")
 

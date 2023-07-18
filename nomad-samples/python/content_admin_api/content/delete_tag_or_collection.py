@@ -32,7 +32,7 @@ def delete_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, TAG_ID
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         return json.loads(RESPONSE.text)

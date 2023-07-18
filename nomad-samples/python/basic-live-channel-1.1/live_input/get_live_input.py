@@ -33,7 +33,7 @@ async def get_live_input(AUTH_TOKEN, INPUT_ID):
         
 
         # If not found return None
-        if (RESPONSE.status_code != 200):
+        if (not RESPONSE.ok):
             raise Exception("Live Input with ID " + INPUT_ID + " was not found")
         
         

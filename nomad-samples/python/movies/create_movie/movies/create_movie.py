@@ -18,9 +18,11 @@ def create_movie(AUTH_TOKEN):
     try:
         RESPONSE = requests.get(API_URL, headers=HEADERS)
 
-        if RESPONSE.ok:
-            ID = json.loads(RESPONSE.text)
-            return ID
+        if not RESPONSE.ok:
+            raise Exception()
+        
+        ID = json.loads(RESPONSE.text)
+        return ID
         
     except:
         api_exception_handler(RESPONSE, "Get movie id failed: ")

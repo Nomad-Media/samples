@@ -32,7 +32,7 @@ def delete_related_content(AUTH_TOKEN: str, CONTENT_ID: str, RELATED_CONTENT_ID:
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         return json.loads(RESPONSE.text)

@@ -32,10 +32,10 @@ def login(USERNAME, PASSWORD, APPLICATION_ID):
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
     
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             if RESPONSE.status_code == 409:
                 return("Login info incorrect")
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
         
 
         return json.loads(RESPONSE.text)

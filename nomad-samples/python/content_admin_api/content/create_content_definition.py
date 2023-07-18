@@ -21,7 +21,7 @@ def create_content_definition(AUTH_TOKEN: str) -> dict:
         # Send the request
         RESPONSE = requests.get(API_URL, headers= HEADERS)
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         return json.loads(RESPONSE.text)

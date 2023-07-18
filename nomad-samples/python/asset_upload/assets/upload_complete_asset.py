@@ -21,7 +21,7 @@ async def upload_complete_asset(AUTH_TOKEN: str, ID: str) -> dict:
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS)
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         return json.loads(RESPONSE.text)

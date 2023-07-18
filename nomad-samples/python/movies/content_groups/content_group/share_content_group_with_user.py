@@ -19,7 +19,7 @@ def share_content_group_with_user(AUTH_TOKEN: str, CONTENT_GROUP_ID: str, USER_I
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
     		
         return json.loads(RESPONSE.text)
