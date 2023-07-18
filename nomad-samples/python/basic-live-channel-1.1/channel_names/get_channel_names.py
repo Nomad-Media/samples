@@ -15,7 +15,7 @@ async def get_channel_names(AUTH_TOKEN):
         INFO = json.loads(RESPONSE.text)
 
         # If not found return None
-        if (RESPONSE.status_code != 200):
+        if (not RESPONSE.ok):
             raise Exception()
         
         CHANNEL_NAMES = []

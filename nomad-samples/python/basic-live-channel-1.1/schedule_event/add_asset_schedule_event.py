@@ -46,7 +46,7 @@ async def add_asset_schedule_event(AUTH_TOKEN, DATA):
         RESPONSE = requests.post(SERVER_URL + "/liveChannel/" + DATA["channelId"] + "/liveScheduleEvent", headers= HEADERS, data= json.dumps(BODY))
     
         
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
         
         

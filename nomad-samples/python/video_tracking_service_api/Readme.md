@@ -15,7 +15,7 @@ This walk-through outlines how to use the sample code for the asset/tracking API
 
 ## Step 1
 
-Open the folder  samples/nomad-samples/python/video_tracking_service_api. You should see this:
+Download the code sample from [here](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2FNomad-Media%2Fsamples%2Ftree%2Fmain%2Fnomad-samples%2Fpython%2Fvideo_compare_api) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/0361cf3-image.png)
 
@@ -25,7 +25,7 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ![](https://files.readme.io/5dd144d-image.png)
 
-Go to media_api.py and run the code. It should ask for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
+Go to media_api.py and run the code. It will prompt you for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
 
 ![](https://files.readme.io/78fabc0-image.png)
 
