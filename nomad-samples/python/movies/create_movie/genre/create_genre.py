@@ -13,10 +13,17 @@ def create_genre(AUTH_TOKEN, NAME, SLUG):
       "Content-Type": "application/json",
       "Authorization": "Bearer " + AUTH_TOKEN
     }
-
-    NEW_RESPONSE = requests.get(GET_API_URL, headers=HEADERS)
-    INFO = NEW_RESPONSE.json()
-    ID = INFO["contentId"]
+    try:
+        NEW_RESPONSE = requests.get(GET_API_URL, headers=HEADERS)
+    
+        if not NEW_RESPONSE:
+            raise Exception()
+        
+        INFO = NEW_RESPONSE.json()
+        ID = INFO["contentId"]
+    
+    except:
+        raise Exception()
 
     PUT_API_URL = f"{ADMIN_API_URL}/Content/{MOVIE_GENRE_CONTENT_DEFINITION_ID}"
 
@@ -30,15 +37,20 @@ def create_genre(AUTH_TOKEN, NAME, SLUG):
         },
     }
 
-    # Send POST request
-    RESPONSE = requests.put(PUT_API_URL, headers=HEADERS, data=json.dumps(BODY))
+    try:
+        # Send POST request
+        RESPONSE = requests.put(PUT_API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-    # Check for success
-    if (RESPONSE.ok):
+        # Check for success
+        if not RESPONSE.ok:
+            raise Exception()
+        
         # Get the response
         ID = RESPONSE.json()
 
         # Return the ID
         return ID
+    except:
+        api_exception_handler(RESPONSE, "Update genre failed")
     
     
