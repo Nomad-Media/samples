@@ -21,9 +21,9 @@
 2. Also you can have a reference to the component like this `ref={this.handleRef}` and then consume the player events in the `App.js`
 3. In order to play/pause from external button controls you have to set the `force-start` and `force-pause` input properties of the wc-player. 
 Then you have to bind the values to a button handler. There is a working example in App.js. You can also see in the example below how the two inputs are bound.
-4. In order to enable sharing you have to set the `support-sharing` input property to `true`
-5. You can also specify which media options you support, setting these input properties to `true`: 
-`support-sharing-facebook`, `support-sharing-twitter`, `support-sharing-linkedin`, `support-sharing-email`
+4. In order to enable sharing you have to set the `supportSharing` property of the `vep-config` to `true`
+5. You can also specify which media options you support, setting these `vep-config` properties to `true`: 
+`supportSharingFacebook`, `supportSharingTwitter`, `supportSharingLinkedin`, `supportSharingEmail`. If not specified, this defaults to showing all media.
 In the example below we support all media except for twitter which is set to `false`.
 
 There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause` and `ended`.
@@ -51,16 +51,16 @@ Example usage of wc-player:
     ref={this.handleRef}
     force-start={this.state.forceStart}
     force-pause={this.state.forcePause}
-    support-sharing="true"
-    support-sharing-facebook="true"
-    support-sharing-twitter="false"
-    support-sharing-linkedin="true"
-    support-sharing-email="true"
     vep-config='{
         "application": "Embedded",
               "customer": "acme-customer",
               "siteName": "Acme Main Site",
               "hideSidebar": true,
+              "supportSharing": true,
+              "supportSharingFacebook": true,
+              "supportSharingTwitter": false,
+              "supportSharingLinkedin": true,
+              "supportSharingEmail": true,
               "googleTagManager": "GTM-TAGGOESHERE",
               "players": [{ "format": "hls", "player": "videojs" } ],
               "liveMode": false,
