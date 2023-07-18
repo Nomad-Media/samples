@@ -13,7 +13,7 @@ export default async function updateContent(AUTH_TOKEN, CONTENT_DEFINITION_ID, I
         contentId: ID,
         properties: PROPERTIES
     };
-
+    
     // Send POST request
     const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/${ID}`, {
         method: "PUT",
