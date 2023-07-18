@@ -31,7 +31,7 @@ def update_content_definition(AUTH_TOKEN: str, ID: str) -> dict:
         RESPONSE = requests.put(API_URL, headers= HEADERS, data=json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
 
     except:

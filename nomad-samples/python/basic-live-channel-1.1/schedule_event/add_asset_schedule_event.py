@@ -49,8 +49,6 @@ async def add_asset_schedule_event(AUTH_TOKEN, DATA):
         if not RESPONSE.ok:
             raise Exception()
         
-        
-
         return json.loads(RESPONSE.text)
 
     except:

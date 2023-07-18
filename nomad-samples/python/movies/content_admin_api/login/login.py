@@ -25,7 +25,7 @@ def login(USERNAME, PASSWORD):
         if not RESPONSE.ok:
             if RESPONSE.status_code == 409:
                 return("Login info incorrect")
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
         
 
         return json.loads(RESPONSE.text)

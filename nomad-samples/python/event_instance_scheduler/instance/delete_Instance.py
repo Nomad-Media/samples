@@ -22,7 +22,7 @@ def deleting_event_instance(AUTH_TOKEN: str, CONTENT_ID: str, CONTENT_DEFINITION
         RESPONSE = requests.delete(API_URL, headers= HEADERS)
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
     except:
         api_exception_handler(RESPONSE, "Deleting event instance failed")

@@ -27,7 +27,7 @@ def upload_asset_part_complete(AUTH_TOKEN: str, PART_ID: str, ETAG: str) -> dict
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
     except:
         api_exception_handler(RESPONSE, "Upload asset part failed")
