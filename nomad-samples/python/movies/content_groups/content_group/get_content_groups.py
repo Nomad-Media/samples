@@ -18,7 +18,7 @@ def get_content_groups(AUTH_TOKEN: str) -> dict:
     try:
         RESPONSE = requests.get(API_URL, headers=HEADERS)
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
    	

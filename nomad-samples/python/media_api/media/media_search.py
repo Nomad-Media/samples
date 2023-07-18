@@ -35,7 +35,7 @@ def media_search(AUTH_TOKEN: str, SEARCH_QUERY: str, IDS: list, SORT_FIELDS_NAME
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 
