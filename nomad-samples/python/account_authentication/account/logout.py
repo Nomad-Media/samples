@@ -30,8 +30,8 @@ def logout(AUTH_TOKEN: str, USER_SESSION_ID: str, APPLICATION_ID: str) -> bool:
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS, data = json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+        if not RESPONSE.ok:
+            raise Exception()
         
         return True
 
