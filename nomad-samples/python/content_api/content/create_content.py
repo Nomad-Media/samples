@@ -22,6 +22,8 @@ def create_content(AUTH_TOKEN, CONTENT_DEFINITION_ID):
             ID = json.loads(RESPONSE.text)
             return ID
         
+        raise Exception()
+        
     except:
         api_exception_handler(RESPONSE, "Get content id failed: ")
     
