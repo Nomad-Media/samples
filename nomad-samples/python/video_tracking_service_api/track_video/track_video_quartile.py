@@ -21,7 +21,7 @@ def track_video_quartile(AUTH_TOKEN: str, ASSET_ID: str, QUARTILE: str) -> dict:
         # Send the request
         RESPONSE = requests.get(API_URL, headers= HEADERS)
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
     except:

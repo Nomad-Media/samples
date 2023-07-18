@@ -20,7 +20,7 @@ async def logout(USER_SESSION_ID, AUTH_TOKEN):
         # Send the request
         RESPONSE = requests.post(PUBLIC_URL + "/account/logout", headers= HEADERS, data = json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
         
         return True

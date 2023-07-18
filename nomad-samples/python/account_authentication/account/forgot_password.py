@@ -25,8 +25,8 @@ def forgot_password(USENAME: str, AUTH_TOKEN: str) -> None:
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         
-        if RESPONSE.status_code != 200:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+        if not RESPONSE.ok:
+            raise Exception()
           
     except:
-        raise Exception("Forgot Password Failed")
+        api_exception_handler(RESPONSE, "Forgot Password Failed")
