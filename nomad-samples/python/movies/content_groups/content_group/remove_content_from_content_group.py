@@ -21,7 +21,7 @@ def remove_content_to_content_group(AUTH_TOKEN: str, CONTENT_GROUP_ID, CONTENTS:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
         
 
         return json.loads(RESPONSE.text)

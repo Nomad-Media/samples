@@ -35,7 +35,7 @@ def forms(AUTH_TOKEN: str, ID: str, FIRST_NAME: str, LAST_NAME: str, ACTIVE: boo
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 

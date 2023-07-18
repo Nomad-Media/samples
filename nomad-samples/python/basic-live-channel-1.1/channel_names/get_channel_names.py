@@ -12,12 +12,12 @@ async def get_channel_names(AUTH_TOKEN):
     try:
         RESPONSE = requests.get(SERVER_URL + "/liveChannel/" + "", headers= HEADERS)
 
-        INFO = json.loads(RESPONSE.text)
-
         # If not found return None
         if (not RESPONSE.ok):
             raise Exception()
         
+        INFO = json.loads(RESPONSE.text)
+
         CHANNEL_NAMES = []
         for CHANNEL in INFO:
             CHANNEL_NAMES.append(CHANNEL["name"])

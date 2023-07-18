@@ -22,7 +22,7 @@ def track_video_quartile(AUTH_TOKEN: str, ASSET_ID: str, QUARTILE: str) -> dict:
         RESPONSE = requests.get(API_URL, headers= HEADERS)
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
     except:
         api_exception_handler(RESPONSE, "Tracking video with complete failed")

@@ -25,7 +25,7 @@ def get_video_tracking_alert(AUTH_TOKEN: str) -> dict:
         
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         
 
