@@ -24,7 +24,7 @@ def get_specific_video_tracking_job_manifets(AUTH_TOKEN: str) -> dict:
         # Get the response
         
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         

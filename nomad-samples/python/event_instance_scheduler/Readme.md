@@ -15,7 +15,7 @@ This walkthrough outlines how to use the sample code for the content API process
 
 ## Step 1
 
-Open the folder  samples/nomad-samples/python/content_admin_api. You should see this:
+Download the code sample from [here](https://download-directory.github.io/?url=https://github.com/Nomad-Media/samples/tree/main/nomad-samples/python/event_instance_scheduler) and unzip it. Once unzipped you should see this:
 
 ![](https://files.readme.io/cf9a948-image.png)
 
@@ -25,7 +25,7 @@ Open the folder in vscode. You should see the same file contents as above.
 
 ![](https://files.readme.io/cfcfddd-image.png)
 
-Go to event_instance.py and run the code.  It should ask for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
+Go to event_instance.py and run the code.  It will prompt you for your authentication token. To find out how to generate you authentication token go [here](https://github.com/Nomad-Media/samples/blob/main/nomad-samples/js/account-authenticaton/Readme.md). Enter your authentication token into the terminal.
 
 ![](https://files.readme.io/52e05c7-image.png)
 

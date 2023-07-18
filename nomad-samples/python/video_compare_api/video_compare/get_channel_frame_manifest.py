@@ -30,7 +30,7 @@ def get_channel_frame_manifest(AUTH_TOKEN: str) -> dict:
         # Get the response
         
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         

@@ -15,13 +15,13 @@ def get_portal_groups(AUTH_TOKEN: str, RETURNED_GROUP_NAMES: list) -> dict:
     }
     
     BODY = {
-		"returnedGroupNames": RETURNED_GROUP_NAMES
+      "returnedGroupNames": RETURNED_GROUP_NAMES
     }
 
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
     		
         return json.loads(RESPONSE.text)

@@ -46,7 +46,7 @@ async def add_input_schedule_event(AUTH_TOKEN, DATA):
         # Return JSON response
         INFO =  json.loads(RESPONSE.text)
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
         
         return INFO
