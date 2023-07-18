@@ -25,6 +25,12 @@ Then you have to bind the values to a button handler. There is a working example
 5. You can also specify which media options you support, setting these `vep-config` properties to `true`: 
 `supportSharingFacebook`, `supportSharingTwitter`, `supportSharingLinkedin`, `supportSharingEmail`. If not specified, this defaults to showing all media.
 In the example below we support all media except for twitter which is set to `false`.
+6. The share menu panel UI can be changed using these CSS variables, in the public/styles.css:
+--custom-menu-button-icon--color
+--form--submit-button-bg-color
+--form--submit-button-txt-color
+--form--field-padding
+--form--button-padding
 
 There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause` and `ended`.
 You can refer to some example screenshots in the `screenshots` folder.
