@@ -51,7 +51,7 @@ async def login(username, password):
 
         asyncio.create_task(refresh_token_task())
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
         
         return {"token": auth_token, "userSessionId": INFO["userSessionId"], "expirationSeconds": EXPIRATION_SECONDS}
