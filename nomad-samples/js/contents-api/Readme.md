@@ -60,9 +60,41 @@ On the Explorer tab on the left, right-click on contents.html and click "Open wi
 
 This will redirect you to a browser with the html page.
 
+![](https://files.readme.io/28c9314-image.png)
+
 ## Step 5
 
 Replace the localhost address (127.0.0.1) to "localhost". If done correctly, the website should remain after the change.
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/b42b99b-content.png",
+        null,
+        null
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
+
+[block:image]
+{
+  "images": [
+    {
+      "image": [
+        "https://files.readme.io/117ca25-contentlh.png",
+        null,
+        null
+      ],
+      "align": "center"
+    }
+  ]
+}
+[/block]
 
 ## Step 6
 
