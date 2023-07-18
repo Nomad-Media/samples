@@ -43,13 +43,11 @@ async def add_input_schedule_event(AUTH_TOKEN, DATA):
         # Send the request
         RESPONSE = requests.post(SERVER_URL + "/liveChannel/" + DATA["channelId"] + "/liveScheduleEvent",  headers= HEADERS, data= json.dumps(BODY))
     
-        # Return JSON response
-        INFO =  json.loads(RESPONSE.text)
-
         if not RESPONSE.ok:
             raise Exception()
         
-        return INFO
+        # Return JSON response
+        return json.loads(RESPONSE.text)
 
     except:
         await api_exception_handler(RESPONSE, "Add Input Schedule Event failed")

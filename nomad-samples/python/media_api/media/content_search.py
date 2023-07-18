@@ -35,7 +35,7 @@ def content_search(AUTH_TOKEN: str, FILTERS: list, FIELD_NAMES: list, SORT_FIELD
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 

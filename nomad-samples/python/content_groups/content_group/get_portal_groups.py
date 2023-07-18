@@ -22,7 +22,7 @@ def get_portal_groups(AUTH_TOKEN: str, RETURNED_GROUP_NAMES: list) -> dict:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
     		
         return json.loads(RESPONSE.text)
       

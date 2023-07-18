@@ -37,7 +37,7 @@ def add_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, CONTENT_D
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 

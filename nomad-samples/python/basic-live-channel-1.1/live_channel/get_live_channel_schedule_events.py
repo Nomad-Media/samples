@@ -30,12 +30,9 @@ async def get_live_channel_schedule_events(AUTH_TOKEN, CHANNEL_ID):
         # Send the request
         RESPONSE = requests.get(SERVER_URL + "/liveChannel/" + CHANNEL_ID + "/liveScheduleEvent", headers= HEADERS)
 
-        
         if not RESPONSE.ok:
             raise Exception()
         
-        
-
         return json.loads(RESPONSE.text)
 
     except:

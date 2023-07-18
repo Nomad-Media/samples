@@ -30,7 +30,7 @@ def guest_invite(AUTH_TOKEN: str) -> dict:
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
     
         return json.loads(RESPONSE.text)
     except:

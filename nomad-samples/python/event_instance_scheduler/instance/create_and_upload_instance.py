@@ -78,7 +78,7 @@ def creating_and_uploading_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DE
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 

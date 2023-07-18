@@ -39,7 +39,7 @@ def start_upload(AUTH_TOKEN: str, NAME: str, FILE: str) -> dict:
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 

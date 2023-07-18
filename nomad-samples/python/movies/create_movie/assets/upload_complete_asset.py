@@ -22,7 +22,7 @@ def upload_complete_asset(AUTH_TOKEN: str, ID: str) -> dict:
         RESPONSE = requests.post(API_URL, headers= HEADERS)
 
         if not RESPONSE.ok:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+            raise Exception()
 
         return json.loads(RESPONSE.text)
 
