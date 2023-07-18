@@ -73,16 +73,12 @@ class App extends Component {
             ref={this.handleRef}
             force-start={this.state.forceStart}
             force-pause={this.state.forcePause}
-            support-sharing="false"
-            support-sharing-facebook="false"
-            support-sharing-twitter="false"
-            support-sharing-linkedin="false"
-            support-sharing-email="false"
             vep-config='{
               "application": "Embedded",
                 "customer": "dev-05",
                 "siteName": "Dev-05",
                 "hideSidebar": true,
+                "supportSharing": true,
                 "googleTagManager": "GTM-NFWDGJB",
                 "players": [{ "format": "progressive", "player": "bitmovin" } ],
                 "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
