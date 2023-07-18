@@ -26,7 +26,7 @@ def upload_asset_part_complete(AUTH_TOKEN: str, PART_ID: str, ETAG: str) -> dict
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
     except:

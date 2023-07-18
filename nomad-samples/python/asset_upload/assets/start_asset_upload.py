@@ -39,7 +39,7 @@ async def start_upload(AUTH_TOKEN: str, NAME: str, UPLOAD_OVERWRITE_OPTION: str,
         # Send the request
         RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception("Response returned " + str(RESPONSE.status_code))
 
         return json.loads(RESPONSE.text)

@@ -35,7 +35,7 @@ async def refresh_token(REFRESH_TOKEN):
         # Get the response
         INFO = json.loads(RESPONSE.text)
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
 
         # Return the token

@@ -32,15 +32,17 @@ def get_genres(AUTH_TOKEN):
         "returnedFieldNames":["title"]
     }
 
-    # Send POST request
-    RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
+    try:
+        # Send POST request
+        RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-    # Check for success
-    if (RESPONSE.ok):
-        # Get the response
-        GENRES = RESPONSE.json()
+        # Check for success
+        if (RESPONSE.ok):
+            # Get the response
+            GENRES = RESPONSE.json()
 
-        # Return the genres
-        return GENRES
-
-    api_exception_handler(RESPONSE, "Getting genres failed")
+            # Return the genres
+            return GENRES
+        
+    except:
+        api_exception_handler(RESPONSE, "Getting genres failed")

@@ -43,17 +43,20 @@ def update_movie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENR
             "id": VIDEO_ID
         }
 
-    # Send POST request
-    RESPONSE = requests.put(API_URL, headers=HEADERS, data=json.dumps(BODY))
+    try:
+        # Send POST request
+        RESPONSE = requests.put(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-    # Check for success
-    if (RESPONSE.ok):
+        # Check for success
+        if not RESPONSE.ok:
+            raise Exception()
+
         # Get the response
         ID = RESPONSE.json()
 
         # Return the ID
         return ID
     
-
-    api_exception_handler(RESPONSE, "Create/Update movie failed")
+    except:
+        api_exception_handler(RESPONSE, "Create/Update movie failed")
 
