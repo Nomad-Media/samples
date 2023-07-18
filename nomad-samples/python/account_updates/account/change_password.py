@@ -24,8 +24,8 @@ def change_password(AUTH_TOKEN: str, CURRENT_PASSWORD: str, NEW_PASSWORD: str) -
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
         
-        if RESPONSE.status_code != 200:
-            raise Exception("Response returned " + str(RESPONSE.status_code))
+        if not RESPONSE.ok:
+            raise Exception()
 
     except:
         api_exception_handler(RESPONSE, "Change password failed")

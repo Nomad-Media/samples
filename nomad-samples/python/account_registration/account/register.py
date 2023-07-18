@@ -25,7 +25,7 @@ def register(FIRST_NAME: str, LAST_NAME: str, EMAIL: str, PASSWORD: str) -> dict
     try:
         RESPONSE = requests.post(API_URL, headers=HEADERS, data=json.dumps(BODY))
 
-        if RESPONSE.status_code != 200:
+        if not RESPONSE.ok:
             raise Exception()
         
         return json.loads(RESPONSE.text)
