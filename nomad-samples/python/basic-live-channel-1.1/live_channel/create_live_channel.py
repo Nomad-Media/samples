@@ -57,8 +57,6 @@ async def create_live_channel(AUTH_TOKEN, DATA):
         if not RESPONSE.ok:
             raise Exception()
         
-        
-
         return json.loads(RESPONSE.text)
 
     except:
