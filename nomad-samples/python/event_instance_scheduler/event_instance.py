@@ -1,11 +1,11 @@
-from instance.create_and_upload_instance import *
+from instance.create_and_update_instance import *
 from instance.delete_instance import *
 from helpers.guid_helpers import *
 from helpers.process_dates import *
 
 import json, datetime
 
-def create_and_upload_instance_main(AUTH_TOKEN):
+def create_and_update_instance_main(AUTH_TOKEN):
     try:
         ID = new_guid()
         CONTENT_ID = ""
@@ -57,7 +57,7 @@ def create_and_upload_instance_main(AUTH_TOKEN):
         
 
         print("Creating event instance")
-        INFO = creating_and_uploading_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DEFINITION_ID, 
+        INFO = create_and_update_event_instance(AUTH_TOKEN, ID, CONTENT_ID, CONTENT_DEFINITION_ID, 
                                                      INSTANCE_NAME, START_DATETIME, END_DATETIME, 
                                                      DISABLED, SERIES_OVERWRITE,
                                                      RECURRING, SERIES_DESCRIPTION, SERIES_ID, 
@@ -91,7 +91,7 @@ if __name__ == "__main__":
         USER_INPUT = input("Enter create/update, delete, or exit for each option respectively: ")
         
         if USER_INPUT == "create/update":
-            create_and_upload_instance_main(AUTH_TOKEN)
+            create_and_update_instance_main(AUTH_TOKEN)
         elif USER_INPUT == "delete":
             delete_instance_main(AUTH_TOKEN)
         elif USER_INPUT == "exit":
