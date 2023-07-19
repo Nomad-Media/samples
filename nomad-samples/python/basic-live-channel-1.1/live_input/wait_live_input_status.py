@@ -1,18 +1,9 @@
 from live_input.get_live_input_status import *
 from live_input.get_live_input_status_message import *
 
-from libraries import time
+import time
 
-'''
- * Wait for a Live Input to transition to specified status
- *
- * @param {string} AUTH_TOKEN                    | Authorization AUTH_TOKEN
- * @param {string} INPUT_ID                      | The Live Input ID for which to get the status
- * @param {LIVE_INPUT_STATUSES} STATUS_TO_WAIT_FOR   | The live Live Input status to wait for
- * @param {number} TIMEOUT                      | Timeout in seconds
- * @param {number} POLL_INTERVAL                 | Poll interval in seconds
-'''
-async def wait_for_live_input_status(AUTH_TOKEN, INPUT_ID, STATUS_TO_WAIT_FOR, TIMEOUT = 30, POLL_INTERVAL = 2):
+def wait_for_live_input_status(AUTH_TOKEN, INPUT_ID, STATUS_TO_WAIT_FOR, TIMEOUT = 30, POLL_INTERVAL = 2):
     # Check for valid parameters
     if (not AUTH_TOKEN or not INPUT_ID or not STATUS_TO_WAIT_FOR):
         raise Exception("Wait for Live Input Status: Invalid API call")
@@ -26,7 +17,7 @@ async def wait_for_live_input_status(AUTH_TOKEN, INPUT_ID, STATUS_TO_WAIT_FOR, T
 
     while (ELAPSED_TIME < TIMEOUT):
         # Get the Live Input status
-        INPUT_STATUS = await get_live_input_status(AUTH_TOKEN, INPUT_ID)
+        INPUT_STATUS = get_live_input_status(AUTH_TOKEN, INPUT_ID)
 
         # If Live Input is in STATUS_TO_WAIT_FOR return
         if (INPUT_STATUS == STATUS_TO_WAIT_FOR):
@@ -41,7 +32,7 @@ async def wait_for_live_input_status(AUTH_TOKEN, INPUT_ID, STATUS_TO_WAIT_FOR, T
         # Check for Error status
         if (INPUT_STATUS == "Error"):
             # Get the error message
-            INPUT_STATUS_MESSAGE = await get_live_input_status_message(AUTH_TOKEN, INPUT_ID)
+            INPUT_STATUS_MESSAGE = get_live_input_status_message(AUTH_TOKEN, INPUT_ID)
 
             # Can't continue if Live Input is in error status
             raise Exception("Live Input " + str(INPUT_ID) + " is in Error status: " + INPUT_STATUS_MESSAGE)

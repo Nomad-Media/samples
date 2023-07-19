@@ -4,15 +4,9 @@ from live_input.live_input_types import *
 from live_input.live_input_statuses import *
 from live_input.wait_live_input_status import *
 
-from libraries import json, requests
+import json, requests
 
-'''
- * Create or Update a Live Input
- *
- * @param {string} AUTH_TOKEN    | Authentication token
- * @param {Object} DATA         | BODY
-'''
-async def create_live_input(AUTH_TOKEN, DATA):
+def create_live_input(AUTH_TOKEN, DATA):
     # Check for valid parameters
     if (not AUTH_TOKEN or not DATA):
         raise Exception("Create Live Input: Invalid API call")
@@ -51,24 +45,21 @@ async def create_live_input(AUTH_TOKEN, DATA):
         METHOD = None
         # Send the request
         if "id" in DATA:
-            RESPONSE = requests.put(SERVER_URL + "/liveInput",  headers= HEADERS, data= json.dumps(BODY))
+            RESPONSE = requests.put(ADMIN_URL + "/liveInput",  headers= HEADERS, data= json.dumps(BODY))
             BODY["id"] = DATA["id"]
             METHOD = "PUT"
         else:
-            RESPONSE = requests.post(SERVER_URL + "/liveInput",  headers= HEADERS, data= json.dumps(BODY))
+            RESPONSE = requests.post(ADMIN_URL + "/liveInput",  headers= HEADERS, data= json.dumps(BODY))
             METHOD = "POST"
     
         # Parse JSON response
-        
+        INFO = RESPONSE.text
 
         # Wait for the Live Input to be detached if it was just created
         if (METHOD == "POST"):
-            await wait_for_live_input_status(AUTH_TOKEN, INFO["id"], LIVE_INPUT_STATUSES["Detached"], 15, 1)
+            wait_for_live_input_status(AUTH_TOKEN, INFO["id"], LIVE_INPUT_STATUSES["Detached"], 15, 1)
 
-
-        
-
-        return json.loads(RESPONSE.text)
+        return json.loads(INFO)
     except:
 
         # Handle error based on METHOD
@@ -77,5 +68,5 @@ async def create_live_input(AUTH_TOKEN, DATA):
             ERROR_METHOD = "Update"
 
 
-        await api_exception_handler(RESPONSE, ERROR_METHOD + " Live Input " + DATA["name"] + " failed")
+        api_exception_handler(RESPONSE, f"{ERROR_METHOD} Live Input {DATA['name']} failed")
 
