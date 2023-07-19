@@ -1,7 +1,7 @@
 from constants.project_constants import *
 from exceptions.api_exception_handler import *
 
-from libraries import json, requests
+import json, requests
 
 '''
  * GET Live Input
@@ -28,7 +28,7 @@ async def get_live_input(AUTH_TOKEN, INPUT_ID):
 
     try:
         # Send the request
-        RESPONSE = requests.get(SERVER_URL + "/liveInput/" + INPUT_ID, headers= HEADERS)
+        RESPONSE = requests.get(ADMIN_URL + "/liveInput/" + INPUT_ID, headers= HEADERS)
 
         
 
@@ -42,5 +42,5 @@ async def get_live_input(AUTH_TOKEN, INPUT_ID):
 
 
     except:
-        await api_exception_handler(RESPONSE, "Get Live Input with ID " + INPUT_ID + " failed")
+        await api_exception_handler(RESPONSE, f"Get Live Input with ID {INPUT_ID} failed")
 

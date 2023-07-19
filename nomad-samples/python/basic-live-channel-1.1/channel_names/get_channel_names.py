@@ -1,16 +1,16 @@
 from constants.project_constants import *
 from exceptions.api_exception_handler import *
 
-from libraries import requests, json
+import requests, json
 
-async def get_channel_names(AUTH_TOKEN):
+def get_channel_names(AUTH_TOKEN):
     HEADERS = {
         "Authorization": "Bearer " +  AUTH_TOKEN,
         "Content-Type": "application/json"
     }
 
     try:
-        RESPONSE = requests.get(SERVER_URL + "/liveChannel/" + "", headers= HEADERS)
+        RESPONSE = requests.get(f"{ADMIN_URL}/liveChannel/", headers= HEADERS)
 
         # If not found return None
         if (not RESPONSE.ok):
@@ -25,4 +25,4 @@ async def get_channel_names(AUTH_TOKEN):
         return CHANNEL_NAMES
     
     except:
-        await api_exception_handler(RESPONSE, "Search found no channels")
+        api_exception_handler(RESPONSE, "Search found no channels")

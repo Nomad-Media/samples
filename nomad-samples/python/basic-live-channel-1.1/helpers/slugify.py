@@ -1,12 +1,5 @@
-from libraries import re, unicodedata
+import re, unicodedata
 
-'''
- * Slugify
- *
- * @param {string} text
- *
- * @returns Slugify string of text
-'''
 def slugify(text):
     if (not text or len(text.strip()) == 0):
         return ""
