@@ -1,7 +1,3 @@
-'''
- * Live Channel Statuses
- *
-'''
 LIVE_CHANNEL_STATUSES = {
     "CreateFailed": "Create Failed",
     "Creating": "Creating",

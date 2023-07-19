@@ -1,7 +1,3 @@
-'''
- * Live Input Statuses
- *
-'''
 LIVE_INPUT_STATUSES = {
     "Attached": "Attached",
     "Attaching": "Attaching",

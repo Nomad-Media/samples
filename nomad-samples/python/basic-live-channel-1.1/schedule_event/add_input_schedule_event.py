@@ -2,17 +2,9 @@ from constants.system_constants import *
 from constants.project_constants import *
 from exceptions.api_exception_handler import *
 
-from libraries import json, requests
+import json, requests
 
-'''
- * Add Input Schedule Event
- *
- * @param {string} AUTH_TOKEN    | Authentication token
- * @param {Object} DATA         | BODY
- *
- * @returns JSON Object
-'''
-async def add_input_schedule_event(AUTH_TOKEN, DATA):
+def add_input_schedule_event(AUTH_TOKEN, DATA):
     # Check for valid parameters
     if (not AUTH_TOKEN or not DATA):
         raise Exception("Add Input Schedule Event: Invalid API call")
@@ -41,7 +33,7 @@ async def add_input_schedule_event(AUTH_TOKEN, DATA):
 
     try:
         # Send the request
-        RESPONSE = requests.post(SERVER_URL + "/liveChannel/" + DATA["channelId"] + "/liveScheduleEvent",  headers= HEADERS, data= json.dumps(BODY))
+        RESPONSE = requests.post(ADMIN_URL + "/liveChannel/" + DATA["channelId"] + "/liveScheduleEvent",  headers= HEADERS, data= json.dumps(BODY))
     
         if not RESPONSE.ok:
             raise Exception()
@@ -50,5 +42,5 @@ async def add_input_schedule_event(AUTH_TOKEN, DATA):
         return json.loads(RESPONSE.text)
 
     except:
-        await api_exception_handler(RESPONSE, "Add Input Schedule Event failed")
+        api_exception_handler(RESPONSE, "Add Input Schedule Event failed")
 
