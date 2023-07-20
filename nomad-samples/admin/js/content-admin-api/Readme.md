@@ -1,1 +1,1 @@
-To find out more, go to the [content admin walkthrough](https://developer.nomad-cms.com/docs/content-admin-api-javascript).
+To find out more, go to the [content admin api walkthrough](https://developer.nomad-cms.com/docs/content-admin-api-javascript).
