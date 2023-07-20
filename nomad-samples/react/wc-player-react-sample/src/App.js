@@ -52,6 +52,8 @@ class App extends Component {
   };
 
   render() {
+    const headerHeight = 40;
+
     const startBtnStyle = {
       backgroundColor: "green",
       color: "white",
@@ -63,13 +65,22 @@ class App extends Component {
       color: "white",
       margin: "10px"
     };
+    
+    const headerStyle = {
+      height: `${headerHeight}px`
+    };
+
+    const wcPlayerStyle = {
+      height: `calc(100% - ${headerHeight}px)`,
+      display: 'block'
+    }
 
     return <div className="App">
-      <div>
+      <div style={headerStyle}>
         <button style={startBtnStyle} onClick={this.onForceStart}>Play</button>
         <button style={pauseBtnStyle} onClick={this.onForcePause}>Pause</button>
       </div>
-        <wc-player
+        <wc-player style={wcPlayerStyle}
             ref={this.handleRef}
             force-start={this.state.forceStart}
             force-pause={this.state.forcePause}
