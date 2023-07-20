@@ -1,1 +1,1 @@
-To find out more, go to [content api](https://developer.nomad-cms.com/docs/content-api-javascript).
+To find out more, go to the [content api walkthrough](https://developer.nomad-cms.com/docs/content-api-javascript).
