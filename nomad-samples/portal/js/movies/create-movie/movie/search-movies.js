@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function searchMovies(AUTH_TOKEN, FILTERS, SEARCH_RESULT_FIELDS, SORT_FIELD, SORT_TYPE) {
+export default async function searchMovies(AUTH_TOKEN, PAGE_OFFSET, PAGE_SIZE, SEARCH_QUERY, FILTERS, SEARCH_RESULT_FIELDS, SORT_FIELD, SORT_TYPE, IS_ADMIN) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
@@ -30,6 +30,10 @@ export default async function searchMovies(AUTH_TOKEN, FILTERS, SEARCH_RESULT_FI
         filters: DEFAULT_FILTERS,
         SearchResultFields: SEARCH_RESULT_FIELDS
     };
+
+    if (PAGE_OFFSET !== ""){BODY["pageOffset"] == PAGE_OFFSET}    
+    if (PAGE_SIZE !== ""){BODY["pageSize"] == PAGE_SIZE}
+    if (SEARCH_QUERY !== ""){BODY["searchQuery"] == SEARCH_QUERY}
 
     if (SORT_FIELD != "")
     {
