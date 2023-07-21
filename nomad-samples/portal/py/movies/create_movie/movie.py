@@ -3,6 +3,7 @@ from assets.start_asset_upload import *
 from assets.upload_complete_asset import *
 from genre.check_genres import *
 from genre.get_genres import *
+from helpers.get_search_result import *
 from login.login import *
 from movies.create_movie import *
 from movies.delete_movie import *
@@ -64,6 +65,11 @@ def update_movie_main(AUTH_TOKEN, ID):
 
 def search_movie_main(AUTH_TOKEN):
     try:
+        PAGE_OFFSET = input("Enter page offset: ") if input("Do you want to add a page offset (y/n): ") == "y" else ""
+        PAGE_SIZE = input("Enter page size: ") if input("Do you want to add a page size (y/n): ") == "y" else ""
+
+        SEARCH_QUERY = input("Enter a search query: ") if input("Do you want to add a search query (y/n): ") == "y" else ""
+
         filterYN = True if input("Do you want to add a filter (y/n)?\n") == "y" else False
     
         FILTERS = []
@@ -82,18 +88,28 @@ def search_movie_main(AUTH_TOKEN):
 
             filterYN = True if input("Do you want to add another field (y/n)?\n") == "y" else False
 
-        FIELD_NAMES = input("Enter field names (separated by comma): ").split(",")
-        SORT_FIELDS = input("Enter field name you want to sort by: ")
-        SORT_TYPE = input("Enter the order you want to sort the field by (ascending/descending): ")
+        if input("Do you want to sort the fields (y/n): ") == "y":
+            SORT_FIELDS_NAME = input("Enter field name you want to sort by: ")
+            SORT_FIELDS_ORDER = input("Enter the order you want to sort the field by (ascending/descending): ")
+        else:
+            SORT_FIELDS_NAME = SORT_FIELDS_ORDER = ""
 
-        FIELD_LIST = []
-        for FIELD in FIELD_NAMES:
-            FIELD_DICT = {
-                "name": FIELD
-            }
-            FIELD_LIST.append(FIELD_DICT)
+        RESULT_FIELDS_YN = True if input("Do you want to enter the names of the fields you want to "\
+                                      "include in your search results (y/n)?: ") == "y" else False
 
-        SEARCH_RESULTS = search_movies(AUTH_TOKEN, FILTERS, FIELD_LIST, SORT_FIELDS, SORT_TYPE)
+        RESULT_FIELDS = []
+        if RESULT_FIELDS_YN: 
+            while True:
+                RESULT_FIELDS.append(get_search_result())
+
+                if input("Do you want to add another search result field (y/n)?: ") != "y":
+                    break
+
+        IS_ADMIN = True if input("Do you want to search by admin or portal?: ") == "admin" else False
+
+        print("Searching")
+        SEARCH_RESULTS = search_movies(AUTH_TOKEN, PAGE_OFFSET, PAGE_SIZE, SEARCH_QUERY, FILTERS, 
+                                       SORT_FIELDS_NAME, SORT_FIELDS_ORDER, RESULT_FIELDS, IS_ADMIN)
         print("Search Results: ")
         print(json.dumps(SEARCH_RESULTS, indent=4))
 
