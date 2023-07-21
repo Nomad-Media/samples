@@ -30,11 +30,15 @@ const GENRE_SELECT = document.getElementById("genreSelect");
 const GENRE_INPUT = document.getElementById("genreInput");
 const IMAGE_FILE_INPUT = document.getElementById("imageFileInput");
 const VIDEO_FILE_INPUT = document.getElementById("videoFileInput");
+const PAGE_OFFSET_INPUT = document.getElementById("pageOffsetInput");
+const PAGE_SIZE_INPUT = document.getElementById("pageSizeInput");
+const SEARCH_QUERY_INPUT = document.getElementById("searchQueryInput");
 const FILTERS_CONTAINER = document.getElementById("filtersContainer");
 const ADD_BUTTON = document.getElementById("addButton");
 const FIELD_CHECKBOX = document.getElementsByName("fieldCheckbox");
 const CONTENT_SORT_FIELD_NAME_INPUT = document.getElementById("contentSortFieldNameInput");
 const CONTENT_SORT_TYPE = document.getElementById("contentSortType");
+const IS_ADMIN = document.getElementById("isAdmin");
 const DELETE_ID_INPUT = document.getElementById("deleteIdInput");
 
 
@@ -156,11 +160,17 @@ SEARCH_MOVIES_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let returnedFieldNames = getCheckboxedFields(FIELD_CHECKBOX);
+    let pageOffset = PAGE_OFFSET_INPUT.value;
+    let pageSize = PAGE_SIZE_INPUT.value;
+    let searchQuery = SEARCH_QUERY_INPUT.value;
+    let resultFieldNames = getCheckboxedFields(FIELD_CHECKBOX);
     let fieldName = CONTENT_SORT_FIELD_NAME_INPUT.value;
     let sortType = CONTENT_SORT_TYPE.value;
+    let isAdmin;
+    IS_ADMIN.value == "admin" ? isAdmin = true : isAdmin = false
 
-    searchMoviesMain(document.querySelectorAll('input[type="field"]'), returnedFieldNames, fieldName, sortType);
+    searchMoviesMain(document.querySelectorAll('input[type="field"]'), pageOffset, pageSize, searchQuery, 
+                     resultFieldNames, fieldName, sortType, isAdmin);
 });
 
 DELETE_MOVIE_FORM.addEventListener("submit", function(event)
@@ -268,7 +278,8 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_FILE
     }
 }
 
-async function searchMoviesMain(FILTER_INPUTS, RETURNED_FIELD_NAMES, FIELD_NAME, SORT_TYPE)
+async function searchMoviesMain(FILTER_INPUTS, PAGE_OFFSET, PAGE_SIZE, SEARCH_QUERY, RESULT_FIELD_NAMES, 
+                                FIELD_NAME, SORT_TYPE, IS_ADMIN)
 {
     const TOKEN = sessionStorage.getItem("token");
 
@@ -301,7 +312,8 @@ async function searchMoviesMain(FILTER_INPUTS, RETURNED_FIELD_NAMES, FIELD_NAME,
         });
 
         console.log("Getting search result");
-        const INFO = await searchMovies(TOKEN, FILTERS, RETURNED_FIELD_NAMES, FIELD_NAME, SORT_TYPE);
+        const INFO = await searchMovies(TOKEN, PAGE_OFFSET, PAGE_SIZE, SEARCH_QUERY, FILTERS, RESULT_FIELD_NAMES, 
+                                        FIELD_NAME, SORT_TYPE, IS_ADMIN);
         console.log(JSON.stringify(INFO, null, 4));
     }
     catch (error)
