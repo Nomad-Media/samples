@@ -1,16 +1,11 @@
-import contentSearch from "./media/content-search.js";
 import mediaSearch from "./media/media-search.js";
 import forms from "./media/forms.js";
 
 const AUTH_FORM = document.getElementById("authForm");
-const CONTENT_SEARCH_FORM= document.getElementById("contentSearchForm");
 const MEDIA_SEARCH_FORM= document.getElementById("mediaSearchForm");
 const FORM_FORM= document.getElementById("formForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
-const RETURNED_FIELD_NAMES_INPUT = document.getElementById("returnedFieldNamesInput");
-const CONTENT_SORT_FIELD_NAME_INPUT = document.getElementById("contentSortFieldNameInput");
-const CONTENT_SORT_TYPE = document.getElementById("contentSortType");
 const SEARCH_QUERY_INPUT = document.getElementById("searchQueryInput");
 const IDS_INPUT = document.getElementById("idsInput");
 const MEDIA_SORT_FIELD_NAME_INPUT = document.getElementById("mediaSortFieldNameInput");
@@ -72,17 +67,6 @@ ADD_BUTTON.addEventListener('click', function(event)
     FILTERS_CONTAINER.appendChild(valueInput);
 });
 
-CONTENT_SEARCH_FORM.addEventListener("submit", function (event)
-{
-    event.preventDefault();
-
-    let returnedFieldNames = RETURNED_FIELD_NAMES_INPUT.value;
-    let fieldName = CONTENT_SORT_FIELD_NAME_INPUT.value;
-    let sortType = (CONTENT_SORT_TYPE.value === "Ascending" ? "Ascending" : "Descending");
-
-    contentSearchMain(document.querySelectorAll('input[type="field"]'), returnedFieldNames, fieldName, sortType);
-});
-
 MEDIA_SEARCH_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
@@ -109,46 +93,6 @@ FORM_FORM.addEventListener("submit", function (event)
 
     formsMain(firstName, lastName, active, startDate, lookupId, description, id);
 });
-
-async function contentSearchMain(INPUTS, RETURNED_FIELD_NAME, FIELD_NAME, SORT_TYPE)
-{
-    if (!sessionStorage.getItem("token"))
-    {
-        throw new Error("Authentication token: The authentication token is empty");
-    }
-
-    
-    try
-    {
-        const FILTERS = [];
-        let filtersMap = {}
-
-        INPUTS.forEach(function (input)
-        {
-            if(input.name === "fieldNameInput")
-            {
-                filtersMap.fieldName = input.value;
-            }
-            else if(input.name === "operatorInput")
-            {
-                filtersMap.operator = input.value;
-            }
-            else
-            {
-                filtersMap.values = input.value;
-                FILTERS.push(filtersMap);
-                filtersMap = {};
-            }
-        });
-        
-        const INFO = await contentSearch(sessionStorage.getItem("token"), FILTERS, RETURNED_FIELD_NAME.split(','), FIELD_NAME, SORT_TYPE);
-        console.log(JSON.stringify(INFO, null, 4));
-    }
-    catch (error)
-    {
-        throw new Error(error);
-    }
-}
 
 async function mediaSearchMain(SEARCH_QUERY, IDS, FIELD_NAME, SORT_TYPE)
 {
