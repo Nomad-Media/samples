@@ -83,6 +83,15 @@
     <h2>Search Movie</h2>
     
     <form id="searchMoviesForm">
+        <label for="pageOffsetInput">Page Offset:</label>
+        <input type="pageOffset" id="pageOffsetInput">
+
+        <label for="pageSizeInput">Page Size:</label>
+        <input type="pageSize" id="pageSizeInput">
+
+        <label for="searchQueryInput">Search Query:</label>
+        <input type="searchQuery" id="searchQueryInput">
+
         <h3>Filters</h3>
         <div id="filtersContainer">
            
@@ -91,8 +100,16 @@
         <button type="button" id="addButton">Add Filter</button>
 
         <div class="checkbox-dropdown">
-            <h3>Returned Field Names</h3>
+            <h3>Result Field Names</h3>
             <div id="checkboxList">
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="contentDefinitionId">ContentDefinitionId
+                </label>
+
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="contentDefinitionTitle">ContentDefinitionTitle
+                </label>
+
                 <label id="checkbox">
                     <input type="checkbox" name="fieldCheckbox" value="plot">Plot
                 </label>
@@ -123,8 +140,14 @@
     
         <label for="contentSortType">Sort By:</label>
         <select id="contentSortType">
-            <option value="Ascending">Ascending</option>
+            <option value="Ascending" selected>Ascending</option>
             <option value="Descending">Descending</option>
+        </select>
+
+        <label for="isAdmin">Which URL do you want to user?</label>
+        <select id="isAdmin">
+            <option value="portal" selected>Portal</option>
+            <option value="admin">Admin</option>
         </select>
 
         <br><br>
