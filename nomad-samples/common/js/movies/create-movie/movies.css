@@ -1,0 +1,60 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
+
+h1, h2, h3{
+    text-align: center;
+}
+
+form {
+    margin-top: 20px;
+    text-align: center;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+label[id="genreLabel"] {
+    margin-top: 10px;
+    display: none;
+    margin-bottom: 10px;
+}
+
+input {
+    padding: 5px;
+    width: 300px;
+}
+
+input[type="file"] {
+    text-align: center;
+}
+
+input[type="file"]::file-selector-button {
+    padding: 5px 15px;
+    background-color: #064d8e;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+
+button[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+input[type="checkbox"]
+{
+    width: 20px;
+    vertical-align: middle;
+}
