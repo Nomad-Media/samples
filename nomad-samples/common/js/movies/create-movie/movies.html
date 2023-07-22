@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Movies</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="movies.css">
+
+    <!-- JS -->
+    <script type="module" src="movies.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Movies</h1>
+
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="usernameInput">Username:</label>
+        <input type="username" id="usernameInput" required>
+        <label for="passwordInput">Password:</label>
+        <input type="password" id="passwordInput" required>
+        <br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <h2>Create/Update Movie</h2>
+    <form id="createForm">
+        <label for="typeSelect">Create or Upload:</label>
+        <select id="typeSelect">
+            <option value="create">Create</option>
+            <option value="upload">Upload</option>
+        </select>
+        <div id="updateIdDiv" hidden="true">
+            <label for="updateIdInput">Movie Id:</label>
+            <input type="updateId" id="updateIdInput">
+        </div>
+
+        <label for="titleInput">Title:</label>
+        <input type="title" id="titleInput">
+        
+        <label for="plotInput">Plot:</label>
+        <input type="plot" id="plotInput">
+
+        <label for="dateInput">Release Date:</label>
+        <input type="date" id="dateInput">
+        
+        <label for="genreSelect">Genre:</label>
+        <select id="genreSelect"></select>
+        <br><br>
+
+        <label for="genreInput" id="genreLabel">Enter Genre:</label>
+        <input type="genre" id="genreInput" hidden="true">
+
+        <label for="imageFileInput">Choose an image file to upload:</label>
+        <input type="file" id="imageFileInput">
+
+        <label for="videoFileInput">Choose a video file to upload:</label>
+        <input type="file" id="videoFileInput">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Search Movie</h2>
+    
+    <form id="searchMoviesForm">
+        <label for="pageOffsetInput">Page Offset:</label>
+        <input type="pageOffset" id="pageOffsetInput">
+
+        <label for="pageSizeInput">Page Size:</label>
+        <input type="pageSize" id="pageSizeInput">
+
+        <label for="searchQueryInput">Search Query:</label>
+        <input type="searchQuery" id="searchQueryInput">
+
+        <h3>Filters</h3>
+        <div id="filtersContainer">
+           
+        </div>
+        <br><br>
+        <button type="button" id="addButton">Add Filter</button>
+
+        <div class="checkbox-dropdown">
+            <h3>Result Field Names</h3>
+            <div id="checkboxList">
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="contentDefinitionId">ContentDefinitionId
+                </label>
+
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="contentDefinitionTitle">ContentDefinitionTitle
+                </label>
+
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="plot">Plot
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="genre">Genre
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="releaseDate">Release Date
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="image">Image
+                </label>
+            
+                <label id="checkbox">
+                    <input type="checkbox" name="fieldCheckbox" value="movieFile">Movies
+                </label>
+            </div>
+        </div>
+     </div>
+
+
+        <h3>Sort Fields</h3>
+        <label for="contentSortFieldNameInput">Field Name:</label>
+        <input type="contentSortFieldName" id="contentSortFieldNameInput">
+    
+        <label for="contentSortType">Sort By:</label>
+        <select id="contentSortType">
+            <option value="Ascending" selected>Ascending</option>
+            <option value="Descending">Descending</option>
+        </select>
+
+        <label for="isAdmin">Which URL do you want to user?</label>
+        <select id="isAdmin">
+            <option value="portal" selected>Portal</option>
+            <option value="admin">Admin</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+    
+    <h2>Get Movie</h2>
+    <form id="getMovieByIdForm">
+        <label for="getIdInput">Movie Id:</label>
+        <input type="getId" id="getIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Delete Movie</h2>
+    <form id="deleteMovieForm">
+        <label for="deleteIdInput">Movie Id:</label>
+        <input type="deleteId" id="deleteIdInput">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
