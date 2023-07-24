@@ -77,6 +77,7 @@ Example usage of wc-player:
                   "streams": [
                     {
                       "streamUrl": "stream URL goes here",
+                      "title": "stream title goes here",
                       "autoplay": true
                     }
                   ]
