@@ -79,6 +79,7 @@ class App extends Component {
                 "siteName": "Dev-05",
                 "hideSidebar": true,
                 "supportSharing": true,
+                "skipGtmSeek": true,
                 "googleTagManager": "GTM-NFWDGJB",
                 "players": [{ "format": "progressive", "player": "bitmovin" } ],
                 "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
