@@ -6,14 +6,20 @@ const REGISTER_FORM = document.getElementById("registerForm");
 const VERIFY_FORM = document.getElementById("tokenForm");
 const RESEND_FORM = document.getElementById("resendForm");
 
-const EMAIL_INPUT = document.getElementById("emailInput")
-const TOKEN_INPUT = document.getElementById("tokenInput")
+const EMAIL_INPUT = document.getElementById("emailInput");
+const FIRST_NAME_INPUT = document.getElementById("firstNameInput");
+const LAST_NAME_INPUT = document.getElementById("lastNameInput");
+const PASSWORD_INPUT = document.getElementById("passwordInput");
+const TOKEN_INPUT = document.getElementById("tokenInput");
 
 REGISTER_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
     let email = EMAIL_INPUT.value;
-    registerUser(email);
+    let firstName = FIRST_NAME_INPUT.value;
+    let lastName = LAST_NAME_INPUT.value;
+    let password = PASSWORD_INPUT.value;
+    registerUser(email, firstName, lastName, password);
 });
 
 
@@ -33,16 +39,11 @@ RESEND_FORM.addEventListener("submit", function (event)
     resendCodeUser(email);
 });
 
-async function registerUser(EMAIL) 
+async function registerUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD) 
 {
-    if (!EMAIL) 
-    {
-        throw new Error("Email: The email is invalid");
-    }
-
     try {
         console.log("Starting Registration process");
-        await register(EMAIL);
+        await register(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD);
         console.log("An email has been sent to you with a 6 digit code");
     } catch (error) {
         throw new Error("Register user failed");
