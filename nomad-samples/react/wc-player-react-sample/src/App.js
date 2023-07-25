@@ -89,7 +89,7 @@ class App extends Component {
                 "siteName": "Dev-05",
                 "hideSidebar": true,
                 "supportSharing": true,
-                "googleTagManager": "GTM-NFWDGJB",
+                "googleTagManager": "GTM-5K22WWM",
                 "players": [{ "format": "progressive", "player": "bitmovin" } ],
                 "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
                 "bitmovinLicenseKey": "f507de7a-720a-4b61-9698-94dc4a014479",
@@ -101,6 +101,7 @@ class App extends Component {
                     "streams": [
                       {
                         "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+                        "title": "Test Video 1",
                         "autoplay": true
                       }
                     ]
