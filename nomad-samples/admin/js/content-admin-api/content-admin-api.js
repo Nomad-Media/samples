@@ -1,4 +1,3 @@
-import addContentDefinition from "./content/create-content-definition.js";
 import addCustomProperties from "./content/add-custom-properties.js";
 import addRelatedContent from "./content/add-related-content.js";
 import addTagOrCollection from "./content/add-tag-or-collection.js";
