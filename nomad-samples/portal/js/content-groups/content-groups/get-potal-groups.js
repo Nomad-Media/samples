@@ -1,3 +1,6 @@
+import * as prjConstants from "../constants/project-constants.js";
+import apiExceptionHandler from "../exceptions/api-exception-handler.js";
+
 export default async function getPortalGroups(authToken, PORTAL_GROUPS) 
 {
 		// Create header for the request
@@ -10,7 +13,7 @@ export default async function getPortalGroups(authToken, PORTAL_GROUPS)
     }
   
   	// Post
-    const RESPONSE = await fetch(`${portalApiUrl}/portal/groups`, {
+    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/portal/groups`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
@@ -27,5 +30,5 @@ export default async function getPortalGroups(authToken, PORTAL_GROUPS)
     }
 		
   	// There was an error
-    return undefined;
+    await apiExceptionHandler(RESPONSE, "Failed to remove content from content group");
 }

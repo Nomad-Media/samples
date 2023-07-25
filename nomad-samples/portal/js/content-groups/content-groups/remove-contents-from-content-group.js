@@ -28,5 +28,5 @@ export default async function removeContentFromContentGroup(AUTH_TOKEN, CONTENT_
     }
 		
   	// There was an error
-    apiExceptionHandler(RESPONSE, "Failed to remove content from content group");
+    await apiExceptionHandler(RESPONSE, "Failed to remove content from content group");
 }

@@ -1,18 +1,17 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function createMovieGroup(AUTH_TOKEN, NAME) 
+export default async function stopSharingContentGroupWithUsers(AUTH_TOKEN, CONTENT_GROUP_ID, USER_IDS)
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
-    const BODY = {};
-    if (NAME != "") BODY.name = NAME;
+    const BODY = USER_IDS;
 
     // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/contentgroup`, {
+    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/contentgroup/stopshare/${CONTENT_GROUP_ID}`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
@@ -27,7 +26,8 @@ export default async function createMovieGroup(AUTH_TOKEN, NAME)
 
         return INFO;
     }
-		
-  	// There was an error
-    await apiExceptionHandler(RESPONSE, "Failed to create movie group");
+
+    // There was an error
+    await apiExceptionHandler(RESPONSE, "Stop sharing content group with users failed");
 }
+
