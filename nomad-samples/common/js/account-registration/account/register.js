@@ -1,17 +1,17 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function register(EMAIL) 
+export default async function register(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD) 
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     
   	const BODY = {
-        firstName: "Test",
-        lastName: "Account",
+        firstName: FIRST_NAME,
+        lastName: LAST_NAME,
         email: EMAIL,
-        password: "Securepass$$23hh"
+        password: PASSWORD
     };
   
   // Post
