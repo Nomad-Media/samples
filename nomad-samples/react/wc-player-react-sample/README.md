@@ -32,6 +32,7 @@ In the example below we support all media except for twitter which is set to `fa
 --form--submit-button-txt-color
 --form--field-padding
 --form--button-padding
+8. There is an option to enable debug mode and see some internal logs about the player. Just add the `debug-mode` attribute to the `wc-player`.
 
 There is a `playerEventsChanges` event thrown by the wc-player that has a certain type. Here is the current event type list: `sourceloaded`, `play`, `pause` and `ended`.
 You can refer to some example screenshots in the `screenshots` folder.
