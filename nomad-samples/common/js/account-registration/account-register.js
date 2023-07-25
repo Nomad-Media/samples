@@ -41,11 +41,6 @@ RESEND_FORM.addEventListener("submit", function (event)
 
 async function registerUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD) 
 {
-    if (!EMAIL) 
-    {
-        throw new Error("Email: The email is invalid");
-    }
-
     try {
         console.log("Starting Registration process");
         await register(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD);
