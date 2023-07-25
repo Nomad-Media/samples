@@ -1,7 +1,8 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function searchMovies(AUTH_TOKEN, PAGE_OFFSET, PAGE_SIZE, SEARCH_QUERY, FILTERS, SEARCH_RESULT_FIELDS, SORT_FIELD, SORT_TYPE, IS_ADMIN) {
+export default async function searchMovies(AUTH_TOKEN, PAGE_OFFSET, PAGE_SIZE, SEARCH_QUERY, FILTERS, SEARCH_RESULT_FIELDS, SORT_FIELD, SORT_TYPE, IS_ADMIN) 
+{
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
