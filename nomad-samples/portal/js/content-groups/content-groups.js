@@ -6,6 +6,8 @@ import getContentGroups from "./content-groups/get-content-groups.js";
 import getPortalGroups from "./content-groups/get-potal-groups.js";
 import removeContentFromContentGroup from "./content-groups/remove-contents-from-content-group.js";
 import renameContentGroup from "./content-groups/rename-content-group.js";
+import shareContentGroupWithUsers from "./content-groups/share-content-group-with-users.js";
+import stopSharingContentGroupWithUsers from "./content-groups/stop-sharing-content-group-with-users.js";
 
 const AUTH_FORM = document.getElementById("authForm");
 const GET_GROUP_FORM = document.getElementById("getGroupForm");
@@ -14,6 +16,8 @@ const CREATE_FORM = document.getElementById("createForm");
 const ADD_FORM = document.getElementById("addForm");
 const REMOVE_FORM = document.getElementById("removeForm");
 const RENAME_FORM = document.getElementById("renameForm");
+const SHARE_FORM = document.getElementById("shareForm");
+const STOP_SHARING_FORM = document.getElementById("stopSharingForm");
 const PORTAL_FORM = document.getElementById("portalForm");
 const DELETE_FORM = document.getElementById("deleteForm");
 
@@ -26,6 +30,10 @@ const REMOVE_INPUT = document.getElementById("removeInput");
 const REMOVE_CONTENT_INPUT = document.getElementById("removeContentInput");
 const RENAME_GROUP_ID_INPUT = document.getElementById("renameInput");
 const RENAME_GROUP_INPUT = document.getElementById("renameGroupInput");
+const SHARE_ID_INPUT = document.getElementById("shareIdInput");
+const SHARE_USERS_INPUT = document.getElementById("shareUsersInput");
+const STOP_SHARING_ID_INPUT = document.getElementById("stopSharingIdInput");
+const STOP_SHARING_USERS_INPUT = document.getElementById("stopSharingUsersInput");
 const PORTAL_GROUP_INPUT = document.getElementById("portalGroupInput");
 const DELETE_INPUT = document.getElementById("deleteInput");
 
@@ -90,6 +98,26 @@ RENAME_FORM.addEventListener("submit", function (event)
     let renameGroup = RENAME_GROUP_INPUT.value;
 
     renameContentGroupMain(contentGroupId, renameGroup);
+});
+
+SHARE_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let id = SHARE_ID_INPUT.value;
+    let users = SHARE_USERS_INPUT.value;
+
+    shareContentGroupWithUsersMain(id, users);
+});
+
+STOP_SHARING_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let id = STOP_SHARING_ID_INPUT.value;
+    let users = STOP_SHARING_USERS_INPUT.value;
+
+    stopSharingContentGroupWithUsersMain(id, users);
 });
 
 PORTAL_FORM.addEventListener("submit", function (event)
@@ -216,6 +244,44 @@ async function renameContentGroupMain(CONTENT_GROUP, NAME)
     {
         console.log("Renaming content groups");
         const CONTENT_GROUPS = await renameContentGroup(sessionStorage.getItem("token"), CONTENT_GROUP, NAME);
+        console.log(JSON.stringify(CONTENT_GROUPS, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function shareContentGroupWithUsersMain(CONTENT_GROUP, USERS)
+{
+    if (!sessionStorage.getItem("token"))
+    {
+        throw new Error("Authentication token: The authentication token is empty");
+    }
+
+    try
+    {
+        console.log("Sharing content groups");
+        const CONTENT_GROUPS = await shareContentGroupWithUsers(sessionStorage.getItem("token"), CONTENT_GROUP, USERS.split(","));
+        console.log(JSON.stringify(CONTENT_GROUPS, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function stopSharingContentGroupWithUsersMain(CONTENT_GROUP, USERS)
+{
+    if (!sessionStorage.getItem("token"))
+    {
+        throw new Error("Authentication token: The authentication token is empty");
+    }
+
+    try
+    {
+        console.log("Stop sharing content groups");
+        const CONTENT_GROUPS = await stopSharingContentGroupWithUsers(sessionStorage.getItem("token"), CONTENT_GROUP, USERS.split(","));
         console.log(JSON.stringify(CONTENT_GROUPS, null, 4));
     }
     catch (error)
