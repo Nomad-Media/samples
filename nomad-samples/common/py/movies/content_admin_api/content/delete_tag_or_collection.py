@@ -23,7 +23,7 @@ def delete_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, TAG_ID
             {
                 "contentDefinition": CONTENT_DEFINITION,
                 "contentId": CONTENT_ID,
-                "tagId": TAG_ID
+                f"{TYPE}Id": TAG_ID
             }
         ]
     }

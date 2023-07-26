@@ -30,7 +30,7 @@ def add_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, CONTENT_D
     }
 
     if TAG_ID != "":
-        BODY["items"]["tagId"] = TAG_ID
+        BODY["items"][0][f"{TYPE}Id"] = TAG_ID
 
     try:
         # Send the request
