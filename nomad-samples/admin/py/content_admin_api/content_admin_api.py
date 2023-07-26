@@ -3,8 +3,6 @@ from content.add_related_content import *
 from content.add_tag_or_collection import *
 from content.delete_related_content import *
 from content.delete_tag_or_collection import *
-from content.create_content_definition import *
-from content.update_content_definition import *
 
 import json
 
@@ -80,21 +78,6 @@ def add_custom_properties_main(AUTH_TOKEN):
     except:
         raise Exception()
 
-def create_content_definition_main(AUTH_TOKEN):
-    try:
-        print("Getting content definition")
-        CONTENT_DEFINITION_INFO = create_content_definition(AUTH_TOKEN)
-        print(json.dumps(CONTENT_DEFINITION_INFO, indent = 4))
-    except:
-        raise Exception()
-
-def update_content_definition_main(AUTH_TOKEN):
-    try:
-        print("Updating content defintion")
-        UPDATED_CONTENT_DEFINTION_INFO = update_content_definition(AUTH_TOKEN)
-        print(json.dumps(UPDATED_CONTENT_DEFINTION_INFO, indent=4))
-    except:
-        raise Exception()
 
 if __name__ == "__main__":
     AUTH_TOKEN = input("Enter your authentication token: ")
@@ -116,12 +99,6 @@ if __name__ == "__main__":
         elif USER_INPUT == "delete related":
             delete_related_content_main(AUTH_TOKEN)
         elif USER_INPUT == "add custom":
-            add_custom_properties_main(AUTH_TOKEN)
-        elif USER_INPUT == "create def":
-            create_content_definition_main(AUTH_TOKEN)
-        elif USER_INPUT == "update def":
-            update_content_definition_main(AUTH_TOKEN)
-        elif USER_INPUT == "exit":
             break
         else:
             print("Input incorrect")
