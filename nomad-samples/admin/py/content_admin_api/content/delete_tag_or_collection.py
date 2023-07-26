@@ -3,13 +3,13 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def delete_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, TAG_ID: str, CONTENT_DEFINITION: str) -> dict:
+def delete_tag_or_collection(AUTH_TOKEN: str, TYPE: str, TAG_ID: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
-    API_URL = ADMIN_API_URL + "/admin/" + TYPE + "/content/delete"
+    API_URL = f"{ADMIN_API_URL}/admin/{TYPE}/{TAG_ID}"
         
     # Create header for the request
     HEADERS = {
@@ -17,20 +17,9 @@ def delete_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, TAG_ID
         "Content-Type": "application/json"
     }
 
-    # Build the payload BODY
-    BODY = {
-        "items": [
-            {
-                "contentDefinition": CONTENT_DEFINITION,
-                "contentId": CONTENT_ID,
-                "tagId": TAG_ID
-            }
-        ]
-    }
-
     try:
         # Send the request
-        RESPONSE = requests.post(API_URL, headers= HEADERS, data= json.dumps(BODY))
+        RESPONSE = requests.delete(API_URL, headers= HEADERS)
 
         if not RESPONSE.ok:
             raise Exception()
