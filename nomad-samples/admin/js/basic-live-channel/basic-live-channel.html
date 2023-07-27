@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Basic Live Channel</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Sweet Alert 2 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="basic-live-channel.css" />
+
+    <!-- JS -->
+    <script type="module" src="basic-live-channel.js" defer></script>
+</head>
+
+<body>
+    <h1>Basic Live Channel</h1>
+
+    <form id="authForm">
+        <label for="authInput">Authentication Token:</label>
+        <input type="auth" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Live Channel</h3>
+    <form id="createChannelForm">
+        <label for="createChannelNameInput">Channel Name:</label>
+        <input type="createChannelName" id="createChannelNameInput" required>
+
+        <label for="channelTypeInput">Channel Type:</label>
+        <select id="channelTypeInput">
+            <option value="External">External</option>
+            <option value="IVS">IVS</option>
+            <option value="Normal">Normal</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Live Input</h3>
+    <form id="createInputForm">
+        <label for="createInputNameInput">Input Name:</label>
+        <input type="createInputName" id="createInputNameInput" required>
+
+        <label for="createInputSourceUrlInput">Source URL:</label>
+        <input type="createInputSourceUrl" id="createInputSourceUrlInput" required>
+
+        <label for="SourceTypeInput">Source Type:</label>
+        <select id="SourceTypeInput">
+            <option value="RTMP_PULL">RTMP_PULL</option>
+            <option value="RTMP_PUSH">PTMP_PUSH</option>
+            <option value="RTP_PUSH">RTP_PUSH</option>
+            <option value="URL_PULL">URL_PULL</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Live Channel</h3>
+    <form id="startChannelForm">
+        <label for="startChannelIdInput">Channel Id:</label>
+        <input type="startChannelId" id="startChannelIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Stop Live Channel</h3>
+    <form id="stopChannelForm">
+        <label for="stopChannelIdInput">Channel Id:</label>
+        <input type="stopChannelId" id="stopChannelIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Live Input to Live Channel</h3>
+    <form id="addForm">
+        <label for="addChannelIdInput">Channel Id:</label>
+        <input type="addChannelId" id="addChannelIdInput" required>
+
+        <label for="addInputIdInput">Input Id:</label>
+        <input type="addInputId" id="addInputIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Remove Live Input from Live Channel</h3>
+    <form id="removeForm">
+        <label for="removeChannelIdInput">Channel Id:</label>
+        <input type="removeChannelId" id="removeChannelIdInput" required>
+
+        <label for="removeInputIdInput">Input Id:</label>
+        <input type="removeInputId" id="removeInputIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Live Channel</h3>
+    <form id="deleteChannelForm">
+        <label for="deleteChannelIdInput">Channel Id:</label>
+        <input type="deleteChannelId" id="deleteChannelIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Live Input</h3>
+    <form id="deleteInputForm">
+        <label for="deleteInputIdInput">Input Id:</label>
+        <input type="deleteInputId" id="deleteInputIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+
+</html>

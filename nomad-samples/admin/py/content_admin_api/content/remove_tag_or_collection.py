@@ -3,13 +3,13 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def add_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, CONTENT_DEFINITION: str, NAME: str, TAG_ID: str, CREATE_NEW: bool) -> dict:
+def remove_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, TAG_ID: str, CONTENT_DEFINITION: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
-    API_URL = ADMIN_API_URL + "/admin/" + TYPE + "/content"
+    API_URL = f"{ADMIN_API_URL}/admin/{TYPE}/content/delete"
         
     # Create header for the request
     HEADERS = {
@@ -23,14 +23,10 @@ def add_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, CONTENT_D
             {
                 "contentDefinition": CONTENT_DEFINITION,
                 "contentId": CONTENT_ID,
-                "name": NAME,
-                "createNew": CREATE_NEW
+                f"{TYPE}Id": TAG_ID
             }
         ]
     }
-
-    if TAG_ID != "":
-        BODY["items"][0][f"{TYPE}Id"] = TAG_ID
 
     try:
         # Send the request
@@ -42,5 +38,5 @@ def add_tag_or_collection(AUTH_TOKEN: str, TYPE: str, CONTENT_ID: str, CONTENT_D
         return json.loads(RESPONSE.text)
 
     except:
-        api_exception_handler(RESPONSE, "add tag or collection failed")
+        api_exception_handler(RESPONSE, "delete tag or colleciton failed")
 
