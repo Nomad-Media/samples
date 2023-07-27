@@ -1,31 +1,27 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function addTagOrCollection(AUTH_TOKEN, TYPE, CONTENT_ID, TAG_ID, CONTENT_DEFINITION, TAG_NAME, CREATE_NEW) 
+export default async function removeTagOrCollection(AUTH_TOKEN, TYPE, CONTENT_ID, TAG_ID, CONTENT_DEFINITION) 
 {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
-
+  
     const BODY = {
         items: [
             {
                 contentDefinition: CONTENT_DEFINITION,
-                contentId: CONTENT_ID,
-                name: TAG_NAME,
-                createNew: CREATE_NEW
+                contentId: CONTENT_ID
             }
         ]
     };
 
-    if (TAG_ID)
-    {
-        BODY.items[0][`${TYPE}Id`] = TAG_ID;
-    }
+    BODY.items[0][`${TYPE}Id`] = TAG_ID;
+    
 
     // Post
-    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/admin/${TYPE}/content`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/admin/${TYPE}/content/delete`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
@@ -42,5 +38,5 @@ export default async function addTagOrCollection(AUTH_TOKEN, TYPE, CONTENT_ID, T
     }
 		
   	// There was an error
-    await apiExceptionHandler(RESPONSE, "Add tag or collection failed");
+    await apiExceptionHandler(RESPONSE, "Delete tag or collection failed");
 }
