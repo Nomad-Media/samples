@@ -5,8 +5,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      forceStart: false,
-      forcePause: false
+      forceStart: undefined,
+      forcePause: undefined
     };
 
     // This binding is necessary to make `this` work in the callback
