@@ -10,6 +10,12 @@ def add_input_schedule_event(AUTH_TOKEN, DATA):
         raise Exception("Add Input Schedule Event: Invalid API call")
 
 
+    # Create header for the request
+    HEADERS = {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer " + AUTH_TOKEN
+    }
+
     # Build the payload BODY
     BODY = {
         "channelId": DATA["channelId"],
@@ -19,17 +25,11 @@ def add_input_schedule_event(AUTH_TOKEN, DATA):
         },
         "liveInput": {
             "id": DATA["inputId"],
-            "description": "name"#DATA["name"]
+            "description": "name"
         },
         "previousId": DATA["previousId"]
     }
 
-
-    # Create header for the request
-    HEADERS = {
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer " + AUTH_TOKEN
-    }
 
     try:
         # Send the request
