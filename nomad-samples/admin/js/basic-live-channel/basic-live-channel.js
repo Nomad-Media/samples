@@ -7,6 +7,7 @@ import slugify from "./helpers/slugify.js";
 
 import createLiveChannel from "./live-channel/create-live-channel.js";
 import deleteLiveChannel from "./live-channel/delete-live-channel.js";
+import getLiveChannel from "./live-channel/get-live-channel.js";
 import startLiveChannel from "./live-channel/start-live-channel.js";
 import stopLiveChannel from "./live-channel/stop-live-channel.js";
 
@@ -147,7 +148,7 @@ async function createChannelMain(CREATE_CHANNEL_NAME, CHANNEL_TYPE)
             route: slugify(CREATE_CHANNEL_NAME),
             type: liveChannelTypes[CHANNEL_TYPE],
             archiveFolderAsset: {
-                "id": ARCHIVE_FOLDER_ASSET_ID 
+                "id": prjConstants.ARCHIVE_FOLDER_ASSET_ID
             }
         };
 
@@ -254,8 +255,11 @@ async function addMain(ADD_CHANNEL_ID, ADD_INPUT_ID)
 
     try
     {
+        const CHANNEL_INFO = await getLiveChannel(AUTH_TOKEN, ADD_CHANNEL_ID);
+        const PREVIOUS_ID = CHANNEL_INFO.previousId;
+
         console.log("Adding input to channel...");
-        const CHANNEL = await addInputScheduleEvent(AUTH_TOKEN, ADD_CHANNEL_ID, ADD_INPUT_ID);
+        const CHANNEL = await addInputScheduleEvent(AUTH_TOKEN, ADD_CHANNEL_ID, ADD_INPUT_ID, PREVIOUS_ID);
         console.log(JSON.stringify(CHANNEL, null, 4));
     }
     catch (error)

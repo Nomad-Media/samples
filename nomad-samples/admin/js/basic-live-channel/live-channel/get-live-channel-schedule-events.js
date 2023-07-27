@@ -24,16 +24,16 @@ export default async function getLiveChannelScheduleEvents(authToken, channelId)
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveChannel/${channelId}/liveScheduleEvent`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel/${channelId}/liveScheduleEvent`, {
         method: "GET",
         headers: HEADERS
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Return JSON response
-        return await response.json();
+        return await RESPONSE.json();
     }
 
-    await apiExceptionHandler(response, "Get Live Channel Schedule Events failed");
+    await apiExceptionHandler(RESPONSE, "Get Live Channel Schedule Events failed");
 }

@@ -24,25 +24,25 @@ export default async function getLiveInput(authToken, inputId) {
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveInput/${inputId}`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveInput/${inputId}`, {
         method: "GET",
         headers: HEADERS
     });
 
     // Check for valid response
-    if (response) {
+    if (RESPONSE) {
         // Check for success
-        if (response.ok) {
+        if (RESPONSE.ok) {
             // Return the JSON response
-            return await response.json();
+            return await RESPONSE.json();
         }
 
         // If not found return null
-        if (response.status === 404) {
+        if (RESPONSE.status === 404) {
             console.error(`Live Input with ID ${inputId} was not found`);
             return null;
         }
     }
 
-    await apiExceptionHandler(response, `Get Live Input with ID ${inputId} failed`);
+    await apiExceptionHandler(RESPONSE, `Get Live Input with ID ${inputId} failed`);
 }

@@ -20,17 +20,17 @@ export default async function startLiveChannel(authToken, channelId) {
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveChannel/${channelId}/start`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel/${channelId}/start`, {
         method: "POST",
         headers: HEADERS
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Wait for the Live Channel to be running
         await waitForLiveChannelStatus(authToken, channelId, liveChannelStatuses.Running, 120, 2);
         return;
     }
 
-    await apiExceptionHandler(response, `Start Live Channel ${channelId} failed`);
+    await apiExceptionHandler(RESPONSE, `Start Live Channel ${channelId} failed`);
 }

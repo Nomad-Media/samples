@@ -16,37 +16,39 @@ export default async function addAssetScheduleEvent(authToken, data) {
         throw new Error("Add Asset Schedule Event: Invalid API call");
     }
 
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${authToken}`);
+
     // Build the payload body
     const BODY = {
         id: data.id,
         isLoop: false,
         channelId: data.channelId,
         type: {
-            lookupId: sysConstants.VIDEO_ASSET_LOOKUP_ID
+            lookupId: sysConstants.VIDEO_ASSET_LOOKUP_ID,
+            description: "Video Asset"
         },
         asset: {
-            lookupId: data.assetId
+            lookupId: data.assetId,
+            description: "Video"
         },
         previousId: data.previousId
     };
 
-    // Create header for the request
-    const HEADERS = new Headers();
-    HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
-
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/LiveChannel/${data.channelId}/liveScheduleEvent`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/LiveChannel/${data.channelId}/liveScheduleEvent`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Return JSON response
-        return await response.json();
+        return await RESPONSE.json();
     }
 
-    await apiExceptionHandler(response, "Add Asset Schedule Event failed");
+    await apiExceptionHandler(RESPONSE, "Add Asset Schedule Event failed");
 }
