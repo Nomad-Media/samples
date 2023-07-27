@@ -3,13 +3,13 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def get_video_tracking_alert(AUTH_TOKEN: str) -> dict:
+def get_video_tracking_alert(AUTH_TOKEN: str, EXTERNAL_ID: str) -> dict:
 
     # Check for valid parameters
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
-    API_URL = VIDEO_COMPARE_API_URL + "/videocompare/tracking/manifest/" + externalId + "/getTracking"
+    API_URL = VIDEO_COMPARE_API_URL + "/videocompare/tracking/manifest/" + EXTERNAL_ID + "/getTracking"
         
     # Create header for the request
     HEADERS = {

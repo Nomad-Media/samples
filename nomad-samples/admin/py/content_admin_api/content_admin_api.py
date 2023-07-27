@@ -3,36 +3,48 @@ from content.add_related_content import *
 from content.add_tag_or_collection import *
 from content.delete_related_content import *
 from content.delete_tag_or_collection import *
-from content.create_content_definition import *
-from content.update_content_definition import *
+from content.remove_tag_or_collection import *
 
 import json
 
 def add_tag_or_collection_main(AUTH_TOKEN):
     try:
-        TYPE = input("Enter tag or collection for what type of content you want to add: ")
-        CONTENT_ID = input("Enter the content id of the tag/collection: ")
-        CONTENT_DEFINITION = input("Enter content definition of the tag/collecion: ")
-        NAME = input("Enter the name of the tag/collection: ")
-        TAG_ID = input("Enter the tag id (optional): ")
-        CREATE_NEW = input("Enter true/false for if you want to create a new tag/collection: ")
+        TYPE = "tag" if input("Enter tag or collection for what type of content you want to add: ") == "tag" else "collection"
+        CONTENT_ID = input(f"Enter the content id of the {TYPE}: ")
+        CONTENT_DEFINITION = input(f"Enter content definition of the {TYPE}: ")
+        NAME = input(f"Enter the name of the {TYPE}: ")
+        CREATE_NEW = True if input(f"Do you want to create a {TYPE} (y/n): ") == "y" else False
+        TAG_ID = input(f"Enter the {TYPE} id: ") if not CREATE_NEW else ""
         CREATE_NEW_BOOL = True if CREATE_NEW == "true" else False
 
-        print("Adding Tag/Collection")
+        print(f"Adding {TYPE}")
         TAG_INFO = add_tag_or_collection(AUTH_TOKEN, TYPE, CONTENT_ID, CONTENT_DEFINITION, NAME, TAG_ID, CREATE_NEW_BOOL)
         print(json.dumps(TAG_INFO, indent=4))
     except:
         raise Exception()
     
+
+def remove_tag_or_collection_main(AUTH_TOKEN):
+    try:
+        TYPE = "tag" if input("Enter tag or collection for what type of content you want to remove: ") == "tag" else "collection"
+        TAG_ID = input(f"Enter the {TYPE} id: ")
+        CONTENT_ID = input(f"Enter the content id of the {TYPE}: ")
+        CONTENT_DEFINITION = input(f"Enter content definition of the {TYPE}: ")
+
+        print(f"Removing {TYPE}")
+        REMOVE_TAG_INFO = remove_tag_or_collection(AUTH_TOKEN, TYPE, CONTENT_ID, TAG_ID, CONTENT_DEFINITION)
+        print(json.dumps(REMOVE_TAG_INFO, indent=4))
+    except:
+        raise Exception()
+
+
 def delete_tag_or_collection_main(AUTH_TOKEN):
     try:
-        TYPE = input("Enter tag or collection for what type of content you want to delete: ")
-        CONTENT_ID = input("Enter the content id of the tag/collection: ")
-        TAG_ID = input("Enter the tag id (optional): ")
-        CONTENT_DEFINITION = input("Enter content definition of the tag/collecion: ")
+        TYPE = "tag" if input("Enter tag or collection for what type of content you want to delete: ") == "tag" else "collection"
+        TAG_ID = input(f"Enter the {TYPE} id: ")
 
-        print("Deleting Tag")
-        DELETE_TAG_INFO = delete_tag_or_collection(AUTH_TOKEN, TYPE, CONTENT_ID, TAG_ID, CONTENT_DEFINITION)
+        print(f"Deleting {TYPE}")
+        DELETE_TAG_INFO = delete_tag_or_collection(AUTH_TOKEN, TYPE, TAG_ID)
         print(json.dumps(DELETE_TAG_INFO, indent=4))
     except:
         raise Exception()
@@ -80,35 +92,22 @@ def add_custom_properties_main(AUTH_TOKEN):
     except:
         raise Exception()
 
-def create_content_definition_main(AUTH_TOKEN):
-    try:
-        print("Getting content definition")
-        CONTENT_DEFINITION_INFO = create_content_definition(AUTH_TOKEN)
-        print(json.dumps(CONTENT_DEFINITION_INFO, indent = 4))
-    except:
-        raise Exception()
-
-def update_content_definition_main(AUTH_TOKEN):
-    try:
-        print("Updating content defintion")
-        UPDATED_CONTENT_DEFINTION_INFO = update_content_definition(AUTH_TOKEN)
-        print(json.dumps(UPDATED_CONTENT_DEFINTION_INFO, indent=4))
-    except:
-        raise Exception()
 
 if __name__ == "__main__":
     AUTH_TOKEN = input("Enter your authentication token: ")
 
     while True:
-        print("Do you want to add a tag/collection, delete a tag/collection, "\
+        print("Do you want to add a tag/collection, delete a tag/collection, remove a tag/collection, "\
               "add related content, delete related content, add custom properties, "\
               "create a content defintion, update a content definition, or exit")
-        USER_INPUT = input("Enter add tag/collection, delete tag/collection, add related, "\
-                           "delete related, add custom, create def, update def, exit "\
+        USER_INPUT = input("Enter add tag/collection, remove tag/collection, delete tag/collection, "\
+                           "add related, delete related, add custom, create def, update def, or exit "\
                            "for each option above respetively: ")
         
         if USER_INPUT == "add tag/collection":
             add_tag_or_collection_main(AUTH_TOKEN)
+        elif USER_INPUT == "remove tag/collection":
+            remove_tag_or_collection_main(AUTH_TOKEN)
         elif USER_INPUT == "delete tag/collection":
             delete_tag_or_collection_main(AUTH_TOKEN)
         elif USER_INPUT == "add related":
@@ -116,12 +115,6 @@ if __name__ == "__main__":
         elif USER_INPUT == "delete related":
             delete_related_content_main(AUTH_TOKEN)
         elif USER_INPUT == "add custom":
-            add_custom_properties_main(AUTH_TOKEN)
-        elif USER_INPUT == "create def":
-            create_content_definition_main(AUTH_TOKEN)
-        elif USER_INPUT == "update def":
-            update_content_definition_main(AUTH_TOKEN)
-        elif USER_INPUT == "exit":
             break
         else:
             print("Input incorrect")
