@@ -50,20 +50,43 @@
         <label for="addTagContentIdInput">Content Id:</label>
         <input type="addTagContentId" id="addTagContentIdInput" required>
 
-        <label for="addTagTagIdInput">Tag Id (optional):</label>
-        <input type="addTagTagId" id="addTagTagIdInput">
-
         <label for="addContentDefinitionInput">Content Definition:</label>
         <input type="addContentDefinition" id="addContentDefinitionInput" required>
         
-        <label for="tagNameInput">Tag/Collection Name:</label>
-        <input type="tagName" id="tagNameInput" required>
+        <label id="addTagNameLabel" for="addTagNameInput">Tag Name:</label>
+        <input type="addTagName" id="addTagNameInput" required>
 
         <label for="createNewInput">Create New:</label>
         <select id="createNewInput">
-            <option value="true">True</option>
+            <option value="true" selected>True</option>
             <option value="false">False</option>
         </select>
+
+        <div id="tagIdDiv" hidden>
+            <label id="addTagIdLabel" for="addTagIdInput">Tag Id:</label>
+            <input type="addTagId" id="addTagIdInput">
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Remove Tag or Collection</h2>
+    <form id="removeTagOrCollectionForm">
+        <label for="removeTagOrCollectionInput">Tag or Collection:</label>
+        <select id="removeTagOrCollectionInput">
+            <option value="tag">Tag</option>
+            <option value="collection">Collection</option>
+        </select><br><br>
+
+        <label for="removeTagContentIdInput">Content Id:</label>
+        <input type="removeTagContentId" id="removeTagContentIdInput" required>
+
+        <label id="removeTagIdLabel" for="removeTagIdInput">Tag Id:</label>
+        <input type="removeTagId" id="removeTagIdInput" required>
+
+        <label for="removeContentDefinitionInput">Content Definition:</label>
+        <input type="removeContentDefinition" id="removeContentDefinitionInput" required>
 
         <br><br>
         <button type="submit">Submit</button>
@@ -77,14 +100,8 @@
             <option value="collection">Collection</option>
         </select><br><br>
 
-        <label for="deleteTagContentIdInput">Content Id:</label>
-        <input type="deleteTagContentId" id="deleteTagContentIdInput" required>
-
-        <label for="deleteTagTagInput">Tag Id:</label>
-        <input type="deleteTagTagId" id="deleteTagTagIdInput" required>
-
-        <label for="deleteContentDefinitionInput">Content Definition:</label>
-        <input type="deleteContentDefinition" id="deleteContentDefinitionInput" required>
+        <label id="deleteTagIdLabel" for="deleteTagIdInput">Tag Id:</label>
+        <input type="deleteTagId" id="deleteTagIdInput" required>
 
         <br><br>
         <button type="submit">Submit</button>
