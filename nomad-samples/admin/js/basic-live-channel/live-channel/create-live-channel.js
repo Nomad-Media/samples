@@ -16,6 +16,11 @@ export default async function createLiveChannel(authToken, data) {
         throw new Error("Create Live Channel: Invalid API call");
     }
 
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${authToken}`);
+
     // Build the payload body
     const BODY = {
         name: data.name,
@@ -27,51 +32,28 @@ export default async function createLiveChannel(authToken, data) {
         type: { lookupId: data.type }
     };
 
-    // Default to POST to create a live channel
-    let method = "POST";
-
-    // If we have ID then set the ID and set the method to PUT to update the live channel
-    if (data.id) {
-        method = "PUT";
-        BODY.id = data.id;
-    }
-
     // Set the appropriate fields based on the channel type
     if (data.type === liveChannelTypes.External) {
-        BODY.channelId = null;
         BODY.externalUrl = data.url;
     }
 
-    // Create header for the request
-    const HEADERS = new Headers();
-    HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
-
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveChannel`, {
-        method: method,
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel`, {
+        method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Parse JSON response
-        const jsonResponse = await response.json();
+        const jsonResponse = await RESPONSE.json();
 
         // Wait for Live Channel to be idle if it was just created
-        if (method === "POST") {
-            await waitForLiveChannelStatus(authToken, jsonResponse.id, liveChannelStatuses.Idle, 120, 2);
-        }
+        await waitForLiveChannelStatus(authToken, jsonResponse.id, liveChannelStatuses.Idle, 120, 2);
 
         return jsonResponse;
     }
 
-    // Handle error based on method
-    let errorMethod = "Create";
-    if (method === "PUT") {
-        errorMethod = "Update";
-    }
-
-    await apiExceptionHandler(response, `${errorMethod} Live Channel ${data.name} failed`);
+    await apiExceptionHandler(RESPONSE, `Creating Live Channel ${data.name} failed`);
 }

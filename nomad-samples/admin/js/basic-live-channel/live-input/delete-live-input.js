@@ -22,19 +22,19 @@ export default async function deleteLiveInput(authToken, inputId) {
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveInput/${inputId}`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveInput/${inputId}`, {
         method: "DELETE",
         headers: HEADERS
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Wait for the live input to be deleted
         await waitForLiveInputStatus(authToken, inputId, liveInputStatuses.Deleted, 60, 2);
 
         // Return the JSON response
-        return await response.json();
+        return await RESPONSE.json();
     }
 
-    await apiExceptionHandler(response, `Delete Live Input ${inputId} failed`);
+    await apiExceptionHandler(RESPONSE, `Delete Live Input ${inputId} failed`);
 }
