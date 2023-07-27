@@ -21,7 +21,8 @@ def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
 
     # Create header for the request
     HEADERS = {
-        "Authorization": "Bearer " + AUTH_TOKEN
+        "Authorization": "Bearer " + AUTH_TOKEN,
+        'Content-Type': 'application/json'
     }
 
     try:

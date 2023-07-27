@@ -11,6 +11,7 @@ def stop_live_channel(AUTH_TOKEN, CHANNEL_ID):
 
     # Create header for the request
     HEADERS = {
+        "Content-Type": "application/json",
         "Authorization": "Bearer " + AUTH_TOKEN
     }
 

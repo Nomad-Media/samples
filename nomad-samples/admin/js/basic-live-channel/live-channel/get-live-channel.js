@@ -21,25 +21,24 @@ export default async function getLiveChannel(authToken, channelId) {
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveChannel/${channelId}`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel/${channelId}`, {
         method: "GET",
         headers: HEADERS
     });
 
     // Check for valid response
-    if (response) {
+    if (RESPONSE) {
         // Check for success
-        if (response.ok) {
-            // Return the JSON response
-            return await response.json();
+        if (RESPONSE.ok) {
+            return await RESPONSE.json();
         }
 
         // If not found return null
-        if (response.status === 404) {
+        if (RESPONSE.status === 404) {
             console.error(`Live Channel with ID ${channelId} was not found`);
             return null;
         }
     }
 
-    await apiExceptionHandler(response, `Get Live Channel with ID ${channelId} failed`);
+    await apiExceptionHandler(RESPONSE, `Get Live Channel with ID ${channelId} failed`);
 }
