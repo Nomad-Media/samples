@@ -16,6 +16,11 @@ export default async function createLiveInput(authToken, data) {
         throw new Error("Create Live Input: Invalid API call");
     }
 
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${authToken}`);
+
     // Build the payload body
     const BODY = {
         name: data.name,
@@ -38,45 +43,20 @@ export default async function createLiveInput(authToken, data) {
             throw new Error(`Create Live Input: Unknown Live Input Type ${data.type}`);
     }
 
-    // Default to POST to create a Live Input
-    let method = "POST";
-
-    // If we have ID then set the ID and set the method to PUT to update the Live Input
-    if (data.id) {
-        method = "PUT";
-        BODY.id = data.id;
-    }
-
-    // Create header for the request
-    const HEADERS = new Headers();
-    HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
-
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveInput`, {
-        method: method,
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveInput`, {
+        method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
     });
 
     // Check for success
-    if (response && response.ok) {
-        // Parse JSON response
-        const jsonResponse = await response.json();
+    if (RESPONSE && RESPONSE.ok) {
+        const JSON_RESPONSE = await RESPONSE.json();
 
         // Wait for the Live Input to be detached if it was just created
-        if (method === "POST") {
-            await waitForLiveInputStatus(authToken, jsonResponse.id, liveInputStatuses.Detached, 15, 1);
-        }
-
-        return jsonResponse;
+        await waitForLiveInputStatus(authToken, JSON_RESPONSE.id, liveInputStatuses.Detached, 15, 1);
     }
 
-    // Handle error based on method
-    let errorMethod = "Create";
-    if (method === "PUT") {
-        errorMethod = "Update";
-    }
-
-    await apiExceptionHandler(response, `${errorMethod} Live Input ${data.name} failed`);
+    await apiExceptionHandler(RESPONSE, `${errorMethod} Live Input ${data.name} failed`);
 }

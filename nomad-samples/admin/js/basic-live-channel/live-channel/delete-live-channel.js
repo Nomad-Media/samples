@@ -12,7 +12,8 @@ import liveChannelStatuses from "./live-channel-statuses.js";
  * @param {string} channelId        | The ID of the Live Channel to delete
  * @param {Boolean} deleteInputs    | Flag to delete Live Channel's Live Inputs or not
  */
-export default async function deleteLiveChannel(authToken, channelId, deleteInputs = false) {
+export default async function deleteLiveChannel(authToken, channelId, deleteInputs = false)
+{
     // Check for valid parameters
     if (!authToken || !channelId) {
         throw new Error("Delete Live Channel: Invalid API call");
@@ -29,13 +30,13 @@ export default async function deleteLiveChannel(authToken, channelId, deleteInpu
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveChannel/${channelId}`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel/${channelId}`, {
         method: "DELETE",
         headers: HEADERS
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Wait for the Live Channel to be deleted
         await waitForLiveChannelStatus(authToken, channelId, liveChannelStatuses.Deleted, 30, 2);
 
@@ -49,8 +50,8 @@ export default async function deleteLiveChannel(authToken, channelId, deleteInpu
         }
 
         // Return JSON response
-        return await response.json();
+        return await RESPONSE.json();
     }
 
-    await apiExceptionHandler(response, `Delete Live Channel ${channelId} failed`);
+    await apiExceptionHandler(RESPONSE, `Delete Live Channel ${channelId} failed`);
 }
