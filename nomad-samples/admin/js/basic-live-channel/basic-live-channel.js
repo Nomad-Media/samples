@@ -1,9 +1,5 @@
-import Swal from "https://cdn.jsdelivr.net/npm/sweetalert2@11.1.5/src/sweetalert2.js";
-
 import * as prjConstants from "./constants/project-constants.js";
 import * as guidHelpers from "./helpers/guid-helpers.js";
-
-import slugify from "./helpers/slugify.js";
 
 import createLiveChannel from "./live-channel/create-live-channel.js";
 import deleteLiveChannel from "./live-channel/delete-live-channel.js";
@@ -22,8 +18,9 @@ import liveInputTypes from "./live-input/live-input-types.js";
 
 const AUTH_FORM = document.getElementById("authForm");
 const CREATE_CHANNEL_FORM = document.getElementById("createChannelForm");
-const CHANNEL_TYPE_INPUT = document.getElementById("channelTypeInput");
+const UPDATE_CHANNEL_FORM = document.getElementById("updateChannelForm");
 const CREATE_INPUT_FORM = document.getElementById("createInputForm");
+const UPDATE_INPUT_FORM = document.getElementById("updateInputForm");
 const START_CHANNEL_FORM = document.getElementById("startChannelForm");
 const STOP_CHANNEL_FORM = document.getElementById("stopChannelForm");
 const ADD_FORM = document.getElementById("addForm");
@@ -33,9 +30,27 @@ const DELETE_INPUT_FORM = document.getElementById("deleteInputForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
 const CREATE_CHANNEL_NAME_INPUT = document.getElementById("createChannelNameInput");
+const CREATE_CHANNEL_THUMBNAIL_IMAGE_ID_INPUT = document.getElementById("createChannelThumbnailImageIdInput");
+const CREATE_CHANNEL_ARCHIVE_FOLDER_ASSET_ID_INPUT = document.getElementById("createChannelArchiveFolderAssetIdInput");
+const CREATE_CHANNEL_IS_SECURE_OUTPUT_INPUT = document.getElementById("createChannelIsSecureOutputInput");
+const CREATE_CHANNEL_OUTPUT_SCREENSHOTS_INPUT = document.getElementById("createChannelOutputScreenshotsInput");
+const CREATE_CHANNEL_TYPE_INPUT = document.getElementById("createChannelTypeInput");
+const CREATE_CHANNEL_URL_INPUT = document.getElementById("createChannelUrlInput");
+const UPDATE_CHANNEL_ID_INPUT = document.getElementById("updateChannelIdInput");
+const UPDATE_CHANNEL_NAME_INPUT = document.getElementById("updateChannelNameInput");
+const UPDATE_CHANNEL_THUMBNAIL_IMAGE_ID_INPUT = document.getElementById("updateChannelThumbnailImageIdInput");
+const UPDATE_CHANNEL_ARCHIVE_FOLDER_ASSET_ID_INPUT = document.getElementById("updateChannelArchiveFolderAssetIdInput");
+const UPDATE_CHANNEL_IS_SECURE_OUTPUT_INPUT = document.getElementById("updateChannelIsSecureOutputInput");
+const UPDATE_CHANNEL_OUTPUT_SCREENSHOTS_INPUT = document.getElementById("updateChannelOutputScreenshotsInput");
+const UPDATE_CHANNEL_TYPE_INPUT = document.getElementById("updateChannelTypeInput");
+const UPDATE_CHANNEL_URL_INPUT = document.getElementById("updateChannelUrlInput");
 const CREATE_INPUT_NAME_INPUT = document.getElementById("createInputNameInput");
+const CREATE_SOURCE_TYPE_INPUT = document.getElementById("createSourceTypeInput");
 const CREATE_INPUT_SOURCE_URL_INPUT = document.getElementById("createInputSourceUrlInput");
-const SOURCE_TYPE_INPUT = document.getElementById("sourceTypeInput");
+const UPDATE_INPUT_ID_INPUT = document.getElementById("updateInputIdInput");
+const UPDATE_INPUT_NAME_INPUT = document.getElementById("updateInputNameInput");
+const UPDATE_SOURCE_TYPE_INPUT = document.getElementById("updateSourceTypeInput");
+const UPDATE_INPUT_SOURCE_URL_INPUT = document.getElementById("updateInputSourceUrlInput");
 const START_CHANNEL_ID_INPUT = document.getElementById("startChannelIdInput");
 const STOP_CHANNEL_ID_INPUT = document.getElementById("stopChannelIdInput");
 const ADD_CHANNEL_ID_INPUT = document.getElementById("addChannelIdInput");
@@ -44,6 +59,11 @@ const REMOVE_CHANNEL_ID_INPUT = document.getElementById("removeChannelIdInput");
 const REMOVE_INPUT_ID_INPUT = document.getElementById("removeInputIdInput");
 const DELETE_CHANNEL_ID_INPUT = document.getElementById("deleteChannelIdInput");
 const DELETE_INPUT_ID_INPUT = document.getElementById("deleteInputIdInput");
+
+const CREATE_CHANNEL_URL_DIV = document.getElementById("createChannelUrlDiv");
+const UPDATE_CHANNEL_URL_DIV = document.getElementById("updateChannelUrlDiv");
+const CREATE_INPUT_SOURCE_URL_DIV = document.getElementById("createInputSourceUrlDiv");
+const UPDATE_INPUT_SOURCE_URL_DIV = document.getElementById("updateInputSourceUrlDiv");
 
 sessionStorage.clear();
 
@@ -54,26 +74,94 @@ AUTH_FORM.addEventListener("submit", function (event)
     console.log("Successfuly updated token");
 });
 
+CREATE_CHANNEL_TYPE_INPUT.addEventListener("change", function (event)
+{
+    event.preventDefault();
+
+    let createChannelType = CREATE_CHANNEL_TYPE_INPUT.value;
+    CREATE_CHANNEL_URL_DIV.hidden = !(createChannelType === "EXTERNAL");
+});
+
 CREATE_CHANNEL_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let createChannelName = CREATE_CHANNEL_NAME_INPUT.value;
-    let channelType = CHANNEL_TYPE_INPUT.value;
+    let name = CREATE_CHANNEL_NAME_INPUT.value;
+    let thumbnailImageId = CREATE_CHANNEL_THUMBNAIL_IMAGE_ID_INPUT.value;
+    let archiveFolderAssetId = CREATE_CHANNEL_ARCHIVE_FOLDER_ASSET_ID_INPUT.value;
+    let isSecureOutput = (CREATE_CHANNEL_IS_SECURE_OUTPUT_INPUT.value === "true");
+    let outputScreenshots = (CREATE_CHANNEL_OUTPUT_SCREENSHOTS_INPUT.value === "true");
+    let type = CREATE_CHANNEL_TYPE_INPUT.value;
+    let url = CREATE_CHANNEL_URL_INPUT.value;
 
-    createChannelMain(createChannelName, channelType);
+    createChannelMain(name, thumbnailImageId, archiveFolderAssetId, isSecureOutput, outputScreenshots, type, url);
 });
+
+UPDATE_CHANNEL_TYPE_INPUT.addEventListener("change", function (event)
+{
+    event.preventDefault();
+
+    let channelType = UPDATE_CHANNEL_TYPE_INPUT.value;
+    UPDATE_CHANNEL_URL_DIV.hidden = !(channelType === "EXTERNAL");
+});
+
+UPDATE_CHANNEL_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let id = UPDATE_CHANNEL_ID_INPUT.value;
+    let name = UPDATE_CHANNEL_NAME_INPUT.value;
+    let thumbnailImageId = UPDATE_CHANNEL_THUMBNAIL_IMAGE_ID_INPUT.value;
+    let archiveFolderAssetId = UPDATE_CHANNEL_ARCHIVE_FOLDER_ASSET_ID_INPUT.value;
+    let isSecureOutput = (UPDATE_CHANNEL_IS_SECURE_OUTPUT_INPUT.value === "true");
+    let outputScreenshots = (UPDATE_CHANNEL_OUTPUT_SCREENSHOTS_INPUT.value === "true");
+    let type = UPDATE_CHANNEL_TYPE_INPUT.value;
+    let url = UPDATE_CHANNEL_URL_INPUT.value;
+
+    updateChannelMain(id, name, thumbnailImageId, archiveFolderAssetId, isSecureOutput, outputScreenshots, 
+                      type, url);
+});
+
+CREATE_SOURCE_TYPE_INPUT.addEventListener("change", function (event) 
+{
+    event.preventDefault();
+
+    let sourceType = CREATE_SOURCE_TYPE_INPUT.value;
+    CREATE_INPUT_SOURCE_URL_DIV.hidden = !(sourceType === "RTMP_PUSH" || sourceType === "URL_PULL");
+});
+
 
 CREATE_INPUT_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let createInputName = CREATE_INPUT_NAME_INPUT.value;
-    let createInputSourceUrl = CREATE_INPUT_SOURCE_URL_INPUT.value;
-    let sourceType = SOURCE_TYPE_INPUT.value;
+    let name = CREATE_INPUT_NAME_INPUT.value;
+    let sourceUrl = CREATE_INPUT_SOURCE_URL_INPUT.value;
+    let sourceType = CREATE_SOURCE_TYPE_INPUT.value;
 
-    createInputMain(createInputName, createInputSourceUrl, sourceType);
+    createInputMain(name, sourceUrl, sourceType);
 });
+
+UPDATE_SOURCE_TYPE_INPUT.addEventListener("change", function (event)
+{
+    event.preventDefault();
+
+    let sourceType = UPDATE_SOURCE_TYPE_INPUT.value;
+    UPDATE_INPUT_SOURCE_URL_DIV.hidden = !(sourceType === "RTMP_PUSH" || sourceType === "URL_PULL");
+});
+
+UPDATE_INPUT_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let id = UPDATE_INPUT_ID_INPUT.value;
+    let name = UPDATE_INPUT_NAME_INPUT.value;
+    let sourceUrl = UPDATE_INPUT_SOURCE_URL_INPUT.value;
+    let sourceType = UPDATE_SOURCE_TYPE_INPUT.value;
+
+    updateInputMain(id, name, sourceUrl, sourceType);
+});
+
 
 START_CHANNEL_FORM.addEventListener("submit", function (event)
 {
@@ -132,7 +220,8 @@ DELETE_INPUT_FORM.addEventListener("submit", function (event)
 });
 
 
-async function createChannelMain(CREATE_CHANNEL_NAME, CHANNEL_TYPE)
+async function createChannelMain(NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, IS_SECURE_OUTPUT, 
+                                 OUTPUT_SCREENSHOTS, TYPE, URL)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -143,29 +232,14 @@ async function createChannelMain(CREATE_CHANNEL_NAME, CHANNEL_TYPE)
 
     try
     {
-        const CHANNEL_OBJECT = {
-            name: CREATE_CHANNEL_NAME,
-            route: slugify(CREATE_CHANNEL_NAME),
-            type: liveChannelTypes[CHANNEL_TYPE],
-            archiveFolderAsset: {
-                "id": prjConstants.ARCHIVE_FOLDER_ASSET_ID
-            }
-        };
-
         console.log("Creating channel...");
-        const CHANNEL = await createLiveChannel(AUTH_TOKEN, CHANNEL_OBJECT);
+        const CHANNEL = await createLiveChannel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID,
+                                                IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL);
         console.log(JSON.stringify(CHANNEL, null, 4));
 
-        const SLATE_OBJECT = {
-            id: guidHelpers.newGuid(),
-            channelId: CHANNEL.id,
-            assetId: prjConstants.SLATE_ASSET_ID,
-            previousId: null,
-        }
-
         console.log("Adding slate to Live Channel...");
-
-        const ADD_ASSET_SCHEDULE_EVENT_OBJECT = addAssetScheduleEvent(AUTH_TOKEN, SLATE_OBJECT);
+        const ADD_ASSET_SCHEDULE_EVENT_OBJECT = addAssetScheduleEvent(AUTH_TOKEN, guidHelpers.newGuid(), CHANNEL.id, 
+                                                                      prjConstants.SLATE_ASSET_ID, null);
         console.log(JSON.stringify(ADD_ASSET_SCHEDULE_EVENT_OBJECT, null, 4));
     }
     catch (error)
@@ -174,7 +248,8 @@ async function createChannelMain(CREATE_CHANNEL_NAME, CHANNEL_TYPE)
     }
 }
 
-async function createInputMain(CREATE_INPUT_NAME, CREATE_INPUT_SOURCE_URL, SOURCE_TYPE)
+async function updateChannelMain(ID, NAME,THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, IS_SECURE_OUTPUT, 
+                                 OUTPUT_SCREENSHOTS, TYPE, URL)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -185,15 +260,57 @@ async function createInputMain(CREATE_INPUT_NAME, CREATE_INPUT_SOURCE_URL, SOURC
 
     try
     {
-        const INPUT_OBJECT = {
-            name: CREATE_INPUT_NAME,
-            internalName: slugify(CREATE_INPUT_NAME),
-            source: CREATE_INPUT_SOURCE_URL,
-            type: liveInputTypes[SOURCE_TYPE]
-        };
+        console.log("Updating channel...");
+        const CHANNEL = await updateLiveChannel(AUTH_TOKEN, ID, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, 
+                                                IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL);
+        console.log(JSON.stringify(CHANNEL, null, 4));
 
+        console.log("Updating slate of Live Channel...");
+        const ASSET_SCHEDULE_EVENT_OBJECT = updateAssetScheduleEvent(AUTH_TOKEN, guidHelpers.newGuid(), 
+                                                                     CHANNEL.id, prjConstants.SLATE_ASSET_ID, null);
+        console.log(JSON.stringify(ASSET_SCHEDULE_EVENT_OBJECT, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+
+async function createInputMain(NAME, SOURCE_URL, SOURCE_TYPE)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty");
+    }
+
+    try
+    {
         console.log("Creating input...");
-        const INPUT = await createLiveInput(AUTH_TOKEN, INPUT_OBJECT);
+        const INPUT = await createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOURCE_TYPE);
+        console.log(JSON.stringify(INPUT, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function updateInputMain(ID, NAME, SOURCE_URL, SOURCE_TYPE)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty");
+    }
+
+    try
+    {
+        console.log("Updating input...");
+        const INPUT = await updateLiveInput(AUTH_TOKEN, ID, NAME, SOURCE_URL, SOURCE_TYPE);
         console.log(JSON.stringify(INPUT, null, 4));
     }
     catch (error)
