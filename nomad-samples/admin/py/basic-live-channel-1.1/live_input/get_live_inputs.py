@@ -4,11 +4,6 @@ from exceptions.api_exception_handler import *
 import json, requests
 
 def get_live_inputs(AUTH_TOKEN):
-    # Check for valid parameters
-    if (not AUTH_TOKEN):
-        raise Exception("Get Live Inputs: Invalid API call")
-
-
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
