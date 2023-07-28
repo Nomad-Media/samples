@@ -10,11 +10,6 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  * @returns JSON Object containing the requested live channel
  */
 export default async function getLiveChannel(authToken, channelId) {
-    // Check for valid parameters
-    if (!authToken || !channelId) {
-        throw new Error("Get Live Channel: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");

@@ -12,11 +12,6 @@ import sleep from "../helpers/sleep.js";
  * @param {number} pollInterval                 | Poll interval in seconds
  */
 export default async function waitForLiveInputStatus(authToken, inputId, statusToWaitFor, timeout = 30, pollInterval = 2) {
-    // Check for valid parameters
-    if (!authToken || !inputId || !statusToWaitFor) {
-        throw new Error("Wait for Live Input Status: Invalid API call");
-    }
-
     // Set the starting time
     const startingTime = new Date().getTime();
 
