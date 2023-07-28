@@ -40,17 +40,81 @@
     <h3>Create Live Channel</h3>
     <form id="createChannelForm">
         <label for="createChannelNameInput">Channel Name:</label>
-        <input type="createChannelName" id="createChannelNameInput" required>
+        <input type="createChannelName" id="createChannelNameInput">
 
-        <label for="channelTypeInput">Channel Type:</label>
-        <select id="channelTypeInput">
+        <label for="createChannelThumbnailImageIdInput">Thumbnail Image Id:</label>
+        <input type="createChannelThumbnailImageId" id="createChannelThumbnailImageIdInput">
+
+        <label for="createChannelArchiveFolderAssetIdInput">Archive Folder Asset Id:</label>
+        <input type="createChannelArchiveFolderAssetId" id="updateChannelArchiveFolderAssetIdInput"> 
+
+        <label for="createChannelIsSecureOutputInput">Is Secure Output:</label>
+        <select id="createChannelIsSecureOutputInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelIsOutputScreenshotsInput">Is Output Screenshots:</label>
+        <select id="createChannelIsOutputScreenshotsInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelTypeInput">Channel Type:</label>
+        <select id="createChannelTypeInput">
             <option value="External">External</option>
             <option value="IVS">IVS</option>
             <option value="Normal">Normal</option>
+            <option value="Realtime">Realtime</option>
         </select>
+
+        <div id="createChannelUrlDiv" hidden>
+            <label for="createChannelUrlInput">URL:</label>
+            <input type="createChannelUrl" id="updateChannelUrlInput" required>
+        </div>
 
         <br><br>
         <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Live Channel</h3>
+    <form id="updateChannelForm">
+        <label for="updateChannelIdInput">Channel Id:</label>
+        <input type="updateChannelId" id="updateChannelIdInput" required>
+
+        <label for="updateChannelNameInput">Channel Name:</label>
+        <input type="updateChannelName" id="updateChannelNameInput">
+
+        <label for="updateChannelThumbnailImageIdInput">Thumbnail Image Id:</label>
+        <input type="updateChannelThumbnailImageId" id="updateChannelThumbnailImageIdInput">
+
+        <label for="updateChannelArchiveFolderAssetIdInput">Archive Folder Asset Id:</label>
+        <input type="updateChannelArchiveFolderAssetId" id="updateChannelArchiveFolderAssetIdInput">
+
+        <label for="updateChannelIsSecureOutputInput">Is Secure Output:</label>
+        <select id="updateChannelIsSecureOutputInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelIsOutputScreenshotsInput">Is Output Screenshots:</label>
+        <select id="updateChannelIsOutputScreenshotsInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelTypeInput">Channel Type:</label>
+        <select id="updateChannelTypeInput">
+            <option value="External">External</option>
+            <option value="IVS">IVS</option>
+            <option value="Normal">Normal</option>
+            <option value="Realtime">Realtime</option>
+        </select>
+
+        <div id="updateChannelUrlDiv" hidden>
+            <label for="updateChannelUrlInput">URL:</label>
+            <input type="updateChannelUrl" id="updateChannelUrlInput" required>
+        </div>
     </form>
 
     <h3>Create Live Input</h3>
@@ -58,19 +122,46 @@
         <label for="createInputNameInput">Input Name:</label>
         <input type="createInputName" id="createInputNameInput" required>
 
-        <label for="createInputSourceUrlInput">Source URL:</label>
-        <input type="createInputSourceUrl" id="createInputSourceUrlInput" required>
+        <label for="createSourceTypeInput">Source Type:</label>
+        <select id="createSourceTypeInput">
+            <option value="RTMP_PULL">RTMP_PULL</option>
+            <option value="RTMP_PUSH">RTMP_PUSH</option>
+            <option value="RTP_PUSH">RTP_PUSH</option>
+            <option value="URL_PULL">URL_PULL</option>
+        </select>
+        
+        <div id="createInputSourceUrlDiv" hidden>
+            <label for="createInputSourceUrlInput">Source URL:</label>
+            <input type="createInputSourceUrl" id="createInputSourceUrlInput" required>
+        </div>
 
-        <label for="SourceTypeInput">Source Type:</label>
-        <select id="SourceTypeInput">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Live Input</h3>
+    <form id="updateInputForm">
+        <label for="updateInputIdInput">Input Id:</label>
+        <input type="updateInputId" id="updateInputIdInput" required>
+
+        <label for="updateInputNameInput">Input Name:</label>
+        <input type="updateInputName" id="updateInputNameInput" required>
+
+        <label for="updateInputInternalNameInput">Internal Name:</label>
+        <input type="updateInputInternalName" id="updateInputInternalNameInput" required>
+
+        <label for="updateSourceTypeInput">Source Type:</label>
+        <select id="updateSourceTypeInput">
             <option value="RTMP_PULL">RTMP_PULL</option>
             <option value="RTMP_PUSH">PTMP_PUSH</option>
             <option value="RTP_PUSH">RTP_PUSH</option>
             <option value="URL_PULL">URL_PULL</option>
         </select>
 
-        <br><br>
-        <button type="submit">Submit</button>
+        <div id="updateInputSourceUrlDiv" hidden>
+            <label for="updateInputSourceUrlInput">Source URL:</label>
+            <input type="updateInputSourceUrl" id="updateInputSourceUrlInput" required>
+        </div>
     </form>
 
     <h3>Start Live Channel</h3>
