@@ -24,38 +24,98 @@ from schedule_event.remove_input_schedule_event import *
 def create_live_channel_main(AUTH_TOKEN):
 
     try:
-        print("Starting...")
-
         # Create common random suffix for both, Live Channel and input, names
         while True:
             #test
-            CHANNEL_NAME = input("Enter Live Channel Name: ")
+            NAME = input("Enter Live Channel Name: ")
 
-            UNIQUE = check_channel_names(AUTH_TOKEN, CHANNEL_NAME)
+            UNIQUE = check_channel_names(AUTH_TOKEN, NAME)
 
             if UNIQUE:
                 break
 
-            print(f"Channel Name {CHANNEL_NAME} is already taken")
+            print(f"Channel Name {NAME} is already taken")
 
-        CHANNEL_TYPE = input("Enter the type of channel you want to create\n (External, IVS, Normal): ")
+        THUMBNAIL_IMAGE = input("Enter the thumbnail image URL: ")
+        IS_SECURE_OUTPUT = input("Do you want to enable secure output (y/n)?: ") == "y"
+        OUTPUT_SCREENSHOTS = input("Do you want to enable output screenshots (y/n)?: ") == "y"
 
+        TYPE = input("Enter the type of channel you want to create\n (External, IVS, Normal, Realtime): ")
 
-        # Create Live Channel object
-        CHANNEL_OBJECT = {
-            "name": CHANNEL_NAME,
-            "route": slugify(CHANNEL_NAME),
-            "type": LIVE_CHANNEL_TYPES[CHANNEL_TYPE],
-            "archiveFolderAsset": {
-                "id": ARCHIVE_FOLDER_ASSET_ID # NOTE: Update constant in /constants/project-constants.js with actual archive folder ID if needed
-            }
-        }
+        if TYPE == "External":
+            URL = input("Enter the URL of the channel: ")
+        else:
+            URL = None
 
         # Give feedback to the console
-        print("Creating Live Channel [" + CHANNEL_NAME + "]...")
+        print(f"Creating Live Channel [{NAME}]...")
 
         # Create the channel
-        CHANNEL_RESPONSE = create_live_channel(AUTH_TOKEN, CHANNEL_OBJECT)
+        CHANNEL_RESPONSE = create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET_ID, 
+                                               IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL)
+
+        # Check for errors
+        if CHANNEL_RESPONSE == None or not "id" in CHANNEL_RESPONSE:
+            print("Creating Channel failed")
+            raise Exception()
+
+
+        # Set the Live Channel ID
+        CHANNEL_ID = CHANNEL_RESPONSE["id"]
+
+        # Create slate asset schedule event object
+        SLATE_OBJECT = {
+            "id": new_guid(),
+            "channelId": CHANNEL_ID,
+            "assetId": SLATE_ASSET_ID, # NOTE: Update constant in /constants/project-constants.js with actual slate ID if needed
+            "previousId": None
+        }
+
+
+        # Give feedback to the console
+        print("Adding slate to the Live Channel...")
+
+        # Add slate to the channel
+        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = add_asset_schedule_event(AUTH_TOKEN, SLATE_OBJECT)
+        print(json.dumps(ADD_ASSET_SCHEDULE_EVENT_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Creating live channel failed")
+
+    
+def update_live_channel_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the channel id of the channel you want to update: ")
+
+        # Create common random suffix for both, Live Channel and input, names
+        while True:
+            #test
+            NAME = input("Enter Live Channel Name: ")
+
+            UNIQUE = check_channel_names(AUTH_TOKEN, NAME)
+
+            if UNIQUE:
+                break
+
+            print(f"Channel Name {NAME} is already taken")
+
+        THUMBNAIL_IMAGE = input("Enter the thumbnail image URL: ")
+        IS_SECURE_OUTPUT = input("Do you want to enable secure output (y/n)?: ") == "y"
+        OUTPUT_SCREENSHOTS = input("Do you want to enable output screenshots (y/n)?: ") == "y"
+
+        TYPE = input("Enter the type of channel you want to create\n (External, IVS, Normal, Realtime): ")
+
+        if TYPE == "External":
+            URL = input("Enter the URL of the channel: ")
+        else:
+            URL = None
+
+        # Give feedback to the console
+        print(f"Creating Live Channel [{NAME}]...")
+
+        # Create the channel
+        CHANNEL_RESPONSE = create_live_channel(AUTH_TOKEN, ID, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET_ID, 
+                                               IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL)
 
         # Check for errors
         if CHANNEL_RESPONSE == None or not "id" in CHANNEL_RESPONSE:
@@ -85,60 +145,83 @@ def create_live_channel_main(AUTH_TOKEN):
     except:
         raise Exception("Live Channel creation failed")
 
-    
+
 def create_live_input_main(AUTH_TOKEN):
     try:
         # Set the Live Input name
         while True:
-            INPUT_NAME = input("Enter Live Input Name: ")
+            NAME = input("Enter Live Input Name: ")
 
-            UNIQUE = check_input_names(AUTH_TOKEN, INPUT_NAME)
+            UNIQUE = check_input_names(AUTH_TOKEN, NAME)
 
             if UNIQUE:
                 break
 
-            print(f"Input Name {INPUT_NAME} is already taken")
+            print(f"Input Name {NAME} is already taken")
 
-        # Source is required
-        #while True:
-        #    USER_INPUT = input("Enter source: ")
-        #    if len(USER_INPUT.strip()) == 0:
-        #        print("The source can't be empty")
-        #    else:
-        #        SOURCE = USER_INPUT
-        #        break
-        SOURCE = "https://e80d652dc035f381411f071289929a20.p05sqb.channel-assembly.mediatailor.us-west-2.amazonaws.com/v1/channel/MyTestChannel/index.m3u8"
-        SOURCE = input("Enter Source: ")
+        TYPE = "URL_PULL"
+        print(f"Enter the type of input you want to create\n (RTMP_PULL, RTMP_PUSH, RTP_PUSH, URL_PULL): {TYPE}")
 
-        INPUT_TYPE = "URL_PULL"
-        print(f"Enter the type of input you want to create\n (RTMP_PULL, RTMP_PUSH, RTP_PUSH, URL_PULL): {INPUT_TYPE}")
-
-        # Create Live Input object
-        INPUT_OBJECT = {
-            "name": INPUT_NAME,
-            "internalName": slugify(INPUT_NAME),
-            "type": LIVE_INPUT_TYPES[INPUT_TYPE], # NOTE: Replace type if needed
-            "source": SOURCE
-        }
-
+        if TYPE == "RTMP_PUSHH" or TYPE == "URL_PULL":
+            SOURCE = "https://e80d652dc035f381411f071289929a20.p05sqb.channel-assembly.mediatailor.us-west-2.amazonaws.com/v1/channel/MyTestChannel/index.m3u8"
+            SOURCE = input("Enter Source: ")
+        else:
+            SOURCE = None
 
         # Give feedback to the console
         print("Creating Live Input...")
 
         # Create the input
-        INPUT_RESPONSE = create_live_input(AUTH_TOKEN, INPUT_OBJECT)
+        INPUT_RESPONSE = create_live_input(AUTH_TOKEN, NAME, TYPE, SOURCE)
 
         # Check for errors
         if INPUT_RESPONSE == None or not "id" in INPUT_RESPONSE:
-            print("Creating Input failed")
             raise Exception()
 
 
         # Set the Live Input ID
         INPUT_ID = INPUT_RESPONSE["id"]
     except:
-        raise Exception("Live Input creation failed")
+        raise Exception("Creating live input failed")
         
+
+def update_live_input_main(AUTH_TOKEN):
+    try:
+        # Set the Live Input name
+        while True:
+            NAME = input("Enter Live Input Name: ")
+
+            UNIQUE = check_input_names(AUTH_TOKEN, NAME)
+
+            if UNIQUE:
+                break
+
+            print(f"Input Name {NAME} is already taken")
+
+        TYPE = "URL_PULL"
+        print(f"Enter the type of input you want to create\n (RTMP_PULL, RTMP_PUSH, RTP_PUSH, URL_PULL): {TYPE}")
+
+        if TYPE == "RTMP_PUSHH" or TYPE == "URL_PULL":
+            SOURCE = input("Enter Source: ")
+        else:
+            SOURCE = None
+
+        # Give feedback to the console
+        print("Updating Live Input...")
+
+        # Create the input
+        INPUT_RESPONSE = create_live_input(AUTH_TOKEN, NAME, TYPE, SOURCE)
+
+        # Check for errors
+        if INPUT_RESPONSE == None or not "id" in INPUT_RESPONSE:
+            raise Exception()
+
+
+        # Set the Live Input ID
+        INPUT_ID = INPUT_RESPONSE["id"]
+    except:
+        raise Exception("Updating live input failed")
+
 
 def start_live_channel_main(AUTH_TOKEN):
     try:
