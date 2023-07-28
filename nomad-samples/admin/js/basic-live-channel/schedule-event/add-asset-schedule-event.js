@@ -11,11 +11,6 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  * @returns JSON Object
  */
 export default async function addAssetScheduleEvent(authToken, data) {
-    // Check for valid parameters
-    if (!authToken || !data) {
-        throw new Error("Add Asset Schedule Event: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
