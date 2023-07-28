@@ -6,7 +6,7 @@ import waitForLiveInputStatus from "./wait-live-input-status.js";
 import slugify from "../helpers/slugify.js";
 
 
-export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOURCE_TYPE) {
+export default async function createLiveInput(AUTH_TOKEN, ID, NAME, SOURCE_URL, SOURCE_TYPE) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
@@ -14,10 +14,15 @@ export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOUR
 
     // Build the payload body
     const BODY = {
-        name: NAME,
-        internalName: slugify(NAME),
-        type: { id: SOURCE_TYPE }
+        id: ID
     };
+
+    if (NAME !== "")
+    {
+         BODY.name = NAME;
+        BODY.internalName = slugify(NAME);
+    }
+    if (SOURCE_TYPE !== "") BODY.type = { id: SOURCE_TYPE };
 
     // Set the appropriate fields based on the type
     switch (data.type) {
@@ -27,8 +32,7 @@ export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOUR
             break;
         case liveInputTypes.RTMP_PULL:
         case liveInputTypes.URL_PULL:
-            BODY.sources = [];
-            BODY.sources.push({ url: `${SOURCE_URL}` });
+            if (SOURCE_URL !== "") BODY.sources = ([{ url: `${SOURCE_URL}` }]);
             break;
         default:
             throw new Error(`Create Live Input: Unknown Live Input Type ${data.type}`);
