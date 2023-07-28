@@ -7,11 +7,6 @@ import getLiveInput from "./get-live-input.js";
  * @param {string} inputId      | The input ID for which to get the status
  */
 export default async function getLiveInputStatus(authToken, inputId) {
-    // Check for valid parameters
-    if (!authToken || !inputId) {
-        throw new Error("Get Live Input Status: Invalid API call");
-    }
-
     // Get the live input
     const input = await getLiveInput(authToken, inputId);
 

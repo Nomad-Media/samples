@@ -10,11 +10,6 @@ import waitForLiveChannelStatus from "./wait-live-channel-status.js";
  * @param {string} channelId    | The ID of the channel to stop
  */
 export default async function stopLiveChannel(authToken, channelId) {
-    // Check for valid parameters
-    if (!authToken || !channelId) {
-        throw new Error("Stop Live Channel: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Authorization", `Bearer ${authToken}`);

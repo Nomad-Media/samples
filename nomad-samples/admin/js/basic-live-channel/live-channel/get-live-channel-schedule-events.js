@@ -13,11 +13,6 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  * @returns {Object} containing list of live schedule events
  */
 export default async function getLiveChannelScheduleEvents(authToken, channelId) {
-    // Check for valid parameters
-    if (!authToken || !channelId) {
-        throw new Error("Get Live Schedule Events: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
