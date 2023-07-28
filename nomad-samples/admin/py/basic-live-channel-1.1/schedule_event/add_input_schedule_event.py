@@ -5,11 +5,6 @@ from exceptions.api_exception_handler import *
 import json, requests
 
 def add_input_schedule_event(AUTH_TOKEN, DATA):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not DATA):
-        raise Exception("Add Input Schedule Event: Invalid API call")
-
-
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
