@@ -6,11 +6,6 @@ from live_input.wait_live_input_status import *
 import json, requests
 
 def delete_live_input(AUTH_TOKEN, INPUT_ID):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not INPUT_ID):
-        raise Exception("Delete Live Input: Invalid API call")
-
-
     # Create header for the request
     HEADERS = {
         "Authorization": "Bearer " + AUTH_TOKEN

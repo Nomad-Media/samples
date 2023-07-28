@@ -4,11 +4,6 @@ from live_input.get_live_input_status_message import *
 import time
 
 def wait_for_live_input_status(AUTH_TOKEN, INPUT_ID, STATUS_TO_WAIT_FOR, TIMEOUT = 30, POLL_INTERVAL = 2):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not INPUT_ID or not STATUS_TO_WAIT_FOR):
-        raise Exception("Wait for Live Input Status: Invalid API call")
-
-
     # Set the starting time
     STARTING_TIME = time.time()
 
