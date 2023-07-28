@@ -5,7 +5,7 @@ import waitForLiveChannelStatus from "./wait-live-channel-status.js";
 import liveChannelTypes from "./live-channel-types.js";
 import slugify from "../helpers/slugify.js";
 
-export default async function createLiveChannel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID,
+export default async function updateLiveChannel(AUTH_TOKEN, ID, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID,
                                                 IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL) 
 {
     // Create header for the request
@@ -15,26 +15,24 @@ export default async function createLiveChannel(AUTH_TOKEN, NAME, THUMBNAIL_IMAG
 
     // Build the payload body
     const BODY = {
-        name: NAME,
-        routeName: slugify(NAME),
-        thumbnailImage: { id: THUMBNAIL_IMAGE_ID },
+        id: ID,
         isSecureOutput: IS_SECURE_OUTPUT,
-        outputScreenshots: OUTPUT_SCREENSHOTS,
-        type: { id: TYPE }
+        outputScreenshots: OUTPUT_SCREENSHOTS
     };
 
-    if (ARCHIVE_FOLDER_ASSET_ID === "")
+    if (NAME !== "")
     {
-        BODY.archiveFolderAsset = { id: prjConstants.ARCHIVE_FOLDER_ASSET_ID }
+        BODY.name = NAME;
+        BODY.routeName = slugify(NAME);
     }
-    else
-    {
-        BODY.archiveFolderAsset = ARCHIVE_FOLDER_ASSET_ID;
-    }
+    if (THUMBNAIL_IMAGE_ID !== "") BODY.thumbnailImage = { id: THUMBNAIL_IMAGE_ID };
+    if (ARCHIVE_FOLDER_ASSET_ID !== "") BODY.archiveFolderAsset = { id: ARCHIVE_FOLDER_ASSET_ID };
+    if (TYPE !== "") BODY.type = { id: TYPE };
+
 
     // Set the appropriate fields based on the channel type
     if (data.type === liveChannelTypes.External) {
-        BODY.externalUrl = URL;
+        if (URL !== "") BODY.externalUrl = URL;
     }
 
     // Send the request
