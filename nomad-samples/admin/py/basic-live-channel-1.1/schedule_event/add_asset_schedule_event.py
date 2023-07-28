@@ -5,7 +5,6 @@ from exceptions.api_exception_handler import *
 import json, requests
 
 def add_asset_schedule_event(AUTH_TOKEN, DATA):
-
     API_URL = f"{ADMIN_URL}/liveChannel/{DATA['channelId']}/liveScheduleEvent" 
 
     # Create header for the request

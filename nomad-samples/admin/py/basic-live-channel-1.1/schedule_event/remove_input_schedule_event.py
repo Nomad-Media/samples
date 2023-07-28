@@ -4,7 +4,6 @@ from exceptions.api_exception_handler import *
 import requests
 
 def remove_input_schedule_event(AUTH_TOKEN, CHANNEL_ID, INPUT_ID):
-
     API_URL = f"{ADMIN_URL}/liveChannel/{CHANNEL_ID}/liveScheduleEvent/{INPUT_ID}" 
 
     # Create header for the request

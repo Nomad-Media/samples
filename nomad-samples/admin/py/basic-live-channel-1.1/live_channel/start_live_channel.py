@@ -6,11 +6,6 @@ from live_channel.wait_live_channel_status import *
 import json, requests
 
 def start_live_channel(AUTH_TOKEN, CHANNEL_ID):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not CHANNEL_ID):
-        raise Exception("Start Live Channel: Invalid API call")
-
-
     # Create header for the request
     HEADERS = {
         "Content-Type": "application/json",

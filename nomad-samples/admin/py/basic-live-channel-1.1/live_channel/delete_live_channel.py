@@ -8,11 +8,6 @@ from live_channel.live_channel_statuses import *
 import requests, json
 
 def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not CHANNEL_ID):
-        raise Exception("Delete Live Channel: Invalid API call")
-
-
     # If delete Live Inputs then get their IDs
     INPUT_IDS = None
     if (DELETE_INPUTS == True):
