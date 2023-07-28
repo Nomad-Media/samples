@@ -14,11 +14,6 @@ import liveChannelStatuses from "./live-channel-statuses.js";
  */
 export default async function deleteLiveChannel(authToken, channelId, deleteInputs = false)
 {
-    // Check for valid parameters
-    if (!authToken || !channelId) {
-        throw new Error("Delete Live Channel: Invalid API call");
-    }
-
     // If delete Live Inputs then get their IDs
     let inputIds = null;
     if (deleteInputs === true) {

@@ -7,11 +7,6 @@ import getLiveChannel from "./get-live-channel.js";
  * @param {string} channelId    | The channel ID for which to get the status messages
  */
 export default async function getLiveChannelStatusMessage(authToken, channelId) {
-    // Check for valid parameters
-    if (!authToken || !channelId) {
-        throw new Error("Get Live Channel Status: Invalid API call");
-    }
-
     // Get the live channel
     const channel = await getLiveChannel(authToken, channelId);
 

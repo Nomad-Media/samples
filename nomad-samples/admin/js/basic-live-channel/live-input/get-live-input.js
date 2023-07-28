@@ -13,11 +13,6 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  * @returns JSON Object containing the requested live input
  */
 export default async function getLiveInput(authToken, inputId) {
-    // Check for valid parameters
-    if (!authToken || !inputId) {
-        throw new Error("Get Live Input: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
