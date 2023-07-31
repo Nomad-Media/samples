@@ -3,7 +3,9 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def get_live_channel_schedule_events(AUTH_TOKEN, CHANNEL_ID):
+def remove_asset_schedule_event(AUTH_TOKEN, CHANNEL_ID, SCHEDULE_EVENT_ID):
+    API_URL = f"{ADMIN_URL}/liveChannel/{CHANNEL_ID}/liveScheduleEvent/{SCHEDULE_EVENT_ID}"
+
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
@@ -12,13 +14,13 @@ def get_live_channel_schedule_events(AUTH_TOKEN, CHANNEL_ID):
 
     try:
         # Send the request
-        RESPONSE = requests.get(ADMIN_URL + "/liveChannel/" + CHANNEL_ID + "/liveScheduleEvent", headers= HEADERS)
-
+        RESPONSE = requests.delete(API_URL, headers= HEADERS)
+    
+        
         if not RESPONSE.ok:
             raise Exception()
         
-        return RESPONSE.json()
-
+        return json.loads(RESPONSE.text)
+    
     except:
-        api_exception_handler(RESPONSE, "Get Live Channel Schedule Events failed")
-
+        api_exception_handler(RESPONSE, "Remove Asset Schedule Event failed")

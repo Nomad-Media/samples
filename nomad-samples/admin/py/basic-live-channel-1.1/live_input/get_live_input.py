@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-async def get_live_input(AUTH_TOKEN, INPUT_ID):
+def get_live_input(AUTH_TOKEN, INPUT_ID):
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
@@ -24,5 +24,5 @@ async def get_live_input(AUTH_TOKEN, INPUT_ID):
 
 
     except:
-        await api_exception_handler(RESPONSE, f"Get Live Input with ID {INPUT_ID} failed")
+        api_exception_handler(RESPONSE, f"Get Live Input with ID {INPUT_ID} failed")
 

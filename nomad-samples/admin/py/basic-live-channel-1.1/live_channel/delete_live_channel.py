@@ -24,9 +24,6 @@ def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
         # Send the request
         RESPONSE = requests.delete(f"{ADMIN_URL}/liveChannel/{CHANNEL_ID}" , headers= HEADERS)
 
-        # Wait for the Live Channel to be deleted
-        wait_for_live_channel_status(AUTH_TOKEN, CHANNEL_ID, LIVE_CHANNEL_STATUSES["Deleted"], 30, 2)
-
         # If the Live Channel had Live Inputs
         if (DELETE_INPUTS and INPUT_IDS and len(INPUT_IDS) > 0):
             print("Deleting Channel Inputs...")
@@ -38,7 +35,7 @@ def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
 
 
         # Return JSON response
-        return json.loads(RESPONSE.text)
+        return RESPONSE.json()
 
     except:
         api_exception_handler(RESPONSE, f"Delete Live Channel {CHANNEL_ID} failed")

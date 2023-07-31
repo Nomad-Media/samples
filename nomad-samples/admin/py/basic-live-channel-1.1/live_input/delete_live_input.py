@@ -15,9 +15,6 @@ def delete_live_input(AUTH_TOKEN, INPUT_ID):
         # Send the request
         RESPONSE = requests.delete(f"{ADMIN_URL}/liveInput/{INPUT_ID}", headers= HEADERS)
 
-        # Wait for the live input to be deleted
-        wait_for_live_input_status(AUTH_TOKEN, INPUT_ID, LIVE_INPUT_STATUSES["Deleted"], 60, 2)
-
         # Return the JSON response
         return json.loads(RESPONSE.text)
 

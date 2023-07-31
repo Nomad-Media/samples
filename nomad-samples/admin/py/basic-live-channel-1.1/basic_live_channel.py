@@ -13,11 +13,15 @@ from live_channel.get_live_channel import *
 from live_channel.live_channel_types import *
 from live_channel.start_live_channel import *
 from live_channel.stop_live_channel import *
+from live_channel.update_live_channel import *
 
 from live_input.create_live_input import *
+from live_input.delete_live_input import *
 from live_input.live_input_types import *
+from live_input.update_live_input import *
 
 from schedule_event.add_asset_schedule_event import *
+from schedule_event.remove_asset_schedule_event import *
 from schedule_event.add_input_schedule_event import *
 from schedule_event.remove_input_schedule_event import *
 
@@ -37,10 +41,14 @@ def create_live_channel_main(AUTH_TOKEN):
             print(f"Channel Name {NAME} is already taken")
 
         THUMBNAIL_IMAGE = input("Enter the thumbnail image URL: ")
+        FOLDER_ID = input("Enter the id of the folder you want to archive to: ")
+
+        ENABLE_HIGH_AVAILABLIITY = input("Do you want to enable high availability (y/n)?: ") == "y"
+        ENABLE_LIVE_CLIPPING = input("Do you want to enable live clipping (y/n)?: ") == "y"
         IS_SECURE_OUTPUT = input("Do you want to enable secure output (y/n)?: ") == "y"
         OUTPUT_SCREENSHOTS = input("Do you want to enable output screenshots (y/n)?: ") == "y"
 
-        TYPE = input("Enter the type of channel you want to create\n (External, IVS, Normal, Realtime): ")
+        TYPE = input("Enter the type of channel you want to create (External, IVS, Normal, Realtime): ")
 
         if TYPE == "External":
             URL = input("Enter the URL of the channel: ")
@@ -51,38 +59,21 @@ def create_live_channel_main(AUTH_TOKEN):
         print(f"Creating Live Channel [{NAME}]...")
 
         # Create the channel
-        CHANNEL_RESPONSE = create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET_ID, 
+        CHANNEL_RESPONSE = create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, FOLDER_ID, 
+                                               ENABLE_HIGH_AVAILABLIITY, ENABLE_LIVE_CLIPPING,
                                                IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL)
-
+        
         # Check for errors
         if CHANNEL_RESPONSE == None or not "id" in CHANNEL_RESPONSE:
             print("Creating Channel failed")
             raise Exception()
 
-
-        # Set the Live Channel ID
-        CHANNEL_ID = CHANNEL_RESPONSE["id"]
-
-        # Create slate asset schedule event object
-        SLATE_OBJECT = {
-            "id": new_guid(),
-            "channelId": CHANNEL_ID,
-            "assetId": SLATE_ASSET_ID, # NOTE: Update constant in /constants/project-constants.js with actual slate ID if needed
-            "previousId": None
-        }
-
-
-        # Give feedback to the console
-        print("Adding slate to the Live Channel...")
-
-        # Add slate to the channel
-        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = add_asset_schedule_event(AUTH_TOKEN, SLATE_OBJECT)
-        print(json.dumps(ADD_ASSET_SCHEDULE_EVENT_RESPONSE, indent=4))
+        print(json.dumps(CHANNEL_RESPONSE, indent=4))
 
     except:
         raise Exception("Creating live channel failed")
 
-    
+
 def update_live_channel_main(AUTH_TOKEN):
     try:
         ID = input("Enter the channel id of the channel you want to update: ")
@@ -100,10 +91,14 @@ def update_live_channel_main(AUTH_TOKEN):
             print(f"Channel Name {NAME} is already taken")
 
         THUMBNAIL_IMAGE = input("Enter the thumbnail image URL: ")
+        FOLDER_ID = input("Enter the id of the folder you want to archive to: ")
+
+        ENABLE_HIGH_AVAILABLIITY = input("Do you want to enable high availability (y/n)?: ") == "y"
+        ENABLE_LIVE_CLIPPING = input("Do you want to enable live clipping (y/n)?: ") == "y"
         IS_SECURE_OUTPUT = input("Do you want to enable secure output (y/n)?: ") == "y"
         OUTPUT_SCREENSHOTS = input("Do you want to enable output screenshots (y/n)?: ") == "y"
 
-        TYPE = input("Enter the type of channel you want to create\n (External, IVS, Normal, Realtime): ")
+        TYPE = input("Enter the type of channel you want to create (External, IVS, Normal, Realtime): ")
 
         if TYPE == "External":
             URL = input("Enter the URL of the channel: ")
@@ -111,40 +106,53 @@ def update_live_channel_main(AUTH_TOKEN):
             URL = None
 
         # Give feedback to the console
-        print(f"Creating Live Channel [{NAME}]...")
+        print(f"Updating Live Channel [{NAME}]...")
 
         # Create the channel
-        CHANNEL_RESPONSE = create_live_channel(AUTH_TOKEN, ID, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET_ID, 
+        CHANNEL_RESPONSE = update_live_channel(AUTH_TOKEN, ID, NAME, THUMBNAIL_IMAGE, FOLDER_ID, 
+                                               ENABLE_HIGH_AVAILABLIITY, ENABLE_LIVE_CLIPPING,
                                                IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL)
 
         # Check for errors
         if CHANNEL_RESPONSE == None or not "id" in CHANNEL_RESPONSE:
-            print("Creating Channel failed")
+            print("Updating Channel failed")
             raise Exception()
 
+        return CHANNEL_RESPONSE
 
-        # Set the Live Channel ID
-        CHANNEL_ID = CHANNEL_RESPONSE["id"]
+    except:
+        raise Exception("Updating live channel failed")
 
-        # Create slate asset schedule event object
-        SLATE_OBJECT = {
-            "id": new_guid(),
-            "channelId": CHANNEL_ID,
-            "assetId": SLATE_ASSET_ID, # NOTE: Update constant in /constants/project-constants.js with actual slate ID if needed
-            "previousId": None
-        }
+    
+def add_asset_schedule_event_to_channel(AUTH_TOKEN):
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to add an asset to: ")
 
+        ASSET_ID = input(f"Enter the asset id of the asset you want to add to the channel: ")
 
         # Give feedback to the console
-        print("Adding slate to the Live Channel...")
+        print("Adding asset schedule event to the live channel...")
 
         # Add slate to the channel
-        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = add_asset_schedule_event(AUTH_TOKEN, SLATE_OBJECT)
+        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = add_asset_schedule_event(AUTH_TOKEN, new_guid(), CHANNEL_ID, ASSET_ID, None)
         print(json.dumps(ADD_ASSET_SCHEDULE_EVENT_RESPONSE, indent=4))
 
     except:
-        raise Exception("Live Channel creation failed")
+        raise Exception("Adding asset schedule event to channel failed")
 
+
+def remove_asset_schedule_event_from_channel(AUTH_TOKEN):
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to remove an asset from: ")
+        SCHEDULE_EVENT_ID = input("Enter the schedule event id of the asset you want to remove from the channel: ")
+
+        print("Removing asset schedule event from the live channel...")
+        remove_asset_schedule_event(AUTH_TOKEN, CHANNEL_ID, SCHEDULE_EVENT_ID)
+        print("Asset schedule event was removed successfully")
+
+    except:
+        raise Exception("Removing asset schedule event from channel failed")
+    
 
 def create_live_input_main(AUTH_TOKEN):
     try:
@@ -159,14 +167,24 @@ def create_live_input_main(AUTH_TOKEN):
 
             print(f"Input Name {NAME} is already taken")
 
-        TYPE = "URL_PULL"
-        print(f"Enter the type of input you want to create\n (RTMP_PULL, RTMP_PUSH, RTP_PUSH, URL_PULL): {TYPE}")
+        while True:
+            TYPE = "URL_PULL"
+            print(f"Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UPD_PUSH, URL_PULL): {TYPE}")
 
-        if TYPE == "RTMP_PUSHH" or TYPE == "URL_PULL":
-            SOURCE = "https://e80d652dc035f381411f071289929a20.p05sqb.channel-assembly.mediatailor.us-west-2.amazonaws.com/v1/channel/MyTestChannel/index.m3u8"
-            SOURCE = input("Enter Source: ")
-        else:
-            SOURCE = None
+            if TYPE == "RTMP_PULL" or TYPE == "RPT_PULL" or TYPE == "URL_PULL":
+                print("Must start with http or rtmp")
+                SOURCE = "https://e80d652dc035f381411f071289929a20.p05sqb.channel-assembly.mediatailor.us-west-2.amazonaws.com/v1/channel/MyTestChannel/index.m3u8"
+                print(f"Enter Source: {SOURCE}")
+                break
+            elif TYPE == "RTMP_PUSH":
+                print("Please use the following format: ###.###.###.###/##")
+                SOURCE = input("Enter Source Video IP/CIDR Address: ")
+                break
+            elif TYPE == "UPD_PUSH":
+                SOURCE = None
+                break
+            else:
+                print("Invalid input")
 
         # Give feedback to the console
         print("Creating Live Input...")
@@ -178,15 +196,16 @@ def create_live_input_main(AUTH_TOKEN):
         if INPUT_RESPONSE == None or not "id" in INPUT_RESPONSE:
             raise Exception()
 
+        print(json.dumps(INPUT_RESPONSE, indent=4))
 
-        # Set the Live Input ID
-        INPUT_ID = INPUT_RESPONSE["id"]
     except:
         raise Exception("Creating live input failed")
         
 
 def update_live_input_main(AUTH_TOKEN):
     try:
+        ID = input("Enter the input id of the input you want to update: ")
+
         # Set the Live Input name
         while True:
             NAME = input("Enter Live Input Name: ")
@@ -198,29 +217,81 @@ def update_live_input_main(AUTH_TOKEN):
 
             print(f"Input Name {NAME} is already taken")
 
-        TYPE = "URL_PULL"
-        print(f"Enter the type of input you want to create\n (RTMP_PULL, RTMP_PUSH, RTP_PUSH, URL_PULL): {TYPE}")
+        while True:
+            TYPE = "UDP_PUSH"
+            print(f"Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UDP_PUSH, URL_PULL): {TYPE}")
 
-        if TYPE == "RTMP_PUSHH" or TYPE == "URL_PULL":
-            SOURCE = input("Enter Source: ")
-        else:
-            SOURCE = None
+            if TYPE == "RTMP_PULL" or TYPE == "RTP_PUSH" or TYPE == "URL_PULL":
+                print("Must start with http or rtmp")
+                SOURCE = input("Enter Source: ")
+                break
+            elif TYPE == "RTMP_PUSH":
+                print("Please use the following format: ###.###.###.###/##")
+                SOURCE = input("Enter Source Video IP/CIDR Address: ")
+                break
+            elif TYPE == "UDP_PUSH":
+                SOURCE = None
+                break
+            else:
+                print("Invalid input")
 
         # Give feedback to the console
         print("Updating Live Input...")
 
-        # Create the input
-        INPUT_RESPONSE = create_live_input(AUTH_TOKEN, NAME, TYPE, SOURCE)
+        # Update the input
+        INPUT_RESPONSE = update_live_input(AUTH_TOKEN, ID, NAME, TYPE, SOURCE)
 
         # Check for errors
         if INPUT_RESPONSE == None or not "id" in INPUT_RESPONSE:
             raise Exception()
+        
+        print(json.dumps(INPUT_RESPONSE, indent=4))
 
-
-        # Set the Live Input ID
-        INPUT_ID = INPUT_RESPONSE["id"]
     except:
         raise Exception("Updating live input failed")
+
+
+def add_live_input_to_live_channel(AUTH_TOKEN):
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to add an input to: ")
+        INPUT_ID = input("Enter the input id of the input you want to add to the channel: ")
+        if input("Do you want to have a fixed on air time (y/n)?: ") == "y":
+            ON_AIR_TIME = input("Enter the on air time of the input you want to add to the channel (hh:mm:ss): ")
+        else:
+            ON_AIR_TIME = None
+
+        # Give feedback to the console
+        print("Adding Live Input to the Live Channel...")
+
+        # Add the Live Input event to Live Channel
+        ADD_INPUT_SCHEDULE_EVENT_RESPONSE = add_input_schedule_event(AUTH_TOKEN, CHANNEL_ID, INPUT_ID, ON_AIR_TIME)
+
+        # Check the response
+        if (ADD_INPUT_SCHEDULE_EVENT_RESPONSE == None):
+            raise Exception()
+        
+        print(json.dumps(ADD_INPUT_SCHEDULE_EVENT_RESPONSE, indent=4))
+        
+    except:
+        raise Exception("Adding Live Input to the Live Channel failed")
+
+
+def remove_live_input_from_live_channel(AUTH_TOKEN):
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to remove an input from: ")
+        INPUT_ID = input("Enter the request id of the input you want to remove from the channel: ")
+
+        # Give feedback to the console
+        print("Removing Live Input from the Live Channel...")
+
+        # Remove the Live Input event from Live Channel
+        #remove_input_schedule_event(AUTH_TOKEN, CHANNEL_ID, INPUT_ID)
+
+        print("Live Input was removed successfully")
+        
+    except:
+        raise Exception("Removing Live Input from the Live Channel failed")
+    
 
 
 def start_live_channel_main(AUTH_TOKEN):
@@ -255,64 +326,12 @@ def stop_live_channel_main(AUTH_TOKEN):
         raise Exception("Live Channel failed to stop")
 
 
-def add_live_input_to_live_channel(AUTH_TOKEN):
-    try:
-        CHANNEL_ID = input("Enter the channel id of the channel you want to add an input to: ")
-        INPUT_ID = input("Enter the input id of the input you want to add to the channel: ")
-
-        CHANNEL_INFO = get_live_channel(AUTH_TOKEN, CHANNEL_ID)
-        SLATE_ID = CHANNEL_INFO["previousId"]
-    
-        # Create Live Input schedule event object
-        EVENT_OBJECT = {
-            "channelId": CHANNEL_ID,
-            "inputId": INPUT_ID,
-            "previousId": SLATE_ID
-        }
-
-        # Give feedback to the console
-        print("Adding Live Input to the Live Channel...")
-
-        # Add the Live Input event to Live Channel
-        ADD_INPUT_SCHEDULE_EVENT_RESPONSE = add_input_schedule_event(AUTH_TOKEN, EVENT_OBJECT)
-
-        # Check the response
-        if (ADD_INPUT_SCHEDULE_EVENT_RESPONSE == None):
-            raise Exception()
-        
-    except:
-        raise Exception("Adding Live Input to the Live Channel failed")
-
-
-def remove_live_input_from_live_channel(AUTH_TOKEN):
-    try:
-        CHANNEL_ID = input("Enter the channel id of the channel you want to remove an input from: ")
-        INPUT_ID = input("Enter the input id of the input you want to remove from the channel: ")
-
-        # Give feedback to the console
-        print("Removing Live Input from the Live Channel...")
-
-        # Remove the Live Input event from Live Channel
-        remove_input_schedule_event(AUTH_TOKEN)
-        
-    except:
-        raise Exception("Removing Live Input from the Live Channel failed")
-    
-
 def delete_channel(AUTH_TOKEN):
     CHANNEL_ID = input("Enter the Channel id of the channel you want to delete: ")
 
-    DELETE_LIVE_INPUTS = True if input("Do you want to delete the inputs of the channel (y/n)?: ") == "y" else False
+    DELETE_LIVE_INPUTS = input("Do you want to delete the inputs of the channel (y/n)?: ") == "y"
 
     try:
-        print("Stopping...")
-
-        # Give feedback to the console
-        print("Stopping Live Channel: This could take a couple of minutes...")
-
-        # Stop the channel
-        stop_live_channel(AUTH_TOKEN, CHANNEL_ID)
-
         # Give feedback to the console
         print("Deleting the Live Channel...")
 
@@ -322,11 +341,8 @@ def delete_channel(AUTH_TOKEN):
         # Give feedback to the console
         print("Live Channel was stopped and deleted successfully")
 
-        # Show successful message
-        print("Live Channel", "Live Channel was stopped and deleted successfully")
-
     except:
-        raise Exception("Live Channel failed to Stop")
+        raise Exception("Failed to delete Live Channel")
     
     
 def delete_input(AUTH_TOKEN):
@@ -340,44 +356,58 @@ def delete_input(AUTH_TOKEN):
 
         # Give feedback to the console
         print("Live Input was deleted successfully")
-
-        # Show successful message
-        print("Live Input", "Live Input was deleted successfully")
-
     except:
         raise Exception("Live Input failed to delete")
 
 if __name__ == "__main__":
-    while True:
-        AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiN2QwZjAxMTYtOTk0MS00MDQxLWFhMjUtM2VmNWRkOGM5MmEwIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6IjU4NzMwNzQxLTMzMWQtNGY0Yy05NWI5LTg4M2JkMWJhZjQyMSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwMzE4MjIyLCJleHAiOjE2OTAzMjE4MjIsImlhdCI6MTY5MDMxODIyMiwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiJlODE5YzA5Zi03MjAwLTQ0OGYtOWU0Yy05YzEwOTdiYzhkOGQiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.uNziZtgHBY2yJnEAdJYnntLlX1LhN5U_lyemQEDNASjd38mRFIZff6NyFnBxLPUdl5e3R_73J2GR1oPbZ5eJXdrTyd1XDFSQ4SG68HFvBUyvfbsZYesnNX0gDC2eB_wVWCkHlY85wqGEWEGxd3QZpwbP9zE0fl4EWXUb9j_gZ7FRDahagCtrhgbBfMn-8h_ibrbc4vzo3xgh862WmIqR7civpdZ3gpXxNkpPjaGaQGcvjHtz4inUS-OcQhV81Pnjf987w_PH4HqhEi3hvf54bIfg-Nkq0Ox1VZFEyJqufABhZ-MP2FyNaUiJmGpgFczYpPxbzCtj0t70dNj0UNfNEg"
-        print(f"Enter authentication token: {AUTH_TOKEN}")
+    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiNDdhMDBiM2MtOWI0NS00NTY5LWFhNmYtNjJkZWZlZmU5NDUyIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImU4ZGJlZTQ2LTg0MGEtNGM4MS1hOTg5LTE3Y2I2OTVjYTBhZCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwNzY4NTY5LCJleHAiOjE2OTA3NzIxNjksImlhdCI6MTY5MDc2ODU2OSwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiIwYWI2OGMzOS00OTYxLTQ2NDUtOGNkMS01MTQ5NzhhNWEzZmYiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.NPHmwfYMsXkN_i4mv-XKws6HgARmUKUfl_x2qnKYICu5eD_zVOUXJUm7S0FDvKP_XVJEXE4CUqsSTVbfSh4n28B7I1mPM1j3_L02yil-SEBnI-awVXlmZs6qAt3YJAqLXSnAMUefwfEqaOWA7boLnllsOrJQmZxEayu_xQnv6iytcDzGic2xu9aEVH7O0wGp61ItBj87wJ-kXwMC0rhjGmdxL4YhMfnK92R-5Wz-idGyYzLoLtxRNWjV1qdQG1Pr4Y4_Ye4xXxznTQz2i_8psfjUWpHq0G4OImYZRnQnr66spZhqaoTa1A7sXLKK0BjA8hdHPMWSkg8NgW1DRqX8Nw"
+    print(f"Enter authentication token: {AUTH_TOKEN}")
 
-        print("Do you want to create a live channel, create a live input, start a live channel, "\
-              "stop a live channel, add a live input to a live channel, remove an input from a "\
-              "channel, delete a live channel, delete a live input, or exit")
-        USER_INPUT = input("Enter create channel, create input, start, stop, add, remove, "\
-                           "delete channel, delete input, or exit for each option above respectivly: ")
+    while True:
+        print("Do you want to create a live channel, create a live input, update a live channel, "\
+              "add an asset schedule event, remove an asset schedule event, update a live input, "\
+              "start a live channel, stop a live channel, add a live input to a live channel, remove "\
+              "an input from a channel, delete a live channel, delete a live input, or exit")
+        USER_INPUT = input("Enter create channel, create input, update channel, update input, "\
+                           "add event, remove event, start channel, stop channel, add input, "\
+                           "remove input, delete channel, delete input, or exit for each option "\
+                           "above respectivly: ")
         if USER_INPUT == "create channel":
             create_live_channel_main(AUTH_TOKEN)
 
         elif USER_INPUT == "create input":
             create_live_input_main(AUTH_TOKEN)
 
-        elif USER_INPUT == "start":
+        elif USER_INPUT == "update channel":
+            update_live_channel_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "update input":
+            update_live_input_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "add event":
+            add_asset_schedule_event_to_channel(AUTH_TOKEN)
+
+        elif USER_INPUT == "remove event":
+            remove_asset_schedule_event_from_channel(AUTH_TOKEN)
+
+        elif USER_INPUT == "start channel":
             start_live_channel_main(AUTH_TOKEN)
 
-        elif USER_INPUT == "stop":
+        elif USER_INPUT == "stop channel":
             stop_live_channel_main(AUTH_TOKEN)
 
-        elif USER_INPUT == "add":
+        elif USER_INPUT == "add input":
             add_live_input_to_live_channel(AUTH_TOKEN)
 
-        elif USER_INPUT == "remove":
+        elif USER_INPUT == "remove input":
             remove_live_input_from_live_channel(AUTH_TOKEN)
 
         elif USER_INPUT == "delete channel":
             delete_channel(AUTH_TOKEN)
     
+        elif USER_INPUT == "delete input":
+            delete_input(AUTH_TOKEN)
+
         elif USER_INPUT == "exit":
             break
             

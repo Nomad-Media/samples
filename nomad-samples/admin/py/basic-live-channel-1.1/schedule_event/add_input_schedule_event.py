@@ -4,7 +4,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def add_input_schedule_event(AUTH_TOKEN, DATA):
+def add_input_schedule_event(AUTH_TOKEN, CHANNEL_ID, INPUT_ID, ON_AIR_TIME):
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
@@ -13,22 +13,22 @@ def add_input_schedule_event(AUTH_TOKEN, DATA):
 
     # Build the payload BODY
     BODY = {
-        "channelId": DATA["channelId"],
+        "channelId": CHANNEL_ID,
+        "fixedOnAirTimeUtc": ON_AIR_TIME,
         "type": {
             "id": LIVE_INPUT_LOOKUP_ID,
             "description": "Live Input"
         },
         "liveInput": {
-            "id": DATA["inputId"],
+            "id": INPUT_ID,
             "description": "name"
-        },
-        "previousId": DATA["previousId"]
+        }
     }
 
 
     try:
         # Send the request
-        RESPONSE = requests.post(ADMIN_URL + "/liveChannel/" + DATA["channelId"] + "/liveScheduleEvent",  headers= HEADERS, data= json.dumps(BODY))
+        RESPONSE = requests.post(ADMIN_URL + "/liveChannel/" + CHANNEL_ID + "/liveScheduleEvent",  headers= HEADERS, data= json.dumps(BODY))
     
         if not RESPONSE.ok:
             raise Exception()
