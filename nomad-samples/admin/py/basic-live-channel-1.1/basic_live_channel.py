@@ -80,7 +80,6 @@ def update_live_channel_main(AUTH_TOKEN):
 
         # Create common random suffix for both, Live Channel and input, names
         while True:
-            #test
             NAME = input("Enter Live Channel Name: ")
 
             UNIQUE = check_channel_names(AUTH_TOKEN, NAME)
@@ -128,7 +127,7 @@ def add_asset_schedule_event_to_channel(AUTH_TOKEN):
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to add an asset to: ")
 
-        ASSET_ID = input(f"Enter the asset id of the asset you want to add to the channel: ")
+        ASSET_ID = input("Enter the asset id of the asset you want to add to the channel: ")
 
         # Give feedback to the console
         print("Adding asset schedule event to the live channel...")
@@ -168,13 +167,11 @@ def create_live_input_main(AUTH_TOKEN):
             print(f"Input Name {NAME} is already taken")
 
         while True:
-            TYPE = "URL_PULL"
-            print(f"Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UPD_PUSH, URL_PULL): {TYPE}")
+            TYPE = input("Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UPD_PUSH, URL_PULL): ")
 
             if TYPE == "RTMP_PULL" or TYPE == "RPT_PULL" or TYPE == "URL_PULL":
                 print("Must start with http or rtmp")
-                SOURCE = "https://e80d652dc035f381411f071289929a20.p05sqb.channel-assembly.mediatailor.us-west-2.amazonaws.com/v1/channel/MyTestChannel/index.m3u8"
-                print(f"Enter Source: {SOURCE}")
+                SOURCE = input("Enter Source: ")
                 break
             elif TYPE == "RTMP_PUSH":
                 print("Please use the following format: ###.###.###.###/##")
@@ -218,8 +215,7 @@ def update_live_input_main(AUTH_TOKEN):
             print(f"Input Name {NAME} is already taken")
 
         while True:
-            TYPE = "UDP_PUSH"
-            print(f"Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UDP_PUSH, URL_PULL): {TYPE}")
+            TYPE = input("Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UDP_PUSH, URL_PULL): ")
 
             if TYPE == "RTMP_PULL" or TYPE == "RTP_PUSH" or TYPE == "URL_PULL":
                 print("Must start with http or rtmp")
@@ -360,8 +356,7 @@ def delete_input(AUTH_TOKEN):
         raise Exception("Live Input failed to delete")
 
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiNDdhMDBiM2MtOWI0NS00NTY5LWFhNmYtNjJkZWZlZmU5NDUyIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImU4ZGJlZTQ2LTg0MGEtNGM4MS1hOTg5LTE3Y2I2OTVjYTBhZCIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwNzY4NTY5LCJleHAiOjE2OTA3NzIxNjksImlhdCI6MTY5MDc2ODU2OSwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiIwYWI2OGMzOS00OTYxLTQ2NDUtOGNkMS01MTQ5NzhhNWEzZmYiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.NPHmwfYMsXkN_i4mv-XKws6HgARmUKUfl_x2qnKYICu5eD_zVOUXJUm7S0FDvKP_XVJEXE4CUqsSTVbfSh4n28B7I1mPM1j3_L02yil-SEBnI-awVXlmZs6qAt3YJAqLXSnAMUefwfEqaOWA7boLnllsOrJQmZxEayu_xQnv6iytcDzGic2xu9aEVH7O0wGp61ItBj87wJ-kXwMC0rhjGmdxL4YhMfnK92R-5Wz-idGyYzLoLtxRNWjV1qdQG1Pr4Y4_Ye4xXxznTQz2i_8psfjUWpHq0G4OImYZRnQnr66spZhqaoTa1A7sXLKK0BjA8hdHPMWSkg8NgW1DRqX8Nw"
-    print(f"Enter authentication token: {AUTH_TOKEN}")
+    AUTH_TOKEN = input("Enter authentication token: ")
 
     while True:
         print("Do you want to create a live channel, create a live input, update a live channel, "\
