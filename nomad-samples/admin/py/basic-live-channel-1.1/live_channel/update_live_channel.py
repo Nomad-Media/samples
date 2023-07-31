@@ -7,8 +7,9 @@ from live_channel.live_channel_types import *
 
 import json, requests
 
-def update_live_channel(AUTH_TOKEN, ID, NAME, TYPE, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET, IS_SECURE_OUTPUT, 
-                        OUTPUT_SCREENSHOTS, URL):
+def update_live_channel(AUTH_TOKEN, ID, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET, 
+                        ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, 
+                        OUTPUT_SCREENSHOTS, TYPE, URL):
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
@@ -16,13 +17,21 @@ def update_live_channel(AUTH_TOKEN, ID, NAME, TYPE, THUMBNAIL_IMAGE, ARCHIVE_FOL
     }
     
     # Build the payload BODY
-    BODY = { id: ID }
+    BODY = { 
+        "id": ID,
+        "outputType": {
+            "id": "e537e41d-6920-4c7a-93a8-8003c5ceb001",
+            "type": "LiveOutputTypes"
+        }
+    }
 
     if NAME != "": 
         BODY["name"] = NAME
         BODY["routeName"] = slugify(NAME)
     if THUMBNAIL_IMAGE != "": BODY["thumbnailImage"] = THUMBNAIL_IMAGE
     if ARCHIVE_FOLDER_ASSET != "": BODY["archiveFolderAsset"] = ARCHIVE_FOLDER_ASSET
+    if ENABLE_HIGH_AVAILABILITY != "": BODY["enableHighAvailability"] = ENABLE_HIGH_AVAILABILITY
+    if ENABLE_LIVE_CLIPPING != "": BODY["enableLiveClipping"] = ENABLE_LIVE_CLIPPING
     if IS_SECURE_OUTPUT != "": BODY["isSecureOutput"] = IS_SECURE_OUTPUT
     if OUTPUT_SCREENSHOTS != "": BODY["outputScreenshots"] = OUTPUT_SCREENSHOTS
     if TYPE != "": BODY["type"] = { "id": TYPE }

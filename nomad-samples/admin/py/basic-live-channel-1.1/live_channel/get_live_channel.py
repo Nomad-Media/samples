@@ -25,7 +25,7 @@ def get_live_channel(AUTH_TOKEN, CHANNEL_ID):
         
         
 
-        return json.loads(RESPONSE.text)
+        return RESPONSE.json()
 
 
     except:
