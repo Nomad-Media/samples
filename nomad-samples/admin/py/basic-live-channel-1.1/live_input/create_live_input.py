@@ -19,34 +19,26 @@ def create_live_input(AUTH_TOKEN, NAME, TYPE, SOURCE):
     BODY = {
         "name": NAME,
         "internalName": slugify(NAME),
-        "type": { "id": TYPE }
+        "type": { "id": LIVE_INPUT_TYPES[TYPE] }
     }
 
 
     # Set the appropriate fields based on the type
-    if (type == LIVE_INPUT_TYPES["RTM_PUSH"]):
-        pass
-    elif (type == LIVE_INPUT_TYPES["RTMP_PUSH"]):
-        BODY["sourceCidr"] = SOURCE
-    elif (type == LIVE_INPUT_TYPES["RTMP_PULL"]):
-        pass
-    elif (type == LIVE_INPUT_TYPES["URL_PULL"]):
-        BODY["sources"] = []
-        BODY["sources"].append({ "url": SOURCE })
-    else:
-        print("Create Live Input: Unknown Live Input Type " + type)
-        exit
+    if (TYPE == "RTMP_PUSH"):
+        if SOURCE: BODY["sourceCidr"] = SOURCE
+    elif (TYPE == "RTMP_PULL" or TYPE == "RTP_PUSH" or TYPE == "URL_PULL"):
+        if SOURCE: BODY["sources"] = [{ "url": SOURCE }]
 
     try:
         RESPONSE = requests.post(ADMIN_URL + "/liveInput",  headers= HEADERS, data= json.dumps(BODY))
     
         # Parse JSON response
-        INFO = RESPONSE.text
+        INFO = RESPONSE.json()
 
         # Wait for the Live Input to be detached if it was just created
         wait_for_live_input_status(AUTH_TOKEN, INFO["id"], LIVE_INPUT_STATUSES["Detached"], 15, 1)
 
-        return json.loads(INFO)
+        return INFO
     
     except:
         api_exception_handler(RESPONSE, f"Creating Live Input {NAME} failed")
