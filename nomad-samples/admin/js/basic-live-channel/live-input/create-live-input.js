@@ -6,7 +6,7 @@ import waitForLiveInputStatus from "./wait-live-input-status.js";
 import slugify from "../helpers/slugify.js";
 
 
-export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOURCE_TYPE) {
+export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE, TYPE) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
@@ -16,27 +16,22 @@ export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOUR
     const BODY = {
         name: NAME,
         internalName: slugify(NAME),
-        type: { id: SOURCE_TYPE }
+        type: { id: liveInputTypes[TYPE] }
     };
 
     // Set the appropriate fields based on the type
-    switch (data.type) {
-        case liveInputTypes.RTP_PUSH:
-        case liveInputTypes.RTMP_PUSH:
-            BODY.sourceCidr = SOURCE_URL;
-            break;
-        case liveInputTypes.RTMP_PULL:
-        case liveInputTypes.URL_PULL:
-            BODY.sources = [];
-            BODY.sources.push({ url: `${SOURCE_URL}` });
-            break;
-        default:
-            throw new Error(`Create Live Input: Unknown Live Input Type ${data.type}`);
+    if (TYPE == "RTMP_PUSH")
+    {
+        if (SOURCE) BODY["sourceCidr"] = SOURCE
+    }
+    else if (TYPE === "RTMP_PULL" || TYPE === "RTP_PUSH" || TYPE === "URL_PULL")
+    {
+        if (SOURCE) BODY["sources"] = [{ "url": SOURCE }]
     }
 
     // Send the request
     const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveInput`, {
-        method: "PUT",
+        method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
     });
@@ -47,6 +42,8 @@ export default async function createLiveInput(AUTH_TOKEN, NAME, SOURCE_URL, SOUR
 
         // Wait for the Live Input to be detached if it was just created
         await waitForLiveInputStatus(AUTH_TOKEN, JSON_RESPONSE.id, liveInputStatuses.Detached, 15, 1);
+
+        return JSON_RESPONSE;
     }
 
     await apiExceptionHandler(RESPONSE, `Creating Live Input ${NAME} failed`);
