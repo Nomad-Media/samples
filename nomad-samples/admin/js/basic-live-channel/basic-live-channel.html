@@ -40,13 +40,25 @@
     <h3>Create Live Channel</h3>
     <form id="createChannelForm">
         <label for="createChannelNameInput">Channel Name:</label>
-        <input type="createChannelName" id="createChannelNameInput">
+        <input type="createChannelName" id="createChannelNameInput" required>
 
         <label for="createChannelThumbnailImageIdInput">Thumbnail Image Id:</label>
         <input type="createChannelThumbnailImageId" id="createChannelThumbnailImageIdInput">
 
         <label for="createChannelArchiveFolderAssetIdInput">Archive Folder Asset Id:</label>
-        <input type="createChannelArchiveFolderAssetId" id="updateChannelArchiveFolderAssetIdInput"> 
+        <input type="createChannelArchiveFolderAssetId" id="createChannelArchiveFolderAssetIdInput"> 
+
+        <label for="createChannelEnableHighAvailabilityInput">Enable High Availability:</label>
+        <select id="createChannelEnableHighAvailabilityInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelEnableLiveClippingInput">Enable Live Clipping:</label>
+        <select id="createChannelEnableLiveClippingInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
 
         <label for="createChannelIsSecureOutputInput">Is Secure Output:</label>
         <select id="createChannelIsSecureOutputInput">
@@ -68,9 +80,9 @@
             <option value="Realtime">Realtime</option>
         </select>
 
-        <div id="createChannelUrlDiv" hidden>
+        <div id="createChannelUrlDiv">
             <label for="createChannelUrlInput">URL:</label>
-            <input type="createChannelUrl" id="updateChannelUrlInput" required>
+            <input type="createChannelUrl" id="createChannelUrlInput">
         </div>
 
         <br><br>
@@ -90,6 +102,18 @@
 
         <label for="updateChannelArchiveFolderAssetIdInput">Archive Folder Asset Id:</label>
         <input type="updateChannelArchiveFolderAssetId" id="updateChannelArchiveFolderAssetIdInput">
+
+        <label for="updateChannelEnableHighAvailabilityInput">Enable High Availability:</label>
+        <select id="updateChannelEnableHighAvailabilityInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelEnableLiveClippingInput">Enable Live Clipping:</label>
+        <select id="updateChannelEnableLiveClippingInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
 
         <label for="updateChannelIsSecureOutputInput">Is Secure Output:</label>
         <select id="updateChannelIsSecureOutputInput">
@@ -111,10 +135,43 @@
             <option value="Realtime">Realtime</option>
         </select>
 
-        <div id="updateChannelUrlDiv" hidden>
+        <div id="updateChannelUrlDiv">
             <label for="updateChannelUrlInput">URL:</label>
-            <input type="updateChannelUrl" id="updateChannelUrlInput" required>
+            <input type="updateChannelUrl" id="updateChannelUrlInput">
         </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Asset Schedule Event to Channel</h3>
+    <form id="addAssetForm">
+        <label for="addAssetChannelIdInput">Channel Id:</label>
+        <input type="addAssetChannelId" id="addAssetChannelIdInput" required>
+
+        <label for="addAssetAssetIdInput">Asset Id:</label>
+        <input type="addAssetAssetId" id="addAssetAssetIdInput" required>
+
+        <label for="addAssetIsLoopInput">Is Loop:</label>
+        <select id="addAssetIsLoopInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Remove Asset Schedule Event from Channel</h3>
+    <form id="removeAssetForm">
+        <label for="removeAssetChannelIdInput">Channel Id:</label>
+        <input type="removeAssetChannelId" id="removeAssetChannelIdInput" required>
+
+        <label for="removeAssetScheduleEventIdInput">Schedule Event Id:</label>
+        <input type="removeAssetScheduleEventId" id="removeAssetScheduleEventIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
     </form>
 
     <h3>Create Live Input</h3>
@@ -127,12 +184,13 @@
             <option value="RTMP_PULL">RTMP_PULL</option>
             <option value="RTMP_PUSH">RTMP_PUSH</option>
             <option value="RTP_PUSH">RTP_PUSH</option>
+            <option value="UDP_PUSH">UDP_PUSH</option>
             <option value="URL_PULL">URL_PULL</option>
         </select>
         
         <div id="createInputSourceUrlDiv" hidden>
-            <label for="createInputSourceUrlInput">Source URL:</label>
-            <input type="createInputSourceUrl" id="createInputSourceUrlInput" required>
+            <label id="createInputSourceUrlLabel" for="createInputSourceUrlInput">Source URL:</label>
+            <input type="createInputSourceUrl" id="createInputSourceUrlInput">
         </div>
 
         <br><br>
@@ -147,21 +205,22 @@
         <label for="updateInputNameInput">Input Name:</label>
         <input type="updateInputName" id="updateInputNameInput" required>
 
-        <label for="updateInputInternalNameInput">Internal Name:</label>
-        <input type="updateInputInternalName" id="updateInputInternalNameInput" required>
-
         <label for="updateSourceTypeInput">Source Type:</label>
         <select id="updateSourceTypeInput">
             <option value="RTMP_PULL">RTMP_PULL</option>
             <option value="RTMP_PUSH">PTMP_PUSH</option>
             <option value="RTP_PUSH">RTP_PUSH</option>
+            <option value="UDP_PUSH">UDP_PUSH</option>
             <option value="URL_PULL">URL_PULL</option>
         </select>
 
         <div id="updateInputSourceUrlDiv" hidden>
-            <label for="updateInputSourceUrlInput">Source URL:</label>
-            <input type="updateInputSourceUrl" id="updateInputSourceUrlInput" required>
+            <label id="updateInputSourceUrlLabel" for="updateInputSourceUrlInput">Source URL:</label>
+            <input type="updateInputSourceUrl" id="updateInputSourceUrlInput">
         </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
     </form>
 
     <h3>Start Live Channel</h3>
@@ -199,8 +258,8 @@
         <label for="removeChannelIdInput">Channel Id:</label>
         <input type="removeChannelId" id="removeChannelIdInput" required>
 
-        <label for="removeInputIdInput">Input Id:</label>
-        <input type="removeInputId" id="removeInputIdInput" required>
+        <label for="removeRequestIdInput">Request Id:</label>
+        <input type="removeRequestId" id="removeRequestIdInput" required>
 
         <br><br>
         <button type="submit">Submit</button>
@@ -210,6 +269,12 @@
     <form id="deleteChannelForm">
         <label for="deleteChannelIdInput">Channel Id:</label>
         <input type="deleteChannelId" id="deleteChannelIdInput" required>
+
+        <label for="deleteLiveInputsInput">Delete Live Inputs:</label>
+        <select id="deleteLiveInputsInput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
 
         <br><br>
         <button type="submit">Submit</button>

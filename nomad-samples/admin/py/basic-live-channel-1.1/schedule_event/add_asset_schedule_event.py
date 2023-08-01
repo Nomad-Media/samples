@@ -4,7 +4,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def add_asset_schedule_event(AUTH_TOKEN, ID, CHANNEL_ID, ASSET_ID, PREVIOUS_ID):
+def add_asset_schedule_event(AUTH_TOKEN, ID, CHANNEL_ID, ASSET_ID, IS_LOOP):
     API_URL = f"{ADMIN_URL}/liveChannel/{CHANNEL_ID}/liveScheduleEvent" 
 
     # Create header for the request
@@ -16,17 +16,17 @@ def add_asset_schedule_event(AUTH_TOKEN, ID, CHANNEL_ID, ASSET_ID, PREVIOUS_ID):
     # Build the payload BODY
     BODY = {
         "id": ID,
-        "isLoop": False,
+        "isLoop": IS_LOOP,
         "channelId": CHANNEL_ID,
         "type": {
             "id": VIDEO_ASSET_LOOKUP_ID,
-            "description": "Video Asset"
+            "description": "Video-Asset"
         },
         "asset": {
             "id": ASSET_ID,
             "description": "Video"
         },
-        "previousId": PREVIOUS_ID
+        "previousId": None,
     }
 
     try:
