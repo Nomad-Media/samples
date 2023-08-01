@@ -12,6 +12,7 @@ import waitForLiveChannelStatus from "./wait-live-channel-status.js";
 export default async function startLiveChannel(authToken, channelId) {
     // Create header for the request
     const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request

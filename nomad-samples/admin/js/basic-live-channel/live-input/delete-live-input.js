@@ -1,7 +1,5 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
-import liveInputStatuses from "./live-input-statuses.js";
-import waitForLiveInputStatus from "./wait-live-input-status.js";
 
 /**
  * Delete Live Input
@@ -24,11 +22,9 @@ export default async function deleteLiveInput(authToken, inputId) {
 
     // Check for success
     if (RESPONSE && RESPONSE.ok) {
-        // Wait for the live input to be deleted
-        await waitForLiveInputStatus(authToken, inputId, liveInputStatuses.Deleted, 60, 2);
 
         // Return the JSON response
-        return await RESPONSE.json();
+        return;
     }
 
     await apiExceptionHandler(RESPONSE, `Delete Live Input ${inputId} failed`);

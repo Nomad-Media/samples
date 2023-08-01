@@ -20,11 +20,11 @@ export default async function addInputScheduleEvent(authToken, CHANNEL_ID, INPUT
     const BODY = {
         channelId: CHANNEL_ID,
         type: {
-            lookupId: sysConstants.LIVE_INPUT_LOOKUP_ID,
+            id: sysConstants.LIVE_INPUT_LOOKUP_ID,
             description: "Live Input"
         },
         liveInput: {
-            lookupId: INPUT_ID,
+            id: INPUT_ID,
             description: "name"
         },
         previousId: PREVIOUS_ID
