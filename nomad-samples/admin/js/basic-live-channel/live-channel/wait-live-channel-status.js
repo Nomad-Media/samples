@@ -2,15 +2,7 @@ import getLiveChannelStatus from "./get-live-channel-status.js";
 import getLiveChannelStatusMessage from "./get-live-channel-status-message.js";
 import sleep from "../helpers/sleep.js";
 
-/**
- * Wait for a Live Channel to transition to specified status
- *
- * @param {string} authToken                    | Authorization authToken
- * @param {string} channelId                    | The channel ID for which to get the status
- * @param {liveChannelStatuses} statusToWaitFor | The live channel status to wait for
- * @param {number} timeout                      | Timeout in seconds
- * @param {number} pollInterval                 | Poll interval in seconds
- */
+
 export default async function waitForLiveChannelStatus(authToken, channelId, statusToWaitFor, timeout = 30, pollInterval = 2) {
     // Set the starting time
     const startingTime = new Date().getTime();

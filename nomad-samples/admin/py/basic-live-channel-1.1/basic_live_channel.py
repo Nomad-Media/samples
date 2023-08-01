@@ -126,14 +126,14 @@ def update_live_channel_main(AUTH_TOKEN):
 def add_asset_schedule_event_to_channel(AUTH_TOKEN):
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to add an asset to: ")
-
         ASSET_ID = input("Enter the asset id of the asset you want to add to the channel: ")
+        IS_LOOP = input("Do you want to loop the input (y/n)?: ") == "y"
 
         # Give feedback to the console
         print("Adding asset schedule event to the live channel...")
 
         # Add slate to the channel
-        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = add_asset_schedule_event(AUTH_TOKEN, new_guid(), CHANNEL_ID, ASSET_ID, None)
+        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = add_asset_schedule_event(AUTH_TOKEN, new_guid(), CHANNEL_ID, ASSET_ID, IS_LOOP)
         print(json.dumps(ADD_ASSET_SCHEDULE_EVENT_RESPONSE, indent=4))
 
     except:
@@ -167,7 +167,7 @@ def create_live_input_main(AUTH_TOKEN):
             print(f"Input Name {NAME} is already taken")
 
         while True:
-            TYPE = input("Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UPD_PUSH, URL_PULL): ")
+            TYPE = input("Enter the type of input you want to create (RTMP_PULL, RTMP_PUSH, RTP_PUSH, UDP_PUSH, URL_PULL): ")
 
             if TYPE == "RTMP_PULL" or TYPE == "RPT_PULL" or TYPE == "URL_PULL":
                 print("Must start with http or rtmp")
@@ -177,7 +177,7 @@ def create_live_input_main(AUTH_TOKEN):
                 print("Please use the following format: ###.###.###.###/##")
                 SOURCE = input("Enter Source Video IP/CIDR Address: ")
                 break
-            elif TYPE == "UPD_PUSH":
+            elif TYPE == "UDP_PUSH":
                 SOURCE = None
                 break
             else:
@@ -335,7 +335,7 @@ def delete_channel(AUTH_TOKEN):
         delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_LIVE_INPUTS)
 
         # Give feedback to the console
-        print("Live Channel was stopped and deleted successfully")
+        print("Live Channel was deleted successfully")
 
     except:
         raise Exception("Failed to delete Live Channel")

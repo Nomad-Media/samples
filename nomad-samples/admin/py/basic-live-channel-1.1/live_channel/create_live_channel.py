@@ -20,8 +20,6 @@ def create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET,
     BODY = {
         "name": NAME,
         "routeName": slugify(NAME),
-        "thumbnailImage": THUMBNAIL_IMAGE,
-        "archiveFolderAsset": ARCHIVE_FOLDER_ASSET,
         "enableHighAvailability": ENABLE_HIGH_AVAILABILITY,
         "enableLiveClipping": ENABLE_LIVE_CLIPPING,
         "isSecureOutput": IS_SECURE_OUTPUT,
@@ -29,6 +27,11 @@ def create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET,
         "type": { "id": LIVE_CHANNEL_TYPES[TYPE] }
     }
 
+    if THUMBNAIL_IMAGE != "":
+        BODY["thumbnailImage"] = { id: THUMBNAIL_IMAGE }
+
+    if ARCHIVE_FOLDER_ASSET != "":
+        BODY["archiveFolderAsset"] = { id: ARCHIVE_FOLDER_ASSET }
 
     # Set the appropriate fields based on the channel type
     if (TYPE == LIVE_CHANNEL_TYPES["External"]):

@@ -2,15 +2,8 @@ import * as sysConstants from "../constants/system-constants.js";
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-/**
- * Add Asset Schedule Event
- *
- * @param {string} authToken    | Authorization Token
- * @param {Object} data         | Body
- *
- * @returns JSON Object
- */
-export default async function addAssetScheduleEvent(authToken, data) {
+
+export default async function addAssetScheduleEvent(authToken, ID, CHANNEL_ID, ASSET_ID, IS_LOOP) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
@@ -18,22 +11,21 @@ export default async function addAssetScheduleEvent(authToken, data) {
 
     // Build the payload body
     const BODY = {
-        id: data.id,
-        isLoop: false,
-        channelId: data.channelId,
+        id: ID,
+        isLoop: IS_LOOP,
+        channelId: CHANNEL_ID,
         type: {
-            lookupId: sysConstants.VIDEO_ASSET_LOOKUP_ID,
+            id: sysConstants.VIDEO_ASSET_LOOKUP_ID,
             description: "Video Asset"
         },
         asset: {
-            lookupId: data.assetId,
+            id: ASSET_ID,
             description: "Video"
-        },
-        previousId: data.previousId
+        }
     };
 
     // Send the request
-    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/LiveChannel/${data.channelId}/liveScheduleEvent`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
