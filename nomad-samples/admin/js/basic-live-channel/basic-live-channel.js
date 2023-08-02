@@ -3,12 +3,15 @@ import * as guidHelpers from "./helpers/guid-helpers.js";
 import createLiveChannel from "./live-channel/create-live-channel.js";
 import deleteLiveChannel from "./live-channel/delete-live-channel.js";
 import getLiveChannel from "./live-channel/get-live-channel.js";
+import getLiveChannels from "./live-channel/get-live-channels.js";
 import startLiveChannel from "./live-channel/start-live-channel.js";
 import stopLiveChannel from "./live-channel/stop-live-channel.js";
 import updateLiveChannel from "./live-channel/update-live-channel.js";
 
 import createLiveInput from "./live-input/create-live-input.js";
 import deleteInput from "./live-input/delete-live-input.js";
+import getLiveInput from "./live-input/get-live-input.js";
+import getLiveInputs from "./live-input/get-live-inputs.js";
 import updateLiveInput from "./live-input/update-live-input.js";
 
 import addAssetScheduleEvent from "./schedule-event/add-asset-schedule-event.js";
@@ -16,11 +19,25 @@ import removeAssetScheduleEvent from "./schedule-event/remove-asset-schedule-eve
 import addInputScheduleEvent from "./schedule-event/add-input-schedule-event.js";
 import removeInputScheduleEvent from "./schedule-event/remove-input-schedule-event.js";
 
+import cancelBroadcast from "./live-operator/cancel-broadcast.js";
+import cancelSegment from "./live-operator/cancel-segment.js";
+import completeSegment from "./live-operator/complete-segment.js";
+import getCompletedSegments from "./live-operator/get-completed-segments.js";
+import getLiveOperator from "./live-operator/get-live-operator.js";
+import getLiveOperators from "./live-operator/get-live-operators.js";
+import startBroadcast from "./live-operator/start-broadcast.js";
+import startSegment from "./live-operator/start-segment.js";
+import stopBroadcast from "./live-operator/stop-broadcast.js";
+
 const AUTH_FORM = document.getElementById("authForm");
+const GET_CHANNELS_FORM = document.getElementById("getChannelsForm");
+const GET_CHANNEL_FORM = document.getElementById("getChannelForm");
 const CREATE_CHANNEL_FORM = document.getElementById("createChannelForm");
 const UPDATE_CHANNEL_FORM = document.getElementById("updateChannelForm");
 const ADD_ASSET_FORM = document.getElementById("addAssetForm");
 const REMOVE_ASSET_FORM = document.getElementById("removeAssetForm");
+const GET_INPUTS_FORM = document.getElementById("getInputsForm");
+const GET_INPUT_FORM = document.getElementById("getInputForm");
 const CREATE_INPUT_FORM = document.getElementById("createInputForm");
 const UPDATE_INPUT_FORM = document.getElementById("updateInputForm");
 const START_CHANNEL_FORM = document.getElementById("startChannelForm");
@@ -29,8 +46,18 @@ const ADD_FORM = document.getElementById("addForm");
 const REMOVE_FORM = document.getElementById("removeForm");
 const DELETE_CHANNEL_FORM = document.getElementById("deleteChannelForm");
 const DELETE_INPUT_FORM = document.getElementById("deleteInputForm");
+const GET_OPERATORS_FORM = document.getElementById("getOperatorsForm");
+const GET_OPERATOR_FORM = document.getElementById("getOperatorForm");
+const START_BROADCAST_FORM = document.getElementById("startBroadcastForm");
+const CANCEL_BROADCAST_FORM = document.getElementById("cancelBroadcastForm");
+const STOP_BROADCAST_FORM = document.getElementById("stopBroadcastForm");
+const GET_COMPLETED_SEGMENTS_FORM = document.getElementById("getCompletedSegmentsForm");
+const START_SEGMENT_FORM = document.getElementById("startSegmentForm");
+const CANCEL_SEGMENT_FORM = document.getElementById("cancelSegmentForm");
+const COMPLETE_SEGMENT_FORM = document.getElementById("completeSegmentForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
+const GET_LIVE_CHANNEL_ID_INPUT = document.getElementById("getLiveChannelIdInput");
 const CREATE_CHANNEL_NAME_INPUT = document.getElementById("createChannelNameInput");
 const CREATE_CHANNEL_THUMBNAIL_IMAGE_ID_INPUT = document.getElementById("createChannelThumbnailImageIdInput");
 const CREATE_CHANNEL_ARCHIVE_FOLDER_ASSET_ID_INPUT = document.getElementById("createChannelArchiveFolderAssetIdInput");
@@ -55,6 +82,7 @@ const ADD_ASSET_ASSET_ID_INPUT = document.getElementById("addAssetAssetIdInput")
 const ADD_ASSET_IS_LOOP_INPUT = document.getElementById("addAssetIsLoopInput");
 const REMOVE_ASSET_CHANNEL_ID_INPUT = document.getElementById("removeAssetChannelIdInput");
 const REMOVE_ASSET_SCHEDULE_EVENT_ID_INPUT = document.getElementById("removeAssetScheduleEventIdInput");
+const GET_INPUT_ID_INPUT = document.getElementById("getInputIdInput");
 const CREATE_INPUT_NAME_INPUT = document.getElementById("createInputNameInput");
 const CREATE_SOURCE_TYPE_INPUT = document.getElementById("createSourceTypeInput");
 const CREATE_INPUT_SOURCE_URL_INPUT = document.getElementById("createInputSourceUrlInput");
@@ -71,6 +99,22 @@ const REMOVE_REQUEST_ID_INPUT = document.getElementById("removeRequestIdInput");
 const DELETE_CHANNEL_ID_INPUT = document.getElementById("deleteChannelIdInput");
 const DELETE_LIVE_INPUTS_INPUT = document.getElementById("deleteLiveInputsInput");
 const DELETE_INPUT_ID_INPUT = document.getElementById("deleteInputIdInput");
+const GET_OPERATOR_ID_INPUT = document.getElementById("getOperatorIdInput");
+const START_BROADCAST_LIVE_OPERATOR_ID_INPUT = document.getElementById("startBroadcastLiveOperatorIdInput");
+const START_BROADCAST_CHANNEL_ID_INPUT = document.getElementById("startBroadcastChannelIdInput");
+const START_BROADCAST_PREROLL_ASSET_ID_INPUT = document.getElementById("startBroadcastPrerollAssetIdInput");
+const START_BROADCAST_POSTROLL_ASSET_ID_INPUT = document.getElementById("startBroadcastPostrollAssetIdInput");
+const START_BROADCAST_LIVE_INPUT_ID_INPUT = document.getElementById("startBroadcastLiveInputIdInput");
+const START_BROADCAST_RELATED_CONTENT_IDS_INPUT = document.getElementById("startBroadcastRelatedContentIdsInput");
+const START_BROADCAST_TAG_IDS_INPUT = document.getElementById("startBroadcastTagIdsInput");
+const CANCEL_BROADCAST_LIVE_OPERATOR_ID_INPUT = document.getElementById("cancelBroadcastLiveOperatorIdInput");
+const STOP_BROADCAST_LIVE_OPERATOR_ID_INPUT = document.getElementById("stopBroadcastLiveOperatorIdInput");
+const GET_COMPLETED_SEGMENTS_LIVE_OPERATOR_ID_INPUT = document.getElementById("getCompletedSegmentsLiveOperatorIdInput");
+const START_SEGMENT_LIVE_OPERATOR_ID_INPUT = document.getElementById("startSegmentLiveOperatorIdInput");
+const CANCEL_SEGMENT_LIVE_OPERATOR_ID_INPUT = document.getElementById("cancelSegmentLiveOperatorIdInput");
+const COMPLETE_SEGMENT_LIVE_OPERATOR_ID_INPUT = document.getElementById("completeSegmentLiveOperatorIdInput");
+const COMPLETE_SEGMENT_RELATED_CONTENT_IDS_INPUT = document.getElementById("completeSegmentRelatedContentIdsInput");
+const COMPLETE_SEGMENT_TAG_IDS_INPUT = document.getElementById("completeSegmentTagIdsInput");
 
 const CREATE_CHANNEL_URL_DIV = document.getElementById("createChannelUrlDiv");
 const UPDATE_CHANNEL_URL_DIV = document.getElementById("updateChannelUrlDiv");
@@ -87,6 +131,22 @@ AUTH_FORM.addEventListener("submit", function (event)
     event.preventDefault();
     sessionStorage.setItem("token", TOKEN_INPUT.value);
     console.log("Successfuly updated token");
+});
+
+GET_CHANNELS_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    getLiveChannelsMain();
+});
+
+GET_CHANNEL_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let getLiveChannelId = GET_LIVE_CHANNEL_ID_INPUT.value;
+
+    getLiveChannelMain(getLiveChannelId);
 });
 
 CREATE_CHANNEL_TYPE_INPUT.addEventListener("change", function (event)
@@ -141,6 +201,22 @@ UPDATE_CHANNEL_FORM.addEventListener("submit", function (event)
 
     updateChannelMain(id, name, thumbnailImageId, archiveFolderAssetId, enableHighAvailability, enableLiveClipping,
                       isSecureOutput, isOutputScreenshots, type, url);
+});
+
+GET_INPUTS_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    getLiveInputsMain();
+});
+
+GET_INPUT_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let getInputId = GET_INPUT_ID_INPUT.value;
+
+    getLiveInputMain(getInputId);
 });
 
 CREATE_SOURCE_TYPE_INPUT.addEventListener("change", function (event) 
@@ -283,6 +359,135 @@ DELETE_INPUT_FORM.addEventListener("submit", function (event)
     deleteInputMain(inputId);
 });
 
+GET_OPERATORS_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    getLiveOperatorsMain();
+});
+
+GET_OPERATOR_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let getOperatorId = GET_OPERATOR_ID_INPUT.value;
+
+    getLiveOperatorMain(getOperatorId);
+});
+
+START_BROADCAST_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = START_BROADCAST_LIVE_OPERATOR_ID_INPUT.value;
+    let channelId = START_BROADCAST_CHANNEL_ID_INPUT.value;
+    let prerollAssetId = START_BROADCAST_PREROLL_ASSET_ID_INPUT.value;
+    let postrollAssetId = START_BROADCAST_POSTROLL_ASSET_ID_INPUT.value;
+    let liveInputId = START_BROADCAST_LIVE_INPUT_ID_INPUT.value;
+    let relatedContentIds = START_BROADCAST_RELATED_CONTENT_IDS_INPUT.value;
+    let tagIds = START_BROADCAST_TAG_IDS_INPUT.value;
+
+    startBroadcastMain(liveOperatorId, channelId, prerollAssetId, postrollAssetId, liveInputId, 
+                       relatedContentIds.split(","), tagIds.split(","));
+});
+
+CANCEL_BROADCAST_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = CANCEL_BROADCAST_LIVE_OPERATOR_ID_INPUT.value;
+
+    cancelBroadcastMain(liveOperatorId);
+});
+
+STOP_BROADCAST_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = STOP_BROADCAST_LIVE_OPERATOR_ID_INPUT.value;
+
+    stopBroadcastMain(liveOperatorId);
+});
+
+GET_COMPLETED_SEGMENTS_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = GET_COMPLETED_SEGMENTS_LIVE_OPERATOR_ID_INPUT.value;
+
+    getCompletedSegmentsMain(liveOperatorId);
+});
+
+START_SEGMENT_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = START_SEGMENT_LIVE_OPERATOR_ID_INPUT.value;
+
+    startSegmentMain(liveOperatorId);
+});
+
+CANCEL_SEGMENT_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = CANCEL_SEGMENT_LIVE_OPERATOR_ID_INPUT.value;
+
+    cancelSegmentMain(liveOperatorId);
+});
+
+COMPLETE_SEGMENT_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+
+    let liveOperatorId = COMPLETE_SEGMENT_LIVE_OPERATOR_ID_INPUT.value;
+    let relatedContentIds = COMPLETE_SEGMENT_RELATED_CONTENT_IDS_INPUT.value;
+    let tagIds = COMPLETE_SEGMENT_TAG_IDS_INPUT.value;
+
+    completeSegmentMain(liveOperatorId, relatedContentIds.split(","), tagIds.split(","));
+});
+
+async function getLiveChannelsMain()
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty");
+    }
+
+    try
+    {
+        console.log("Getting live channels...");
+        const CHANNELS = await getLiveChannels(AUTH_TOKEN);
+        console.log(JSON.stringify(CHANNELS, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function getLiveChannelMain(GET_LIVE_CHANNEL_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Getting live channel...");
+        const CHANNEL = await getLiveChannel(AUTH_TOKEN, GET_LIVE_CHANNEL_ID);
+        console.log(JSON.stringify(CHANNEL, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
 
 async function createChannelMain(NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, ENABLE_HIGH_AVAILABILITY, 
                                  ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, IS_OUTPUT_SCREENSHOTS, TYPE, URL)
@@ -378,6 +583,47 @@ async function removeAssetScheduleEventFromChannelMain(CHANNEL_ID, SCHEDULE_EVEN
     }
 }
 
+async function getLiveInputsMain()
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Getting live inputs...");
+        const INPUTS = await getLiveInputs(AUTH_TOKEN);
+        console.log(JSON.stringify(INPUTS, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function getLiveInputMain(GET_INPUT_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Getting live input...");
+        const INPUT = await getLiveInput(AUTH_TOKEN, GET_INPUT_ID);
+        console.log(JSON.stringify(INPUT, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
 
 async function createInputMain(NAME, SOURCE_URL, SOURCE_TYPE)
 {
@@ -544,6 +790,197 @@ async function deleteInputMain(INPUT_ID)
         console.log("Deleting input...");
         await deleteInput(AUTH_TOKEN, INPUT_ID);
         console.log("Input deleted");
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function getLiveOperatorsMain()
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Getting live operators...");
+        const LIVE_OPERATORS = await getLiveOperators(AUTH_TOKEN);
+        console.log(JSON.stringify(LIVE_OPERATORS, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function getLiveOperatorMain(GET_OPERATOR_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Getting live operator...");
+        const LIVE_OPERATOR = await getLiveOperator(AUTH_TOKEN, GET_OPERATOR_ID);
+        console.log(JSON.stringify(LIVE_OPERATOR, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function startBroadcastMain(LIVE_OPERATOR_ID, CHANNEL_ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID,
+                                  RELATED_CONTENT_IDS, TAG_IDS)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Starting broadcast...");
+        const BROADCAST = await startBroadcast(AUTH_TOKEN, LIVE_OPERATOR_ID, CHANNEL_ID, PREROLL_ASSET_ID, 
+                                                 POSTROLL_ASSET_ID, LIVE_INPUT_ID, RELATED_CONTENT_IDS, TAG_IDS);
+        console.log(JSON.stringify(BROADCAST, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function cancelBroadcastMain(LIVE_OPERATOR_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Canceling broadcast...");
+        await cancelBroadcast(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        console.log("Broadcast canceled");
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function stopBroadcastMain(LIVE_OPERATOR_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Stopping broadcast...");
+        await stopBroadcast(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        console.log("Broadcast stopped");
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function getCompletedSegmentsMain(LIVE_OPERATOR_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Getting completed segments...");
+        const COMPLETED_SEGMENTS = await getCompletedSegments(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        console.log(JSON.stringify(COMPLETED_SEGMENTS, null, 4));
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function startSegmentMain(LIVE_OPERATOR_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Starting segment...");
+        await startSegment(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        console.log("Segment started");
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function cancelSegmentMain(LIVE_OPERATOR_ID)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+
+    try
+    {
+        console.log("Canceling segment...");
+        await cancelSegment(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        console.log("Segment canceled");
+    }
+    catch (error)
+    {
+        throw new Error(error);
+    }
+}
+
+async function completeSegmentMain(LIVE_OPERATOR_ID, RELATED_CONTENT_IDS, TAG_IDS)
+{
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
+    if (!AUTH_TOKEN)
+    {
+        throw new Error("Authentication token: The authentication token is empty")
+    }
+    
+    try
+    {
+        console.log("Completing segment...");
+        await completeSegment(AUTH_TOKEN, LIVE_OPERATOR_ID, RELATED_CONTENT_IDS, TAG_IDS);
+        console.log("Segment completed");
     }
     catch (error)
     {
