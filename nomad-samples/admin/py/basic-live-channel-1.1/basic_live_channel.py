@@ -468,7 +468,6 @@ def get_live_operator_main(AUTH_TOKEN):
 
 def start_broadcast_main(AUTH_TOKEN):
     try:
-        ID = input("Enter the id of the broadcast you want to start: ")
         CHANNEL_ID = input("Enter the channel id of the channel you want to start broadcasting: ")
         PREROLL_ASSET_ID = input("Enter the asset id of the preroll asset: ")
         POSTROLL_ASSET_ID = input("Enter the asset id of the postroll asset: ")
@@ -480,7 +479,7 @@ def start_broadcast_main(AUTH_TOKEN):
         print("Starting the broadcast...")
 
         # Start the broadcast
-        START_BROADCAST_RESPONSE = start_broadcast(AUTH_TOKEN, ID, CHANNEL_ID, PREROLL_ASSET_ID, 
+        START_BROADCAST_RESPONSE = start_broadcast(AUTH_TOKEN, CHANNEL_ID, PREROLL_ASSET_ID, 
                                                    POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
                                                    RELATED_CONTENT_IDS, TAGS_IDS)
 
@@ -580,14 +579,14 @@ def cancel_segment_main(AUTH_TOKEN):
 def complete_segment_main(AUTH_TOKEN):
     try:
         ID = input("Enter the id of the segment you want to complete: ")
-        RELATED_CONTENT_ID = input("Enter the related content id of the related content: ")
-        TAGS_ID = input("Enter the tags id of the tags: ")
+        RELATED_CONTENT_IDS = input("Enter the related content ids of the related content (separated by comma): ").split(",")
+        TAGS_IDS = input("Enter the tags ids of the tags (separated by comma): ").split(",")
 
         # Give feedback to the console
         print("Completing the segment...")
 
         # Complete the segment
-        complete_segment(AUTH_TOKEN, ID, RELATED_CONTENT_ID, TAGS_ID)
+        complete_segment(AUTH_TOKEN, ID, RELATED_CONTENT_IDS, TAGS_IDS)
 
         # Give feedback to the console
         print("Segment was completed successfully")
@@ -597,7 +596,7 @@ def complete_segment_main(AUTH_TOKEN):
 
 
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiMzA4MDhjNmItOTk0OS00ODc5LWI0OGUtZTJiYTc4Y2MxNzdmIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImQyZDY4NGNiLTI1ZWYtNDM3MS1hNGJkLTc4YTEzNGY4Njg0NSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwOTMyMzc2LCJleHAiOjE2OTA5MzU5NzYsImlhdCI6MTY5MDkzMjM3NiwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiI0NTYzYzQ4NC1mMjY1LTQyNTgtYTgxZS1hZTU5ZWQ3MWUxNTMiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.0Y3D8XB8L_AmxBfWUC8qf2oOrPn2QnKqkA6amtyZhjdisd9naJ8g7szgwznZtrwZQMMgB5boS76OTYg5OfMzDs1FxDkIn4_ZPysVpenqiqKOEl_NdEO1XUh8EvyByFzHqrD68McWVeQvlm1wmVN5hkZhWKm7i3uoubpLMoKPPx-3VgK-Qk3VKadoxL3aMpPvPAhsURV6Sla5J2xh73ipUxR699iANbWT2kgXxfdUlqZq4nvBZsDIJLd6QQHKspmbRYry-clz9B6CjyCS7jChJMrDKKCH2b5iYH_rUQxvEj3r2xOSf_m7egtmgozVkL4uhQ47Dfh65Onw75lK3VM76Q"#input("Enter authentication token: ")
+    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiMTUwYTVhNzItYWQ5ZC00OTM3LThjMTMtNGZlZTBkMGI1MDE2IiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6IjA4ZTM3NzVjLTk1YTQtNDJjYi04YTRjLWRjNGQxODNlNWYxYiIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkxMDEzNjg3LCJleHAiOjE2OTEwMTcyODcsImlhdCI6MTY5MTAxMzY4NywiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiIxN2Y4NTVjYi00MGU5LTQwMmEtOWY3ZC1jZTIyNzgxOTk1OWUiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.mduUPUq8ItOmmBk8ewgnunEZGTVwJr-7M0cpkBMyBn61PrR6vxwkIot3cDeOyPEMdcsEDT7JROQXK-mg68OoWNXelqIpx_bhG1JxM1hmYkfJCsk2BG7TyJazKrDrTVkUKJigVbybW4a5be2xbd6_H-j8oewgqJNevbhjxUBRMJmG-3-32PEmYjHYmBQNPW0lvUrq45cHETv44Hlalt0kJp9L8zNxipVABBET-nQKdLfnto1ut7SR-PCPy9JO0k2bdwBKaaf8uwIKvyTpQQFxZcHCvDbUlDUOzMp4dR-pMl3Yr51vdjQDsvhX3Sfrq27wknrFJM6tKSevR1j9lyhNIg"#input("Enter authentication token: ")
 
     while True:
         print("Do you want to get live channels, get a live channel, create a live channel, "\
