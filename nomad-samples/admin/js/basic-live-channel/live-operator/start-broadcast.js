@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function startBroadcast(AUTH_TOKEN, ID, CHANNEL_ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
+export default async function startBroadcast(AUTH_TOKEN, ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
     RELATED_CONTENT_IDS, TAG_IDS) {
     // Create header for the request
     const HEADERS = new Headers();
@@ -10,8 +10,7 @@ export default async function startBroadcast(AUTH_TOKEN, ID, CHANNEL_ID, PREROLL
 
     // Create body for the request
     const BODY = {
-        id: ID,
-        channelId: CHANNEL_ID
+        id: ID
     };
 
     if (PREROLL_ASSET_ID !== "") { BODY.prerollAsset = { id: PREROLL_ASSET_ID }; }
