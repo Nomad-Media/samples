@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import requests, json
 
-def start_broadcast(AUTH_TOKEN, ID, CHANNEL_ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
+def start_broadcast(AUTH_TOKEN, ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
                     RELATED_CONTENT_IDS, TAG_IDS):
 
     HEADERS = {
@@ -13,8 +13,7 @@ def start_broadcast(AUTH_TOKEN, ID, CHANNEL_ID, PREROLL_ASSET_ID, POSTROLL_ASSET
 
     try:
         BODY = {
-            "id": ID,
-            "liveChannelId": CHANNEL_ID
+            "id": ID
         }
 
         if LIVE_INPUT_ID != "": BODY["liveInput"] = { "id": LIVE_INPUT_ID }
