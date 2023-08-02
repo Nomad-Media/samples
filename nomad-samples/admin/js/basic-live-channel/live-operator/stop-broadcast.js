@@ -15,7 +15,7 @@ export default async function stopBroadcast(AUTH_TOKEN, ID) {
 
     // Check for success
     if (RESPONSE && RESPONSE.ok) {
-        return await RESPONSE.json();
+        return;
     }
 
     await apiExceptionHandler(RESPONSE, `Stopping Broadcast ${ID} failed`);

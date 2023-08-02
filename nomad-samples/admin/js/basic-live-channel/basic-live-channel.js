@@ -100,20 +100,19 @@ const DELETE_CHANNEL_ID_INPUT = document.getElementById("deleteChannelIdInput");
 const DELETE_LIVE_INPUTS_INPUT = document.getElementById("deleteLiveInputsInput");
 const DELETE_INPUT_ID_INPUT = document.getElementById("deleteInputIdInput");
 const GET_OPERATOR_ID_INPUT = document.getElementById("getOperatorIdInput");
-const START_BROADCAST_LIVE_OPERATOR_ID_INPUT = document.getElementById("startBroadcastLiveOperatorIdInput");
 const START_BROADCAST_CHANNEL_ID_INPUT = document.getElementById("startBroadcastChannelIdInput");
 const START_BROADCAST_PREROLL_ASSET_ID_INPUT = document.getElementById("startBroadcastPrerollAssetIdInput");
 const START_BROADCAST_POSTROLL_ASSET_ID_INPUT = document.getElementById("startBroadcastPostrollAssetIdInput");
 const START_BROADCAST_LIVE_INPUT_ID_INPUT = document.getElementById("startBroadcastLiveInputIdInput");
 const START_BROADCAST_RELATED_CONTENT_IDS_INPUT = document.getElementById("startBroadcastRelatedContentIdsInput");
 const START_BROADCAST_TAG_IDS_INPUT = document.getElementById("startBroadcastTagIdsInput");
-const CANCEL_BROADCAST_LIVE_OPERATOR_ID_INPUT = document.getElementById("cancelBroadcastLiveOperatorIdInput");
-const STOP_BROADCAST_LIVE_OPERATOR_ID_INPUT = document.getElementById("stopBroadcastLiveOperatorIdInput");
-const GET_COMPLETED_SEGMENTS_LIVE_OPERATOR_ID_INPUT = document.getElementById("getCompletedSegmentsLiveOperatorIdInput");
-const START_SEGMENT_LIVE_OPERATOR_ID_INPUT = document.getElementById("startSegmentLiveOperatorIdInput");
-const CANCEL_SEGMENT_LIVE_OPERATOR_ID_INPUT = document.getElementById("cancelSegmentLiveOperatorIdInput");
-const COMPLETE_SEGMENT_LIVE_OPERATOR_ID_INPUT = document.getElementById("completeSegmentLiveOperatorIdInput");
-const COMPLETE_SEGMENT_RELATED_CONTENT_IDS_INPUT = document.getElementById("completeSegmentRelatedContentIdsInput");
+const CANCEL_BROADCAST_CHANNEL_ID_INPUT = document.getElementById("cancelBroadcastChannelIdInput");
+const STOP_BROADCAST_CHANNEL_ID_INPUT = document.getElementById("stopBroadcastChannelIdInput");
+const GET_COMPLETED_SEGMENTS_CHANNEL_ID_INPUT = document.getElementById("getCompletedSegmentsChannelIdInput");
+const START_SEGMENT_CHANNEL_ID_INPUT = document.getElementById("startSegmentChannelIdInput");
+const CANCEL_SEGMENT_CHANNEL_ID_INPUT = document.getElementById("cancelSegmentChannelIdInput");
+const COMPLETE_SEGMENT_CHANNEL_ID_INPUT = document.getElementById("completeSegmentChannelIdInput");
+const COMPLETE_SEGMENT_RELATED_CONTENT_IDS_INPUT = document.getElementById("completeSegmentrelatedContentIdsInput");
 const COMPLETE_SEGMENT_TAG_IDS_INPUT = document.getElementById("completeSegmentTagIdsInput");
 
 const CREATE_CHANNEL_URL_DIV = document.getElementById("createChannelUrlDiv");
@@ -379,7 +378,6 @@ START_BROADCAST_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = START_BROADCAST_LIVE_OPERATOR_ID_INPUT.value;
     let channelId = START_BROADCAST_CHANNEL_ID_INPUT.value;
     let prerollAssetId = START_BROADCAST_PREROLL_ASSET_ID_INPUT.value;
     let postrollAssetId = START_BROADCAST_POSTROLL_ASSET_ID_INPUT.value;
@@ -387,7 +385,7 @@ START_BROADCAST_FORM.addEventListener("submit", function (event)
     let relatedContentIds = START_BROADCAST_RELATED_CONTENT_IDS_INPUT.value;
     let tagIds = START_BROADCAST_TAG_IDS_INPUT.value;
 
-    startBroadcastMain(liveOperatorId, channelId, prerollAssetId, postrollAssetId, liveInputId, 
+    startBroadcastMain(channelId, prerollAssetId, postrollAssetId, liveInputId, 
                        relatedContentIds.split(","), tagIds.split(","));
 });
 
@@ -395,7 +393,7 @@ CANCEL_BROADCAST_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = CANCEL_BROADCAST_LIVE_OPERATOR_ID_INPUT.value;
+    let liveOperatorId = CANCEL_BROADCAST_CHANNEL_ID_INPUT.value;
 
     cancelBroadcastMain(liveOperatorId);
 });
@@ -404,7 +402,7 @@ STOP_BROADCAST_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = STOP_BROADCAST_LIVE_OPERATOR_ID_INPUT.value;
+    let liveOperatorId = STOP_BROADCAST_CHANNEL_ID_INPUT.value;
 
     stopBroadcastMain(liveOperatorId);
 });
@@ -413,7 +411,7 @@ GET_COMPLETED_SEGMENTS_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = GET_COMPLETED_SEGMENTS_LIVE_OPERATOR_ID_INPUT.value;
+    let liveOperatorId = GET_COMPLETED_SEGMENTS_CHANNEL_ID_INPUT.value;
 
     getCompletedSegmentsMain(liveOperatorId);
 });
@@ -422,7 +420,7 @@ START_SEGMENT_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = START_SEGMENT_LIVE_OPERATOR_ID_INPUT.value;
+    let liveOperatorId = START_SEGMENT_CHANNEL_ID_INPUT.value;
 
     startSegmentMain(liveOperatorId);
 });
@@ -431,7 +429,7 @@ CANCEL_SEGMENT_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = CANCEL_SEGMENT_LIVE_OPERATOR_ID_INPUT.value;
+    let liveOperatorId = CANCEL_SEGMENT_CHANNEL_ID_INPUT.value;
 
     cancelSegmentMain(liveOperatorId);
 });
@@ -440,7 +438,7 @@ COMPLETE_SEGMENT_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let liveOperatorId = COMPLETE_SEGMENT_LIVE_OPERATOR_ID_INPUT.value;
+    let liveOperatorId = COMPLETE_SEGMENT_CHANNEL_ID_INPUT.value;
     let relatedContentIds = COMPLETE_SEGMENT_RELATED_CONTENT_IDS_INPUT.value;
     let tagIds = COMPLETE_SEGMENT_TAG_IDS_INPUT.value;
 
@@ -839,7 +837,7 @@ async function getLiveOperatorMain(GET_OPERATOR_ID)
     }
 }
 
-async function startBroadcastMain(LIVE_OPERATOR_ID, CHANNEL_ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID,
+async function startBroadcastMain(CHANNEL_ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_INPUT_ID,
                                   RELATED_CONTENT_IDS, TAG_IDS)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
@@ -852,8 +850,9 @@ async function startBroadcastMain(LIVE_OPERATOR_ID, CHANNEL_ID, PREROLL_ASSET_ID
     try
     {
         console.log("Starting broadcast...");
-        const BROADCAST = await startBroadcast(AUTH_TOKEN, LIVE_OPERATOR_ID, CHANNEL_ID, PREROLL_ASSET_ID, 
-                                                 POSTROLL_ASSET_ID, LIVE_INPUT_ID, RELATED_CONTENT_IDS, TAG_IDS);
+        const BROADCAST = await startBroadcast(AUTH_TOKEN, CHANNEL_ID, PREROLL_ASSET_ID, 
+                                               POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
+                                               RELATED_CONTENT_IDS, TAG_IDS);
         console.log(JSON.stringify(BROADCAST, null, 4));
     }
     catch (error)
@@ -862,7 +861,7 @@ async function startBroadcastMain(LIVE_OPERATOR_ID, CHANNEL_ID, PREROLL_ASSET_ID
     }
 }
 
-async function cancelBroadcastMain(LIVE_OPERATOR_ID)
+async function cancelBroadcastMain(CHANNEL_ID)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -874,7 +873,7 @@ async function cancelBroadcastMain(LIVE_OPERATOR_ID)
     try
     {
         console.log("Canceling broadcast...");
-        await cancelBroadcast(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        await cancelBroadcast(AUTH_TOKEN, CHANNEL_ID);
         console.log("Broadcast canceled");
     }
     catch (error)
@@ -883,7 +882,7 @@ async function cancelBroadcastMain(LIVE_OPERATOR_ID)
     }
 }
 
-async function stopBroadcastMain(LIVE_OPERATOR_ID)
+async function stopBroadcastMain(CHANNEL_ID)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -895,7 +894,7 @@ async function stopBroadcastMain(LIVE_OPERATOR_ID)
     try
     {
         console.log("Stopping broadcast...");
-        await stopBroadcast(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        await stopBroadcast(AUTH_TOKEN, CHANNEL_ID);
         console.log("Broadcast stopped");
     }
     catch (error)
@@ -904,7 +903,7 @@ async function stopBroadcastMain(LIVE_OPERATOR_ID)
     }
 }
 
-async function getCompletedSegmentsMain(LIVE_OPERATOR_ID)
+async function getCompletedSegmentsMain(CHANNEL_ID)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -916,7 +915,7 @@ async function getCompletedSegmentsMain(LIVE_OPERATOR_ID)
     try
     {
         console.log("Getting completed segments...");
-        const COMPLETED_SEGMENTS = await getCompletedSegments(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        const COMPLETED_SEGMENTS = await getCompletedSegments(AUTH_TOKEN, CHANNEL_ID);
         console.log(JSON.stringify(COMPLETED_SEGMENTS, null, 4));
     }
     catch (error)
@@ -925,7 +924,7 @@ async function getCompletedSegmentsMain(LIVE_OPERATOR_ID)
     }
 }
 
-async function startSegmentMain(LIVE_OPERATOR_ID)
+async function startSegmentMain(CHANNEL_ID)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -937,7 +936,7 @@ async function startSegmentMain(LIVE_OPERATOR_ID)
     try
     {
         console.log("Starting segment...");
-        await startSegment(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        await startSegment(AUTH_TOKEN, CHANNEL_ID);
         console.log("Segment started");
     }
     catch (error)
@@ -946,7 +945,7 @@ async function startSegmentMain(LIVE_OPERATOR_ID)
     }
 }
 
-async function cancelSegmentMain(LIVE_OPERATOR_ID)
+async function cancelSegmentMain(CHANNEL_ID)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -958,7 +957,7 @@ async function cancelSegmentMain(LIVE_OPERATOR_ID)
     try
     {
         console.log("Canceling segment...");
-        await cancelSegment(AUTH_TOKEN, LIVE_OPERATOR_ID);
+        await cancelSegment(AUTH_TOKEN, CHANNEL_ID);
         console.log("Segment canceled");
     }
     catch (error)
@@ -967,7 +966,7 @@ async function cancelSegmentMain(LIVE_OPERATOR_ID)
     }
 }
 
-async function completeSegmentMain(LIVE_OPERATOR_ID, RELATED_CONTENT_IDS, TAG_IDS)
+async function completeSegmentMain(CHANNEL_ID, RELATED_CONTENT_IDS, TAG_IDS)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -979,7 +978,7 @@ async function completeSegmentMain(LIVE_OPERATOR_ID, RELATED_CONTENT_IDS, TAG_ID
     try
     {
         console.log("Completing segment...");
-        await completeSegment(AUTH_TOKEN, LIVE_OPERATOR_ID, RELATED_CONTENT_IDS, TAG_IDS);
+        await completeSegment(AUTH_TOKEN, CHANNEL_ID, RELATED_CONTENT_IDS, TAG_IDS);
         console.log("Segment completed");
     }
     catch (error)
