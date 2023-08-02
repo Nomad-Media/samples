@@ -37,6 +37,20 @@
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Get Live Channels</h3>
+    <form id="getChannelsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Channel</h3>
+    <form id="getChannelForm">
+        <label for="getLiveChannelIdInput">Channel Id:</label>
+        <input type="getLiveChannelId" id="getLiveChannelIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
     <h3>Create Live Channel</h3>
     <form id="createChannelForm">
         <label for="createChannelNameInput">Channel Name:</label>
@@ -174,6 +188,20 @@
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Get Live Inputs</h3>
+    <form id="getInputsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Input</h3>
+    <form id="getInputForm">
+        <label for="getInputIdInput">Input Id:</label>
+        <input type="getInputId" id="getInputIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
     <h3>Create Live Input</h3>
     <form id="createInputForm">
         <label for="createInputNameInput">Input Name:</label>
@@ -284,6 +312,108 @@
     <form id="deleteInputForm">
         <label for="deleteInputIdInput">Input Id:</label>
         <input type="deleteInputId" id="deleteInputIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Operators</h3>
+    <form id="getOperatorsForm">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Operators</h3>
+    <form id="getOperatorForm">
+        <label for="getOperatorIdInput">Operator Id:</label>
+        <input type="getOperatorId" id="getOperatorIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Broadcast</h3>
+    <form id="startBroadcastForm">
+        <label for="startBroadcastLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="startBroadcastLiveOperatorId" id="startBroadcastLiveOperatorIdInput" required>
+        
+        <label for="startBroadcastChannelIdInput">Channel Id:</label>
+        <input type="startBroadcastChannelId" id="startBroadcastChannelIdInput" required>
+
+        <label for="startBroadcastPrerollAssetIdInput">Preroll Asset Id:</label>
+        <input type="startBroadcastPrerollAssetId" id="startBroadcastPrerollAssetIdInput">
+
+        <label for="startBroadcastPostrollAssetIdInput">Postroll Asset Id:</label>
+        <input type="startBroadcastPostrollAssetId" id="startBroadcastPostrollAssetIdInput">
+
+        <label for="startBroadcastLiveInputIdInput">Live Input Id:</label>
+        <input type="startBroadcastLiveInputId" id="startBroadcastLiveInputIdInput">
+
+        <label for="startBroadcastRelatedContentIdsInput">Related Content Ids (separated by comma):</label>
+        <input type="startBroadcastRelatedContentId" id="startBroadcastRelatedContentIdsInput">
+
+        <label for="startBroadcastTagIdsInput">Tag Ids (separated by comma):</label>
+        <input type="startBroadcastTagIds" id="startBroadcastTagIdsInput">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Cancel Broadcast</h3>
+    <form id="cancelBroadcastForm">
+        <label for="cancelBroadcastLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="cancelBroadcastLiveOperatorId" id="cancelBroadcastLiveOperatorIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Stop Broadcast</h3>
+    <form id="stopBroadcastForm">
+        <label for="stopBroadcastLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="stopBroadcastLiveOperatorId" id="stopBroadcastLiveOperatorIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Completed Segments</h3>
+    <form id="getCompletedSegmentsForm">
+        <label for="getCompletedSegmentsLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="getCompletedSegmentsLiveOperatorId" id="getCompletedSegmentsLiveOperatorIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Segment</h3>
+    <form id="startSegmentForm">
+        <label for="startSegmentLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="startSegmentLiveOperatorId" id="startSegmentLiveOperatorIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Cancel Segment</h3>
+    <form id="cancelSegmentForm">
+        <label for="cancelSegmentLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="cancelSegmentLiveOperatorId" id="cancelSegmentLiveOperatorIdInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Complete Segment</h3>
+    <form id="completeSegmentForm">
+        <label for="completeSegmentLiveOperatorIdInput">Live Operator Id:</label>
+        <input type="completeSegmentLiveOperatorId" id="completeSegmentLiveOperatorIdInput" required>
+
+        <label for="completeSegmentrelatedContentIdsInput">Related Content Ids (separated by comma):</label>
+        <input type="completeSegmentrelatedContentIds" id="completeSegmentrelatedContentIdsInput">
+
+        <label for="completeSegmentTagIdsInput">Tag Ids (separated by comma):</label>
+        <input type="completeSegmentTagIds" id="completeSegmentTagIdsInput">
 
         <br><br>
         <button type="submit">Submit</button>
