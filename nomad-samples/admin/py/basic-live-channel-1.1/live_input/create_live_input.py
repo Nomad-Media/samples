@@ -7,7 +7,7 @@ from live_input.wait_live_input_status import *
 
 import json, requests
 
-def create_live_input(AUTH_TOKEN, NAME, SOURCE, TYPE):
+def create_live_input(AUTH_TOKEN, NAME, TYPE, SOURCE):
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',

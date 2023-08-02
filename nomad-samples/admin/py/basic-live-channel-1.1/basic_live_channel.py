@@ -10,6 +10,7 @@ from input_names.check_input_names import *
 from live_channel.create_live_channel import *
 from live_channel.delete_live_channel import *
 from live_channel.get_live_channel import *
+from live_channel.get_live_channels import *
 from live_channel.live_channel_types import *
 from live_channel.start_live_channel import *
 from live_channel.stop_live_channel import *
@@ -17,13 +18,90 @@ from live_channel.update_live_channel import *
 
 from live_input.create_live_input import *
 from live_input.delete_live_input import *
+from live_input.get_live_input import *
+from live_input.get_live_inputs import *
 from live_input.live_input_types import *
 from live_input.update_live_input import *
+
+from live_operator.cancel_broadcast import *
+from live_operator.cancel_segment import *
+from live_operator.complete_segment import *
+from live_operator.get_completed_segments import *
+from live_operator.get_live_operator import *
+from live_operator.get_live_operators import *
+from live_operator.start_broadcast import *
+from live_operator.start_segment import *
+from live_operator.stop_broadcast import *
 
 from schedule_event.add_asset_schedule_event import *
 from schedule_event.remove_asset_schedule_event import *
 from schedule_event.add_input_schedule_event import *
 from schedule_event.remove_input_schedule_event import *
+
+
+def get_channels_main(AUTH_TOKEN):
+    try:
+        # Give feedback to the console
+        print("Getting Live Channels...")
+
+        # Get the channels
+        CHANNELS_RESPONSE = get_live_channels(AUTH_TOKEN)
+
+        # Give feedback to the console
+        print(json.dumps(CHANNELS_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting live channels failed")
+    
+
+def get_channel_main(AUTH_TOKEN):
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to get: ")
+
+        # Give feedback to the console
+        print("Getting the Live Channel...")
+
+        # Get the channel
+        CHANNEL_RESPONSE = get_live_channel(AUTH_TOKEN, CHANNEL_ID)
+
+        # Give feedback to the console
+        print(json.dumps(CHANNEL_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting live channel failed")
+    
+
+def get_inputs_main(AUTH_TOKEN):
+    try:
+        # Give feedback to the console
+        print("Getting Live Inputs...")
+
+        # Get the inputs
+        INPUTS_RESPONSE = get_live_inputs(AUTH_TOKEN)
+
+        # Give feedback to the console
+        print(json.dumps(INPUTS_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting live inputs failed")
+    
+
+def get_input_main(AUTH_TOKEN):
+    try:
+        INPUT_ID = input("Enter the input id of the input you want to get: ")
+
+        # Give feedback to the console
+        print("Getting the Live Input...")
+
+        # Get the input
+        INPUT_RESPONSE = get_live_input(AUTH_TOKEN, INPUT_ID)
+
+        # Give feedback to the console
+        print(json.dumps(INPUT_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting live input failed")
+
 
 def create_live_channel_main(AUTH_TOKEN):
 
@@ -355,19 +433,200 @@ def delete_input(AUTH_TOKEN):
     except:
         raise Exception("Live Input failed to delete")
 
+
+def get_live_operators_main(AUTH_TOKEN):
+    try:
+        # Give feedback to the console
+        print("Getting Live Operators...")
+
+        # Get the Live Operators
+        LIVE_OPERATORS_RESPONSE = get_live_operators(AUTH_TOKEN)
+
+        # Give feedback to the console
+        print(json.dumps(LIVE_OPERATORS_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting live operators failed")
+    
+
+def get_live_operator_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the live operator you want to get: ")
+
+        # Give feedback to the console
+        print("Getting the Live Operator...")
+
+        # Get the Live Operator
+        LIVE_OPERATOR_RESPONSE = get_live_operator(AUTH_TOKEN, ID)
+
+        # Give feedback to the console
+        print(json.dumps(LIVE_OPERATOR_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting live operator failed")
+
+
+def start_broadcast_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the broadcast you want to start: ")
+        CHANNEL_ID = input("Enter the channel id of the channel you want to start broadcasting: ")
+        PREROLL_ASSET_ID = input("Enter the asset id of the preroll asset: ")
+        POSTROLL_ASSET_ID = input("Enter the asset id of the postroll asset: ")
+        LIVE_INPUT_ID = input("Enter the input id of the live input: ")
+        RELATED_CONTENT_IDS = input("Enter the related content ids of the related content (separated by comma): ").split(",")
+        TAGS_IDS = input("Enter the tags ids of the tags (separated by comma): ").split(",")
+
+        # Give feedback to the console
+        print("Starting the broadcast...")
+
+        # Start the broadcast
+        START_BROADCAST_RESPONSE = start_broadcast(AUTH_TOKEN, ID, CHANNEL_ID, PREROLL_ASSET_ID, 
+                                                   POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
+                                                   RELATED_CONTENT_IDS, TAGS_IDS)
+
+        # Give feedback to the console
+        print("Broadcast was started successfully")
+        print(json.dumps(START_BROADCAST_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Broadcast failed to start")
+    
+
+def cancel_broadcast_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the broadcast you want to cancel: ")
+
+        # Give feedback to the console
+        print("Canceling the broadcast...")
+
+        # Cancel the broadcast
+        cancel_broadcast(AUTH_TOKEN, ID)
+
+        # Give feedback to the console
+        print("Broadcast was canceled successfully")
+
+    except:
+        raise Exception("Broadcast failed to cancel")
+    
+
+def stop_broadcast_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the broadcast you want to stop: ")
+
+        # Give feedback to the console
+        print("Stopping the broadcast...")
+
+        # Stop the broadcast
+        stop_broadcast(AUTH_TOKEN, ID)
+
+        # Give feedback to the console
+        print("Broadcast was stopped successfully")
+
+    except:
+        raise Exception("Broadcast failed to stop")
+    
+
+def get_completed_segments_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the live operator you want to get the segments from: ")
+
+        # Give feedback to the console
+        print("Getting segments...")
+
+        # Get the segments
+        SEGMENTS_RESPONSE = get_completed_segments(AUTH_TOKEN, ID)
+
+        # Give feedback to the console
+        print(json.dumps(SEGMENTS_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting segments failed")
+
+
+def start_segment_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the segment you want to start: ")
+
+        # Give feedback to the console
+        print("Starting the segment...")
+
+        # Start the segment
+        start_segment(AUTH_TOKEN, ID)
+
+        # Give feedback to the console
+        print("Segment was started successfully")
+
+    except:
+        raise Exception("Segment failed to start")
+    
+
+def cancel_segment_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the segment you want to cancel: ")
+
+        # Give feedback to the console
+        print("Canceling the segment...")
+
+        # Cancel the segment
+        cancel_segment(AUTH_TOKEN, ID)
+
+        # Give feedback to the console
+        print("Segment was canceled successfully")
+
+    except:
+        raise Exception("Segment failed to cancel")
+
+
+def complete_segment_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter the id of the segment you want to complete: ")
+        RELATED_CONTENT_ID = input("Enter the related content id of the related content: ")
+        TAGS_ID = input("Enter the tags id of the tags: ")
+
+        # Give feedback to the console
+        print("Completing the segment...")
+
+        # Complete the segment
+        complete_segment(AUTH_TOKEN, ID, RELATED_CONTENT_ID, TAGS_ID)
+
+        # Give feedback to the console
+        print("Segment was completed successfully")
+
+    except:
+        raise Exception("Segment failed to complete")
+
+
 if __name__ == "__main__":
-    AUTH_TOKEN = input("Enter authentication token: ")
+    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiMzA4MDhjNmItOTk0OS00ODc5LWI0OGUtZTJiYTc4Y2MxNzdmIiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImQyZDY4NGNiLTI1ZWYtNDM3MS1hNGJkLTc4YTEzNGY4Njg0NSIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwOTMyMzc2LCJleHAiOjE2OTA5MzU5NzYsImlhdCI6MTY5MDkzMjM3NiwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiI0NTYzYzQ4NC1mMjY1LTQyNTgtYTgxZS1hZTU5ZWQ3MWUxNTMiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.0Y3D8XB8L_AmxBfWUC8qf2oOrPn2QnKqkA6amtyZhjdisd9naJ8g7szgwznZtrwZQMMgB5boS76OTYg5OfMzDs1FxDkIn4_ZPysVpenqiqKOEl_NdEO1XUh8EvyByFzHqrD68McWVeQvlm1wmVN5hkZhWKm7i3uoubpLMoKPPx-3VgK-Qk3VKadoxL3aMpPvPAhsURV6Sla5J2xh73ipUxR699iANbWT2kgXxfdUlqZq4nvBZsDIJLd6QQHKspmbRYry-clz9B6CjyCS7jChJMrDKKCH2b5iYH_rUQxvEj3r2xOSf_m7egtmgozVkL4uhQ47Dfh65Onw75lK3VM76Q"#input("Enter authentication token: ")
 
     while True:
-        print("Do you want to create a live channel, create a live input, update a live channel, "\
-              "add an asset schedule event, remove an asset schedule event, update a live input, "\
+        print("Do you want to get live channels, get a live channel, create a live channel, "\
+              "update a live channel, get live inputs, get a live input, create a live input, "\
+              "update a live input, add an asset schedule event, remove an asset schedule event, "\
               "start a live channel, stop a live channel, add a live input to a live channel, remove "\
-              "an input from a channel, delete a live channel, delete a live input, or exit")
-        USER_INPUT = input("Enter create channel, create input, update channel, update input, "\
+              "an input from a channel, delete a live channel, delete a live input, get all operators, "\
+              "get a specific operator, start a broadcast, cancel a broadcast, stop a broadcast, "\
+              "get all completed segments, start a segment, cancel a segment, complete a segment, or exit")
+        USER_INPUT = input("Enter get channels, get channel, create channel, update channel, "\
+                           "get inputs, get input, create input, update input, "\
                            "add event, remove event, start channel, stop channel, add input, "\
-                           "remove input, delete channel, delete input, or exit for each option "\
-                           "above respectivly: ")
-        if USER_INPUT == "create channel":
+                           "remove input, delete channel, delete input, get operators, get operator, "\
+                           "start broadcast, cancel broadcast, stop broadcast, get segments, start segment, "\
+                           "cancel segment, complete segment, or exit for each option above respectivly: ")
+        
+        if USER_INPUT == "get channels":
+            get_channels_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "get channel":
+            get_channel_main(AUTH_TOKEN)
+        
+        elif USER_INPUT == "get inputs":
+            get_inputs_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "get input":
+            get_input_main(AUTH_TOKEN)
+        
+        elif USER_INPUT == "create channel":
             create_live_channel_main(AUTH_TOKEN)
 
         elif USER_INPUT == "create input":
@@ -402,6 +661,33 @@ if __name__ == "__main__":
     
         elif USER_INPUT == "delete input":
             delete_input(AUTH_TOKEN)
+
+        elif USER_INPUT == "get operators":
+            get_live_operators_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "get operator":
+            get_live_operator_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "start broadcast":
+            start_broadcast_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "cancel broadcast":
+            cancel_broadcast_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "stop broadcast":
+            stop_broadcast_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "get segments":
+            get_completed_segments_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "start segment":
+            start_segment_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "cancel segment":
+            cancel_segment_main(AUTH_TOKEN)
+
+        elif USER_INPUT == "complete segment":
+            complete_segment_main(AUTH_TOKEN)
 
         elif USER_INPUT == "exit":
             break
