@@ -1,13 +1,13 @@
 from contents.get_content import *
+from contents.get_contents import *
 from contents.create_content import *
 from contents.update_content import *
 from contents.delete_content import *
 
 import json
 
-def get_content_main(AUTH_TOKEN):
+def get_contents_main(AUTH_TOKEN):
     try:
-        ID = input("Enter id: ")
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
         if input("Do you want to sort the results (y/n): ") == "y":
             SORT_COLUMN = input("Enter the parameter name you want to sort by: ")
@@ -22,9 +22,22 @@ def get_content_main(AUTH_TOKEN):
         
 
         print("Getting content")
-        INFO = get_content(AUTH_TOKEN, ID, CONTENT_DEFINITION_ID, SORT_COLUMN, IS_DESC, 
+        INFO = get_contents(AUTH_TOKEN, CONTENT_DEFINITION_ID, SORT_COLUMN, IS_DESC, 
                            PAGE_INDEX, PAGE_SIZE, LANGUAGE_ID)
         print(json.dumps(INFO, indent=4))
+    except:
+        raise Exception()
+    
+def get_content_main(AUTH_TOKEN):
+    try:
+        ID = input("Enter id: ")
+        CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
+        IS_REVISION = input("Enter if you want the content to be a revision (y/n): ") == "y"
+
+        print("Getting content")
+        INFO = get_content(AUTH_TOKEN, ID, CONTENT_DEFINITION_ID, IS_REVISION)
+        print(json.dumps(INFO, indent=4))
+
     except:
         raise Exception()
     
@@ -65,15 +78,16 @@ def delete_content_main(AUTH_TOKEN):
         raise Exception()
 
 if __name__ == "__main__":
-    AUTH_TOKEN = input("Enter authentication token: ")
+    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiOTM1NjI5YzYtMjg5OC00ZjY2LTg2ODktMjExMjNhNDYwNmY5IiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImFhOWQxNmZhLWQ4MzctNGYxNi1iNzQ0LTczYzk4NGM5MDEwYyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwOTQ5MTE4LCJleHAiOjE2OTA5NTI3MTgsImlhdCI6MTY5MDk0OTExOCwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiJiZmZhNjcxOS04OGIxLTRlMzUtODExZC0zMjQ3YmY5NTM4MTMiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.caZU6KOjzv5PdK5sttEtv0NxGTlLcQY8x0CH92iB9tNA2SBYaiw3Qivf89QBV2bfaQI9CkRoVTJ1G0abBumaiFqJsnGiKdM3iZIMpuKw8ag9UOYgKPqoRIR9oBS7RCZAYoNf5txhRWxgPcVCfAmMceuL9PXpnG8Swk6n2S_dxnSvS51bpRNAEX-H0YGRKBoZibnhEHHH7gzRTyD5D-UbJ2EzEZzb4yumh_oXclFRrACI_Thu3V_VcLVcu-CNm14gSpa5_wRHgDxwfeADMeFz1Yk1GJa1ZCkMhBRck9-kMU2vMsOVETbJogMI6ncbOQDIXLlKaVz5KGDCBx3xZcKo_Q"
+    print(f"Enter authentication token: {AUTH_TOKEN}")
 
     while True:
         print("Do you want to get content by id, create a content, update a content, "\
               "delete a content, or exit")
-        USER_INPUT = input("Enter get, create, update, delete, or exit for each option above respectivly: ")
+        USER_INPUT = input("Enter get contents, get content, create, update, delete, or exit for each option above respectivly: ")
 
-        if USER_INPUT == "get":
-            get_content_main(AUTH_TOKEN)
+        if USER_INPUT == "get contents":
+            get_contents_main(AUTH_TOKEN)
 
         elif USER_INPUT == "create":
             create_content_main(AUTH_TOKEN)
