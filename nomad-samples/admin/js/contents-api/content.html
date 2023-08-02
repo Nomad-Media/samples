@@ -37,13 +37,10 @@
         <button type="submit">Submit</button>
     </form>
 
-    <h2>Get Content</h2>
-    <form id="getForm">
-        <label for="getContentDefinitionIdInput">Content Definition Id:</label>
+    <h2>Get Contents</h2>
+    <form id="getContentsForm">
+        <label for="getContentsContentDefinitionIdInput">Content Definition Id:</label>
         <input type="getContentDefinitionId" id="getContentDefinitionIdInput" required>
-
-        <label for="getIdInput">Content Id:</label>
-        <input type="getId" id="getIdInput" required>
 
         <label for="sortInput">Sort Results:</label>
         <select id="sortInput">
@@ -70,6 +67,24 @@
             <label for="languageIdInput">Language Id:</label>
             <input type="languageId" id="languageIdInput">
         </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Get Content</h2>
+    <form id="getContentForm">
+        <label for="getContentContentDefinitionIdInput">Content Definition Id:</label>
+        <input type="getContentDefinitionId" id="getContentContentDefinitionIdInput" required>
+
+        <label for="getContentIdInput">Content Id:</label>
+        <input type="getId" id="getContentIdInput" required>
+
+        <label for="isRevisionInput">Is Revision:</label>
+        <select id="isRevisionInput">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
 
         <br><br>
         <button type="submit">Submit</button>
