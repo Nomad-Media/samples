@@ -15,7 +15,7 @@ export default async function cancelBroadcast(AUTH_TOKEN, ID) {
 
     // Check for success
     if (RESPONSE && RESPONSE.ok) {
-        return await RESPONSE.json();
+        return;
     }
 
     await apiExceptionHandler(RESPONSE, `Canceling Broadcast ${ID} failed`);

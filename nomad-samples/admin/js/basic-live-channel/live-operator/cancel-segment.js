@@ -15,7 +15,7 @@ export default async function cancelSegment(AUTH_TOKEN, ID) {
 
     // Check for success
     if (RESPONSE && RESPONSE.ok) {
-        return await RESPONSE.json();
+        return;
     }
 
     await apiExceptionHandler(RESPONSE, `Canceling Segment ${ID} failed`);

@@ -28,7 +28,7 @@ export default async function completeSegment(AUTH_TOKEN, ID, RELATED_CONTENT_ID
 
     // Check for success
     if (RESPONSE && RESPONSE.ok) {
-        return await RESPONSE.json();
+        return;
     }
 
     await apiExceptionHandler(RESPONSE, `Completing Segment ${ID} failed`);
