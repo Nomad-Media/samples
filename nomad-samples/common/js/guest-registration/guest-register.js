@@ -1,43 +1,67 @@
-import guestInvite from "./guest/guest-invite";
-import participantPanelQuery from "./guest/participant-panel-query";
-import ping from "./guest/ping-user";
-import registerGuest from "./guest/register-guest";
-import removeGuest from "./guest/remove-guest";
+import guestInvite from "./guest/guest-invite.js";
+import participantPanelQuery from "./guest/participant-panel-query.js";
+import ping from "./guest/ping-user.js";
+import registerGuest from "./guest/register-guest.js";
+import removeGuest from "./guest/remove-guest.js";
 
 const AUTH_FORM = document.getElementById("authForm");
 const INVITE_FORM = document.getElementById("inviteForm");
 const REMOVE_INVITE_FORM = document.getElementById("removeInviteForm");
-const PASSWORD_FORM = document.getElementById("passwordForm");
+const REGISTER_FORM = document.getElementById("registerForm");
 const PING_FORM = document.getElementById("pingForm");
 const PPQ_FORM = document.getElementById("ppqForm");
 
-const AUTH_TOKEN = document.getElementById("authInput").value;
-const EMAIL = document.getElementById("emailInput").value;
-const PASSWORD = document.getElementById("passwordInput").value;
+const AUTH_TOKEN = document.getElementById("authInput");
+const EMAIL = document.getElementById("emailInput");
+const FIRST_NAME = document.getElementById("firstNameInput");
+const LAST_NAME = document.getElementById("lastNameInput");
+const USER_PASSWORD = document.getElementById("inviteUserPasswordInput");
+const GUEST_EMAIL = document.getElementById("guestEmailInput");
+const GUEST_FIRST_NAME = document.getElementById("guestFirstNameInput");
+const GUEST_LAST_NAME = document.getElementById("guestLastNameInput");
+const GUEST_PASSWORD = document.getElementById("guestPasswordInput");
 
 sessionStorage.clear();
 
 AUTH_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
+
+    sessionStorage.setItem("token", AUTH_TOKEN.value);
+    console.log("Successfuly updated token");
 });
 
 INVITE_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
-    sessionStorage.setItem("guestUserInfo", inviteGuestUser());
+
+    let email = EMAIL.value;
+    let firstName = FIRST_NAME.value;
+    let lastName = LAST_NAME.value;
+    let password = USER_PASSWORD.value;
+
+    inviteGuestUser(email, firstName, lastName, password);
 });
 
 REMOVE_INVITE_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
+
+    const contentDefinitionId = CONTENT_DEFINITION_ID_INPUT.value;
+
     removeGuestUser(CONTENT_DEFINITION_ID, USER_ID);
 });
 
-PASSWORD_FORM.addEventListener("submit", function (event) 
+REGISTER_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
-    sessionStorage.setItem("guestRegisterInfo", registerGuestUser());
+    
+    let email = GUEST_EMAIL.value;
+    let firstName = GUEST_FIRST_NAME.value;
+    let lastName = GUEST_LAST_NAME.value;
+    let password = GUEST_PASSWORD.value;
+
+    registerGuestUser(email, firstName, lastName, password);
 });
 
 PING_FORM.addEventListener("submit", function (event) 
@@ -52,8 +76,10 @@ PPQ_FORM.addEventListener("submit", function (event)
     ppq(ID);
 });
 
-async function inviteGuestUser()
+async function inviteGuestUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
 {
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
     if (!AUTH_TOKEN)
     {
         throw new Error("Authentication token: The authentication token is empty");
@@ -66,12 +92,9 @@ async function inviteGuestUser()
 
     try
     {
-        const EMAILS = [];
-        EMAILS.push(EMAIL);
         console.log("Inviting Guest");
-        const INVITE_INFO = await guestInvite(AUTH_TOKEN, EMAILS);
-        console.log(INVITE_INFO.text());
-        return(INVITE_INFO.text());
+        const INVITE_INFO = await guestInvite(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD);
+        console.log(JSON.stringify(INVITE_INFO, null, 4));
     }
     catch (error)
     {
@@ -108,29 +131,20 @@ async function removeGuestUser(CONTENT_DEFINITION_ID, USER_ID)
     }
 }
 
-async function registerGuestUser()
+async function registerGuestUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
 {
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
     if (!AUTH_TOKEN)
     {
         throw new Error("Authentication token: The authentication token is empty");
     }
 
-    if (!EMAIL) 
-    {
-        throw new Error("Email: The email is empty");
-    }
-
-    if (!PASSWORD) 
-    {
-        throw new Error("Password: The password is empty");
-    }
-
     try
     {
         console.log("Registering guest");
-        const REGISTER_RESPONSE = await registerGuest(AUTH_TOKEN, EMAIL, PASSWORD);
-        console.log(REGISTER_RESPONSE.text());
-        return(REGISTER_RESPONSE.text());
+        const REGISTER_RESPONSE = await registerGuest(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD);
+        console.log(JSON.stringify(REGISTER_RESPONSE, null, 4));
     }
     catch
     {
