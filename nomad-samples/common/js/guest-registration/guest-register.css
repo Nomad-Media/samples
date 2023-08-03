@@ -3,7 +3,7 @@ body {
     margin: 20px;
 }
 
-h1 {
+h1, h2, h3 {
     text-align: center;
 }
 
@@ -13,11 +13,12 @@ form {
 }
 
 label {
+    margin-top: 10px;
     display: block;
     margin-bottom: 10px;
 }
 
-input[type="email"] {
+input {
     padding: 5px;
     width: 300px;
 }

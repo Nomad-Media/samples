@@ -71,7 +71,6 @@ SEARCH_FORM.addEventListener("submit", function (event)
     let pageSize = PAGE_SIZE_INPUT.value;
     let searchQuery = SEARCH_QUERY_INPUT.value;
     let resultFields = RESULT_FIELDS_JSON_INPUT.value.replace(/\s+/g,'');
-    console.log(resultFields);
     let resultFieldsJson = JSON.parse(resultFields);
     let fieldName = CONTENT_SORT_FIELD_NAME_INPUT.value;
     let sortType = CONTENT_SORT_TYPE.value;

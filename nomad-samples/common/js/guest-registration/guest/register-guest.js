@@ -1,20 +1,18 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js"; 
 
-export default async function registerGuest(AUTH_TOKEN, EMAIL, PASSWORD) 
+export default async function registerGuest(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD) 
 {
 		// Create header for the request
-    const HEADERS = new Headers(AUTH_TOKEN);
+    const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
         email: EMAIL,
-        firstName: "Guest",
-        lastName: "User",
-        organization: "Nomad Media, Corp",
-        password: PASSWORD,
-        passwordConfirmation: PASSWORD
+        firstName: FIRST_NAME,
+        lastName: LAST_NAME,
+        password: PASSWORD
     };
   
   // Post
