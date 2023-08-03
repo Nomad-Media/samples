@@ -31,39 +31,62 @@
 <body>
 
     <h1>Invite Guest User</h1>
-
-    <form id="inviteForm">
-        <label for="emailInput">Enter Email:</label>
-        <input type="email" id="emailInput" required>
-        <button type="submit">Invite</button>
-    </form>
-
-    <form id="removeInviteForm">
-        <button type="submit">Remove Invite</button>
-    </form>
-
-    <h1>Register Guest<h1>
-    <form id="passwordForm">
-        <label for="passwordInput">Enter Password:</label>
-        <input type="password" id="passwordInput" required>
-        <button type="submit">Submit</button>
-    </form>
-
-    <h1>Ping User</h1>
-    <form id="pingForm">
-        <button type="submit">PING</button>
-    </form>
-
-    <h1>Participant Panel Query</h1>
-    <form id="ppqForm">
-        <button type="submit">Participant Panel Query</button>
-    </form>
-
-    <h1>Authentication Token</h1>
+    <h3>Authentication Token</h3>
     <form id="authForm">
         <label for="authInput">Authentication Token:</label>
         <input type="authToken" id="authInput" required>
         <button type="submit">Submit</button>
+    </form>
+
+    <h3>Invite User</h3>
+    <form id="inviteForm">
+        <label for="emailInput">Enter Email:</label>
+        <input type="email" id="emailInput" required>
+
+        <label for="firstNameInput">Enter First Name:</label>
+        <input type="firstName" id="firstNameInput">
+
+        <label for="lastNameInput">Enter Last Name:</label>
+        <input type="lastName" id="lastNameInput">
+
+        <label for="inviteUserPasswordInput">Enter Password:</label>
+        <input type="password" id="inviteUserPasswordInput" required>
+
+        <br><br>
+        <button type="submit">Invite</button>
+    </form>
+
+    <h3>Remove Invite</h3>
+    <form id="removeInviteForm">
+        <button type="submit">Remove Invite</button>
+    </form>
+
+    <h3>Register Guest</h3>
+    <form id="registerForm">
+        <label for="guestEmailInput">Enter Email:</label>
+        <input type="email" id="guestEmailInput" required>
+
+        <label for="guestFirstNameInput">Enter First Name:</label>
+        <input type="firstName" id="guestFirstNameInput">
+
+        <label for="guestLastNameInput">Enter Last Name:</label>
+        <input type="lastName" id="guestLastNameInput">
+
+        <label for="guestPasswordInput">Enter Password:</label>
+        <input type="password" id="guestPasswordInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Ping User</h3>
+    <form id="pingForm">
+        <button type="submit">Ping</button>
+    </form>
+
+    <h3>Participant Panel Query</h3>
+    <form id="ppqForm">
+        <button type="submit">Participant Panel Query</button>
     </form>
 </body>
 </html>

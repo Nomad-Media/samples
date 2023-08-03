@@ -5,7 +5,6 @@ export default async function postSearch(AUTH_TOKEN, PAGE_OFFSET, PAGE_SIZE, SEA
                                          RESULT_FIELDS_JSON, FIELD_NAME, SORT_TYPE, IS_ADMIN) 
 {
     const API_URL = IS_ADMIN ? `${prjConstants.ADMIN_API_URL}/admin/search` : `${prjConstants.PORTAL_API_URL}/portal/search`;
-    console.log(API_URL);
 
     // Create header for the request
     const HEADERS = new Headers();
