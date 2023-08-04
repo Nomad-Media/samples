@@ -6,7 +6,8 @@ import requests
 
 # @param {string} AUTH_TOKEN - The authentication token
 
-def guest_invite(AUTH_TOKEN: str) -> dict:
+def guest_invite(AUTH_TOKEN: str, CONTENT_ID: str, CONTENT_DEFINITION_ID: str, 
+                 USER_ID: str, EMAILS: list, CONTENT_SECURITY_ATTRIBUTE: str) -> dict:
     if not AUTH_TOKEN:
         raise Exception("Authentication token not found")
         
@@ -19,11 +20,11 @@ def guest_invite(AUTH_TOKEN: str) -> dict:
     
     # replace username and password with your username and password
     BODY = {
-      	"contentDefinitionId": "bf8ac754-5b8b-4330-b1aa-76f15fb7f673",
-        "emails":
-        [
-            "pawev59721@ozatvn.com"
-        ]
+        "contentId": CONTENT_ID,
+      	"contentDefinitionId": CONTENT_DEFINITION_ID,
+        "userId": USER_ID,
+        "emails": EMAILS,
+        "contentSecurityAttribute": CONTENT_SECURITY_ATTRIBUTE
     }
 
     RESPONSE = None
