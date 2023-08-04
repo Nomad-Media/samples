@@ -1,23 +1,25 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js"; 
 
-export default async function participantPanelQuery(AUTH_TOKEN, ID) 
+export default async function participantPanelQuery(AUTH_TOKEN, ID, API) 
 {
+    if (API === "portalApi") {
+        API = `${prjConstants.PORTAL_API_URL}/user-session/${ID}`;
+    }
+    else
+    {
+        API = `${prjConstants.ADMIN_API_URL}/admin/user-session/${ID}`;
+    }
+
 		// Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
-  	const BODY = {
-        id: ID
-    };
-  
-  // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/user-session/${ID}`, {
-        method: "POST",
-        mode: "no-cors",
-        headers: HEADERS,
-        body: JSON.stringify(BODY)
+    // Make the request
+    const RESPONSE = await fetch(API, {
+        method: "GET",
+        headers: HEADERS
     }).catch((exception) => {
         throw exception;
     });

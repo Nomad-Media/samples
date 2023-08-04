@@ -6,11 +6,11 @@ import requests
 
 # @param {string} AUTH_TOKEN - The authentication token
 
-def ping_user(AUTH_TOKEN: str, CONTENT_DEFINITION_ID: str, USER_ID: str) -> dict:
+def ping_user(AUTH_TOKEN: str, APPLICATION_ID: str, USER_ID: str) -> dict:
     if not AUTH_TOKEN:
         raise Exception("Authentication token not found")
         
-    API_URL = "https://" + PORTAL_API_URL + "/account/remove-user"
+    API_URL = f"PORTAL_API_URL/account/ping"
 
     HEADERS = {
         "Content-Type": "application/json",
@@ -19,7 +19,7 @@ def ping_user(AUTH_TOKEN: str, CONTENT_DEFINITION_ID: str, USER_ID: str) -> dict
     
     # replace username and password with your username and password
     BODY = {
-      	"contentDefinitionId": CONTENT_DEFINITION_ID,
+      	"applicationId": APPLICATION_ID,
         "userId": USER_ID
     }
 
