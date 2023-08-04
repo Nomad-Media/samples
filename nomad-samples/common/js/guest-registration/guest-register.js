@@ -12,14 +12,24 @@ const PING_FORM = document.getElementById("pingForm");
 const PPQ_FORM = document.getElementById("ppqForm");
 
 const AUTH_TOKEN = document.getElementById("authInput");
-const EMAIL = document.getElementById("emailInput");
-const FIRST_NAME = document.getElementById("firstNameInput");
-const LAST_NAME = document.getElementById("lastNameInput");
-const USER_PASSWORD = document.getElementById("inviteUserPasswordInput");
+const INVITE_CONTENT_ID_INPUT = document.getElementById("inviteContentIdInput");
+const INVITE_CONTENT_DEFINITION_ID_INPUT = document.getElementById("inviteContentDefinitionIdInput");
+const INVITE_USER_ID_INPUT = document.getElementById("inviteUserIdInput");
+const INVITE_EMAIL_INPUT = document.getElementById("inviteEmailInput");
+const INVITE_CONTENT_SECURITY_ATTRIBUTE_INPUT = document.getElementById("inviteContentSecurityAttributeInput");
+const REMOVE_INVITE_CONTENT_ID = document.getElementById("removeInviteContentIdInput");
+const REMOVE_INVITE_CONTENT_DEFINITION_ID = document.getElementById("removeInviteContentDefinitionIdInput");
+const REMOVE_INVITE_USER_ID = document.getElementById("removeInviteUserIdInput");
+const REMOVE_INVITE_EMAIL = document.getElementById("removeInviteEmailInput");
+const REMOVE_INVITE_CONTENT_SECURITY_ATTRIBUTE = document.getElementById("removeInviteContentSecurityAttributeInput");
 const GUEST_EMAIL = document.getElementById("guestEmailInput");
 const GUEST_FIRST_NAME = document.getElementById("guestFirstNameInput");
 const GUEST_LAST_NAME = document.getElementById("guestLastNameInput");
 const GUEST_PASSWORD = document.getElementById("guestPasswordInput");
+const APPLICATION_ID = document.getElementById("applicationIdInput");
+const USER_SESSION_ID = document.getElementById("userSessionIdInput");
+const PPQ_ID_INPUT = document.getElementById("ppqIdInput");
+const API_INPUT = document.getElementById("apiInput");
 
 sessionStorage.clear();
 
@@ -35,21 +45,26 @@ INVITE_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
 
-    let email = EMAIL.value;
-    let firstName = FIRST_NAME.value;
-    let lastName = LAST_NAME.value;
-    let password = USER_PASSWORD.value;
+    let contentId = INVITE_CONTENT_ID_INPUT.value;
+    let contentDefinitionId = INVITE_CONTENT_DEFINITION_ID_INPUT.value;
+    let userId = INVITE_USER_ID_INPUT.value;
+    let emails = INVITE_EMAIL_INPUT.value;
+    let contentSecurityAttribute = INVITE_CONTENT_SECURITY_ATTRIBUTE_INPUT.value;
 
-    inviteGuestUser(email, firstName, lastName, password);
+    inviteGuestUser(contentId, contentDefinitionId, userId, emails.split(","), contentSecurityAttribute);
 });
 
 REMOVE_INVITE_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
 
-    const contentDefinitionId = CONTENT_DEFINITION_ID_INPUT.value;
+    let contentId = REMOVE_INVITE_CONTENT_ID.value;
+    let contentDefinitionId = REMOVE_INVITE_CONTENT_DEFINITION_ID.value;
+    let userId = REMOVE_INVITE_USER_ID.value;
+    let emails = REMOVE_INVITE_EMAIL.value;
+    let contentSecurityAttribute = REMOVE_INVITE_CONTENT_SECURITY_ATTRIBUTE.value;
 
-    removeGuestUser(CONTENT_DEFINITION_ID, USER_ID);
+    removeGuestUser(contentId, contentDefinitionId, userId, emails.split(","), contentSecurityAttribute);
 });
 
 REGISTER_FORM.addEventListener("submit", function (event) 
@@ -67,16 +82,24 @@ REGISTER_FORM.addEventListener("submit", function (event)
 PING_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
-    pingUser(APPLICATION_ID, USER_SESSION_ID);
+
+    let applicationId = APPLICATION_ID.value;
+    let userSessionId = USER_SESSION_ID.value;
+
+    pingUser(applicationId, userSessionId);
 });
 
 PPQ_FORM.addEventListener("submit", function (event) 
 {
     event.preventDefault();
-    ppq(ID);
+
+    let id = PPQ_ID_INPUT.value;
+    let api = API_INPUT.value;
+
+    ppq(id, api);
 });
 
-async function inviteGuestUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
+async function inviteGuestUser(CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, EMAILS, CONTENT_SECURITY_ATTRIBUTE)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token");
 
@@ -93,7 +116,8 @@ async function inviteGuestUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
     try
     {
         console.log("Inviting Guest");
-        const INVITE_INFO = await guestInvite(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD);
+        const INVITE_INFO = await guestInvite(AUTH_TOKEN, CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, 
+                                              EMAILS, CONTENT_SECURITY_ATTRIBUTE);
         console.log(JSON.stringify(INVITE_INFO, null, 4));
     }
     catch (error)
@@ -102,7 +126,7 @@ async function inviteGuestUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
     }
 }
 
-async function removeGuestUser(CONTENT_DEFINITION_ID, USER_ID)
+async function removeGuestUser(CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, EMAILS, CONTENT_SECURITY_ATTRIBUTE)
 {
     if (!AUTH_TOKEN)
     {
@@ -122,7 +146,8 @@ async function removeGuestUser(CONTENT_DEFINITION_ID, USER_ID)
     try
     {
         console.log("Removing guest invitation/security");
-        const REMOVE_RESPONSE = await removeGuest(AUTH_TOKEN, CONTENT_DEFINITION_ID, USER_ID);
+        const REMOVE_RESPONSE = await removeGuest(AUTH_TOKEN, CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, 
+                                                  EMAILS, CONTENT_SECURITY_ATTRIBUTE);
         console.log(REMOVE_RESPONSE.text());
     }
     catch
@@ -154,26 +179,18 @@ async function registerGuestUser(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
 
 async function pingUser(APPLICATION_ID, USER_SESSION_ID)
 {
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
     if (!AUTH_TOKEN)
     {
         throw new Error("Authentication token: The authentication token is empty");
-    }
-
-    if (!APPLICATION_ID) 
-    {
-        throw new Error("Application id: The application id is empty");
-    }
-
-    if (!USER_SESSION_ID) 
-    {
-        throw new Error("User session id: The user session id is empty");
     }
 
     try
     {
         console.log("Pinging user");
         const PING_INFO = await ping(AUTH_TOKEN, APPLICATION_ID, USER_SESSION_ID);
-        console.log(PING_INFO.text());
+        console.log(JSON.stringify(PING_INFO, null, 4));
     }
     catch
     {
@@ -181,23 +198,20 @@ async function pingUser(APPLICATION_ID, USER_SESSION_ID)
     }
 }
 
-async function ppq(ID)
+async function ppq(ID, API)
 {
+    const AUTH_TOKEN = sessionStorage.getItem("token");
+
     if (!AUTH_TOKEN)
     {
         throw new Error("Authentication token: The authentication token is empty");
     }
 
-    if (!ID) 
-    {
-        throw new Error("Id: Id is empty");
-    }
-
     try
     {
         console.log("Participant panel query");
-        PPQ_INFO = await participantPanelQuery(AUTH_TOKEN, ID);
-        console.log(PPQ_INFO.text());
+        const PPQ_INFO = await participantPanelQuery(AUTH_TOKEN, ID, API);
+        console.log(JSON.stringify(PPQ_INFO, null, 4));
     }
     catch
     {
