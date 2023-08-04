@@ -6,7 +6,8 @@ import requests
 
 # @param {string} AUTH_TOKEN - The authentication token
 
-def remove_guest_invitation(AUTH_TOKEN: str, CONTENT_DEFINITION_ID: str, USER_ID: str) -> dict:
+def remove_guest_invitation(AUTH_TOKEN: str, CONTENT_ID: str, CONTENT_DEFINITION_ID: str, USER_ID: str,
+                            EMAILS: list, CONTENT_SECURITY_ATTRIBUTE: str) -> dict:
     if not AUTH_TOKEN:
         raise Exception("Authentication token not found")
         
@@ -19,8 +20,11 @@ def remove_guest_invitation(AUTH_TOKEN: str, CONTENT_DEFINITION_ID: str, USER_ID
     
     # replace username and password with your username and password
     BODY = {
+      	"contentId": CONTENT_ID,
       	"contentDefinitionId": CONTENT_DEFINITION_ID,
-        "userId": USER_ID
+        "userId": USER_ID,
+        "emails": EMAILS,
+        "contentSecurityAttribute": CONTENT_SECURITY_ATTRIBUTE
     }
 
     try:

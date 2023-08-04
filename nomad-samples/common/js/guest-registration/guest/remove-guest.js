@@ -1,7 +1,8 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js"; 
 
-export default async function removeGuest(AUTH_TOKEN, CONTENT_DEFINITION_ID, USER_ID) 
+export default async function removeGuest(AUTH_TOKEN, CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, 
+                                          EMAILS, CONTENT_SECURITY_ATTRIBUTE) 
 {
 		// Create header for the request
     const HEADERS = new Headers();
@@ -9,8 +10,11 @@ export default async function removeGuest(AUTH_TOKEN, CONTENT_DEFINITION_ID, USE
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
+        contentId: CONTENT_ID,
         contentDefinitionId: CONTENT_DEFINITION_ID,
-        userId: USER_ID
+        userId: USER_ID,
+        emails: EMAILS,
+        contentSecurityAttribute: CONTENT_SECURITY_ATTRIBUTE
     };
   
   // Post

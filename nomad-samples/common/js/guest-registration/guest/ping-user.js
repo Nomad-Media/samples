@@ -8,13 +8,13 @@ export default async function ping(AUTH_TOKEN, APPLICATION_ID, USER_SESSION_ID)
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
-  	const BODY = {
+    const BODY = {
         applicationId: APPLICATION_ID,
-        userSessionId: USER_SESSION_ID
-    };
-  
-  // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/api/account/ping`, {
+        userId: USER_SESSION_ID
+    }
+
+    // Post
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/account/ping`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
