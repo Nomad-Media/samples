@@ -40,17 +40,24 @@
 
     <h3>Invite User</h3>
     <form id="inviteForm">
-        <label for="emailInput">Enter Email:</label>
-        <input type="email" id="emailInput" required>
+        <label for="inviteContentIdInput">Enter Content Id:</label>
+        <input type="contentId" id="inviteContentIdInput">
 
-        <label for="firstNameInput">Enter First Name:</label>
-        <input type="firstName" id="firstNameInput">
+        <label for="inviteContentDefinitionIdInput">Enter Content Definition Id:</label>
+        <input type="contentDefinitionId" id="inviteContentDefinitionIdInput">
 
-        <label for="lastNameInput">Enter Last Name:</label>
-        <input type="lastName" id="lastNameInput">
+        <label for="inviteUserIdInput">Enter User Id:</label>
+        <input type="userId" id="inviteUserIdInput">
 
-        <label for="inviteUserPasswordInput">Enter Password:</label>
-        <input type="password" id="inviteUserPasswordInput" required>
+        <label for="inviteEmailInput">Enter Emails (separated by comma):</label>
+        <input type="email" id="inviteEmailInput" required>
+
+        <label for="inviteContentSecurityAttributeInput">Enter Content Security Attribute:</label>
+        <select id="inviteContentSecurityAttributeInput">
+            <option value="Undefined">Undefined</option>
+            <option value="Guest">Guest</option>
+            <option value="Demo">Demo</option>
+        </select>
 
         <br><br>
         <button type="submit">Invite</button>
@@ -58,7 +65,27 @@
 
     <h3>Remove Invite</h3>
     <form id="removeInviteForm">
-        <button type="submit">Remove Invite</button>
+        <label for=removeInviteContentIdInput>Enter Content Id:</label>
+        <input type="contentId" id="removeInviteContentIdInput">
+
+        <label for="removeInviteContentDefinitionIdInput">Enter Content Definition Id:</label>
+        <input type="contentDefinitionId" id="removeInviteContentDefinitionIdInput">
+
+        <label for="removeInviteUserIdInput">Enter User Id:</label>
+        <input type="userId" id="removeInviteUserIdInput">
+
+        <label for="removeInviteEmailInput">Enter Emails (separated by comma):</label>
+        <input type="email" id="removeInviteEmailInput" required>
+
+        <label for="removeInviteContentSecurityAttributeInput">Enter Content Security Attribute:</label>
+        <select id="removeInviteContentSecurityAttributeInput">
+            <option value="Undefined">Undefined</option>
+            <option value="Guest">Guest</option>
+            <option value="Demo">Demo</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
     </form>
 
     <h3>Register Guest</h3>
@@ -81,12 +108,29 @@
 
     <h3>Ping User</h3>
     <form id="pingForm">
+        <label for="applicationIdInput">Enter Application Id:</label>
+        <input type="applicationId" id="applicationIdInput">
+
+        <label for="userSessionIdInput">Enter User Session Id:</label>
+        <input type="userSessionId" id="userSessionIdInput" required>
+
+        <br><br>
         <button type="submit">Ping</button>
     </form>
 
     <h3>Participant Panel Query</h3>
     <form id="ppqForm">
-        <button type="submit">Participant Panel Query</button>
+        <label for="ppqIdInput">Enter User Session Id:</label>
+        <input type="ppqId" id="ppqIdInput" required>
+
+        <label for="apiInput">Which API do you want to use?:</label>
+        <select id="apiInput">
+            <option value="portalApi">Portal API</option>
+            <option value="adminApi">Admin API</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
