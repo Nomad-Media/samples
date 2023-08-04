@@ -6,7 +6,7 @@ import requests
 
 # @param {string} AUTH_TOKEN - The authentication token
 
-def register_guest(AUTH_TOKEN: str) -> dict:
+def register_guest(AUTH_TOKEN: str, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD) -> dict:
     if not AUTH_TOKEN:
         raise Exception("Authentication token not found")
   
@@ -19,12 +19,10 @@ def register_guest(AUTH_TOKEN: str) -> dict:
     
     # replace username and password with your username and password
     BODY = {
-      	"email": "pawev59721@ozatvn.com",
-        "firstName": "Guest",
-        "lastName": "User",
-        "organization": "Nomad Media, Corp",
-        "password": "nepqub-nuJvo1-woczih!",
-        "passwordConfirmation": "nepqub-nuJvo1-woczih!"
+      	"email": EMAIL,
+        "firstName": FIRST_NAME,
+        "lastName": LAST_NAME,
+        "password": PASSWORD
     }
 
     try:

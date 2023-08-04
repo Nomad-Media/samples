@@ -1,7 +1,8 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js"; 
 
-export default async function guestInvite(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NAME, PASSWORD) 
+export default async function guestInvite(AUTH_TOKEN, CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, 
+                                          EMAILS, CONTENT_SECURITY_ATTRIBUTE) 
 {
     // Create header for the request
     const HEADERS = new Headers();
@@ -9,10 +10,11 @@ export default async function guestInvite(AUTH_TOKEN, EMAIL, FIRST_NAME, LAST_NA
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
-        email: EMAIL,
-        firstName: FIRST_NAME,
-        lastName: LAST_NAME,
-        password: PASSWORD
+        contentId: CONTENT_ID,
+        contentDefinitionId: CONTENT_DEFINITION_ID,
+        userId: USER_ID,
+        emails: EMAILS,
+        contentSecurityAttribute: CONTENT_SECURITY_ATTRIBUTE
     };
   
   // Post
