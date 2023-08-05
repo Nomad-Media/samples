@@ -1,0 +1,633 @@
+#nomad-backdrop {
+  display: none;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.75);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+#nomad-backdrop.visible {
+  display: block;
+}
+
+.blue-btn {
+  -webkit-box-shadow: inset 0px -3px 7px 0px #29bbff;
+          box-shadow: inset 0px -3px 7px 0px #29bbff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #2dabf9), to(#0688fa));
+  background: -webkit-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+  background: -o-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+  background: linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+  background-color: #2dabf9;
+  border-radius: 3px;
+  border: 1px solid #0b0e07;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 9px 23px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #263666;
+}
+
+.blue-btn:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #0688fa), to(#2dabf9));
+  background: -webkit-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+  background: -o-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+  background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+  background-color: #0688fa;
+}
+
+.blue-btn:active {
+  position: relative;
+  top: 1px;
+}
+
+.orange-btn {
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff6af;
+          box-shadow: inset 0px 1px 0px 0px #fff6af;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #ffec64), to(#ffab23));
+  background: -webkit-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+  background: -o-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+  background: linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+  background-color: #ffec64;
+  border-radius: 6px;
+  border: 1px solid #ffaa22;
+  display: inline-block;
+  cursor: pointer;
+  color: #333333;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffee66;
+}
+
+.orange-btn:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #ffab23), to(#ffec64));
+  background: -webkit-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+  background: -o-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+  background: linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+  background-color: #ffab23;
+}
+
+.orange-btn:active {
+  position: relative;
+  top: 1px;
+}
+
+.rainbow {
+  background-color: #343a40;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 16px;
+  background-image: -webkit-gradient(linear, left top, right top, from(#00c0ff), color-stop(49%, #ffcf00), color-stop(80%, #fc4f4f), to(#00c0ff));
+  background-image: -webkit-linear-gradient(left, #00c0ff 0%, #ffcf00 49%, #fc4f4f 80%, #00c0ff 100%);
+  background-image: -o-linear-gradient(left, #00c0ff 0%, #ffcf00 49%, #fc4f4f 80%, #00c0ff 100%);
+  background-image: linear-gradient(90deg, #00c0ff 0%, #ffcf00 49%, #fc4f4f 80%, #00c0ff 100%);
+  -webkit-animation: slide-bg 5s linear infinite;
+          animation: slide-bg 5s linear infinite;
+}
+
+@-webkit-keyframes slide-bg {
+  to {
+    background-position: 20vw;
+  }
+}
+
+@keyframes slide-bg {
+  to {
+    background-position: 20vw;
+  }
+}
+
+footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background-color: #064d8e;
+  padding: 16px;
+  height: 120px;
+  width: 100%;
+}
+
+footer h2 {
+  color: #fff;
+  font-size: 24px;
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  margin: 6px;
+  padding: 0;
+}
+
+footer a {
+  color: #fff;
+  font-size: 16px;
+  font-family: "Sora", sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background-color: #064d8e;
+  font-family: "Sora", sans-serif;
+  height: 120px;
+  width: 100%;
+}
+
+header .header-col-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  font-family: "Sora", sans-serif;
+  height: 100%;
+  width: calc(100% - 450px);
+}
+
+header .header-col-left img {
+  margin-left: 16px;
+}
+
+header .header-col-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  font-family: "Sora", sans-serif;
+  height: 100%;
+  min-width: 450px;
+  padding: 8px;
+}
+
+header .header-col-right a {
+  color: #fff;
+  font-size: 48px;
+  margin-left: 16px;
+}
+
+header .header-col-right a img {
+  width: 42px;
+  height: 42px;
+  vertical-align: -0.125em;
+}
+
+login-form-template {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #222;
+  background-color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+login-form-template #nomad-login-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: inherit;
+  width: 100%;
+  height: 100%;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #ddd;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+          box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+  z-index: 900;
+  width: 380px;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-logo {
+  position: relative;
+  top: 0;
+  left: 0;
+  background-color: #222;
+  height: 42px;
+  width: 100%;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-logo img {
+  height: 24px;
+  margin: 8px;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-login-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: inherit;
+  padding: 16px;
+  height: 100%;
+  width: 100%;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-login-form .nomad-form-row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  height: 60px;
+  width: 100%;
+  margin: 6px;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-login-form .nomad-form-row input {
+  border: 1px solid #2dabf9;
+  font-family: inherit;
+  height: 32px;
+  line-height: 32px;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-login-form .nomad-form-row span {
+  display: block;
+  font-family: inherit;
+  visibility: hidden;
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  width: 90%;
+  text-align: left;
+}
+
+login-form-template #nomad-login-wrapper .nomad-login-wrapper-section .nomad-login-form .nomad-form-row span.visible {
+  visibility: visible;
+}
+
+#nomad-wait-indicator {
+  background-color: transparent;
+  width: 100%;
+  z-index: 1001;
+  display: none;
+}
+
+#nomad-wait-indicator.visible {
+  display: block;
+}
+
+#nomad-wait-indicator .spinning-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  z-index: 1003;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#nomad-wait-indicator .spinning-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #3399ff;
+  border-color: #3399ff transparent #3399ff transparent;
+  -webkit-animation: spinning-dual-ring 1.2s linear infinite;
+          animation: spinning-dual-ring 1.2s linear infinite;
+}
+
+@-webkit-keyframes spinning-dual-ring {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spinning-dual-ring {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  font-size: 100%;
+}
+
+html,
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #222;
+  background-color: #fff;
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#nomad-video-wrapper {
+  display: none;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  height: calc(100% - 240px);
+  width: 100%;
+  z-index: 1000;
+  overflow-y: scroll;
+}
+
+#nomad-video-wrapper #nomad-video-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: start;
+      align-content: flex-start;
+  height: calc(100% -32px);
+  width: 100%;
+  margin: 16px;
+  padding: 0;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card {
+  margin: 8px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+          box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  height: 220px;
+  width: 190px;
+  -webkit-transition: -webkit-transform 0.25s;
+  transition: -webkit-transform 0.25s;
+  -o-transition: transform 0.25s;
+  transition: transform 0.25s;
+  transition: transform 0.25s, -webkit-transform 0.25s;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card:hover {
+  -webkit-transform: scale(1.1);
+      -ms-transform: scale(1.1);
+          transform: scale(1.1);
+  background-color: #aaa;
+  z-index: 2000;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card .nomad-video-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  background-color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card .nomad-video-btn:hover {
+  background-color: #eee;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card .nomad-video-btn .nomad-video-img {
+  height: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card .nomad-video-btn .nomad-video-info {
+  height: 50%;
+  margin: 8px;
+}
+
+#nomad-video-wrapper #nomad-video-container .nomad-video-card .nomad-video-btn .nomad-video-info .nomad-video-name {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: "Sora", sans-serif;
+  color: #222;
+  width: 100%;
+  text-align: left;
+  overflow-wrap: break-word;
+  margin: 0;
+  padding: 0;
+}
+
+#nomad-modal-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100vh;
+  width: 100%;
+  z-index: 1000;
+}
+
+#nomad-modal-wrapper #nomad-modal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  position: absolute;
+  width: 50%;
+  background-color: #fff;
+  z-index: 1002;
+  pointer-events: all;
+}
+
+#nomad-modal-wrapper #nomad-modal h1.nomad-modal-title {
+  color: #3399ff;
+  font-size: 32px;
+  font-weight: 600;
+  font-family: "Sora", sans-serif;
+}
+
+#nomad-modal-wrapper #nomad-modal p.nomad-modal-text {
+  color: #222;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Sora", sans-serif;
+  width: 100%;
+  text-align: left;
+}

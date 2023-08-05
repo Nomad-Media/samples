@@ -1,0 +1,283 @@
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background-color: #064d8e;
+  font-family: "Sora", sans-serif;
+  height: 120px;
+  width: 100%;
+}
+
+header .header-col-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  font-family: "Sora", sans-serif;
+  height: 100%;
+  width: calc(100% - 50px);
+}
+
+header .header-col-left img {
+  margin-left: 16px;
+}
+
+header .header-col-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  font-family: "Sora", sans-serif;
+  height: 100%;
+  min-width: 50px;
+  padding: 8px;
+}
+
+header .header-col-right a {
+  color: #fff;
+  font-size: 48px;
+  margin-left: 16px;
+}
+
+header .header-col-right a img {
+  width: 42px;
+  height: 42px;
+  vertical-align: -0.125em;
+}
+
+footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background-color: #064d8e;
+  padding: 16px;
+  height: 120px;
+  width: 100%;
+}
+
+footer h2 {
+  color: #fff;
+  font-size: 24px;
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  margin: 6px;
+  padding: 0;
+}
+
+footer a {
+  color: #fff;
+  font-size: 16px;
+  font-family: "Sora", sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  font-size: 100%;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  background-color: #fafafa;
+}
+
+html,
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #222;
+  background-color: #fff;
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #222;
+  background-color: #fff;
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  height: calc(100% - 240px);
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.content .wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100%;
+  padding: 8px 16px;
+}
+
+.content .wrapper .title {
+  color: #3399ff;
+  font-size: 32px;
+  font-weight: 600;
+  font-family: "Sora", sans-serif;
+  margin: 16px auto;
+}
+
+.content .wrapper .text {
+  color: #222;
+  font-size: 20px;
+  font-weight: 400;
+  font-family: "Sora", sans-serif;
+  margin: 16px auto;
+  width: 100%;
+  text-align: center;
+}
+
+.content .wrapper .video {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 16px auto;
+  height: auto;
+  width: 100%;
+}
+
+.content .wrapper .video video {
+  height: auto;
+  width: 100%;
+  max-height: 320px;
+  max-width: 650px;
+}
+
+.content .wrapper .video .nomad-error {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #fff;
+  background-color: #d33737;
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px;
+  height: 300px;
+  max-width: 1200px;
+}
