@@ -1,0 +1,254 @@
+.blue-btn {
+  -webkit-box-shadow: inset 0px -3px 7px 0px #29bbff;
+          box-shadow: inset 0px -3px 7px 0px #29bbff;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #2dabf9), to(#0688fa));
+  background: -webkit-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+  background: -o-linear-gradient(top, #2dabf9 5%, #0688fa 100%);
+  background: linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+  background-color: #2dabf9;
+  border-radius: 3px;
+  border: 1px solid #0b0e07;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  padding: 9px 23px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #263666;
+}
+
+.blue-btn:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #0688fa), to(#2dabf9));
+  background: -webkit-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+  background: -o-linear-gradient(top, #0688fa 5%, #2dabf9 100%);
+  background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+  background-color: #0688fa;
+}
+
+.blue-btn:active {
+  position: relative;
+  top: 1px;
+}
+
+.orange-btn {
+  -webkit-box-shadow: inset 0px 1px 0px 0px #fff6af;
+          box-shadow: inset 0px 1px 0px 0px #fff6af;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #ffec64), to(#ffab23));
+  background: -webkit-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+  background: -o-linear-gradient(top, #ffec64 5%, #ffab23 100%);
+  background: linear-gradient(to bottom, #ffec64 5%, #ffab23 100%);
+  background-color: #ffec64;
+  border-radius: 6px;
+  border: 1px solid #ffaa22;
+  display: inline-block;
+  cursor: pointer;
+  color: #333333;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: bold;
+  padding: 6px 24px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #ffee66;
+}
+
+.orange-btn:hover {
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(5%, #ffab23), to(#ffec64));
+  background: -webkit-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+  background: -o-linear-gradient(top, #ffab23 5%, #ffec64 100%);
+  background: linear-gradient(to bottom, #ffab23 5%, #ffec64 100%);
+  background-color: #ffab23;
+}
+
+.orange-btn:active {
+  position: relative;
+  top: 1px;
+}
+
+.rainbow {
+  background-color: #343a40;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px 16px;
+  background-image: -webkit-gradient(linear, left top, right top, from(#00c0ff), color-stop(49%, #ffcf00), color-stop(80%, #fc4f4f), to(#00c0ff));
+  background-image: -webkit-linear-gradient(left, #00c0ff 0%, #ffcf00 49%, #fc4f4f 80%, #00c0ff 100%);
+  background-image: -o-linear-gradient(left, #00c0ff 0%, #ffcf00 49%, #fc4f4f 80%, #00c0ff 100%);
+  background-image: linear-gradient(90deg, #00c0ff 0%, #ffcf00 49%, #fc4f4f 80%, #00c0ff 100%);
+  -webkit-animation: slide-bg 5s linear infinite;
+          animation: slide-bg 5s linear infinite;
+}
+
+@-webkit-keyframes slide-bg {
+  to {
+    background-position: 20vw;
+  }
+}
+
+@keyframes slide-bg {
+  to {
+    background-position: 20vw;
+  }
+}
+
+footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background-color: #064d8e;
+  padding: 16px;
+  height: 120px;
+  width: 100%;
+}
+
+footer h2 {
+  color: #fff;
+  font-size: 24px;
+  font-family: "Sora", sans-serif;
+  font-weight: 600;
+  margin: 6px;
+  padding: 0;
+}
+
+footer a {
+  color: #fff;
+  font-size: 16px;
+  font-family: "Sora", sans-serif;
+  font-weight: 400;
+  text-decoration: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff;
+  background-color: #064d8e;
+  font-family: "Sora", sans-serif;
+  height: 120px;
+  width: 100%;
+}
+
+header .header-col-left {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  font-family: "Sora", sans-serif;
+  height: 100%;
+  width: calc(100% - 450px);
+}
+
+header .header-col-left img {
+  margin-left: 16px;
+}
+
+header .header-col-right {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  font-family: "Sora", sans-serif;
+  height: 100%;
+  min-width: 450px;
+  padding: 8px;
+}
+
+header .header-col-right a {
+  color: #fff;
+  font-size: 48px;
+  margin-left: 16px;
+}
+
+header .header-col-right a img {
+  width: 42px;
+  height: 42px;
+  vertical-align: -0.125em;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  outline: none;
+  font-size: 100%;
+}
+
+html,
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #222;
+  background-color: #fff;
+  font-family: "Sora", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+}
+
+pre {
+  height: calc(100% - 240px);
+  width: 100%;
+  margin: 0;
+  overflow: scroll;
+}
+
+code[class*="language-"] {
+  height: 100% !important;
+}
