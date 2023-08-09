@@ -32,9 +32,6 @@ export default async function updateMovie(movieId, title, slug, plot, releaseDat
             slug: slug,
             plot: plot,
             releaseDate: releaseDate,
-            genre: {
-                lookupId: genreId
-            }
         }
     };
 

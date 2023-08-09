@@ -11,20 +11,6 @@ export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, REL
     const BODY = {
         contentDefinitionId: prjConstants.MOVIE_CONTENT_DEFINITION_ID,
         contentId: ID,
-        title: TITLE,
-        slugifyField: SLUG,
-        plot: PLOT,
-        releaseDate: RELEASE_DATE,
-        genre: {
-            id: GENRE_ID,
-            description: GENRE_NAME
-        },
-        image: {
-            id: IMAGE_ID
-        },
-        movieFile: {
-            id: VIDEO_ID
-        },
         properties: {
             title: TITLE,
             slugifyField: SLUG,

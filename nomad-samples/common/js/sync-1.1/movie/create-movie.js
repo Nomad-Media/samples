@@ -1,59 +1,21 @@
 import * as prjConstants from "../constants/project-constants.js";
-import apiExceptionHandler from "../exceptions/api-exception-handler.js";
+import updateMovie from "./update-movie.js";
 
-/**
- * Create movie
- *
- * @param {string} title        | The movie title
- * @param {string} slug         | The movie slug
- * @param {string} plot         | The movie plot
- * @param {string} releaseDate  | The movie release date in UTC format string
- * @param {string} genreId      | The movie genre lookup ID
- * @param {string} authToken    | The authorization token
- *
- * @returns New movie ID string
- */
-export default async function createMovie(id, title, slug, plot, releaseDate, genreId, authToken) {
-    // Check for valid parameters
-    if (!authToken || !title || !slug) {
-        throw new Error("Create Movie: Invalid API call");
-    }
-
+export default async function createMovie(AUTH_TOKEN, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID) {
     // Create header for the request
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Authorization", `Bearer ${authToken}`);
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
-    // Build the payload body
-    const body = {
-        contentDefinitionId: prjConstants.MOVIE_CONTENT_DEFINITION_ID,
-        contentId: id,
-        properties: {
-            title: title,
-            slug: slug,
-            plot: plot,
-            releaseDate: releaseDate,
-            genre: {
-                lookupId: genreId
-            }
-        }
-    };
-
-    // Send POST request
-    const response = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${prjConstants.MOVIE_CONTENT_DEFINITION_ID}`, {
-        method: "POST",
-        headers: headers,
-        body: JSON.stringify(body)
+    const NEW_RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/new?contentDefinitionId=${prjConstants.MOVIE_CONTENT_DEFINITION_ID}`, {
+        method: "GET",
+        headers: HEADERS
+    }).catch((exception) => {
+        throw exception;
     });
-
-    // Check for success
-    if (response && response.ok) {
-        // Get the response
-        const id = await response.text();
-
-        // Return the ID
-        return id.replaceAll('"', "");
-    }
-
-    await apiExceptionHandler(response, `Create Movie [${title}] failed`);
+    const ID_JSON = await NEW_RESPONSE.json();
+    const ID = ID_JSON.contentId;
+    
+    return updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID);
 }
+    
