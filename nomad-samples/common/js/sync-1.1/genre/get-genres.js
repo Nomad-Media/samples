@@ -1,5 +1,4 @@
 import * as prjConstants from "../constants/project-constants.js";
-import * as sysConstants from "../constants/system-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
 /**
@@ -31,13 +30,13 @@ export default async function getGenres(authToken) {
             {
                 fieldName: "languageId",
                 operator: "Equals",
-                values: sysConstants.US_ENGLISH_LANGUAGE_LOOKUP_ID
+                values: prjConstants.US_ENGLISH_LANGUAGE_LOOKUP_ID
             }
         ]
     };
 
     // Send POST request
-    const response = await fetch(`${prjConstants.SERVER_URL2}/admin/search`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/admin/search`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)

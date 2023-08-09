@@ -27,124 +27,18 @@
 </head>
 
 <body>
-    <header>
-        <section class="header-col-left">
-            <a href="https://www.nomad-cms.com/" target="_blank">
-                <img width="140" src="./images/nomad-logo.svg">
-            </a>
-            <h1>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Sync</h1>
-        </section>
-        <section class="header-col-right">
-            <button id="init" type="button" class="blue-btn">Sync</button>
-        </section>
-    </header>
 
-    <pre>
-        <code class="language-javascript">
-    /**
-    * Synchronize records
-    *
-    * @param {string} authToken
-    */
-    async function sync(authToken) {
-        // Load JSON data to synchronize
-        const movies = await fetch("movie.json").then((data) => {
-            return data.json();
-        });
-    
-        // Check for valid data as required
-        if (!movies || movies.length === 0) {
-            throw new Error("Error retrieving data, make sure the source file exists and is not empty.");
-        }
-    
-        // Give feedback to the console
-        console.log(`${movies.length} movies found in source file`);
-    
-        //
-        // First get all the lookups, in our example we only have Movie Genre.
-        //
-        // Get all genres
-        const genreSearchResults = await getGenres(authToken);
-    
-        // Convert the genre search results to a lookup map
-        const genres = searchResultsToLookupMap(genreSearchResults);
-    
-        // Loop all the movies to sync
-        for (let index = 0; index < movies.length; index++) {
-            // Assign movies[index] to movie
-            const movie = movies[index];
-    
-            // Give feedback to the console
-            console.log(`Synchronizing movie #${index + 1} out of ${movies.length} | ${movie.title}...`);
-    
-            //
-            // Do this for all the lookups
-            //
-            // Check if the genre exists in the genre lookup map
-            let genreId = genres.get(movie.genre);
-    
-            // If genre does not exist then create it
-            if (!genreId) {
-                console.log(`\tCreating Movie Genre ${movie.genre}...`);
-    
-                // Create new genre
-                genreId = await createGenre(movie.genre, slugify(movie.genre), authToken);
-    
-                // Add it to the map
-                genres.set(movie.genre, genreId);
-            }
-    
-            //
-            // Now that we have all the lookups we check if the movie already exists
-            //
-            // Search the movie by id
-            const movieSearchResult = await getMovie(movie.id, authToken);
-    
-            // If the movie exists
-            if (movieSearchResult && movieSearchResult.hasItems) {
-                //
-                // The getMovie search should have returned only 1 item
-                //
-                // We assign it to existingMovie
-                const existingMovie = movieSearchResult.items[0];
-    
-                // Check if it needs to be updated as required
-                if (
-                    movie.title !== existingMovie.title ||
-                    movie.plot !== existingMovie.identifiers.plot ||
-                    movie.releaseDate !== existingMovie.identifiers.releaseDate ||
-                    movie.genre !== existingMovie.identifiers.genre.description
-                ) {
-                    console.log(`\tUpdating Movie ${movie.title}...`);
-    
-                    // Update the existing movie
-                    await updateMovie(movie.id, movie.title, movie.slug, movie.plot, movie.releaseDate, genreId, authToken);
-                    continue;
-                }
-            } else {
-                console.log(`\tCreating Movie ${movie.title}...`);
-    
-                // The movie was not found, create new movie
-                await createMovie(movie.id, movie.title, movie.slug, movie.plot, movie.releaseDate, genreId, authToken);
-    
-                continue;
-            }
-    
-            console.log(`\tSkipping Movie ${movie.title}...`);
-        }
-    }
-        </code>
-    </pre>
+    <h1>Sync</h1>
+    <form id="authForm">
+        <label for="authInput">Authentication token:</label>
+        <input type="auth" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
 
-    <footer>
-        <h2>Contact Nomad</h2>
-        <a href="mailto:support@nomad-cms.com">support@nomad-cms.com</a>
-        <a href="tel:9493961431">(949) 396-1431</a>
-    </footer>
+    <form id="syncForm">
+        <button type="submit">Sync</button>
+    </form>
 
-    <!-- Prism JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/prism.min.js" integrity="sha512-hpZ5pDCF2bRCweL5WoA0/N1elet1KYL5mx3LP555Eg/0ZguaHawxNvEjF6O3rufAChs16HVNhEc6blF/rZoowQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-sv0slik/5O0JIPdLBCR2A3XDg/1U3WuDEheZfI/DI5n8Yqc3h5kjrnr46FGBNiUAJF7rE4LHKwQ/SoSLRKAxEA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 </body>
-
 </html>
