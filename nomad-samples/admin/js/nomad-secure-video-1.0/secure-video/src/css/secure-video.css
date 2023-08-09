@@ -1,0 +1,398 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap");
+* {
+    box-sizing: border-box;
+    outline: none;
+    font-size: 100%;
+}
+
+html {
+    background-color: #fafafa;
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    font-family: "Open Sans", sans-serif;
+    color: #064d8e;
+    background-color: #fff;
+    padding: 0;
+    margin: 0 auto;
+    height: 100%;
+    width: 100vw;
+    min-width: 900px;
+    max-width: 1200px;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background-color: #222;
+    min-height: 120px;
+    width: 100%;
+}
+
+header .header-col-left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Open Sans", sans-serif;
+    height: 100%;
+    width: calc(100% - 350px);
+}
+
+header .header-col-left img {
+    margin-left: 16px;
+}
+
+header .header-col-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-width: 350px;
+}
+
+.nomad-vl-error {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: red;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+#nomad-video-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-content: flex-start;
+    margin: 16px;
+    padding: 0;
+}
+
+#nomad-video-list .nomad-video-card {
+    margin: 8px;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    height: 220px;
+    width: 190px;
+    transition: transform 0.25s;
+}
+
+#nomad-video-list .nomad-video-card:hover {
+    transform: scale(1.1);
+    background-color: #aaa;
+}
+
+#nomad-video-list .nomad-video-card .nomad-video-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    background-color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#nomad-video-list .nomad-video-card .nomad-video-btn:hover {
+    background-color: #eee;
+}
+
+#nomad-video-list .nomad-video-card .nomad-video-btn .nomad-video-img {
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+#nomad-video-list .nomad-video-card .nomad-video-btn .nomad-video-info {
+    height: 50%;
+    margin: 8px;
+}
+
+#nomad-video-list .nomad-video-card .nomad-video-btn .nomad-video-info .nomad-video-name {
+    font-size: 16px;
+    font-weight: 500;
+    font-family: "Open Sans", sans-serif;
+    color: #222;
+    width: 100%;
+    text-align: left;
+    overflow-wrap: break-word;
+    margin: 0;
+    padding: 0;
+}
+
+#nomad-backdrop {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 1000;
+    display: none;
+    pointer-events: all;
+}
+
+#nomad-wait-indicator {
+    background-color: transparent;
+    width: 100%;
+    z-index: 1001;
+    display: none;
+}
+
+.spinning-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    z-index: 1003;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spinning-dual-ring:after {
+    content: " ";
+    display: block;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6px solid #3399ff;
+    border-color: #3399ff transparent #3399ff transparent;
+    animation: spinning-dual-ring 1.2s linear infinite;
+}
+
+@keyframes spinning-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#nomad-backdrop.visible {
+    display: block;
+    pointer-events: all;
+}
+
+#nomad-wait-indicator.visible {
+    display: block;
+}
+
+#nomad-modal-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+    z-index: 1000;
+}
+
+#nomad-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 50%;
+    background: #fff;
+    z-index: 1002;
+    pointer-events: all;
+}
+
+#nomad-modal h1.nomad-modal-title {
+    color: #3399ff;
+    font-size: 32px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+}
+
+#nomad-modal p.nomad-modal-text {
+    color: #222;
+    font-size: 20px;
+    font-weight: 400;
+    font-family: "Open Sans", sans-serif;
+    width: 100%;
+    text-align: left;
+}
+
+#nomad-video-player {
+    width: 100%;
+    max-height: 90%;
+}
+
+.nomad-modal-header {
+    font-family: "Open Sans", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #3399ff;
+    line-height: 36px;
+    text-align: center;
+    margin-top: 0;
+    padding: 0;
+    height: 36px;
+    width: 100%;
+    top: 0;
+    position: absolute;
+}
+
+#nomad-modal-close {
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    position: absolute;
+    top: 32px;
+    right: 5px;
+    transition: transform 0.2s;
+}
+
+#nomad-modal-close:hover {
+    transform: scale(1.1);
+}
+
+/*******  new **********/
+#nomad-login-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    width: 100%;
+    height: 100%;
+}
+
+#nomad-video-wrapper {
+    display: none;
+    flex-direction: column;
+    color: #222;
+    background-color: #fff;
+    height: 100%;
+    width: 100%;
+}
+
+#nomad-login-wrapper section,
+.nomad-login-form,
+.nomad-form-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
+    width: 360px;
+}
+
+.nomad-logo {
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: #222;
+    height: 42px;
+    width: 100%;
+}
+
+.nomad-logo img {
+    height: 24px;
+    margin: 8px;
+}
+
+input,
+span {
+    font-family: "Open Sans", sans-serif;
+}
+
+#nomad-login-wrapper section {
+    display: flex;
+    flex-direction: column;
+    width: 380px;
+    justify-content: flex-start;
+    background-color: #ddd;
+    box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+    z-index: 900;
+}
+
+#nomad-login-wrapper section form {
+    padding: 16px;
+}
+
+#nomad-login-wrapper section form .nomad-form-row {
+    height: 60px;
+    margin: 6px;
+}
+
+#nomad-login-wrapper section form input {
+    border: 1px solid #2dabf9;
+    height: 32px;
+    line-height: 32px;
+    width: 90%;
+}
+
+#nomad-login-wrapper section form span {
+    display: block;
+    visibility: hidden;
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+#nomad-login-wrapper section form span.visible {
+    visibility: visible;
+}
+
+#nomad-login-wrapper section.visible {
+    display: flex;
+}
+
+.blue-btn {
+    box-shadow: inset 0px -3px 7px 0px #29bbff;
+    background: linear-gradient(to bottom, #2dabf9 5%, #0688fa 100%);
+    background-color: #2dabf9;
+    border-radius: 3px;
+    border: 1px solid #0b0e07;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: "Open Sans", sans-serif;
+    font-size: 15px;
+    padding: 9px 23px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #263666;
+}
+
+.blue-btn:hover {
+    background: linear-gradient(to bottom, #0688fa 5%, #2dabf9 100%);
+    background-color: #0688fa;
+}
+
+.blue-btn:active {
+    position: relative;
+    top: 1px;
+}
+
+#related-videos {
+    height: 50;
+    margin: 16px 0;
+}
