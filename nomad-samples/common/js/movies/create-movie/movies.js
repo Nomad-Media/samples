@@ -1,13 +1,18 @@
 import multiThreadUpload from "./assets/multi-thread-upload.js";
 import startUpload from "./assets/start-asset-upload.js";
 import completeUpload from "./assets/upload-complete-asset.js";
+
 import createGenre from "./genre/create-genre.js";
 import getGenres from "./genre/get-genres.js";
+
 import getCheckboxedFields from "./helpers/get-checkboxed-fields.js";
 import slugify from "./helpers/slugify.js";
+
 import login from "./login/login.js";
+
 import createMovie from "./movie/create-movie.js";
 import deleteMovie from "./movie/delete-movie.js";
+import getMovie from "./movie/get-movie.js";
 import searchMovies from "./movie/search-movies.js";
 import updateMovie from "./movie/update-movie.js";
 
@@ -267,6 +272,26 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_FILE
         else
         {
             console.log("Updating Movie");
+            const RESPONSE = await getMovie(TOKEN, ID);
+
+            if (RESPONSE.items.length === 0)
+            {
+                console.log("Movie does not exist");
+                return 0;
+            }
+            const MOVIE = RESPONSE.items[0]
+
+
+            console.log(JSON.stringify(MOVIE, null, 4));
+
+            if (!TITLE && typeof MOVIE.title !== undefined) TITLE = MOVIE.title;
+            if (!PLOT && typeof MOVIE.identifiers.plot !== undefined) PLOT = MOVIE.identifiers.plot;
+            if (!DATE && typeof MOVIE.releaseDate !== undefined) DATE = MOVIE.releaseDate;
+            if (!genre_id) genre_id = MOVIE.identifiers.genre.id;
+            if (!genre_name) genre_name = MOVIE.identifiers.genre.description;
+            if (!imageId && typeof MOVIE.identifiers.image !== 'undefined') imageId = MOVIE.identifiers.image.id;
+            if (!videoId && typeof MOVIE.identifiers.movieFile !== 'undefined') videoId = MOVIE.identifiers.movieFile.id;
+
             await updateMovie(TOKEN, ID, TITLE, slugify(TITLE), PLOT, DATE, genre_id, genre_name, imageId, videoId);
             console.log("Movie Updated");
         }
