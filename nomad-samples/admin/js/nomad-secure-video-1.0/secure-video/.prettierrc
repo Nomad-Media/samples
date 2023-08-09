@@ -1,0 +1,21 @@
+{
+    "printWidth": 1600,
+    "bracketSpacing": true,
+    "insertPragma": false,
+    "requirePragma": false,
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": true,
+    "endOfLine": "crlf",
+    "overrides": [
+        {
+            "files": "*.ts",
+            "options": {
+                "parser": "typescript",
+                "arrowParens": "avoid",
+                "singleQuote": false,
+                "trailingComma": "es5"
+            }
+        }
+    ]
+}
