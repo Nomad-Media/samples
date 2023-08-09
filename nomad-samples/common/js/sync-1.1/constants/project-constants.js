@@ -1,11 +1,7 @@
-export const CLIENT_DOMAIN = "CLIENT_DOMAIN";
+export const PORTAL_API_URL = `https://app-api.dev-05.demos.media/api`;
+export const ADMIN_API_URL = `https://admin-app.dev-05.demos.media/api`;
 
-export const PUBLIC_URL = `https://app.${CLIENT_DOMAIN}/api`;
-export const SERVER_URL = `https://admin-app.${CLIENT_DOMAIN}/api`;
-export const SERVER_URL2 = `https://admin-app2.${CLIENT_DOMAIN}/api`;
+export const MOVIE_CONTENT_DEFINITION_ID = "eb710e28-7c44-492e-91f9-8acd0cd9331c";
+export const MOVIE_GENRE_CONTENT_DEFINITION_ID = "dbbace1f-ddb1-462b-9cae-c9be7d5990ac";
 
-export const MOVIE_CONTENT_DEFINITION_ID = "909a11ec-d0b6-4164-8337-bc06be05de81";
-export const MOVIE_GENRE_CONTENT_DEFINITION_ID = "0fa02eb7-0b98-4dc5-8a9a-c8e188571c83";
-
-export const USERNAME = "username";
-export const PASSWORD = "password";
+export const US_ENGLISH_LANGUAGE_LOOKUP_ID = "c66131cd-27fc-4f83-9b89-b57575ac0ed8";
