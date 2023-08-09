@@ -10,23 +10,25 @@ def start_broadcast(AUTH_TOKEN, ID, PREROLL_ASSET_ID, POSTROLL_ASSET_ID, LIVE_IN
         "Authorization": "Bearer " +  AUTH_TOKEN,
         "Content-Type": "application/json"
     }
+    
+    BODY = {
+        "id": ID
+    }
+
+    if LIVE_INPUT_ID != "": BODY["liveInput"] = { "id": LIVE_INPUT_ID }
+    if PREROLL_ASSET_ID != "": BODY["prerollAsset"] = { "id": PREROLL_ASSET_ID }
+    if POSTROLL_ASSET_ID != "": BODY["postrollAsset"] = { "id": POSTROLL_ASSET_ID }
+
+    if RELATED_CONTENT_IDS[0] != "":
+        BODY["relatedContent"] = []
+        for ID in RELATED_CONTENT_IDS: BODY["relatedContent"].append({ "id": ID })
+
+    if TAG_IDS[0] != "":
+        BODY["tags"] = []
+        for ID in TAG_IDS: BODY["tags"].append({ "id": ID })
 
     try:
-        BODY = {
-            "id": ID
-        }
-
-        if LIVE_INPUT_ID != "": BODY["liveInput"] = { "id": LIVE_INPUT_ID }
-        if PREROLL_ASSET_ID != "": BODY["prerollAsset"] = { "id": PREROLL_ASSET_ID }
-        if POSTROLL_ASSET_ID != "": BODY["postrollAsset"] = { "id": POSTROLL_ASSET_ID }
-
-        if RELATED_CONTENT_IDS[0] != "":
-            BODY["relatedContent"] = []
-            for ID in RELATED_CONTENT_IDS: BODY["relatedContent"].append({ "id": ID })
-
-        if TAG_IDS[0] != "":
-            BODY["tags"] = []
-            for ID in TAG_IDS: BODY["tags"].append({ "id": ID })
+        
 
         RESPONSE = requests.post(f"{ADMIN_URL}/admin/liveOperator/start", headers= HEADERS, data= json.dumps(BODY))
 
