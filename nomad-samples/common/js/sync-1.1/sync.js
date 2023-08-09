@@ -1,6 +1,3 @@
-import * as prjConstants from "./constants/project-constants.js";
-
-import login from "./account/login.js";
 import slugify from "./helpers/slugify.js";
 
 import getGenres from "./genre/get-genres.js";
@@ -12,44 +9,30 @@ import updateMovie from "./movie/update-movie.js";
 
 import searchResultsToLookupMap from "./helpers/search-helpers.js";
 
-const buttonInit = document.getElementById("init");
-buttonInit.addEventListener("click", (evt) => {
-    if (evt.cancelable) {
-        evt.preventDefault();
-    }
-    init();
+const AUTH_FORM = document.getElementById("authForm");
+const SYNC_FORM = document.getElementById("syncForm");
+
+const TOKEN_INPUT = document.getElementById("authInput");
+
+sessionStorage.clear();
+
+AUTH_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
+    sessionStorage.setItem("token", TOKEN_INPUT.value);
+    console.log("Successfuly updated token");
 });
 
-/**
- * Initialize
- *
- */
-async function init() {
-    let authToken = sessionStorage.getItem("token");
+SYNC_FORM.addEventListener("submit", function (event)
+{
+    event.preventDefault();
 
-    if (!authToken) {
-        authToken = await login(prjConstants.USERNAME, prjConstants.PASSWORD);
-        if (authToken) {
-            sessionStorage.setItem("token", authToken);
-            console.log("Logged in...");
-        } else {
-            return;
-        }
-    }
+    sync(sessionStorage.getItem("token"));
+});
 
-    console.log("Sync started...");
-
-    await sync(authToken);
-
-    console.log("Sync ended...");
-}
-
-/**
- * Synchronize records
- *
- * @param {string} authToken
- */
 async function sync(authToken) {
+    console.log("Synchronizing...");
+
     // Load JSON data to synchronize
     const movies = await fetch("movie.json").then((data) => {
         return data.json();
@@ -135,4 +118,6 @@ async function sync(authToken) {
 
         console.log(`\tSkipping Movie ${movie.title}...`);
     }
+
+    console.log("Synchronization completed...");
 }
