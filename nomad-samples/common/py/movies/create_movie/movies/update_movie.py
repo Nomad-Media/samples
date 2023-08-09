@@ -28,18 +28,18 @@ def update_movie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENR
     }
 
     if GENRE_ID != "":
-        BODY["genre"] = {
+        BODY["properties"]["genre"] = {
             "id": GENRE_ID,
             "description": GENRE_NAME
         }
 
     if IMAGE_ID != "":
-        BODY["image"] = { 
+        BODY["properties"]["image"] = { 
             "id": IMAGE_ID
         }
 
     if VIDEO_ID != "":
-        BODY["movieFile"] = {
+        BODY["properties"]["movieFile"] = {
             "id": VIDEO_ID
         }
 

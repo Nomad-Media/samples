@@ -40,7 +40,7 @@ export default async function createMovie(id, title, slug, plot, releaseDate, ge
     };
 
     // Send POST request
-    const response = await fetch(`${prjConstants.SERVER_URL}/Content/${prjConstants.MOVIE_CONTENT_DEFINITION_ID}`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${prjConstants.MOVIE_CONTENT_DEFINITION_ID}`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)

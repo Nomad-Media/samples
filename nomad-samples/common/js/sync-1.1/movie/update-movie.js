@@ -39,7 +39,7 @@ export default async function updateMovie(movieId, title, slug, plot, releaseDat
     };
 
     // Send PUT request
-    const response = await fetch(`${prjConstants.SERVER_URL}/Content/${movieId}`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${movieId}`, {
         method: "PUT",
         headers: headers,
         body: JSON.stringify(body)
