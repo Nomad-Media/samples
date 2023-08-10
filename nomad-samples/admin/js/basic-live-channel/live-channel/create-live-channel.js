@@ -2,76 +2,62 @@ import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 import liveChannelStatuses from "./live-channel-statuses.js";
 import waitForLiveChannelStatus from "./wait-live-channel-status.js";
-import liveChannelTypes from "./live-channel-types.js";
+import LIVE_CHANNEL_TYPES from "./live-channel-types.js";
+import slugify from "../helpers/slugify.js";
 
-/**
- *  Create or Update a Live Channel
- *
- * @param {string} authToken    | Authorization token
- * @param {object} data         | Body
- */
-export default async function createLiveChannel(authToken, data) {
-    // Check for valid parameters
-    if (!authToken || !data) {
-        throw new Error("Create Live Channel: Invalid API call");
-    }
-
-    // Build the payload body
-    const BODY = {
-        name: data.name,
-        routeName: data.route,
-        thumbnailImage: "",
-        archiveFolderAsset: data.archiveFolderAsset,
-        isSecureOutput: false,
-        outputScreenshots: true,
-        type: { lookupId: data.type }
-    };
-
-    // Default to POST to create a live channel
-    let method = "POST";
-
-    // If we have ID then set the ID and set the method to PUT to update the live channel
-    if (data.id) {
-        method = "PUT";
-        BODY.id = data.id;
-    }
-
-    // Set the appropriate fields based on the channel type
-    if (data.type === liveChannelTypes.External) {
-        BODY.channelId = null;
-        BODY.externalUrl = data.url;
-    }
-
+export default async function createLiveChannel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID,
+                                                ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, 
+                                                IS_OUTPUT_SCREENSHOTS, TYPE, URL) 
+{
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${authToken}`);
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Build the payload body
+    const BODY = {
+        name: NAME,
+        routeName: slugify(NAME),
+        enableHighAvailability: ENABLE_HIGH_AVAILABILITY,
+        enableLiveClipping: ENABLE_LIVE_CLIPPING,
+        isSecureOutput: IS_SECURE_OUTPUT,
+        outputScreenshots: IS_OUTPUT_SCREENSHOTS,
+        type: { id: LIVE_CHANNEL_TYPES[TYPE] }
+    };
+
+    
+    if (THUMBNAIL_IMAGE_ID !== "")
+    {
+        BODY.thumbnailImage = { id: THUMBNAIL_IMAGE_ID };
+    }
+
+    if (ARCHIVE_FOLDER_ASSET_ID !== "")
+    {
+        BODY.archiveFolderAsset = { id: ARCHIVE_FOLDER_ASSET_ID };
+    }
+
+    // Set the appropriate fields based on the channel type
+    if (TYPE === "External") {
+        BODY.externalUrl = URL;
+    }
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveChannel`, {
-        method: method,
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel`, {
+        method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Parse JSON response
-        const jsonResponse = await response.json();
+        const jsonResponse = await RESPONSE.json();
 
         // Wait for Live Channel to be idle if it was just created
-        if (method === "POST") {
-            await waitForLiveChannelStatus(authToken, jsonResponse.id, liveChannelStatuses.Idle, 120, 2);
-        }
+        await waitForLiveChannelStatus(AUTH_TOKEN, jsonResponse.id, liveChannelStatuses.Idle, 120, 2);
 
         return jsonResponse;
     }
 
-    // Handle error based on method
-    let errorMethod = "Create";
-    if (method === "PUT") {
-        errorMethod = "Update";
-    }
-
-    await apiExceptionHandler(response, `${errorMethod} Live Channel ${data.name} failed`);
+    await apiExceptionHandler(RESPONSE, `Creating Live Channel ${NAME} failed`);
 }

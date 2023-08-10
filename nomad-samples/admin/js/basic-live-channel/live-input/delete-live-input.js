@@ -1,7 +1,5 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
-import liveInputStatuses from "./live-input-statuses.js";
-import waitForLiveInputStatus from "./wait-live-input-status.js";
 
 /**
  * Delete Live Input
@@ -12,29 +10,22 @@ import waitForLiveInputStatus from "./wait-live-input-status.js";
  * @param {string} inputId      | The ID of the input to delete
  */
 export default async function deleteLiveInput(authToken, inputId) {
-    // Check for valid parameters
-    if (!authToken || !inputId) {
-        throw new Error("Delete Live Input: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveInput/${inputId}`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveInput/${inputId}`, {
         method: "DELETE",
         headers: HEADERS
     });
 
     // Check for success
-    if (response && response.ok) {
-        // Wait for the live input to be deleted
-        await waitForLiveInputStatus(authToken, inputId, liveInputStatuses.Deleted, 60, 2);
+    if (RESPONSE && RESPONSE.ok) {
 
         // Return the JSON response
-        return await response.json();
+        return;
     }
 
-    await apiExceptionHandler(response, `Delete Live Input ${inputId} failed`);
+    await apiExceptionHandler(RESPONSE, `Delete Live Input ${inputId} failed`);
 }

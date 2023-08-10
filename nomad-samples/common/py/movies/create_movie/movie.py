@@ -7,6 +7,7 @@ from helpers.get_search_result import *
 from login.login import *
 from movies.create_movie import *
 from movies.delete_movie import *
+from movies.get_movie import *
 from movies.search_movies import *
 from movies.update_movie import *
 
@@ -20,8 +21,36 @@ def login_main():
         else:
             return AUTH_TOKEN
         
+def create_movie_main(AUTH_TOKEN):
+    try:
+        print("Press enter to skip parameters")
+        TITLE = input("Enter title: ")
+        PLOT = input("Enter plot: ")
+        RELEASE_DATE = input("Enter release date (YYYY-MM-DDTHH:MM:SS): ")
+
+        GENRES = get_genres(AUTH_TOKEN)
+        
+        GENRE_TITLES = []
+        for GENRE_DICT in GENRES["items"]: GENRE_TITLES.append(GENRE_DICT["title"])
+        GENRE = check_genres(AUTH_TOKEN, input(f"Enter genre: \nGenres: {GENRE_TITLES}\n"))
+        IMAGE_ID = input("Enter image asset id: ")
+        VIDEO_ID = input("Enter video asset id: ")
+
+        print("Creating movie...")
+        ID = create_movie(AUTH_TOKEN)["contentId"]
+        update_movie(AUTH_TOKEN, ID, ID, TITLE, PLOT, RELEASE_DATE, GENRE["id"], GENRE["title"],
+                     IMAGE_ID, VIDEO_ID)
+        print(f"Movie id: {ID}")
+    except:
+        raise Exception("Error creating movie")
+
 def update_movie_main(AUTH_TOKEN, ID):
     try:
+        MOVIE_JSON = get_movie(AUTH_TOKEN, ID)
+        if not MOVIE_JSON["hasItems"]:
+            raise Exception("Movie not found")
+        
+        MOVIE = MOVIE_JSON["items"][0]
         GENRES = get_genres(AUTH_TOKEN)
         
         GENRE_TITLES = []
@@ -35,8 +64,17 @@ def update_movie_main(AUTH_TOKEN, ID):
         IMAGE_FILE = input("Enter image file path: ")
         VIDEO_FILE = input("Enter video file: ")
     
+        if TITLE == "" and "title" in MOVIE:
+            TITLE = MOVIE["title"]
+
+        if PLOT == "" and "plot" in MOVIE["identifiers"]:
+            PLOT = MOVIE["identifiers"]["plot"]
+
+        if RELEASE_DATE == "" and "releaseDate" in MOVIE:
+            RELEASE_DATE = MOVIE["releaseDate"]
+
         if GENRE == "":
-            GENRE_INFO = { "id": "", "title": "" }
+            GENRE_INFO = MOVIE["identifiers"]["genre"]
         else:
             GENRE_INFO = check_genres(AUTH_TOKEN, GENRE)
 
@@ -47,7 +85,10 @@ def update_movie_main(AUTH_TOKEN, ID):
             IMAGE_ID = IMAGE_RESPONSE["id"]
             upload_complete_asset(AUTH_TOKEN, IMAGE_ID)
         else:
-            IMAGE_ID = ""
+            if "image" in MOVIE["identifiers"]:
+                IMAGE_ID = MOVIE["identifiers"]["image"]["id"]
+            else:
+                IMAGE_ID = ""
 
         if VIDEO_FILE != "":
             print("Uploading video")
@@ -56,9 +97,12 @@ def update_movie_main(AUTH_TOKEN, ID):
             VIDEO_ID = VIDEO_RESPONSE["id"]
             upload_complete_asset(AUTH_TOKEN, VIDEO_ID)
         else:
-            VIDEO_ID = ""
+            if "moveiFile" in MOVIE["identifiers"]:
+                VIDEO_ID = MOVIE["identifiers"]["movieFile"]["id"]
+            else:
+                VIDEO_ID = ""
 
-        ID = update_movie(AUTH_TOKEN, ID, TITLE, slugify(TITLE), PLOT, RELEASE_DATE, GENRE_INFO["id"], GENRE_INFO["title"], IMAGE_ID, VIDEO_ID)
+        ID = update_movie(AUTH_TOKEN, ID, TITLE, slugify(TITLE), PLOT, RELEASE_DATE, GENRE_INFO["id"], GENRE_INFO["description"], IMAGE_ID, VIDEO_ID)
         print(f"Movie id: {ID}") 
     except:
         raise Exception()
@@ -136,7 +180,6 @@ if __name__ == "__main__":
                        "each option above respectively: ")
         if USER_INPUT == "create":
             ID = create_movie(AUTH_TOKEN)
-            update_movie_main(AUTH_TOKEN, ID["contentId"])
 
         elif USER_INPUT == "update":
             MOVIE_ID = input("Enter the id of the movie you want to update: ")

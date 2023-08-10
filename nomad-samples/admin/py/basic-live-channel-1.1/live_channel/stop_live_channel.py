@@ -4,13 +4,9 @@ from live_channel.live_channel_statuses import *
 from live_channel.wait_live_channel_status import *
 
 def stop_live_channel(AUTH_TOKEN, CHANNEL_ID):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not CHANNEL_ID):
-        raise Exception("Stop Live Channel: Invalid API call")
-
-
     # Create header for the request
     HEADERS = {
+        "Content-Type": "application/json",
         "Authorization": "Bearer " + AUTH_TOKEN
     }
 
