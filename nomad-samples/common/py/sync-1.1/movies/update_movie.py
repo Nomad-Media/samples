@@ -5,7 +5,7 @@ from helpers.slugify import slugify
 
 import json, requests
 
-def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE, VIDEO):
+def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID):
     # Create header for the request
     if not AUTH_TOKEN:
         raise Exception("Authorization token not found")
@@ -21,14 +21,14 @@ def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, PLOT, RELEASE_DATE, GENRE_ID
     BODY = {
         "contentDefinitionId": MOVIE_CONTENT_DEFINITION_ID,
         "contentId": CONTENT_ID,
-        "masterId": CONTENT_ID,
-        "properties": {
-            "title": TITLE,
-            "slugifyField": slugify(TITLE),
-            "plot": PLOT,
-            "releaseDate": RELEASE_DATE,
-        },
+        "properties": {},
     }
+
+    if TITLE != "": 
+        BODY["properties"]["title"] = TITLE
+        BODY["properties"]["slug"] = slugify(TITLE)
+    if PLOT != "": BODY["properties"]["plot"] = PLOT
+    if RELEASE_DATE != "": BODY["properties"]["releaseDate"] = RELEASE_DATE
 
     if GENRE_ID != "":
         BODY["properties"]["genre"] = {
@@ -36,13 +36,15 @@ def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, PLOT, RELEASE_DATE, GENRE_ID
             "description": GENRE_NAME
         }
 
-    if IMAGE != "":
-        IMAGE["description"] = f"{TITLE} image"
-        BODY["properties"]["image"] = IMAGE
+    if IMAGE_ID != "":
+        BODY["properties"]["image"] = { 
+            "id": IMAGE_ID
+        }
 
-    if VIDEO != "":
-        VIDEO["description"] = f"{TITLE} video"
-        BODY["properties"]["movieFile"] = VIDEO
+    if VIDEO_ID != "":
+        BODY["properties"]["movieFile"] = {
+            "id": VIDEO_ID
+        }
 
     try:
         # Send POST request

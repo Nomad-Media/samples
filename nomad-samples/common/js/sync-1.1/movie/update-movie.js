@@ -1,55 +1,61 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-/**
- * Update existing movie
- *
- * @param {string} title        | The movie title
- * @param {string} slug         | The movie slug
- * @param {string} plot         | The movie plot
- * @param {string} releaseDate  | The movie release date in UTC format string
- * @param {string} genreId      | The movie genre lookup ID
- * @param {string} authToken    | The authorization token
- *
- */
-export default async function updateMovie(movieId, title, slug, plot, releaseDate, genreId, authToken) {
-    // Check for valid parameters
-    if (!authToken || !movieId || !title || !slug) {
-        throw new Error("Create Movie: Invalid API call");
-    }
-
+export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, 
+                                          GENRE_NAME, IMAGE_ID, VIDEO_ID) {
     // Create header for the request
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Authorization", `Bearer ${authToken}`);
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     // Build the payload body
-    const body = {
-        contentId: movieId,
+    const BODY = {
         contentDefinitionId: prjConstants.MOVIE_CONTENT_DEFINITION_ID,
-        properties: {
-            title: title,
-            slug: slug,
-            plot: plot,
-            releaseDate: releaseDate,
-        }
+        contentId: ID,
+        properties: {}
     };
 
-    // Send PUT request
-    const response = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${movieId}`, {
+    if (TITLE !== "") BODY.properties.title = TITLE;
+    if (SLUG !== "") BODY.properties.slugifyField = SLUG;
+    if (PLOT !== "") BODY.properties.plot = PLOT;
+    if (RELEASE_DATE !== "") BODY.properties.releaseDate = RELEASE_DATE;
+
+    if (GENRE_ID !== "")
+    {
+        BODY.properties.genre = {};
+        BODY.properties.genre.id = GENRE_ID;
+        BODY.properties.genre.description = GENRE_NAME;
+    }
+    if (IMAGE_ID !== "")
+    {
+        BODY.properties.image = {};
+        BODY.properties.image.id = IMAGE_ID;
+    }
+    if (VIDEO_ID !== "")
+    {
+        BODY.properties.movieFile = {};
+        BODY.properties.movieFile.id = VIDEO_ID;
+    }
+
+
+
+    // Send POST request
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/${ID}`, {
         method: "PUT",
-        headers: headers,
-        body: JSON.stringify(body)
+        headers: HEADERS,
+        body: JSON.stringify(BODY),
+    }).catch((exception) => {
+        throw exception;
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE.ok) {
         // Get the response
-        const id = await response.text();
+        const ID = await RESPONSE.text();
 
         // Return the ID
-        return id.replaceAll('"', "");
+        return ID;
     }
 
-    await apiExceptionHandler(response, `Update Movie [${movieId}] failed`);
+    apiExceptionHandler(RESPONSE, "Update movie failed")
 }
