@@ -10,17 +10,16 @@ export default async function removeInputScheduleEvent(AUTH_TOKEN, CHANNEL_ID, I
 
 
     // Post
-    const RESPONSE = await fetch(`${prjConstants.PORTAL_API_URL}/liveChannel/${CHANNEL_ID}/liveScheduleEvent/${INPUT_ID}`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveChannel/${CHANNEL_ID}/liveScheduleEvent/${INPUT_ID}`, {
         method: "delete",
-        headers: HEADERS,
-        body: JSON.stringify(BODY)
+        headers: HEADERS
     }).catch((exception) => {
         throw exception;
     });
 
     // Check for success
     if (RESPONSE.ok) {
-        
+        return;
     }
 
     // There was an error

@@ -10,43 +10,38 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  *
  * @returns JSON Object
  */
-export default async function addInputScheduleEvent(authToken, data) {
-    // Check for valid parameters
-    if (!authToken || !data) {
-        throw new Error("Add Input Schedule Event: Invalid API call");
-    }
-
-    // Build the payload body
-    const BODY = {
-        channelId: data.channelId,
-        type: {
-            lookupId: sysConstants.LIVE_INPUT_LOOKUP_ID,
-            description: "Live Input"
-        },
-        liveInput: {
-            lookupId: data.inputId,
-            description: data.name
-        },
-        previousId: data.previousId
-    };
-
+export default async function addInputScheduleEvent(authToken, CHANNEL_ID, INPUT_ID, PREVIOUS_ID) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
+    // Build the payload body
+    const BODY = {
+        channelId: CHANNEL_ID,
+        type: {
+            id: sysConstants.LIVE_INPUT_LOOKUP_ID,
+            description: "Live Input"
+        },
+        liveInput: {
+            id: INPUT_ID,
+            description: "name"
+        },
+        previousId: PREVIOUS_ID
+    };
+
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/LiveChannel/${data.channelId}/liveScheduleEvent`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`, {
         method: "POST",
         headers: HEADERS,
         body: JSON.stringify(BODY)
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Return JSON response
-        return await response.json();
+        return await RESPONSE.json();
     }
 
-    await apiExceptionHandler(response, "Add Input Schedule Event failed");
+    await apiExceptionHandler(RESPONSE, "Add Input Schedule Event failed");
 }
