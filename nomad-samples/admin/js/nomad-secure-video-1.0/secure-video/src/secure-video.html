@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomad Secure Video Test</title>
+    <link rel="stylesheet" href="css/secure-video.css">
+    <link href="https://vjs.zencdn.net/7.14.3/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.14.3/video.min.js" defer></script>
+    <script type="module" src="secure-video.js" defer></script>
+    </body>
+</head>
+
+<body>
+    <header>
+        <section class="header-col-left">
+            <img width="120" src="nomad-logo.svg">
+            <h1>&nbsp;&nbsp;|&nbsp;&nbsp;Secure Video Test</h1>
+        </section>
+        <section class="header-col-right">
+        </section>
+    </header>
+    <div id="nomad-backdrop"></div>
+    <div id="nomad-wait-indicator">
+        <div class="spinning-dual-ring"></div>
+    </div>
+    <div id="nomad-login-wrapper">
+        <section>
+            <div class="nomad-logo">
+                <img src="nomad-logo.svg">
+            </div>
+            <form class="nomad-login-form">
+                <!-- EMAIL -->
+                <div class="nomad-form-row">
+                    <input type="email" id="nomad-email" name="email" placeholder="Email" autofocus required autocomplete value="" />
+                    <span id="nomad-email-error">Email is required.</span>
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="nomad-form-row">
+                    <input type="password" id="nomad-password" name="password" placeholder="Password" required autocomplete value="" />
+                    <span id="nomad-password-error">Password is required.</span>
+                </div>
+
+                <!-- EMAIL -->
+                <div class="nomad-form-row">
+                    <input type="text" id="asset-id" name="asset-id" placeholder="Video Asset ID" required value="7954975c-4721-4006-b35d-c91e6ac1bb07" />
+                    <span id="asset-id-error">Video Asset ID is required.</span>
+                </div>
+
+                <!-- SUBMIT -->
+                <div class="nomad-form-row">
+                    <button id="nomad-login-button" type="button" class="blue-btn">Log In</button>
+                </div>
+            </form>
+        </section>
+    </div>
+
+    <div id="nomad-video-wrapper">
+        <select id="related-videos">
+            <option value="">Select a Secure Video</option>
+        </select>
+        <video id="nomad-vide-player" class="video-js" controls preload="auto" data-setup='{}' width=600 height=300>
+            <p class="vjs-no-js">Your browser does not support HTML5 Video</p>
+        </video>
+    </div>
+
+</body>
+
+</html>

@@ -1,65 +1,54 @@
 from constants.project_constants import *
 from exceptions.api_exception_handler import *
+from helpers.slugify import *
 from live_channel.live_channel_statuses import *
 from live_channel.wait_live_channel_status import *
 from live_channel.live_channel_types import *
 
 import json, requests
 
-def create_live_channel(AUTH_TOKEN, DATA):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not DATA):
-        raise Exception("Create Live Channel: Invalid API call")
-
-
-    # Build the payload BODY
-    BODY = {
-        "name": DATA["name"],
-        "routeName": DATA["route"],
-        "thumbnailImage": "",
-        #"archiveFolderAsset": DATA["archiveFolderAsset"],
-        "isSecureOutput": False,
-        "outputScreenshots": True,
-        "type": { "id": DATA["type"] }
-    }
-
-
-    # Set the appropriate fields based on the channel type
-    if (DATA["type"] == LIVE_CHANNEL_TYPES["External"]):
-        BODY["channelId"] = None
-        BODY["externalUrl"] = DATA["url"]
-
-
+def create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET, 
+                        ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, 
+                        OUTPUT_SCREENSHOTS, TYPE, URL):
     # Create header for the request
     HEADERS = {
         'Content-Type': 'application/json',
         "Authorization": "Bearer " + AUTH_TOKEN
     }
 
+    # Build the payload BODY
+    BODY = {
+        "name": NAME,
+        "routeName": slugify(NAME),
+        "enableHighAvailability": ENABLE_HIGH_AVAILABILITY,
+        "enableLiveClipping": ENABLE_LIVE_CLIPPING,
+        "isSecureOutput": IS_SECURE_OUTPUT,
+        "outputScreenshots": OUTPUT_SCREENSHOTS,
+        "type": { "id": LIVE_CHANNEL_TYPES[TYPE] }
+    }
+
+    if THUMBNAIL_IMAGE != "":
+        BODY["thumbnailImage"] = { id: THUMBNAIL_IMAGE }
+
+    if ARCHIVE_FOLDER_ASSET != "":
+        BODY["archiveFolderAsset"] = { id: ARCHIVE_FOLDER_ASSET }
+
+    # Set the appropriate fields based on the channel type
+    if (TYPE == LIVE_CHANNEL_TYPES["External"]):
+        BODY["externalUrl"] = URL
+
     try:
         # Send the request
-        if "id" in DATA:
-            RESPONSE = requests.put(f"{ADMIN_URL}/liveChannel",  headers= HEADERS, data= json.dumps(BODY))
-            
-            METHOD = "PUT"
-            BODY["id"] = DATA["id"]
-        else:
-            RESPONSE = requests.post(f"{ADMIN_URL}/liveChannel",  headers= HEADERS, data= json.dumps(BODY))
-            INFO = json.loads(RESPONSE.text)
-            wait_for_live_channel_status(AUTH_TOKEN, INFO["id"], LIVE_CHANNEL_STATUSES["Idle"], 120, 2)
-            METHOD = "POST"
+        RESPONSE = requests.post(f"{ADMIN_URL}/liveChannel",  headers= HEADERS, data= json.dumps(BODY))
+        INFO = json.loads(RESPONSE.text)
 
         if not RESPONSE.ok:
             raise Exception()
+            
+        wait_for_live_channel_status(AUTH_TOKEN, INFO["id"], LIVE_CHANNEL_STATUSES["Idle"], 120, 2)
         
         return json.loads(RESPONSE.text)
 
     except:
-        # Handle error based on method
-        ERROR_METHOD = "Create"
-        if (METHOD == "PUT"):
-            ERROR_METHOD = "Update"
-
-
-        api_exception_handler(RESPONSE, ERROR_METHOD + " Live Channel " + DATA["name"] + " failed")
+        api_exception_handler(RESPONSE, f"Created Live Channel {NAME} failed")
 

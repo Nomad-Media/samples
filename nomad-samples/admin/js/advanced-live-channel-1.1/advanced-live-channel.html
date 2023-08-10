@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Advanced Live Channel</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Sweet Alert 2 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- VIDEO JS -->
+    <link href="https://vjs.zencdn.net/7.16.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.16.0/video.min.js" defer></script>
+    <script src="./lib/vjs-youtube.js" defer></script>
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/ca5806a6b7.js" crossorigin="anonymous" defer></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="advanced-live-channel.css" />
+
+    <!-- JS -->
+    <script type="module" src="advanced-live-channel.js" defer></script>
+</head>
+
+<body>
+    <div id="nomad-backdrop"></div>
+    <div id="nomad-wait-indicator">
+        <h1 id="nomad-wait-indicator-message"></h1>
+        <div class="nomad-wait-indicator-ring"></div>
+    </div>
+
+    <header>
+        <a href="https://www.nomad-cms.com/" target="_blank">
+            <img width="140" src="./images/nomad-logo.svg">
+        </a>
+        <div>
+            <a class="sign-out-button" id="new-input" href="#" title="New Input">
+                <i class="fad fa-signal-stream"></i>
+            </a>
+            <a class="sign-out-button" id="new-channel" href="#" title="New Channel">
+                <i class="fad fa-tv-retro"></i>
+            </a>
+            <a class="sign-out-button" id="sign-out" href="#">
+                <i class="fad fa-sign-out-alt"></i>
+            </a>
+        </div>
+    </header>
+
+    <section id="buttons" class="buttons">
+        <button id="view-inputs"><i class="fad fa-signal-stream"></i>&nbsp;View Inputs</button>
+        <button id="view-channels"><i class="fad fa-tv-retro"></i>&nbsp;View Channels</button>
+        <button id="reload"><i class="fad fa-redo-alt"></i>&nbsp;Reload</button>
+    </section>
+
+    <section id="inputs-section" class="inputs">
+        <p class="section-header">Inputs</p>
+        <section id="input-items" name="inputs">
+        </section>
+    </section>
+
+    <section id="channels-section" class="channels">
+        <p class="section-header">Channels</p>
+        <section id="channel-items" name="channels">
+        </section>
+    </section>
+
+    <section id="new-input-form">
+        <p id="section-header-input" class="section-header">Create Input</p>
+        <form class="nomad-form">
+            <label for="input-name">Input Name<sup class="required">*</sup>:</label>
+            <input type="text" id="input-name" name="input-name" class="swal2-input" required autofocus>
+
+            <label for="input-type">Input Type:</label>
+            <select id="input-type" class="swal2-input">
+                <option value="78acb07d-ba87-48fa-ad8f-c00e318a1252">RTP Push</option>
+                <option value="78acb07d-ba87-48fa-ad8f-c00e318a1253">RTMP Push</option>
+                <option value="78acb07d-ba87-48fa-ad8f-c00e318a1254">RTMP Pull</option>
+                <option value="78acb07d-ba87-48fa-ad8f-c00e318a1255">URL Pull</option>
+            </select>
+
+            <label id="input-source-label" for="input-source">Source:</label>
+            <input type="text" id="input-source" name="input-source" class="swal2-input">
+            <span id="input-legend" class="input-legend">If set, must start with 'http'</span>
+
+            <section class="form-row align-right">
+                <button id="create-input" type="button" class="swal2-confirm swal2-styled">Create</button>
+                <button id="cancel-input" type="button" class="swal2-cancel swal2-styled">Cancel</button>
+            </section>
+
+            <input id="input-id" name="input-id" type="hidden" value="">
+        </form>
+    </section>
+
+    <section id="new-channel-form">
+        <p id="section-header-channel" class="section-header">Create Channel</p>
+        <form class="nomad-form">
+            <label for="name">Channel Name<sup class="required">*</sup>:</label>
+            <input type="text" id="name" name="name" class="swal2-input" required autofocus>
+
+            <label for="channel-type">Channel Type:</label>
+            <select id="channel-type" class="swal2-input">
+                <option value="2bf01dd4-0a9c-4168-a61b-27e135732103">External</option>
+                <option value="2bf01dd4-0a9c-4168-a61b-27e135732102">IVS</option>
+                <option value="2bf01dd4-0a9c-4168-a61b-27e135732100">Normal</option>
+            </select>
+
+            <label id="url-label" for="url">External URL<sup class="required">*</sup>:</label>
+            <input type="text" id="url" name="url" class="swal2-input">
+
+            <section id="normal">
+                <label for="slate">Slate<sup class="required">*</sup>:</label>
+                <select id="slate" class="swal2-input" required>
+                    <option value="">Select File</option>
+                </select>
+
+                <section class="form-row">
+                    <input type="radio" id="file-asset-radio" name="asset-radio" value="file" checked>
+                    <label for="file-asset-radio">File Asset<sup class="required">*</sup></label>
+                </section>
+
+                <select id="file-asset" class="swal2-input">
+                    <option value="" selected>Select File</option>
+                </select>
+
+                <section class="form-row">
+                    <input type="radio" id="input-asset-radio" name="asset-radio" value="input">
+                    <label for="input-asset-radio">Live Input<sup class="required">*</sup></label>
+                </section>
+
+                <select id="input-asset" class="swal2-input" disabled>
+                    <option value="" selected>Select Input</option>
+                </select>
+            </section>
+
+            <section class="form-row align-right">
+                <button id="create-channel" type="button" class="swal2-confirm swal2-styled">Create</button>
+                <button id="cancel-channel" type="button" class="swal2-cancel swal2-styled">Cancel</button>
+            </section>
+
+            <input id="channel-id" name="channel-id" type="hidden" value="">
+        </form>
+    </section>
+
+    <section id="video-section" class="video">
+        <p id="playing-title" class="section-header">...</p>
+    </section>
+
+    <footer>
+        <h2>Contact Nomad</h2>
+        <a href="mailto:support@nomad-cms.com">support@nomad-cms.com</a>
+        <a href="tel:9493961431">(949) 396-1431</a>
+    </footer>
+
+</body>
+
+</html>

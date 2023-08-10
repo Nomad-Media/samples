@@ -8,11 +8,6 @@ from live_channel.live_channel_statuses import *
 import requests, json
 
 def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
-    # Check for valid parameters
-    if (not AUTH_TOKEN or not CHANNEL_ID):
-        raise Exception("Delete Live Channel: Invalid API call")
-
-
     # If delete Live Inputs then get their IDs
     INPUT_IDS = None
     if (DELETE_INPUTS == True):
@@ -21,15 +16,13 @@ def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
 
     # Create header for the request
     HEADERS = {
-        "Authorization": "Bearer " + AUTH_TOKEN
+        "Authorization": "Bearer " + AUTH_TOKEN,
+        'Content-Type': 'application/json'
     }
 
     try:
         # Send the request
         RESPONSE = requests.delete(f"{ADMIN_URL}/liveChannel/{CHANNEL_ID}" , headers= HEADERS)
-
-        # Wait for the Live Channel to be deleted
-        wait_for_live_channel_status(AUTH_TOKEN, CHANNEL_ID, LIVE_CHANNEL_STATUSES["Deleted"], 30, 2)
 
         # If the Live Channel had Live Inputs
         if (DELETE_INPUTS and INPUT_IDS and len(INPUT_IDS) > 0):
@@ -42,7 +35,7 @@ def delete_live_channel(AUTH_TOKEN, CHANNEL_ID, DELETE_INPUTS):
 
 
         # Return JSON response
-        return json.loads(RESPONSE.text)
+        return RESPONSE.json()
 
     except:
         api_exception_handler(RESPONSE, f"Delete Live Channel {CHANNEL_ID} failed")

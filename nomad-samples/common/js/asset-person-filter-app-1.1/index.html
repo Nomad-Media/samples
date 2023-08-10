@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Sweet Alert 2 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="asset-person-filter.css" />
+
+    <!-- JS -->
+    <script type="module" src="asset-person-filter.js" defer></script>
+</head>
+
+<body>
+    <div id="nomad-backdrop"></div>
+    <div id="nomad-wait-indicator">
+        <h1 id="nomad-wait-indicator-message"></h1>
+        <div class="nomad-wait-indicator-ring"></div>
+    </div>
+    <div id="nomad-modal-image-wrapper">
+        <span id="nomad-modal-image-close">&times;</span>
+        <img id="nomad-modal-image" src="">
+    </div>
+
+    <a id="nomad-logout-button" href="#"></a>
+
+    <main>
+        <login-form-template></login-form-template>
+
+        <section id="nomad-search-filters">
+            <section class="column shadow">
+                <label for="from-date">From Date</label>
+                <input type="date" name="from-date" id="from-date">
+            </section>
+            <section class="column shadow">
+                <label for="to-date">To Date</label>
+                <input type="date" name="to-date" id="to-date">
+            </section>
+            <section class="column shadow">
+                <label for="cameras">Cameras</label>
+                <section class="select">
+                    <select id="cameras" name="cameras">
+                        <option value="_all">[All Cameras]</option>
+                    </select>
+                </section>
+            </section>
+            <section class="column shadow">
+                <label for="persons">Persons</label>
+                <section class="select">
+                    <select id="persons" name="persons">
+                        <option value="_allImages">[All Images]</option>
+                        <option value="_allPersons">[All Persons]</option>
+                    </select>
+                </section>
+            </section>
+            <section class="column">
+                <button id="search-btn" class="blue-btn">Search</button>
+            </section>
+        </section>
+
+        <section id="nomad-image-wrapper">
+            <div id="nomad-image-container">
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
