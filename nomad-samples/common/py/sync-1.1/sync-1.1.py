@@ -6,7 +6,30 @@ from movies.get_movie import *
 from movies.update_movie import *
 
 
-import json, os
+import json
+
+def create_movie_main(AUTH_TOKEN):
+    try:
+        print("Press enter to skip parameters")
+        TITLE = input("Enter title: ")
+        PLOT = input("Enter plot: ")
+        RELEASE_DATE = input("Enter release date (YYYY-MM-DDTHH:MM:SS): ")
+
+        GENRES = get_genres(AUTH_TOKEN)
+        
+        GENRE_TITLES = []
+        for GENRE_DICT in GENRES["items"]: GENRE_TITLES.append(GENRE_DICT["title"])
+        GENRE = check_genres(AUTH_TOKEN, input(f"Enter genre: \nGenres: {GENRE_TITLES}\n"))
+        IMAGE_ID = input("Enter image asset id: ")
+        VIDEO_ID = input("Enter video asset id: ")
+
+        print("Creating movie...")
+        ID = create_movie(AUTH_TOKEN)["contentId"]
+        update_movie(AUTH_TOKEN, ID, ID, TITLE, PLOT, RELEASE_DATE, GENRE["id"], GENRE["title"],
+                     IMAGE_ID, VIDEO_ID)
+        print(f"Movie id: {ID}")
+    except:
+        raise Exception("Error creating movie")
 
 def sync(AUTH_TOKEN):
 
@@ -52,6 +75,55 @@ def sync(AUTH_TOKEN):
     except:
         raise Exception("Error syncing movies")
 
+def update_movie_main(AUTH_TOKEN):
+    try:
+        TITLE = input("Enter the movie title to update: ")
+
+        MOVIE_JSON = get_movie(AUTH_TOKEN, TITLE)
+        if not MOVIE_JSON["hasItems"]:
+            raise Exception("Movie not found")
+        
+        MOVIE = MOVIE_JSON["items"][0]
+        GENRES = get_genres(AUTH_TOKEN)
+        
+        GENRE_TITLES = []
+        for GENRE_DICT in GENRES["items"]: GENRE_TITLES.append(GENRE_DICT["title"])
+
+        print("Press enter to skip parameters")
+        TITLE = input("Enter title: ")
+        PLOT = input("Enter plot: ")
+        RELEASE_DATE = input("Enter release date (YYYY-MM-DDTHH:MM:SS): ")
+        GENRE = input(f"Enter genre: \nGenres: {GENRE_TITLES}\n")
+        IMAGE_ID = input("Enter image asset id: ")
+        VIDEO_ID = input("Enter video asset id: ")
+    
+        if TITLE == "" and "title" in MOVIE:
+            TITLE = MOVIE["title"]
+
+        if PLOT == "" and "plot" in MOVIE["identifiers"]:
+            PLOT = MOVIE["identifiers"]["plot"]
+
+        if RELEASE_DATE == "" and "releaseDate" in MOVIE:
+            RELEASE_DATE = MOVIE["releaseDate"]
+
+        if GENRE == "":
+            GENRE_INFO = MOVIE["identifiers"]["genre"]
+        else:
+            GENRE_INFO = check_genres(AUTH_TOKEN, GENRE)
+
+        if IMAGE_ID == "" and "image" in MOVIE["identifiers"]:
+            IMAGE_ID = MOVIE["identifiers"]["image"]["id"]
+
+        if VIDEO_ID == "" and "movieFile" in MOVIE["identifiers"]:
+            VIDEO_ID = MOVIE["identifiers"]["movieFile"]["id"]
+
+        ID = update_movie(AUTH_TOKEN, MOVIE["masterId"], MOVIE["masterId"], TITLE, 
+                          PLOT, RELEASE_DATE, GENRE_INFO["id"], GENRE_INFO["title"], IMAGE_ID, 
+                          VIDEO_ID)
+        print(f"Movie id: {ID}") 
+    except:
+        raise Exception()
+
 def delete_movie_main(AUTH_TOKEN):
     INPUT = input("Enter the movie id to delete: ")
 
@@ -65,10 +137,15 @@ if __name__ == "__main__":
     AUTH_TOKEN = input("Enter your auth token: ")
 
     while True:
-        USER_INPUT = input("Do you want to sync movies form json, or delte movies (s/d) or exit?: ")
-        if USER_INPUT == "s":    
+        print("Do you want to create, sync movies form json, update a movie, or delete movies or exit?: ")
+        USER_INPUT = input("Enter create, sync, update, delete, or exit for each option above respectivly: ")
+        if USER_INPUT == "create":
+            ID = create_movie_main(AUTH_TOKEN)
+        elif USER_INPUT == "sync":    
             sync(AUTH_TOKEN)
-        elif USER_INPUT == "d":
+        elif USER_INPUT == "update":
+            update_movie_main(AUTH_TOKEN)
+        elif USER_INPUT == "delete":
             delete_movie_main(AUTH_TOKEN)
         elif USER_INPUT == "exit":
             break

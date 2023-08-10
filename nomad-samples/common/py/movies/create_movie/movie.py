@@ -21,6 +21,29 @@ def login_main():
         else:
             return AUTH_TOKEN
         
+def create_movie_main(AUTH_TOKEN):
+    try:
+        print("Press enter to skip parameters")
+        TITLE = input("Enter title: ")
+        PLOT = input("Enter plot: ")
+        RELEASE_DATE = input("Enter release date (YYYY-MM-DDTHH:MM:SS): ")
+
+        GENRES = get_genres(AUTH_TOKEN)
+        
+        GENRE_TITLES = []
+        for GENRE_DICT in GENRES["items"]: GENRE_TITLES.append(GENRE_DICT["title"])
+        GENRE = check_genres(AUTH_TOKEN, input(f"Enter genre: \nGenres: {GENRE_TITLES}\n"))
+        IMAGE_ID = input("Enter image asset id: ")
+        VIDEO_ID = input("Enter video asset id: ")
+
+        print("Creating movie...")
+        ID = create_movie(AUTH_TOKEN)["contentId"]
+        update_movie(AUTH_TOKEN, ID, ID, TITLE, PLOT, RELEASE_DATE, GENRE["id"], GENRE["title"],
+                     IMAGE_ID, VIDEO_ID)
+        print(f"Movie id: {ID}")
+    except:
+        raise Exception("Error creating movie")
+
 def update_movie_main(AUTH_TOKEN, ID):
     try:
         MOVIE_JSON = get_movie(AUTH_TOKEN, ID)
@@ -157,7 +180,6 @@ if __name__ == "__main__":
                        "each option above respectively: ")
         if USER_INPUT == "create":
             ID = create_movie(AUTH_TOKEN)
-            update_movie_main(AUTH_TOKEN, ID["contentId"])
 
         elif USER_INPUT == "update":
             MOVIE_ID = input("Enter the id of the movie you want to update: ")
