@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Embedded Video List</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Sweet Alert 2 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+	
+    <!-- Styles -->
+    <link rel="stylesheet" href="embedded-iframe-video.css" />
+
+    <!-- JS -->
+    <script type="module" src="embedded-iframe-video.js" defer></script>
+</head>
+
+<body>
+    <div id="nomad-backdrop"></div>
+    <div id="nomad-wait-indicator">
+        <h1 id="nomad-wait-indicator-message"></h1>
+        <div class="nomad-wait-indicator-ring"></div>
+    </div>
+
+    <header>
+        <section class="header-col-left">
+            <a href="https://www.nomad-cms.com/" target="_blank">
+                <img width="140" src="./images/nomad-logo.svg">
+            </a>
+            <h1>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Embedded iFrame Video</h1>
+        </section>
+        <section class="header-col-right">
+            <a id="nomad-logout-button" href="#">
+                <img src="./images/sign-out-duotone.svg">
+            </a>
+        </section>
+    </header>
+
+    <login-form-template></login-form-template>
+
+    <section id="nomad-video-wrapper">
+        <div id="nomad-video-container">
+        </div>
+    </section>
+
+    <footer>
+        <h2>Contact Nomad</h2>
+        <a href="mailto:support@nomad-cms.com">support@nomad-cms.com</a>
+        <a href="tel:9493961431">(949) 396-1431</a>
+    </footer>
+</body>
+
+</html>

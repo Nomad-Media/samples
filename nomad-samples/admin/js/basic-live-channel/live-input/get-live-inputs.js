@@ -11,27 +11,22 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
  * @returns JSON Object containing a list of live inputs
  */
 export default async function getLiveInputs(authToken) {
-    // Check for valid parameters
-    if (!authToken) {
-        throw new Error("Get Live Inputs: Invalid API call");
-    }
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/liveInput`, {
+    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/liveInput`, {
         method: "GET",
         headers: HEADERS
     });
 
     // Check for success
-    if (response && response.ok) {
+    if (RESPONSE && RESPONSE.ok) {
         // Return JSON response
-        return await response.json();
+        return await RESPONSE.json();
     }
 
-    await apiExceptionHandler(response, "Get Live Inputs failed");
+    await apiExceptionHandler(RESPONSE, "Get Live Inputs failed");
 }

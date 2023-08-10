@@ -20,5 +20,5 @@ export default async function deleteContent(AUTH_TOKEN, CONTENT_DEFINITION_ID, I
         return true;
     } 
 
-    apiExceptionHandler(RESPONSE, "Deleting movie failed");
+    apiExceptionHandler(RESPONSE, "Deleting content failed");
 }

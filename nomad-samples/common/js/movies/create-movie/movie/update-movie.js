@@ -11,37 +11,30 @@ export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, REL
     const BODY = {
         contentDefinitionId: prjConstants.MOVIE_CONTENT_DEFINITION_ID,
         contentId: ID,
-        title: TITLE,
-        slugifyField: SLUG,
-        plot: PLOT,
-        releaseDate: RELEASE_DATE,
-        genre: {
-            id: GENRE_ID,
-            description: GENRE_NAME
-        },
-        image: {
-            id: IMAGE_ID
-        },
-        movieFile: {
-            id: VIDEO_ID
-        },
-        properties: {
-            title: TITLE,
-            slugifyField: SLUG,
-            plot: PLOT,
-            releaseDate: RELEASE_DATE,
-            genre: {
-                id: GENRE_ID,
-                description: GENRE_NAME
-            },
-            image: {
-                id: IMAGE_ID
-            },
-            movieFile: {
-                id: VIDEO_ID
-            }
-        },
+        properties: {}
     };
+
+    if (TITLE !== "") BODY.properties.title = TITLE;
+    if (SLUG !== "") BODY.properties.slugifyField = SLUG;
+    if (PLOT !== "") BODY.properties.plot = PLOT;
+    if (RELEASE_DATE !== "") BODY.properties.releaseDate = RELEASE_DATE;
+
+    if (GENRE_ID !== "")
+    {
+        BODY.properties.genre = {};
+        BODY.properties.genre.id = GENRE_ID;
+        BODY.properties.genre.description = GENRE_NAME;
+    }
+    if (IMAGE_ID !== "")
+    {
+        BODY.properties.image = {};
+        BODY.properties.image.id = IMAGE_ID;
+    }
+    if (VIDEO_ID !== "")
+    {
+        BODY.properties.movieFile = {};
+        BODY.properties.movieFile.id = VIDEO_ID;
+    }
 
     // Send POST request
     const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/${ID}`, {

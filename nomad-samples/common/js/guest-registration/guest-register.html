@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register Guest User</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="guest-register.css">
+
+    <!-- JS -->
+    <script type="module" src="guest-register.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Invite Guest User</h1>
+    <h3>Authentication Token</h3>
+    <form id="authForm">
+        <label for="authInput">Authentication Token:</label>
+        <input type="authToken" id="authInput" required>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Invite User</h3>
+    <form id="inviteForm">
+        <label for="inviteContentIdInput">Enter Content Id:</label>
+        <input type="contentId" id="inviteContentIdInput">
+
+        <label for="inviteContentDefinitionIdInput">Enter Content Definition Id:</label>
+        <input type="contentDefinitionId" id="inviteContentDefinitionIdInput">
+
+        <label for="inviteUserIdInput">Enter User Id:</label>
+        <input type="userId" id="inviteUserIdInput">
+
+        <label for="inviteEmailInput">Enter Emails (separated by comma):</label>
+        <input type="email" id="inviteEmailInput" required>
+
+        <label for="inviteContentSecurityAttributeInput">Enter Content Security Attribute:</label>
+        <select id="inviteContentSecurityAttributeInput">
+            <option value="Undefined">Undefined</option>
+            <option value="Guest">Guest</option>
+            <option value="Demo">Demo</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Invite</button>
+    </form>
+
+    <h3>Remove Invite</h3>
+    <form id="removeInviteForm">
+        <label for=removeInviteContentIdInput>Enter Content Id:</label>
+        <input type="contentId" id="removeInviteContentIdInput">
+
+        <label for="removeInviteContentDefinitionIdInput">Enter Content Definition Id:</label>
+        <input type="contentDefinitionId" id="removeInviteContentDefinitionIdInput">
+
+        <label for="removeInviteUserIdInput">Enter User Id:</label>
+        <input type="userId" id="removeInviteUserIdInput">
+
+        <label for="removeInviteEmailInput">Enter Emails (separated by comma):</label>
+        <input type="email" id="removeInviteEmailInput" required>
+
+        <label for="removeInviteContentSecurityAttributeInput">Enter Content Security Attribute:</label>
+        <select id="removeInviteContentSecurityAttributeInput">
+            <option value="Undefined">Undefined</option>
+            <option value="Guest">Guest</option>
+            <option value="Demo">Demo</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Register Guest</h3>
+    <form id="registerForm">
+        <label for="guestEmailInput">Enter Email:</label>
+        <input type="email" id="guestEmailInput" required>
+
+        <label for="guestFirstNameInput">Enter First Name:</label>
+        <input type="firstName" id="guestFirstNameInput">
+
+        <label for="guestLastNameInput">Enter Last Name:</label>
+        <input type="lastName" id="guestLastNameInput">
+
+        <label for="guestPasswordInput">Enter Password:</label>
+        <input type="password" id="guestPasswordInput" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Ping User</h3>
+    <form id="pingForm">
+        <label for="applicationIdInput">Enter Application Id:</label>
+        <input type="applicationId" id="applicationIdInput">
+
+        <label for="userSessionIdInput">Enter User Session Id:</label>
+        <input type="userSessionId" id="userSessionIdInput" required>
+
+        <br><br>
+        <button type="submit">Ping</button>
+    </form>
+
+    <h3>Participant Panel Query</h3>
+    <form id="ppqForm">
+        <label for="ppqIdInput">Enter User Session Id:</label>
+        <input type="ppqId" id="ppqIdInput" required>
+
+        <label for="apiInput">Which API do you want to use?:</label>
+        <select id="apiInput">
+            <option value="portalApi">Portal API</option>
+            <option value="adminApi">Admin API</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

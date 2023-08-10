@@ -20,7 +20,9 @@ def get_channel_names(AUTH_TOKEN):
 
         CHANNEL_NAMES = []
         for CHANNEL in INFO:
-            CHANNEL_NAMES.append(CHANNEL["name"])
+            ## if live channel name exists
+            if "name" in CHANNEL:
+                CHANNEL_NAMES.append(CHANNEL["name"])
                                  
         return CHANNEL_NAMES
     

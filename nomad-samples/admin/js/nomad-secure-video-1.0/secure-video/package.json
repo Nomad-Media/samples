@@ -1,0 +1,20 @@
+{
+    "name": "nomad-js-library",
+    "version": "1.0.00",
+    "description": "Nomad CMS JavaScript Library",
+    "default": "./src/dist/nomad-js-library.min.js",
+    "repository": {
+        "type": "git",
+        "url": "https://git-codecommit.us-east-1.amazonaws.com/v1/repos/nomad"
+    },
+    "author": "Gabe",
+    "license": "ISC",
+    "devDependencies": {
+        "parcel": "^2.0.0-rc.0",
+        "video.js": "^7.14.3"
+    },
+    "scripts": {
+        "start": "parcel serve ./src/sync.html",
+        "build": "parcel build --no-source-maps --no-content-hash --dist-dir ./src/dist ./src/sync.html"
+    }
+}

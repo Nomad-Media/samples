@@ -1,0 +1,33 @@
+<template id="login-form-template">
+    <div id="nomad-login-wrapper">
+        <section class="nomad-login-wrapper-section">
+            <div class="nomad-logo">
+                <img src="./images/nomad-logo.svg">
+            </div>
+            <form class="nomad-login-form">
+                <!-- EMAIL -->
+                <div class="nomad-form-row">
+                    <input type="email" id="nomad-email" name="email" placeholder="Email" autofocus required autocomplete="username" />
+                    <span id="nomad-email-error">Email is required.</span>
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="nomad-form-row">
+                    <input type="password" id="nomad-password" name="password" placeholder="Password" required autocomplete="current-password" />
+                    <span id="nomad-password-error">Password is required.</span>
+                </div>
+
+                <!-- ASSET ID -->
+                <div class="nomad-form-row">
+                    <input type="text" id="asset-id" name="asset-id" placeholder="Video Asset ID" required value="c49c6c83-f686-4347-a000-d130dd06a345" />
+                    <span id="asset-id-error">Video Asset ID is required.</span>
+                </div>
+
+                <!-- SUBMIT -->
+                <div class="nomad-form-row">
+                    <button id="nomad-login-button" type="button" class="blue-btn">Log In</button>
+                </div>
+            </form>
+        </section>
+    </div>
+</template>

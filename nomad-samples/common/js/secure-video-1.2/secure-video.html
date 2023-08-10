@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Secure Video</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Sweet Alert 2 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <!-- VIDEO JS -->
+    <link href="https://vjs.zencdn.net/7.18.0/video-js.css" rel="stylesheet" />
+    <script src="https://vjs.zencdn.net/7.18.0/video.min.js" defer></script>
+
+    <!-- <link href="https://vjs.zencdn.net/7.16.0/video-js.css" rel="stylesheet" /> -->
+    <!-- <script src="https://vjs.zencdn.net/7.16.0/video.min.js" defer></script> -->
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="secure-video.css">
+
+    <!-- JavaScript -->
+    <script type="module" src="secure-video.js" defer></script>
+</head>
+
+<body>
+    <div id="nomad-backdrop"></div>
+    <div id="nomad-wait-indicator">
+        <h1 id="nomad-wait-indicator-message"></h1>
+        <div class="nomad-wait-indicator-ring"></div>
+    </div>
+
+    <header>
+        <section class="header-col-left">
+            <a href="https://www.nomad-cms.com/" target="_blank">
+                <img width="140" src="./images/nomad-logo.svg">
+            </a>
+            <h1>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Secure Video</h1>
+        </section>
+        <section class="header-col-right">
+        </section>
+    </header>
+
+    <login-form-template></login-form-template>
+
+    <div id="nomad-video-wrapper">
+        <section class="select">
+            <select id="related-videos">
+                <option value="">Select a Secure Video</option>
+            </select>
+        </section>
+        <video id="nomad-video-player" class="video-js" controls preload="auto" data-setup='{}' width=600 height=300>
+            <p class="vjs-no-js">Your browser does not support HTML5 Video</p>
+        </video>
+    </div>
+
+    <footer>
+        <h2>Contact Nomad</h2>
+        <a href="mailto:support@nomad-cms.com">support@nomad-cms.com</a>
+        <a href="tel:9493961431">(949) 396-1431</a>
+    </footer>
+
+</body>
+
+</html>
