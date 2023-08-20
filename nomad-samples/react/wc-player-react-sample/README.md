@@ -59,6 +59,8 @@ Example usage of wc-player:
     ref={this.handleRef}
     force-start={this.state.forceStart}
     force-pause={this.state.forcePause}
+    force-mute={this.state.forceMute}
+    force-unmute={this.state.forceUnmute}
     vep-config='{
         "application": "Embedded",
               "customer": "acme-customer",
