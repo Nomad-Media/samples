@@ -24,6 +24,13 @@
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" href="movies.css">
 
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
     <!-- JS -->
     <script type="module" src="movies.js" defer></script>
 </head>
@@ -63,18 +70,20 @@
         <label for="dateInput">Release Date:</label>
         <input type="date" id="dateInput">
         
-        <label for="genreSelect">Genre:</label>
-        <select id="genreSelect"></select>
-        <br><br>
+        <div id="genreDiv" hidden="true">
+            <label for="genreSelect">Genre:</label>
+            <select id="genreSelect" multiple></select>
+            <br><br>
+        </div>
 
-        <label for="genreInput" id="genreLabel">Enter Genre:</label>
+        <label for="genreInput" id="genreLabel">Enter Genre(s) (separated by comma):</label>
         <input type="genre" id="genreInput" hidden="true">
 
-        <label for="imageIdInput">Image Id:</label>
-        <input type="imageId" id="imageIdInput">
+        <label for="imageFileInput">Choose an image file to upload:</label>
+        <input type="file" id="imageFileInput">
 
-        <label for="videoIdInput">Video Id:</label>
-        <input type="videoId" id="videoIdInput">
+        <label for="videoFileInput">Choose a video file to upload:</label>
+        <input type="file" id="videoFileInput">
 
         <br><br>
         <button type="submit">Submit</button>
