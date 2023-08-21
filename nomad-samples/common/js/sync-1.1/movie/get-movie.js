@@ -62,6 +62,14 @@ export default async function getMovie(movieId, authToken) {
                         name: "fullUrl"
                     }
                 ]
+            },
+            {
+                name: "movieFile",
+                SearchResultFields: [
+                    {
+                        name: "fullUrl"
+                    }
+                ]
             }
         ]
     };
