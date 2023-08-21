@@ -17,7 +17,6 @@ const DELETE_FORM = document.getElementById("deleteForm");
 
 const TOKEN_INPUT = document.getElementById("authInput");
 const TYPE_SELECT = document.getElementById("typeSelect");
-const UPDATE_ID_DIV = document.getElementById("updateIdDiv");
 const UPDATE_ID_INPUT = document.getElementById("updateIdInput");
 const TITLE_INPUT = document.getElementById("titleInput");
 const PLOT_INPUT = document.getElementById("plotInput");
@@ -28,6 +27,9 @@ const GENRE_INPUT = document.getElementById("genreInput");
 const IMAGE_ID_INPUT = document.getElementById("imageIdInput");
 const VIDEO_ID_INPUT = document.getElementById("videoIdInput");
 const DELETE_ID_INPUT = document.getElementById("deleteIdInput");
+
+const UPDATE_ID_DIV = document.getElementById("updateIdDiv");
+const GENRE_DIV = document.getElementById("genreDiv");
 
 sessionStorage.clear();
 let genreList
@@ -50,6 +52,8 @@ TYPE_SELECT.addEventListener("change", function (event)
 
 async function getGenreList()
 {
+    GENRE_DIV.hidden = false
+
     const GENRE_LIST_INFO = await getGenres(sessionStorage.getItem("token"));
     const GENRE_LIST = GENRE_LIST_INFO.items;
 
@@ -65,28 +69,26 @@ async function getGenreList()
     option.text = "Other";
     GENRE_SELECT.appendChild(option);
 
+    $(GENRE_SELECT).select2();
     return GENRE_LIST;
 }
 
-GENRE_SELECT.addEventListener("change", function (event)
-{
+$(GENRE_SELECT).on("change", function (event) {
     event.preventDefault();
 
-    if (GENRE_SELECT.value === "Other")
-    {
+    const selectedGenres = Array.from(GENRE_SELECT.selectedOptions).map(option => option.value);
+
+    if (selectedGenres.includes("Other")) {
         GENRE_INPUT.hidden = false;
         GENRE_LABEL.style.display = "block";
-    }
-    else
-    {
+    } else {
         GENRE_INPUT.hidden = true;
         GENRE_LABEL.style.display = "none";
     }
-
 });
 
-CREATE_FORM.addEventListener("submit", function (event)
-{
+
+CREATE_FORM.addEventListener("submit", function (event) {
     event.preventDefault();
 
     let type = TYPE_SELECT.value;
@@ -94,13 +96,20 @@ CREATE_FORM.addEventListener("submit", function (event)
     let title = TITLE_INPUT.value;
     let plot = PLOT_INPUT.value;
     let date = DATE_INPUT.value;
-    let genreId;
-    GENRE_SELECT.value === "Other" ? genreId = GENRE_INPUT.value : genreId = GENRE_SELECT.value;
+    
+    let selectedGenres = Array.from(GENRE_SELECT.selectedOptions).map(option => option.value);
+    
+    if (selectedGenres.includes("Other")) {
+        selectedGenres.pop();
+        selectedGenres.push((GENRE_INPUT.value).split(","));
+    }
+
     let imageId = IMAGE_ID_INPUT.value;
     let videoId = VIDEO_ID_INPUT.value;
 
-    createMovieMain(type, id, title, plot, date, genreId, imageId, videoId);
+    createMovieMain(type, id, title, plot, date, selectedGenres, imageId, videoId);
 });
+
 
 SYNC_FORM.addEventListener("submit", function (event)
 {
@@ -118,7 +127,7 @@ DELETE_FORM.addEventListener("submit", function (event)
     deleteMovieMain(id);
 });
 
-async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_ID, VIDEO_ID)
+async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, SELECTED_GENRES, IMAGE_ID, VIDEO_ID)
 {
     const TOKEN = sessionStorage.getItem("token");
 
@@ -129,38 +138,50 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_ID, 
 
     try
     {
-        let genreId;
-        let genreName;
+        const GENRE_MAP_LIST = [];
         let found = false;
 
-        for (let genreIdx = 0; genreIdx < genreList.length; ++genreIdx)
+        for(let GENRE_ID = 0; GENRE_ID < SELECTED_GENRES.length; ++GENRE_ID)
         {
-            if (genreList[genreIdx].id === GENRE_ID)
+            if (!Array.isArray(SELECTED_GENRES[GENRE_ID]))
             {
-                genreId = genreList[genreIdx].id;
-                genreName = genreList[genreIdx].title;
-                found = true;
-                break;
-            }
+                let genreMap = {};
+                for (let genreIdx = 0; genreIdx < genreList.length; ++genreIdx)
+                {
+                    if (genreList[genreIdx].id === SELECTED_GENRES[GENRE_ID])
+                    {
+                        genreMap["description"] = genreList[genreIdx].title 
+                        genreMap["id"] = genreList[genreIdx].id;
+                        found = true;
+                        break;
+                    }
 
-            if (genreList[genreIdx].title === GENRE_ID)
+                    if (genreList[genreIdx].title === GENRE_ID)
+                    {
+                        console.log("Genre already exists");
+                        return 0;
+                    }
+                }
+                GENRE_MAP_LIST.push(genreMap);
+            }
+            else
             {
-                console.log("Genre already exists");
-                return 0;
+                for (let createGenreIdx = 0; createGenreIdx < SELECTED_GENRES[GENRE_ID].length; ++createGenreIdx)
+                {
+                    let genreMap = {};
+                    let genreName = SELECTED_GENRES[GENRE_ID][createGenreIdx];
+                    let genreId = await createGenre(genreName, slugify(genreName), TOKEN);
+                    genreMap["description"] = genreName;
+                    genreMap["id"] = genreId;
+                    GENRE_MAP_LIST.push(genreMap);
+                }
             }
-        }
-
-        if (!found)
-        {
-            genreId = await createGenre(GENRE_ID, slugify(GENRE_ID), TOKEN);
-            console.log(`Genre ID: ${genreId}`);
-            genreName = GENRE_ID;
         }
 
         if (TYPE === "create")
         {
             console.log("Creating Movie");
-            const ID = await createMovie(TOKEN, TITLE, slugify(TITLE), PLOT, DATE, genreId, genreName, IMAGE_ID, VIDEO_ID);
+            const ID = await createMovie(TOKEN, "", TITLE, slugify(TITLE), PLOT, DATE, GENRE_MAP_LIST, IMAGE_ID, VIDEO_ID);
             console.log(`ID: ${ID}`);
             console.log("Movie Created");
         }
@@ -179,12 +200,11 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_ID, 
             if (!TITLE && typeof MOVIE.title !== undefined) TITLE = MOVIE.title;
             if (!PLOT && typeof MOVIE.identifiers.plot !== undefined) PLOT = MOVIE.identifiers.plot;
             if (!DATE && typeof MOVIE.releaseDate !== undefined) DATE = MOVIE.releaseDate;
-            if (!genreId) genreId = MOVIE.identifiers.genre.id;
-            if (!genreName) genreName = MOVIE.identifiers.genre.description;
+            if (GENRE_MAP_LIST === []) GENRE_MAP_LIST = MOVIE.identifiers.genre;
             if (!IMAGE_ID && typeof MOVIE.identifiers.image !== 'undefined') IMAGE_ID = MOVIE.identifiers.image.id;
             if (!VIDEO_ID && typeof MOVIE.identifiers.movieFile !== 'undefined') VIDEO_ID = MOVIE.identifiers.movieFile.id;
 
-            await updateMovie(TOKEN, ID, TITLE, slugify(TITLE), PLOT, DATE, genreId, genreName, IMAGE_ID, VIDEO_ID);
+            await updateMovie(TOKEN, ID, TITLE, slugify(TITLE), PLOT, DATE, GENRE_MAP_LIST, IMAGE_ID, VIDEO_ID);
             console.log("Movie Updated");
         }
 
@@ -196,90 +216,73 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_ID, 
 }
 
 async function sync() {
-    // Get the auth token from the session storage
+    
     const authToken = sessionStorage.getItem("token");
 
-    // Check for valid token
+    
     if (!authToken) {
         throw new Error("No authorization token found, please authenticate first.");
     }
 
     console.log("Synchronizing...");
 
-    // Load JSON data to synchronize
+    
     const movies = await fetch("movie.json").then((data) => {
         return data.json();
     });
 
-    // Check for valid data as required
+    
     if (!movies || movies.length === 0) {
         throw new Error("Error retrieving data, make sure the source file exists and is not empty.");
     }
 
-    // Give feedback to the console
+    
     console.log(`${movies.length} movies found in source file`);
 
-    //
-    // First get all the lookups, in our example we only have Movie Genre.
-    //
-    // Get all genres
-    const genreSearchResults = await getGenres(authToken);
-
-    // Convert the genre search results to a lookup map
-    const genres = searchResultsToLookupMap(genreSearchResults);
-
-    // Loop all the movies to sync
+    const GENRE_SEARCH_RESULTS = await getGenres(authToken);
+    const GENRES = searchResultsToLookupMap(GENRE_SEARCH_RESULTS);
+    
     for (let index = 0; index < movies.length; index++) {
-        // Assign movies[index] to movie
         const movie = movies[index];
+        const GENRE_MAP_LIST = [];
 
-        // Give feedback to the console
         console.log(`Synchronizing movie #${index + 1} out of ${movies.length} | ${movie.title}...`);
 
-        //
-        // Do this for all the lookups
-        //
-        // Check if the genre exists in the genre lookup map
-        let genreId = genres.get(movie.genre);
+        for(let genreIdx = 0; genreIdx < movie.genres.length; ++genreIdx)
+        {
+            const GENRE_MAP = {};
+            let genreId = GENRES.get(movie.genres[genreIdx]);
 
-        // If genre does not exist then create it
-        if (!genreId) {
-            console.log(`\tCreating Movie Genre ${movie.genre}...`);
+            if (!genreId) {
+                console.log(`\tCreating Movie Genre ${movie.genres}...`);
 
-            // Create new genre
-            genreId = await createGenre(movie.genre, slugify(movie.genre), authToken);
+                genreId = await createGenre(movie.genres[genreIdx], slugify(movie.genre), authToken);
+            }
+            GENRE_MAP.description = movie.genres[genreIdx];
+            GENRE_MAP.id = genreId;
 
-            // Add it to the map
-            genres.set(movie.genre, genreId);
+            GENRE_MAP_LIST.push(GENRE_MAP);
         }
 
-        //
-        // Now that we have all the lookups we check if the movie already exists
-        //
-        // Search the movie by id
         const movieSearchResult = await getMovie(movie.id, authToken);
 
-        // If the movie exists
+        
         if (movieSearchResult && movieSearchResult.hasItems) {
-            //
-            // The getMovie search should have returned only 1 item
-            //
-            // We assign it to existingMovie
+            
             const existingMovie = movieSearchResult.items[0];
 
-            // Check if it needs to be updated as required
-            if (JSON.stringify(existingMovie) === JSON.stringify(movie)) {
+            if (JSON.stringify(existingMovie) !== JSON.stringify(movie)) {
                 console.log(`\tUpdating Movie ${movie.title}...`);
 
-                // Update the existing movie
-                await updateMovie(authToken, movie.id, movie.title, movie.slug, movie.plot, movie.releaseDate, genreId);
+                
+                await updateMovie(authToken, movie.id, movie.title, movie.slug, movie.plot, movie.releaseDate, GENRE_MAP_LIST);
                 continue;
             }
         } else {
             console.log(`\tCreating Movie ${movie.title}...`);
 
-            // The movie was not found, create new movie
-            await createMovie(authToken, movie.id, movie.title, movie.slug, movie.plot, movie.releaseDate, genreId, movie.genre, movie.image.id, movie.movieFile.id);
+            
+            await createMovie(authToken, movie.id, movie.title, movie.slug, movie.plot, movie.releaseDate, GENRE_MAP_LIST, movie.image.id, movie.movieFile.id);
 
             continue;
         }
@@ -291,10 +294,10 @@ async function sync() {
 }
 
 async function deleteMovieMain(movieId) {
-    // Get the auth token from the session storage
+    
     const authToken = sessionStorage.getItem("token");
 
-    // Check for valid token
+    
     if (!authToken) {
         throw new Error("No authorization token found, please authenticate first.");
     }
