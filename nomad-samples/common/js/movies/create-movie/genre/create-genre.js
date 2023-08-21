@@ -4,54 +4,47 @@ import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 /**
  * Create Genre
  *
- * @param {string} name        - The movie title
- * @param {string} slug         - The movie slug
- * @param {string} authToken    - The authentication token
+ * @param {string} name         | The genre name
+ * @param {string} slug         | The genre slug
+ * @param {string} authToken    | The authorization token
  *
- * @returns {string} New movie ID string
+ * @returns {string} New genre ID
  */
-export default async function createGenre(NAME, SLUG, AUTH_TOKEN) {
-    // Create header for the request
-    const HEADERS = new Headers();
-    HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+export default async function createGenre(name, slug, authToken) {
+    // Check for valid parameters
+    if (!name || !slug || !authToken) {
+        throw new Error("Create Genre: Invalid API call");
+    }
 
-    const NEW_RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/new?contentDefinitionId=${prjConstants.MOVIE_GENRE_CONTENT_DEFINITION_ID}`, {
-        method: "GET",
-        headers: HEADERS
-    }).catch((exception) => {
-        throw exception;
-    });
-    const ID = NEW_RESPONSE.contentId;
+    // Create header for the request
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${authToken}`);
 
     // Build the payload body
-    const BODY = {
-        contentId: ID,
+    const body = {
         contentDefinitionId: prjConstants.MOVIE_GENRE_CONTENT_DEFINITION_ID,
         properties: {
-            name: NAME,
-            slug: SLUG,
-        },
+            name: name,
+            slug: slug
+        }
     };
 
     // Send POST request
-    const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${prjConstants.MOVIE_GENRE_CONTENT_DEFINITION_ID}`, {
-        method: "PUT",
-        headers: HEADERS,
-        body: JSON.stringify(BODY),
-    }).catch((exception) => {
-        throw exception;
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${prjConstants.MOVIE_GENRE_CONTENT_DEFINITION_ID}`, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify(body)
     });
 
     // Check for success
-    if (RESPONSE.ok) {
+    if (response && response.ok) {
         // Get the response
-        const id = await RESPONSE.text();
+        const id = await response.text();
 
         // Return the ID
-        return id;
+        return id.replaceAll('"', "");
     }
 
-    apiExceptionHandler("Create genre failed");
+    await apiExceptionHandler(response, `Create Genre ${name} failed`);
 }
-
