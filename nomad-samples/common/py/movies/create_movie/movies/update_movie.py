@@ -3,7 +3,7 @@ from exceptions.api_exception_handler import *
 
 import json, requests
 
-def update_movie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID):
+def update_movie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRES, IMAGE_ID, VIDEO_ID):
     # Create header for the request
     if not AUTH_TOKEN:
         raise Exception("Authorization token not found")
@@ -27,11 +27,8 @@ def update_movie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENR
     if PLOT != "": BODY["properties"]["plot"] = PLOT
     if RELEASE_DATE != "": BODY["properties"]["releaseDate"] = RELEASE_DATE
 
-    if GENRE_ID != "":
-        BODY["properties"]["genre"] = {
-            "id": GENRE_ID,
-            "description": GENRE_NAME
-        }
+    if GENRES != "":
+        BODY["properties"]["genres"] = GENRES
 
     if IMAGE_ID != "":
         BODY["properties"]["image"] = { 
