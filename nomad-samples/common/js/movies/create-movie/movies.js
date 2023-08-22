@@ -25,7 +25,6 @@ const DELETE_MOVIE_FORM = document.getElementById("deleteMovieForm");
 const USERNAME_INPUT = document.getElementById("usernameInput");
 const PASSWORD_INPUT = document.getElementById("passwordInput");
 const TYPE_SELECT = document.getElementById("typeSelect");
-const UPDATE_ID_DIV = document.getElementById("updateIdDiv");
 const UPDATE_ID_INPUT = document.getElementById("updateIdInput");
 const TITLE_INPUT = document.getElementById("titleInput");
 const PLOT_INPUT = document.getElementById("plotInput");
@@ -45,6 +44,9 @@ const CONTENT_SORT_FIELD_NAME_INPUT = document.getElementById("contentSortFieldN
 const CONTENT_SORT_TYPE = document.getElementById("contentSortType");
 const IS_ADMIN = document.getElementById("isAdmin");
 const DELETE_ID_INPUT = document.getElementById("deleteIdInput");
+
+const UPDATE_ID_DIV = document.getElementById("updateIdDiv");
+const GENRE_DIV = document.getElementById("genreDiv");
 
 
 sessionStorage.clear();
@@ -70,6 +72,8 @@ TYPE_SELECT.addEventListener("change", function (event)
 
 async function getGenreList()
 {
+    GENRE_DIV.hidden = false
+
     const GENRE_LIST_INFO = await getGenres(sessionStorage.getItem("token"));
     const GENRE_LIST = GENRE_LIST_INFO.items;
 
@@ -85,24 +89,22 @@ async function getGenreList()
     option.text = "Other";
     GENRE_SELECT.appendChild(option);
 
+    $(GENRE_SELECT).select2();
     return GENRE_LIST;
 }
 
-GENRE_SELECT.addEventListener("change", function (event)
-{
+$(GENRE_SELECT).on("change", function (event) {
     event.preventDefault();
 
-    if (GENRE_SELECT.value === "Other")
-    {
+    const selectedGenres = Array.from(GENRE_SELECT.selectedOptions).map(option => option.value);
+
+    if (selectedGenres.includes("Other")) {
         GENRE_INPUT.hidden = false;
         GENRE_LABEL.style.display = "block";
-    }
-    else
-    {
+    } else {
         GENRE_INPUT.hidden = true;
         GENRE_LABEL.style.display = "none";
     }
-
 });
 
 CREATE_FORM.addEventListener("submit", function (event)
@@ -114,12 +116,17 @@ CREATE_FORM.addEventListener("submit", function (event)
     let title = TITLE_INPUT.value;
     let plot = PLOT_INPUT.value;
     let date = DATE_INPUT.value;
-    let genreId;
-    GENRE_SELECT.value === "Other" ? genreId = GENRE_INPUT.value : genreId = GENRE_SELECT.value;
+    let selectedGenres = Array.from(GENRE_SELECT.selectedOptions).map(option => option.value);
+    
+    if (selectedGenres.includes("Other")) {
+        selectedGenres.pop();
+        selectedGenres.push((GENRE_INPUT.value).split(","));
+    }
+
     let imageFile = IMAGE_FILE_INPUT.files[0];
     let videoFile = VIDEO_FILE_INPUT.files[0];
 
-    createMovieMain(type, id, title, plot, date, genreId, imageFile, videoFile);
+    createMovieMain(type, id, title, plot, date, selectedGenres, imageFile, videoFile);
 });
 
 ADD_BUTTON.addEventListener('click', function(event)
@@ -204,7 +211,7 @@ async function loginMain(USERNAME, PASSWORD)
     }
 }
 
-async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_FILE, VIDEO_FILE)
+async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, SELECTED_GENRES, IMAGE_FILE, VIDEO_FILE)
 {
     const TOKEN = sessionStorage.getItem("token");
 
@@ -215,31 +222,44 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_FILE
 
     try
     {
-        let genre_id;
-        let genre_name;
+        const GENRE_MAP_LIST = [];
         let found = false;
 
-        for (let genreIdx = 0; genreIdx < genreList.length; ++genreIdx)
+        for(let GENRE_ID = 0; GENRE_ID < SELECTED_GENRES.length; ++GENRE_ID)
         {
-            if (genreList[genreIdx].id === GENRE_ID)
+            if (!Array.isArray(SELECTED_GENRES[GENRE_ID]))
             {
-                genre_id = genreList[genreIdx].id;
-                genre_name = genreList[genreIdx].title;
-                found = true;
-                break;
-            }
+                let genreMap = {};
+                for (let genreIdx = 0; genreIdx < genreList.length; ++genreIdx)
+                {
+                    if (genreList[genreIdx].id === SELECTED_GENRES[GENRE_ID])
+                    {
+                        genreMap["description"] = genreList[genreIdx].title 
+                        genreMap["id"] = genreList[genreIdx].id;
+                        found = true;
+                        break;
+                    }
 
-            if (genreList[genreIdx].title === GENRE_ID)
+                    if (genreList[genreIdx].title === GENRE_ID)
+                    {
+                        console.log("Genre already exists");
+                        return 0;
+                    }
+                }
+                GENRE_MAP_LIST.push(genreMap);
+            }
+            else
             {
-                console.log("Genre already exists");
-                return 0;
+                for (let createGenreIdx = 0; createGenreIdx < SELECTED_GENRES[GENRE_ID].length; ++createGenreIdx)
+                {
+                    let genreMap = {};
+                    let genreName = SELECTED_GENRES[GENRE_ID][createGenreIdx];
+                    let genreId = await createGenre(genreName, slugify(genreName), TOKEN);
+                    genreMap["description"] = genreName;
+                    genreMap["id"] = genreId;
+                    GENRE_MAP_LIST.push(genreMap);
+                }
             }
-        }
-
-        if (!found)
-        {
-            genre_id = await createGenre(GENRE_ID, slugify(GENRE_ID), TOKEN);
-            genre_name = GENRE_ID;
         }
 
         let imageId;
@@ -265,7 +285,7 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_FILE
         if (TYPE === "create")
         {
             console.log("Creating Movie");
-            const ID = await createMovie(TOKEN, TITLE, slugify(TITLE), PLOT, DATE, genre_id, genre_name, imageId, videoId);
+            const ID = await createMovie(TOKEN, TITLE, slugify(TITLE), PLOT, DATE, GENRE_MAP_LIST, imageId, videoId);
             console.log(`ID: ${ID}`);
             console.log("Movie Created");
         }
@@ -281,18 +301,14 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, GENRE_ID, IMAGE_FILE
             }
             const MOVIE = RESPONSE.items[0]
 
-
-            console.log(JSON.stringify(MOVIE, null, 4));
-
             if (!TITLE && typeof MOVIE.title !== undefined) TITLE = MOVIE.title;
             if (!PLOT && typeof MOVIE.identifiers.plot !== undefined) PLOT = MOVIE.identifiers.plot;
             if (!DATE && typeof MOVIE.releaseDate !== undefined) DATE = MOVIE.releaseDate;
-            if (!genre_id) genre_id = MOVIE.identifiers.genre.id;
-            if (!genre_name) genre_name = MOVIE.identifiers.genre.description;
+            if (GENRE_MAP_LIST === []) GENRE_MAP_LIST = MOVIE.identifiers.genre;
             if (!imageId && typeof MOVIE.identifiers.image !== 'undefined') imageId = MOVIE.identifiers.image.id;
             if (!videoId && typeof MOVIE.identifiers.movieFile !== 'undefined') videoId = MOVIE.identifiers.movieFile.id;
 
-            await updateMovie(TOKEN, ID, TITLE, slugify(TITLE), PLOT, DATE, genre_id, genre_name, imageId, videoId);
+            await updateMovie(TOKEN, ID, TITLE, slugify(TITLE), PLOT, DATE, GENRE_MAP_LIST, imageId, videoId);
             console.log("Movie Updated");
         }
 

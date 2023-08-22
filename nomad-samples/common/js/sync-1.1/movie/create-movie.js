@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function createMovie(AUTH_TOKEN, CONTENT_ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID) {
+export default async function createMovie(AUTH_TOKEN, CONTENT_ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_MAP, IMAGE_ID, VIDEO_ID) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
@@ -15,6 +15,8 @@ export default async function createMovie(AUTH_TOKEN, CONTENT_ID, TITLE, SLUG, P
     });
     const ID_JSON = await NEW_RESPONSE.json();
     const ID = ID_JSON.contentId;
+
+    if (CONTENT_ID === "") CONTENT_ID = ID;
     
     // Build the payload body
     const BODY = {
@@ -29,21 +31,23 @@ export default async function createMovie(AUTH_TOKEN, CONTENT_ID, TITLE, SLUG, P
     if (PLOT !== "") BODY.properties.plot = PLOT;
     if (RELEASE_DATE !== "") BODY.properties.releaseDate = RELEASE_DATE;
 
-    if (GENRE_ID !== "")
+    if (GENRE_MAP !== {})
     {
-        BODY.properties.genre = {};
-        BODY.properties.genre.id = GENRE_ID;
-        BODY.properties.genre.description = GENRE_NAME;
+        BODY.properties.genres = GENRE_MAP;
     }
     if (IMAGE_ID !== "")
     {
-        BODY.properties.image = {};
-        BODY.properties.image.id = IMAGE_ID;
+        BODY.properties.image = {
+            description: `${TITLE} Image`,
+            id: IMAGE_ID
+        }
     }
     if (VIDEO_ID !== "")
     {
-        BODY.properties.movieFile = {};
-        BODY.properties.movieFile.id = VIDEO_ID;
+        BODY.properties.movieFile = {
+            description: `${TITLE} Video`,
+            id: VIDEO_ID
+        }
     }
 
 

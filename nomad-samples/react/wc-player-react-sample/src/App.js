@@ -34,12 +34,16 @@ class App extends Component {
     this.state = {
       forceStart: undefined,
       forcePause: undefined,
-      vepConfig: this.defaultVepConfig
+      vepConfig: this.defaultVepConfig,
+      forceMute: undefined,
+      forceUnmute: undefined,
     };
 
     // This binding is necessary to make `this` work in the callback
     this.onForceStart = this.onForceStart.bind(this);
     this.onForcePause = this.onForcePause.bind(this);
+    this.onForceMute = this.onForceMute.bind(this);
+    this.onForceUnmute = this.onForceUnmute.bind(this);
   }
 
   onForceStart() {
@@ -60,6 +64,18 @@ class App extends Component {
     }));
     console.log('New Force Pause', this.state.forcePause);
     console.log('New Force Start', this.state.forceStart);
+  }
+
+  onForceMute() {
+    this.setState(prevState => ({
+      forceMute: !prevState.forceMute
+    }));
+  }
+
+  onForceUnmute() {
+    this.setState(prevState => ({
+      forceUnmute: !prevState.forceUnmute
+    }));
   }
 
   componentDidMount() {
@@ -132,6 +148,8 @@ class App extends Component {
 
     return <div className="App">
       <div style={headerStyle}>
+        <button style={startBtnStyle} onClick={this.onForceMute}>Mute</button>
+        <button style={pauseBtnStyle} onClick={this.onForceUnmute}>Unmute</button>
         <button style={startBtnStyle} onClick={this.onForceStart}>Play</button>
         <button style={pauseBtnStyle} onClick={this.onForcePause}>Pause</button>
       </div>
@@ -140,6 +158,8 @@ class App extends Component {
             ref={this.handleRef}
             force-start={this.state.forceStart}
             force-pause={this.state.forcePause}
+            force-mute={this.state.forceMute}
+            force-unmute={this.state.forceUnmute}
             vep-config={JSON.stringify(this.state.vepConfig)}></wc-player>
         <form style={vepConfigFormStyle} 
             onSubmit={this.onConfigFormSubmit}>
