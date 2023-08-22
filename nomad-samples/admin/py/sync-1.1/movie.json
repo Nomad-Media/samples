@@ -1,0 +1,72 @@
+[
+    {
+        "id": "83fdd33e-425d-44b3-b8eb-d7ec443ad496",
+        "title": "Indiana Jones and the Kingdom of the Crystal Skull",
+        "slug": "indiana-jones-and-the-kingdom-of-the-crystal-skull",
+        "plot": "In 1957, archaeologist and adventurer Dr. Henry \"Indiana\" Jones, Jr. is called back into action and becomes entangled in a Soviet plot to uncover the secret behind mysterious artifacts known as the Crystal Skulls.",
+        "releaseDate": "2008-10-04T12:00:01Z",
+        "genres": ["Action"],
+        "image": {
+            "id": "8dce5abc-3150-4534-9283-ed13bd138105"
+        },
+        "movieFile": {
+            "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
+        }
+    },
+    {
+        "id": "0825b472-51aa-42fc-91fc-ed86fb26ad73",
+        "title": "Harry Potter and the Order of the Phoenix",
+        "slug": "harry-potter-and-the-order-of-the-phoenix",
+        "plot": "With their warning about Lord Voldemort's return scoffed at, Harry and Dumbledore are targeted by the Wizard authorities as an authoritarian bureaucrat slowly seizes power at Hogwarts.",
+        "releaseDate": "2007-07-02T03:00:00Z",
+        "genres": ["Family"],
+        "image": {
+            "id": "8dce5abc-3150-4534-9283-ed13bd138105"
+        },
+        "movieFile": {
+            "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
+        }
+    },
+    {
+        "id": "4432dcae-2761-4304-a5e2-fa79717b9310",
+        "title": "Godzilla vs. Kong (2021)",
+        "slug": "godzilla-vs-kong-2021",
+        "plot": "In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages.",
+        "releaseDate": "2021-12-12T12:00:00Z",
+        "genres": ["Action"],
+        "image": {
+            "id": "8dce5abc-3150-4534-9283-ed13bd138105"
+        },
+        "movieFile": {
+            "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
+        }
+    },
+    {
+        "id": "9f5bdaee-b2be-4d8d-bf01-885f4e335bf8",
+        "title": "Wonder Woman 1984",
+        "slug": "wonder-woman-1984",
+        "plot": "A botched store robbery places Wonder Woman in a global battle against a powerful and mysterious ancient force that puts her powers in jeopardy.",
+        "releaseDate": "2020-12-12T12:00:00Z",
+        "genres": ["Action"],
+        "image": {
+            "id": "8dce5abc-3150-4534-9283-ed13bd138105"
+        },
+        "movieFile": {
+            "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
+        }
+    },
+    {
+        "id": "b11a4adb-7d06-457e-b9a9-39af7860e4c9",
+        "title": "Spider-Man 3",
+        "slug": "spider-man-3",
+        "plot": "A strange black entity from another world bonds with Peter Parker and causes inner turmoil as he contends with new villains, temptations, and revenge.",
+        "releaseDate": "2007-12-12T12:00:00Z",
+        "genres": ["Adventure"],
+        "image": {
+            "id": "8dce5abc-3150-4534-9283-ed13bd138105"
+        },
+        "movieFile": {
+            "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
+        }
+    }
+]
