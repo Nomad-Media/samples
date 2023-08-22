@@ -1,7 +1,8 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID) {
+export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRE_MAP, 
+                                          IMAGE_ID, VIDEO_ID) {
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
@@ -19,22 +20,24 @@ export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, REL
     if (PLOT !== "") BODY.properties.plot = PLOT;
     if (RELEASE_DATE !== "") BODY.properties.releaseDate = RELEASE_DATE;
 
-    if (GENRE_ID !== "")
+    if (GENRE_MAP !== "")
     {
-        BODY.properties.genre = {};
-        BODY.properties.genre.id = GENRE_ID;
-        BODY.properties.genre.description = GENRE_NAME;
+        BODY.properties.genres = GENRE_MAP;
     }
     if (IMAGE_ID !== "")
     {
         BODY.properties.image = {};
         BODY.properties.image.id = IMAGE_ID;
+        BODY.properties.image.description = `${TITLE} Image`;
     }
     if (VIDEO_ID !== "")
     {
         BODY.properties.movieFile = {};
         BODY.properties.movieFile.id = VIDEO_ID;
+        BODY.properties.movieFile.description = `${TITLE} Video`;
     }
+
+
 
     // Send POST request
     const RESPONSE = await fetch(`${prjConstants.ADMIN_API_URL}/content/${ID}`, {
@@ -54,5 +57,5 @@ export default async function updateMovie(AUTH_TOKEN, ID, TITLE, SLUG, PLOT, REL
         return ID;
     }
 
-    apiExceptionHandler(RESPONSE, "Create/Update movie failed")
+    apiExceptionHandler(RESPONSE, "Update movie failed")
 }

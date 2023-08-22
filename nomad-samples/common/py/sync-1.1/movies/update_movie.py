@@ -1,11 +1,9 @@
 from constants.project_constants import *
 from exceptions.api_exception_handler import *
 
-from helpers.slugify import slugify
-
 import json, requests
 
-def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, PLOT, RELEASE_DATE, GENRE_ID, GENRE_NAME, IMAGE_ID, VIDEO_ID):
+def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, SLUG, PLOT, RELEASE_DATE, GENRES, IMAGE_ID, VIDEO_ID):
     # Create header for the request
     if not AUTH_TOKEN:
         raise Exception("Authorization token not found")
@@ -24,17 +22,13 @@ def update_movie(AUTH_TOKEN, ID, CONTENT_ID, TITLE, PLOT, RELEASE_DATE, GENRE_ID
         "properties": {},
     }
 
-    if TITLE != "": 
-        BODY["properties"]["title"] = TITLE
-        BODY["properties"]["slug"] = slugify(TITLE)
+    if TITLE != "": BODY["properties"]["title"] = TITLE
+    if SLUG != "": BODY["properties"]["slugifyField"] = SLUG
     if PLOT != "": BODY["properties"]["plot"] = PLOT
     if RELEASE_DATE != "": BODY["properties"]["releaseDate"] = RELEASE_DATE
 
-    if GENRE_ID != "":
-        BODY["properties"]["genre"] = {
-            "id": GENRE_ID,
-            "description": GENRE_NAME
-        }
+    if GENRES != "":
+        BODY["properties"]["genres"] = GENRES
 
     if IMAGE_ID != "":
         BODY["properties"]["image"] = { 
