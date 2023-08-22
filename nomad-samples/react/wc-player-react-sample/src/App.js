@@ -97,6 +97,10 @@ class App extends Component {
     this.setState({
       vepConfig: JSON.parse(updatedVepConfig)
     });
+
+    setTimeout(() => {
+      this.onForceUnmute();
+    })
   }
 
   handleRef = component => {
