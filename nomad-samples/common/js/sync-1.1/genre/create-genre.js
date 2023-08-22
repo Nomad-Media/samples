@@ -31,7 +31,7 @@ export default async function createGenre(name, slug, authToken) {
     };
 
     // Send POST request
-    const response = await fetch(`${prjConstants.SERVER_URL}/Content/${prjConstants.MOVIE_GENRE_CONTENT_DEFINITION_ID}`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/Content/${prjConstants.MOVIE_GENRE_CONTENT_DEFINITION_ID}`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body)
