@@ -11,8 +11,8 @@ from login.login import *
 
 def login_main():
     while True:
-        USERNAME = input("Enter username: ")
-        PASSWORD = input("Enter password: ")
+        USERNAME = "***REMOVED***"
+        PASSWORD = "***REMOVED***"
         AUTH_TOKEN = login(USERNAME, PASSWORD)["token"]
         if not AUTH_TOKEN:
             print("Invalid credentials")
