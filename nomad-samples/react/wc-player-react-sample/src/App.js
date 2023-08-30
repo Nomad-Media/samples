@@ -47,23 +47,15 @@ class App extends Component {
   }
 
   onForceStart() {
-    console.log('Previous Force Start', this.state.forceStart);
-    console.log('Previous Force Pause', this.state.forcePause);
     this.setState(prevState => ({
       forceStart: !prevState.forceStart
     }));
-    console.log('New Force Start', this.state.forceStart);
-    console.log('New Force Pause', this.state.forcePause);
   }
   
   onForcePause() {
-    console.log('Previous Force Pause', this.state.forcePause);
-    console.log('Previous Force Start', this.state.forceStart);
     this.setState(prevState => ({
       forcePause: !prevState.forcePause
     }));
-    console.log('New Force Pause', this.state.forcePause);
-    console.log('New Force Start', this.state.forceStart);
   }
 
   onForceMute() {
@@ -83,7 +75,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    this.component.addEventListener('playerEventsChanges', this.onPlayerEventChanges);
+    this.component.removeEventListener('playerEventsChanges', this.onPlayerEventChanges);
   }
 
   onPlayerEventChanges(event) {
@@ -93,7 +85,6 @@ class App extends Component {
   onConfigFormSubmit = (event) => {
     event.preventDefault();
     const updatedVepConfig = event.target.elements.vepConfig.value
-    console.log('updatedVepConfig', updatedVepConfig);
     this.setState({
       vepConfig: JSON.parse(updatedVepConfig)
     });
@@ -174,7 +165,7 @@ class App extends Component {
           <button style={setConfigBtnStyle} type='submit'>Set Config</button>
         </form>
       </div>
-      </div>
+    </div>
     }
 }
 export default App;
