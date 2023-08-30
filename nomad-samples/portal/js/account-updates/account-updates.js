@@ -20,7 +20,8 @@ const PHONE_EXT_INPUT = document.getElementById("phoneExtInput");
 const POSTAL_CODE_INPUT = document.getElementById("postalCodeInput");
 const STATE_INPUT = document.getElementById("stateInput");
 const CHANGE_EMAIL_INPUT = document.getElementById("changeEmailInput");
-const CHANGE_PASSWORD_INPUT = document.getElementById("changePassInput");
+const CURRENT_PASSWORD_INPUT = document.getElementById("currentPasswordInput");
+const NEW_PASSWORD_INPUT = document.getElementById("newPasswordInput");
 const TOKEN_INPUT = document.getElementById("authInput");
 
 sessionStorage.clear();
@@ -76,9 +77,9 @@ EMAIL_FORM.addEventListener("submit", function (event)
 PASSWORD_FORM.addEventListener("submit", function (event)
 {
     event.preventDefault();
-    let auth_token = TOKEN_INPUT.value;
-    let password = CHANGE_PASSWORD_INPUT.value;
-    changeUserPassword(auth_token, password);
+    let currentPassword = CURRENT_PASSWORD_INPUT.value;
+    let password = NEW_PASSWORD_INPUT.value;
+    changeUserPassword(currentPassword, password);
 });
 
 async function updateUserMain(ADDRESS1, ADDRESS2, CITY, COUNTRY_ID, FIRST_NAME, LAST_NAME, ORGANIZATION, 
@@ -139,7 +140,7 @@ async function changeUserEmail(EMAIL)
     }
 }
 
-async function changeUserPassword(PASSWORD)
+async function changeUserPassword(CURRENT_PASSWORD, PASSWORD)
 {
     const AUTH_TOKEN = sessionStorage.getItem("token")
     if (!AUTH_TOKEN) 
@@ -155,7 +156,7 @@ async function changeUserPassword(PASSWORD)
     try
     {
         console.log("Changing password");
-        await changePassword(AUTH_TOKEN, PASSWORD);
+        await changePassword(AUTH_TOKEN, CURRENT_PASSWORD, PASSWORD);
         console.log("Password successfully changed");
     }
     catch (error)
