@@ -11,8 +11,8 @@ from login.login import *
 
 def login_main():
     while True:
-        USERNAME = input("Enter username: ")
-        PASSWORD = input("Enter password: ")
+        USERNAME = "sfaludi@nomad-cms.com"
+        PASSWORD = "N0madInternshipPassword!!"
         AUTH_TOKEN = login(USERNAME, PASSWORD)["token"]
         if not AUTH_TOKEN:
             print("Invalid credentials")
