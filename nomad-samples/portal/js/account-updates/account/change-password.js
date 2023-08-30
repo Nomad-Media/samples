@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function changePassword(AUTH_TOKEN)
+export default async function changePassword(AUTH_TOKEN, CURRENT_PASSWORD, NEW_PASSWORD)
 {
     // Create header for the request
     const HEADERS = new Headers();
@@ -9,8 +9,8 @@ export default async function changePassword(AUTH_TOKEN)
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
   	const BODY = {
-        password: "currentPassword",
-        newPassword: "newPassword"
+        password: CURRENT_PASSWORD,
+        newPassword: NEW_PASSWORD
     };
   
     // Post
