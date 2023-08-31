@@ -11,7 +11,7 @@ export default async function deleteRelatedContent(AUTH_TOKEN, CONTENT_ID, RELAT
     const BODY = {
         items: [
             {
-                contentDefinition: "asset",
+                contentDefinition: CONTENT_DEFINITION,
                 contentId: CONTENT_ID,
                 relatedContentId: RELATED_CONTENT_ID
             }
