@@ -2,8 +2,6 @@ import * as prjConstants from "../constants/project-constants.js";
 import getLiveChannelInputsIds from "./get-live-channel-inputs-ids.js";
 import deleteLiveInput from "../live-input/delete-live-input.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
-import waitForLiveChannelStatus from "./wait-live-channel-status.js";
-import liveChannelStatuses from "./live-channel-statuses.js";
 
 /**
  * Delete Live Channel and optionally delete its Live Inputs
