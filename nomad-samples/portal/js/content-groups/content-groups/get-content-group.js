@@ -1,7 +1,7 @@
 import * as prjConstants from "../constants/project-constants.js";
 import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-export default async function getContentGroups(AUTH_TOKEN, ID) 
+export default async function getContentGroup(AUTH_TOKEN, ID) 
 {
     // Create header for the request
     const HEADERS = new Headers();
