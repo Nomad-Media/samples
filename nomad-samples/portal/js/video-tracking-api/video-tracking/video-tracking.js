@@ -9,6 +9,12 @@ export default async function getVideoTrackingService(AUTH_TOKEN, ASSET_ID, TRAC
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     let api_url = `${prjConstants.PORTAL_API_URL}/asset/tracking?assetId=${ASSET_ID}`
+
+    if (TRACKING_EVENT != "")
+    {
+        api_url += `&trackingEvent=${TRACKING_EVENT}`
+    }
+
     if (SECOND != "")
     {
         api_url += `&second=${SECOND}`
