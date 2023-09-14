@@ -10,7 +10,7 @@ def media_search(AUTH_TOKEN: str, SEARCH_QUERY: str, IDS: list, SORT_FIELDS_NAME
     if (not AUTH_TOKEN):
         raise Exception("Authentication Token: The authentication token is invalid")
 
-    API_URL = PORTAL_API_URL + "/portal/search"
+    API_URL = PORTAL_API_URL + "/media/search"
         
     # Create header for the request
     HEADERS = {
