@@ -7,10 +7,15 @@ class App extends Component {
     "application": "Embedded",
     "customer": "dev-05",
     "siteName": "Dev-05",
-    "hideSidebar": true,
+    "hideSidebar": false,
     "supportSharing": true,
     "googleTagManager": "GTM-5K22WWM",
-    "players": [{ "format": "progressive", "player": "bitmovin" } ],
+    "players": [
+      {
+        "format": "progressive",
+        "player": "bitmovin"
+      }
+    ],
     "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
     "bitmovinLicenseKey": "f507de7a-720a-4b61-9698-94dc4a014479",
     "liveMode": false,
@@ -18,11 +23,67 @@ class App extends Component {
       {
         "moduleType": "streams",
         "isEnabled": true,
+        "showTileMode": true,
         "streams": [
           {
+            "id": "1",
             "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
             "title": "Test Video 1",
             "autoplay": true
+          },
+          {
+            "id": "2",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 \n            Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 \n            Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2!!!",
+            "autoplay": false
+          },
+          {
+            "id": "3",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 3",
+            "autoplay": true
+          },
+          {
+            "id": "4",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 4",
+            "autoplay": false
+          },
+          {
+            "id": "5",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 5",
+            "autoplay": true
+          },
+          {
+            "id": "6",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 6",
+            "autoplay": false
+          },
+          {
+            "id": "7",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 7",
+            "autoplay": true
+          },
+          {
+            "id": "8",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 8",
+            "autoplay": false
+          },
+          {
+            "id": "9",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 9",
+            "autoplay": true
+          },
+          {
+            "id": "10",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 10",
+            "autoplay": false
           }
         ]
       }
@@ -59,12 +120,14 @@ class App extends Component {
   }
 
   onForceMute() {
+    debugger;
     this.setState(prevState => ({
       forceMute: !prevState.forceMute
     }));
   }
 
   onForceUnmute() {
+    debugger;
     this.setState(prevState => ({
       forceUnmute: !prevState.forceUnmute
     }));
@@ -84,14 +147,12 @@ class App extends Component {
 
   onConfigFormSubmit = (event) => {
     event.preventDefault();
+    event.stopPropagation();
     const updatedVepConfig = event.target.elements.vepConfig.value
+    const vepConfig = JSON.parse(updatedVepConfig);
     this.setState({
-      vepConfig: JSON.parse(updatedVepConfig)
+      vepConfig
     });
-
-    setTimeout(() => {
-      this.onForceUnmute();
-    })
   }
 
   handleRef = component => {
