@@ -26,6 +26,7 @@ Then you have to bind the values to a button handler. There is a working example
 `supportSharingFacebook`, `supportSharingTwitter`, `supportSharingLinkedin`, `supportSharingEmail`. If not specified, this defaults to showing all media.
 In the example below we support all media except for twitter which is set to `false`.
 6. You can disable 'seek' gtm event tracking by setting `"skipGtmSeek": true` in the vepConfig.
+7. We can set the quad-view setting `"showTileMode": true` in the config and having specified multiple streams. Currently we display up to 4 videos at the same time
 7. The share menu panel UI can be changed using these CSS variables, in the public/styles.css:
 --custom-menu-button-icon--color
 --form--submit-button-bg-color
