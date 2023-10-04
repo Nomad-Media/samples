@@ -200,7 +200,7 @@ async function createMovieMain(TYPE, ID, TITLE, PLOT, DATE, SELECTED_GENRES, IMA
             if (!TITLE && typeof MOVIE.title !== undefined) TITLE = MOVIE.title;
             if (!PLOT && typeof MOVIE.identifiers.plot !== undefined) PLOT = MOVIE.identifiers.plot;
             if (!DATE && typeof MOVIE.releaseDate !== undefined) DATE = MOVIE.releaseDate;
-            if (GENRE_MAP_LIST === []) GENRE_MAP_LIST = MOVIE.identifiers.genre;
+            if (GENRE_MAP_LIST.length === 0) GENRE_MAP_LIST = MOVIE.identifiers.genre;
             if (!IMAGE_ID && typeof MOVIE.identifiers.image !== 'undefined') IMAGE_ID = MOVIE.identifiers.image.id;
             if (!VIDEO_ID && typeof MOVIE.identifiers.movieFile !== 'undefined') VIDEO_ID = MOVIE.identifiers.movieFile.id;
 
