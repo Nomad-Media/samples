@@ -28,10 +28,10 @@ def create_live_channel(AUTH_TOKEN, NAME, THUMBNAIL_IMAGE, ARCHIVE_FOLDER_ASSET,
     }
 
     if THUMBNAIL_IMAGE != "":
-        BODY["thumbnailImage"] = { id: THUMBNAIL_IMAGE }
+        BODY["thumbnailImage"] = { "id": THUMBNAIL_IMAGE }
 
     if ARCHIVE_FOLDER_ASSET != "":
-        BODY["archiveFolderAsset"] = { id: ARCHIVE_FOLDER_ASSET }
+        BODY["archiveFolderAsset"] = { "id": ARCHIVE_FOLDER_ASSET }
 
     # Set the appropriate fields based on the channel type
     if (TYPE == LIVE_CHANNEL_TYPES["External"]):
