@@ -21,7 +21,7 @@ def update_live_input(AUTH_TOKEN, ID, NAME, TYPE, SOURCE):
     if NAME != "":
         BODY["name"] = NAME
         BODY["internalName"] = slugify(NAME)
-    if TYPE != "": BODY["type"] = { "id": TYPE }
+    if TYPE != "": BODY["type"] = { "id": LIVE_INPUT_TYPES[TYPE] }
 
 
     # Set the appropriate fields based on the type
