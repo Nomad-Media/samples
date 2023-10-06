@@ -123,16 +123,18 @@ class App extends Component {
 
   onForceMute() {
     debugger;
-    this.setState(prevState => ({
-      forceMute: !prevState.forceMute
-    }));
+    this.setState({
+      forceMute: true,
+      forceUnmute: false
+    });
   }
 
   onForceUnmute() {
     debugger;
-    this.setState(prevState => ({
-      forceUnmute: !prevState.forceUnmute
-    }));
+    this.setState({
+      forceUnmute: true,
+      forceMute: false
+    });
   }
 
   componentDidMount() {
