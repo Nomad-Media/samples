@@ -9,6 +9,8 @@ class App extends Component {
     "siteName": "Dev-05",
     "hideSidebar": false,
     "supportSharing": true,
+    "bottomShareIcon": false,
+    "shareUrl": "https://app-api.dev-05.demos.media/api/embedded/share-media",
     "googleTagManager": "GTM-5K22WWM",
     "players": [
       {
