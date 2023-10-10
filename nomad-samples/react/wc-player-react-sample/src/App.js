@@ -9,6 +9,8 @@ class App extends Component {
     "siteName": "Dev-05",
     "hideSidebar": false,
     "supportSharing": true,
+    "bottomShareIcon": false,
+    "shareUrl": "https://app-api.dev-05.demos.media/api/embedded/share-media",
     "googleTagManager": "GTM-5K22WWM",
     "players": [
       {
@@ -121,16 +123,18 @@ class App extends Component {
 
   onForceMute() {
     debugger;
-    this.setState(prevState => ({
-      forceMute: !prevState.forceMute
-    }));
+    this.setState({
+      forceMute: true,
+      forceUnmute: false
+    });
   }
 
   onForceUnmute() {
     debugger;
-    this.setState(prevState => ({
-      forceUnmute: !prevState.forceUnmute
-    }));
+    this.setState({
+      forceUnmute: true,
+      forceMute: false
+    });
   }
 
   componentDidMount() {
