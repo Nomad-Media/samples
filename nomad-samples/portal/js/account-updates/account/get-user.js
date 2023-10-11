@@ -1,8 +1,9 @@
-const _apiExceptionHandler = require("../../exceptions/api-exception-handler");
+import * as prjConstants from "../constants/project-constants.js";
+import apiExceptionHandler from "../exceptions/api-exception-handler.js";
 
-async function _getUser(AUTH_TOKEN, URL, DEBUG_MODE)
+export default async function _getUser(AUTH_TOKEN, DEBUG_MODE)
 {
-    const API_URL = `${URL}/account/user`;
+    const API_URL = `${prjConstants.PORTAL_API_URL}/account/user`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -26,8 +27,6 @@ async function _getUser(AUTH_TOKEN, URL, DEBUG_MODE)
         return await RESPONSE.json();
     }
     catch (error) {
-        _apiExceptionHandler(error, "Get user failed");
+        await apiExceptionHandler(error, "Get user failed");
     }
 }
-
-module.exports = _getUser;
