@@ -3708,18 +3708,6 @@ readers do not read off random characters that represent icons */.fa-500px:befor
   padding-bottom: 1rem !important;
 }.pb-4 {
   padding-bottom: 1.5rem !important;
-}a,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-span {
-  font-family: Poppins, sans-serif;
-  margin: 0;
-  font-weight: 500;
 }.d-flex {
   display: flex;
 }.flex-column {
