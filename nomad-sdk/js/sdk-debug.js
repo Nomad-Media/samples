@@ -3191,11 +3191,8 @@ import { Buffer } from 'buffer';
 async function _uploadPart(FILE, PART, DEBUG_MODE, maxRetries = 3) {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         try {
-            console.log(FILE);
             const BUFFER = Buffer.from(FILE.buffer, 'binary');
-            console.log("Before Slice");
             const BODY = BUFFER.toString("binary").slice(PART.startingPostion, PART.endingPosition + 1);
-            console.log("After Slice");
             // Create header for the request
             const HEADERS = new Headers();
             HEADERS.append("Accept", "application/json, text/plain, */*");
