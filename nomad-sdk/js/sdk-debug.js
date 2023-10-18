@@ -6,7 +6,7 @@
 
 
 // config
-const config = require(`./config/config.js`);
+import config from "./config/config.js";
 
 // admin
 
@@ -348,7 +348,7 @@ class NomadSDK {
      * and cancel. Continue continues the upload from where it left off. Replace replaces an 
      * existing asset. This is the one you want to use if you are starting a new upload. 
      * Cancel cancels an uploading asset.
-     * @param {string} FILE_PATH - The filename to upload - or a full path with the filename at the end.
+     * @param {File} FILE - The FILE object to upload.
      * This is ignored if the ExistingAssetId or if the RelatedContentId has a value.
      * @param {string | null} PARENT_ID - The Parent AssetId (folder) to add the upload to. 
      * Note that if there is a full relativePath, then it is appended to this parent path. 
@@ -360,7 +360,7 @@ class NomadSDK {
      * @throws {Error} - An error is thrown if the API type is not admin.
      */  
     async uploadAsset(NAME, EXISTING_ASSET_ID, RELATED_ASSET_ID, CREATE_TRANSCRIBE_RELATED_ASSET, 
-        RELATED_CONTENT_ID, LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, FILE_PATH, PARENT_ID)
+        RELATED_CONTENT_ID, LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, FILE, PARENT_ID)
     {
         if (this.token === null)
         {
@@ -380,12 +380,10 @@ class NomadSDK {
             _printDatetime("Starting upload");
             START_UPLOAD_INFO = await _startUpload(this.token, this.config.serviceApiUrl, NAME, 
                 EXISTING_ASSET_ID, RELATED_ASSET_ID, CREATE_TRANSCRIBE_RELATED_ASSET, 
-                RELATED_CONTENT_ID, LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, FILE_PATH, PARENT_ID, 
+                RELATED_CONTENT_ID, LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, FILE, PARENT_ID, 
                 this.debugMode);
-            await _multiThreadUpload(this.token, this.config.serviceApiUrl, FILE_PATH, START_UPLOAD_INFO,
+            await _multiThreadUpload(this.token, this.config.serviceApiUrl, FILE, START_UPLOAD_INFO,
                 this.debugMode);
-            //await _singleThreadUpload(this.token, this.config.serviceApiUrl, FILE_PATH, START_UPLOAD_INFO,
-            //    this.debugMode);
             await _completeUpload(this.token, this.config.serviceApiUrl, 
                 START_UPLOAD_INFO["id"], this.debugMode);
             const CONTENT_ID = START_UPLOAD_INFO["assetId"];
@@ -2997,7 +2995,7 @@ class NomadSDK {
     }
 }
 
-module.exports = new NomadSDK(config);
+export default new NomadSDK(config);
 
 
 
@@ -3057,19 +3055,14 @@ async function _multiThreadUpload(AUTH_TOKEN, URL, FILE, UPLOAD_RESPONSE, DEBUG_
 
 
 
-const fs = require("fs/promises");
-const path = require("path");
-
 async function _startUpload(AUTH_TOKEN, URL, NAME, EXISTING_ASSET_ID, RELATED_ASSET_ID, 
     CREATE_TRANSCRIBE_RELATED_ASSET, RELATED_CONTENT_ID, LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, 
     FILE, PARENT_ID, DEBUG_MODE) 
 {
     const API_URL = `${URL}/asset/upload/start`;
 
-    const FILE_STATS = await fs.stat(FILE);
-
     const AWS_MIN_LIMIT = 5242880;
-    let chunkSize = FILE_STATS.size / 10000;
+    let chunkSize = FILE.size / 10000;
     
     if (chunkSize < (AWS_MIN_LIMIT * 4))
     {
@@ -3082,10 +3075,10 @@ async function _startUpload(AUTH_TOKEN, URL, NAME, EXISTING_ASSET_ID, RELATED_AS
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
   
     const BODY = {
-        displayName: NAME || path.basename(FILE),
-        contentLength: FILE_STATS.size,
+        displayName: NAME || FILE.originalname,
+        contentLength: FILE.size,
         uploadOverwriteOption: UPLOAD_OVERWRITE_OPTION,
-        relativePath: path.basename(FILE),
+        relativePath: FILE.originalname,
         parentId: PARENT_ID,
         chunkSize: chunkSize,
         relatedContentId: RELATED_CONTENT_ID,
@@ -3120,6 +3113,8 @@ async function _startUpload(AUTH_TOKEN, URL, NAME, EXISTING_ASSET_ID, RELATED_AS
 }
 
 
+
+
 async function _completeUpload(AUTH_TOKEN, URL, ASSET_UPLOAD_ID, DEBUG_MODE) 
 {
 	const API_URL = `${URL}/asset/upload/${ASSET_UPLOAD_ID}/complete`;
@@ -3148,7 +3143,7 @@ async function _completeUpload(AUTH_TOKEN, URL, ASSET_UPLOAD_ID, DEBUG_MODE)
     }
     catch (error)
     {
-        throw (error, "Upload Complete Failed");
+        _apiExceptionHandler(error, "Complete Upload Failed");
     }
 }
 
@@ -3191,15 +3186,16 @@ async function _uploadPartComplete(AUTH_TOKEN, URL, PART_ID, ETAG, DEBUG_MODE)
 
 
 
-const { readFile } = require("fs/promises");
+import { Buffer } from 'buffer';
 
 async function _uploadPart(FILE, PART, DEBUG_MODE, maxRetries = 3) {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         try {
-            const BUFFER = await readFile(FILE, { encoding: "binary" });
-
+            console.log(FILE);
+            const BUFFER = Buffer.from(FILE.buffer, 'binary');
+            console.log("Before Slice");
             const BODY = BUFFER.toString("binary").slice(PART.startingPostion, PART.endingPosition + 1);
-
+            console.log("After Slice");
             // Create header for the request
             const HEADERS = new Headers();
             HEADERS.append("Accept", "application/json, text/plain, */*");
@@ -3543,7 +3539,6 @@ async function _createContent(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, LANGUAGE_I
         _apiExceptionHandler(error, "Create Content Failed");
     }
 }
-
 
 
 
@@ -5833,11 +5828,11 @@ function _apiExceptionHandler(error, message) {
  * @returns UUID v4 GUID
  */
 
-const crypto = require('crypto');
+import { getRandomValues } from 'crypto';
 
 function _newGuid() {
     return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
-        (c ^ (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
+        (c ^ (getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))).toString(16)
     );
 }
 
@@ -6837,5 +6832,3 @@ async function _getVideoTracking(AUTH_TOKEN, URL, ASSET_ID, TRACKING_EVENT, SECO
 }
 
 
-
-module.exports = new NomadSDK(config);
