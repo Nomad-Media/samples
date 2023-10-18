@@ -32,32 +32,41 @@
 
     <h1>Asset Upload</h1>
 
-    <form id="authForm">
-        <label for="authInput">Authentication token:</label>
-        <input type="auth" id="authInput" required>
-        <button type="submit">Submit</button>
-    </form>
-
     <h2> Start Asset Upload </h2>
     <form id="startForm">
-        <label for="nameInput">Asset Name:</label>
-        <input type="name" id="nameInput">
+        <label for="name">Asset Name:</label>
+        <input type="text" id="name">
 
-        <label for="uploadOverwriteOptionInput">Upload Overwrite Option:</label>
-        <select id="uploadOverwriteOptionInput">
-            <option value="cancel">cancel</option>
-            <option value="continue">continue</option>
-            <option value="replace">replace</option>
+        <label for="existingAssetId">Existing Asset Id:</label>
+        <input type="text" id="existingAssetId">
+
+        <label for="relatedAssetId">Related Asset Id:</label>
+        <input type="text" id="relatedAssetId">
+
+        <label for="createTranscribeRelatedAsset">Create a Related Transcribe Asset?:</label>
+        <select id="createTranscribeRelatedAsset">
+            <option value="true">true</option>
+            <option value="false" selected>false</option>
         </select>
 
-        <label for="nomadFileInput">Choose a file to upload:</label>
-        <input type="file" id="nomadFileInput" required>
+        <label for="relatedContentId">Related Content Id:</label>
+        <input type="text" id="relatedContentId">
 
-        <label for="relatedContentIdInput">Related Content Id:</label>
-        <input type="relatedContentId" id="relatedContentIdInput">
+        <label for="languageId">Language Id:</label>
+        <input type="text" id="languageId">
 
-        <label for="nomadUploadType">Use multithreaded upload</label>
-        <input type="checkbox" id="nomadUploadType"></input>
+        <label for="uploadOverwriteOption">Upload Overwrite Option:</label>
+        <select id="uploadOverwriteOption" required>
+            <option value="cancel">cancel</option>
+            <option value="continue">continue</option>
+            <option value="replace" selected>replace</option>
+        </select>
+
+        <label for="nomadFile">Choose a file to upload:</label>
+        <input type="file" id="nomadFile" required>
+
+        <label for="parentId">Parent Id:</label>
+        <input type="text" id="parentId">
 
         <br><br>
         <button type="submit">Submit</button>

@@ -1,0 +1,18 @@
+{
+  "name": "asset-upload",
+  "version": "1.0.0",
+  "description": "To find out more, go to the [asset uploads walkthrough](https://developer.nomad-cms.com/docs/asset-uploads-javascript).",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1"
+  }
+}
