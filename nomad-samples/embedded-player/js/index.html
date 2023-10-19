@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="wc-player/styles.css"/>
+    <title>Javascript App Consuming wc-player</title>
+  </head>
+  <body style="height: 100%; margin: 0">
+    <wc-player id="wcPlayer"></wc-player>
+    <script src="wc-player/wc-player.js"></script>
+    <script>
+      var defaultVepConfig = {
+    "application": "Embedded",
+    "customer": "Test Customer",
+    "siteName": "Test Site",
+    "hideSidebar": true,
+    "supportSharing": false,
+    "bottomShareIcon": false,
+    "googleTagManager": "GTM-0000000",
+    "players": [
+      {
+        "format": "hls",
+        "player": "bitmovin"
+      },
+      {
+        "format": "progressive",
+        "player": "bitmovin"
+      }
+    ],
+    "bitmovinLicenseKey": "000000000000000000000000000000000000000",
+    "liveMode": false,
+    "vepModules": [
+      {
+        "moduleType": "streams",
+        "isEnabled": true,
+        "showTileMode": false,
+        "streams": [
+          {
+            "id": "1",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 1",
+            "autoplay": true
+          }
+        ]
+      }
+    ]
+  };
+  setTimeout(() => {
+  var wcPlayer = document.getElementById('wcPlayer');
+    console.log(wcPlayer)
+    wcPlayer.setAttribute("vep-config", JSON.stringify(defaultVepConfig))
+  }, 1000);
+    </script>
+  </body>
+</html>
