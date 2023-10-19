@@ -1,35 +1,36 @@
 const START_FORM = document.getElementById("startForm");
 
-const NAME_INPUT = document.getElementById("name");
-const EXISTING_ASSET_ID_INPUT = document.getElementById("existingAssetId");
-const RELATED_ASSET_ID = document.getElementById("relatedAssetId");
-const CREATE_TRANSCRIBE_RELATED_ASSET = document.getElementById("createTranscribeRelatedAsset");
-const RELATED_CONTENT_ID_INPUT = document.getElementById("relatedContentId");
-const LANGUAGE__ID_INPUT = document.getElementById("languageId");
-const UPLOAD_OVERWRITE_OPTION_INPUT = document.getElementById("uploadOverwriteOption");
-const NOMAD_FILE_INPUT = document.getElementById("nomadFile");
-const PARENT_ID = document.getElementById("parentId");
-
 sessionStorage.clear();
 
 START_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
-    const formData = new FormData();
+    const FORM_DATA = new FormData();
 
-    formData.append("NAME", NAME_INPUT.value);
-    formData.append("EXISTING_ASSET_ID", EXISTING_ASSET_ID_INPUT.value);
-    formData.append("RELATED_ASSET_ID", RELATED_ASSET_ID.value);
-    formData.append("CREATE_TRANSCRIBE_RELATED_ASSET", CREATE_TRANSCRIBE_RELATED_ASSET.value);
-    formData.append("RELATED_CONTENT_ID", RELATED_CONTENT_ID_INPUT.value);
-    formData.append("LANGUAGE_ID", LANGUAGE__ID_INPUT.value);
-    formData.append("UPLOAD_OVERWRITE_OPTION", UPLOAD_OVERWRITE_OPTION_INPUT.value);
-    formData.append("NOMAD_FILE", NOMAD_FILE_INPUT.files[0]);
-    formData.append("PARENT_ID", PARENT_ID.value);
+    for (let input of START_FORM)
+    {
+        if (input.tagName === "INPUT" || input.tagName === "SELECT")
+        {
+            if (input.type === "file")
+            {
+                FORM_DATA.append(input.id, input.files[0]);
+            }
+            else
+            {
+                FORM_DATA.append(input.id, input.value);
+            }
+        }
+        else if (input.type === "file")
+        {
+            console.log(input.id);
+            FORM_DATA.append(input.id, input.files[0]);
+        }
+    }
     
+    console.log(FORM_DATA);
     try
     {
-        const RESPONSE = await fetch("/uploadAsset", { method: "POST", body: formData });
+        const RESPONSE = await fetch("/uploadAsset", { method: "POST", body: FORM_DATA });
 
         if (RESPONSE.ok)
         {
