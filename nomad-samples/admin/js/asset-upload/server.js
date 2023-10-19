@@ -21,20 +21,12 @@ app.get('/', (req, res) => {
 });
 	
 
-// Define an API route for asset uploads
-app.post('/uploadAsset', upload.single('NOMAD_FILE'), async (req, res) => {
+app.post('/uploadAsset', upload.single('nomadFile'), async (req, res) => {
   	try {
-		console.log(JSON.stringify(req.body, null, 4));
-		// Parse incoming data and perform the upload using NomadSDK
-		const { NAME, EXISTING_ASSET_ID, RELATED_ASSET_ID, CREATE_TRANSCRIBE_RELATED_ASSET, 
-				RELATED_CONTENT_ID, LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, PARENT_ID } = req.body;
+		await NomadSDK.uploadAsset(req.body.name, req.body.existingAssetId, req.body.relatedAssetId, 
+			req.body.createTranscribeRelatedAsset === "true", req.body.relatedContentId, req.body.languageId, 
+			req.body.uploadOverwriteOption, req.file, req.body.parentId);
 
-		// Handle the file upload here
-		await NomadSDK.uploadAsset(NAME, EXISTING_ASSET_ID, RELATED_ASSET_ID, 
-			CREATE_TRANSCRIBE_RELATED_ASSET === "true", RELATED_CONTENT_ID, LANGUAGE_ID, 
-			UPLOAD_OVERWRITE_OPTION, req.file, PARENT_ID);
-
-		// Return a response
 		res.status(200).json({ message: 'Asset uploaded successfully' });
   	} 
 	catch (error) 
