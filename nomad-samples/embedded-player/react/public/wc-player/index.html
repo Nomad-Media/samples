@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Nomad Player</title>
+  <base href="">
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="Nomad Player">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css"></head>
+<body>
+  <noscript> JavaScript must be enabled to run this app. </noscript>
+  <div id="gtm-script"></div>
+  <wc-player style="background-color: #000000 !important; color: #FFFFFF !important" mediaapiurl="https://app-api.dev-05.demos.media/api/embedded/media/{id}" vep-config="{
+    &quot;application&quot;: &quot;Embedded&quot;,
+    &quot;customer&quot;: &quot;dev-05&quot;,
+    &quot;siteName&quot;: &quot;Dev-05&quot;,
+    &quot;hideSidebar&quot;: true,
+    &quot;googleTagManager&quot;: &quot;GTM-NFWDGJB&quot;,
+    &quot;players&quot;: [{ &quot;format&quot;: &quot;hls&quot;, &quot;player&quot;: &quot;bitmovin&quot; } ],
+    &quot;applicationId&quot;: &quot;fc53821f-43a4-4758-9a31-87e3c66883ef&quot;,
+    &quot;bitmovinLicenseKey&quot;: &quot;f507de7a-720a-4b61-9698-94dc4a014479&quot;,
+    &quot;liveMode&quot;: false,
+    &quot;vepModules&quot;: [
+      {
+        &quot;moduleType&quot;: &quot;streams&quot;,
+        &quot;isEnabled&quot;: true,
+        &quot;streams&quot;: [
+          {
+            &quot;streamUrl&quot;: &quot;https://content.dev-05.demos.media/Content/Public/the-joker.mp4&quot;,
+            &quot;autoplay&quot;: true
+          }
+        ]
+      }
+    ]
+  }"></wc-player>
+<script src="runtime.js" defer></script><script src="polyfills.js" defer></script><script src="main.js" defer></script></body>
+</html>
