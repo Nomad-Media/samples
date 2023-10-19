@@ -3186,13 +3186,14 @@ async function _uploadPartComplete(AUTH_TOKEN, URL, PART_ID, ETAG, DEBUG_MODE)
 
 
 
-import { Buffer } from 'buffer';
+import { Buffer } from "buffer";
 
 async function _uploadPart(FILE, PART, DEBUG_MODE, maxRetries = 3) {
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         try {
             const BUFFER = Buffer.from(FILE.buffer, 'binary');
             const BODY = BUFFER.toString("binary").slice(PART.startingPostion, PART.endingPosition + 1);
+
             // Create header for the request
             const HEADERS = new Headers();
             HEADERS.append("Accept", "application/json, text/plain, */*");
@@ -3222,8 +3223,6 @@ async function _uploadPart(FILE, PART, DEBUG_MODE, maxRetries = 3) {
             }
         }
     }
-
-    return null; // Return null if all attempts fail
 }
 
 
@@ -5796,7 +5795,6 @@ async function _search(AUTH_TOKEN, URL, QUERY, OFFSET, SIZE , FILTERS, SORT_FIEL
 
 
 function _apiExceptionHandler(error, message) {
-
     // Check if we have a response object and error message
     if (!error) {
         throw new Error(message);
@@ -5806,17 +5804,21 @@ function _apiExceptionHandler(error, message) {
     if (typeof error === "string") {
         throw new Error(`${message}: ${error}`);
     }
-    else if (!error.errors || error.errors.length == 0 || !error.errors["contentDefinitionId"])
+    else if (error.errors || error.errors.length !== 0)
     {
-        throw new Error(`${message}: ${error.message}`);
+        let errorString = "";
+        for (let key in error.errors) {
+            if (Object.prototype.hasOwnProperty.call(error.errors, key)) {
+              errorString += `${key}: ${error.errors[key]}\n`;
+            }
+        }
+        throw new Error(`${message}: ${errorString}`);
     }
     else
     {
-        throw new Error(`${message}: ${error.message}: ${error.errors["contentDefinitionId"][0]}`);
+        throw new Error(`${message}: ${error.message}`);
     }
-
 }
-
 
 
 /**
