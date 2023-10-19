@@ -38,6 +38,8 @@ START_FORM.addEventListener("submit", async function (event)
         }
         else
         {
+            const INFO = await RESPONSE.json();
+            console.error(JSON.stringify(INFO, null, 4));
             console.error("HTTP-Error: " + RESPONSE.status);
         }
     }
