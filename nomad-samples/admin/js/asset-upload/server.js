@@ -4,11 +4,10 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk-debug.js";
+import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
 
 import express from 'express';
 import multer from 'multer';
-import path from 'path';
 
 const app = express();
 const upload = multer();
@@ -40,7 +39,8 @@ app.post('/uploadAsset', upload.single('NOMAD_FILE'), async (req, res) => {
   	} 
 	catch (error) 
 	{
-		res.status(500).json({ error: 'Internal server error' });
+		console.error(error);
+		res.status(500).json({ error: error.message });
  	}
 });
 
