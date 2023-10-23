@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Basic Live Channel</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Sweet Alert 2 -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="basic-live-channel.css" />
+
+    <!-- JS -->
+    <script type="module" src="basic-live-channel.js" defer></script>
+</head>
+
+<body>
+    <h1>Basic Live Channel</h1>
+
+    <h3>Get Live Channels</h3>
+    <form id="getChannelsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Channel</h3>
+    <form id="getChannelForm">
+        <label for="getLiveChannelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Live Channel</h3>
+    <form id="createChannelForm">
+        <label for="createChannelName">Channel Name:</label>
+        <input type="text" id="createChannelName" required>
+
+        <label for="createChannelThumbnailImageId">Thumbnail Image Id:</label>
+        <input type="text" id="createChannelThumbnailImageId">
+
+        <label for="createChannelArchiveFolderAssetId">Archive Folder Asset Id:</label>
+        <input type="text" id="createChannelArchiveFolderAssetId"> 
+
+        <label for="createChannelEnableHighAvailability">Enable High Availability:</label>
+        <select id="createChannelEnableHighAvailability">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelEnableLiveClipping">Enable Live Clipping:</label>
+        <select id="createChannelEnableLiveClipping">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelIsSecureOutput">Is Secure Output:</label>
+        <select id="createChannelIsSecureOutput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelIsOutputScreenshots">Is Output Screenshots:</label>
+        <select id="createChannelIsOutputScreenshots">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="createChannelType">Channel Type:</label>
+        <select id="createChannelType">
+            <option value="External">External</option>
+            <option value="IVS">IVS</option>
+            <option value="Normal">Normal</option>
+            <option value="Realtime">Realtime</option>
+        </select>
+
+        <div id="createChannelUrlDiv">
+            <label for="createChannelUrl">URL:</label>
+            <input type="text" id="createChannelUrl">
+        </div>
+
+        <div class="checkbox-dropdown">
+            <label>Security Groups:</label>
+            <label>
+                <input type="checkbox" name="createSecurityGroups" value="Content Manager">
+                Content Manager
+            </label>
+            <label>
+                <input type="checkbox" name="createSecurityGroups" value="Everyone">
+                Everyone
+            </label>
+            <label>
+                <input type="checkbox" name="createSecurityGroups" value="Guests">
+                Guests
+            </label>
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Live Channel</h3>
+    <form id="updateChannelForm">
+        <label for="updateChannelId">Channel Id:</label>
+        <input type="text" id="updateChannelId" required>
+
+        <label for="updateChannelName">Channel Name:</label>
+        <input type="text" id="updateChannelName">
+
+        <label for="updateChannelThumbnailImageId">Thumbnail Image Id:</label>
+        <input type="text" id="updateChannelThumbnailImageId">
+
+        <label for="updateChannelArchiveFolderAssetId">Archive Folder Asset Id:</label>
+        <input type="text" id="updateChannelArchiveFolderAssetId">
+
+        <label for="updateChannelEnableHighAvailability">Enable High Availability:</label>
+        <select id="updateChannelEnableHighAvailability">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelEnableLiveClipping">Enable Live Clipping:</label>
+        <select id="updateChannelEnableLiveClipping">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelIsSecureOutput">Is Secure Output:</label>
+        <select id="updateChannelIsSecureOutput">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelIsOutputScreenshots">Is Output Screenshots:</label>
+        <select id="updateChannelIsOutputScreenshots">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="updateChannelType">Channel Type:</label>
+        <select id="updateChannelType">
+            <option value="External">External</option>
+            <option value="IVS">IVS</option>
+            <option value="Normal">Normal</option>
+            <option value="Realtime">Realtime</option>
+        </select>
+
+        <div id="updateChannelUrlDiv">
+            <label for="updateChannelUrl">URL:</label>
+            <input type="text" id="updateChannelUrl">
+        </div>
+
+        <div class="checkbox-dropdown">
+            <label>Security Groups:</label>
+            <label>
+                <input type="checkbox" name="updateSecurityGroups" value="Content Manager">
+                Content Manager
+            </label>
+            <label>
+                <input type="checkbox" name="updateSecurityGroups" value="Everyone">
+                Everyone
+            </label>
+            <label>
+                <input type="checkbox" name="updateSecurityGroups" value="Guests">
+                Guests
+            </label>
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Asset Schedule Event to Channel</h3>
+    <form id="addAssetScheduleEventForm">
+        <label for="addAssetScheduleEventChannelId">Channel Id:</label>
+        <input type="text" id="addAssetScheduleEventChannelId" required>
+
+        <label for="addAssetScheduleEventAssetId">Asset Id:</label>
+        <input type="text" id="addAssetScheduleEventAssetId" required>
+
+        <label for="addAssetScheduleEventAssetName">Asset Name:</label>
+        <input type="text" id="addAssetScheduleEventAssetName" required>
+
+        <label for="addAssetScheduleEventIsLoop">Is Loop:</label>
+        <select id="addAssetScheduleEventIsLoop">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="addAssetScheduleEventDurationTimeCode">Duration Time Code:</label>
+        <input type="text" id="addAssetScheduleEventDurationTimeCode">
+
+        <label for="addAssetScheduleEventPreviousId">Previous Id:</label>
+        <input type="text" id="addAssetScheduleEventPreviousId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Remove Asset Schedule Event from Channel</h3>
+    <form id="removeAssetScheduleEventForm">
+        <label for="removeAssetScheduleEventChannelId">Channel Id:</label>
+        <input type="text" id="removeAssetScheduleEventChannelId" required>
+
+        <label for="removeAssetScheduleEventScheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="removeAssetScheduleEventScheduleEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Inputs</h3>
+    <form id="getInputsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Input</h3>
+    <form id="getInputForm">
+        <label for="getInputId">Id:</label>
+        <input type="text" id="getInputId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Live Input</h3>
+    <form id="createInputForm">
+        <label for="createInputName"> Name:</label>
+        <input type="text" id="createInputName" required>
+
+        <label for="createInputSourceType">Source Type:</label>
+        <select id="createInputSourceType">
+            <option value="RTMP_PULL">RTMP_PULL</option>
+            <option value="RTMP_PUSH">RTMP_PUSH</option>
+            <option value="RTP_PUSH">RTP_PUSH</option>
+            <option value="UDP_PUSH">UDP_PUSH</option>
+            <option value="URL_PULL">URL_PULL</option>
+        </select>
+        
+        <div id="createInputSourceUrlDiv" hidden>
+            <label id="createInputSourceUrlLabel" for="createInputSourceUrl">Source URL:</label>
+            <input type="text" id="createInputSourceUrl">
+        </div>
+
+        <label for="createInputIsStandard">Is Standard:</label>
+        <select id="createInputIsStandard">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="createInputVideoAssetId">Video Asset Id:</label>
+        <input type="text" id="createInputVideoAssetId">
+
+        <div id="createInputSourcesDiv" hidden>
+            <label for="createInputSources">Add Sources:</label>
+            <button type="button" id="createInputAddSourcesButton">Add Source</button>
+        </div>
+
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Live Input</h3>
+    <form id="updateInputForm">
+        <label for="updateInputId"> Id:</label>
+        <input type="text" id="updateInputId" required>
+
+        <label for="updateInputName"> Name:</label>
+        <input type="text" id="updateInputName" required>
+
+        <label for="updateInputSourceType">Source Type:</label>
+        <select id="updateInputSourceType">
+            <option value="RTMP_PULL">RTMP_PULL</option>
+            <option value="RTMP_PUSH">PTMP_PUSH</option>
+            <option value="RTP_PUSH">RTP_PUSH</option>
+            <option value="UDP_PUSH">UDP_PUSH</option>
+            <option value="URL_PULL">URL_PULL</option>
+        </select>
+
+        <div id="updateInputSourceUrlDiv" hidden>
+            <label id="updateInputSourceUrlLabel" for="updateInputSourceUrl">Source URL:</label>
+            <input type="text" id="updateInputSourceUrl">
+        </div>
+
+        <label for="updateInputIsStandard">Is Standard:</label>
+        <select id="updateInputIsStandard">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="updateInputVideoAssetId">Video Asset Id:</label>
+        <input type="text" id="updateInputVideoAssetId">
+
+        <div id="updateInputSourcesDiv" hidden>
+            <label for="updateInputSources">Add Sources:</label>
+            <button type="button" id="updateInputAddSourcesButton">Add Source</button>
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Live Input Schedule Event to Channel</h3>
+    <form id="addInputScheduleEventForm">
+        <label for="addInputScheduleEventChannelId">Channel Id:</label>
+        <input type="text" id="addInputScheduleEventChannelId" required>
+
+        <label for="addInputScheduleEventInputId">Input Id:</label>
+        <input type="text" id="addInputScheduleEventInputId" required>
+
+        <label for="addInputScheduleEventInputName">Input Name:</label>
+        <input type="text" id="addInputScheduleEventInputName" required>
+
+        <label for="addInputScheduleEventBackupInputId">Backup Input Id:</label>
+        <input type="text" id="addInputScheduleEventBackupInputId">
+
+        <label for="addInputScheduleEventBackupInputName">Backup Input Name:</label>
+        <input type="text" id="addInputScheduleEventBackupInputName">
+
+        <label for="addInputScheduleEventFixedOnAirTimeUTC">Fixed On Air Time UTC:</label>
+        <input type="text" id="addInputScheduleEventFixedOnAirTimeUTC">
+
+        <label for="addInputScheduleEventPreviousId">Previous Id:</label>
+        <input type="text" id="addInputScheduleEventPreviousId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Remove Live Input Schedule Event from Channel</h3>
+    <form id="removeInputScheduleEventForm">
+        <label for="removeInputScheduleEventChannelId">Channel Id:</label>
+        <input type="text" id="removeInputScheduleEventChannelId" required>
+
+        <label for="removeInputScheduleEventScheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="removeInputScheduleEventScheduleEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Live Channel</h3>
+    <form id="startChannelForm">
+        <label for="startChannelId">Channel Id:</label>
+        <input type="text" id="startChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Stop Live Channel</h3>
+    <form id="stopChannelForm">
+        <label for="stopChannelId">Channel Id:</label>
+        <input type="text" id="stopChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Live Channel</h3>
+    <form id="deleteChannelForm">
+        <label for="deleteChannelId">Channel Id:</label>
+        <input type="text" id="deleteChannelId" required>
+
+        <label for="deleteLiveInputs">Delete Live Inputs:</label>
+        <select id="deleteLiveInputs">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Live Input</h3>
+    <form id="deleteInputForm">
+        <label for="deleteInputId"> Id:</label>
+        <input type="text" id="deleteInputId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Operators</h3>
+    <form id="getOperatorsForm">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Operators</h3>
+    <form id="getOperatorForm">
+        <label for="getOperatorId">Operator Id:</label>
+        <input type="text" id="getOperatorId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Broadcast</h3>
+    <form id="startBroadcastForm">
+        <label for="startBroadcastChannelId">Channel Id:</label>
+        <input type="text" id="startBroadcastChannelId" required>
+
+        <label for="startBroadcastPrerollAssetId">Preroll Asset Id:</label>
+        <input type="text" id="startBroadcastPrerollAssetId">
+
+        <label for="startBroadcastPostrollAssetId">Postroll Asset Id:</label>
+        <input type="text" id="startBroadcastPostrollAssetId">
+
+        <label for="startBroadcastLiveInputId">Live Input Id:</label>
+        <input type="text" id="startBroadcastLiveInputId">
+
+        <label for="startBroadcastRelatedContentIds">Related Content Ids (separated by comma):</label>
+        <input type="text" id="startBroadcastRelatedContentIds">
+
+        <label for="startBroadcastTagIds">Tag Ids (separated by comma):</label>
+        <input type="text" id="startBroadcastTagIds">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Cancel Broadcast</h3>
+    <form id="cancelBroadcastForm">
+        <label for="cancelBroadcastChannelId">Channel Id:</label>
+        <input type="text" id="cancelBroadcastChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Stop Broadcast</h3>
+    <form id="stopBroadcastForm">
+        <label for="stopBroadcastChannelId">Channel Id:</label>
+        <input type="text" id="stopBroadcastChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Completed Segments</h3>
+    <form id="getCompletedSegmentsForm">
+        <label for="getCompletedSegmentsChannelId">Channel Id:</label>
+        <input type="text" id="getCompletedSegmentsChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Segment</h3>
+    <form id="startSegmentForm">
+        <label for="startSegmentChannelId">Channel Id:</label>
+        <input type="text" id="startSegmentChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Cancel Segment</h3>
+    <form id="cancelSegmentForm">
+        <label for="cancelSegmentChannelId">Channel Id:</label>
+        <input type="text" id="cancelSegmentChannelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Complete Segment</h3>
+    <form id="completeSegmentForm">
+        <label for="completeSegmentChannelId">Channel Id:</label>
+        <input type="text" id="completeSegmentChannelId" required>
+
+        <label for="completeSegmentrelatedContentIds">Related Content Ids (separated by comma):</label>
+        <input type="text" id="completeSegmentrelatedContentIds">
+
+        <label for="completeSegmentTagIds">Tag Ids (separated by comma):</label>
+        <input type="text" id="completeSegmentTagIds">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+
+</html>
