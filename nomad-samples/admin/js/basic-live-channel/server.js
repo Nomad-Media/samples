@@ -34,7 +34,7 @@ app.get('/getLiveChannels', async (req, res) =>
     }
 });
 
-app.post('/getLiveChannel', upload.fields([]), async (req, res) => 
+app.post('/getLiveChannel', upload.none(), async (req, res) => 
 {
     try 
     {
@@ -48,7 +48,7 @@ app.post('/getLiveChannel', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/createLiveChannel', upload.fields([]), async (req, res) => 
+app.post('/createLiveChannel', upload.none(), async (req, res) => 
 {
     try 
     {
@@ -70,7 +70,7 @@ app.post('/createLiveChannel', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/updateLiveChannel', upload.fields([]), async (req, res) => 
+app.post('/updateLiveChannel', upload.none(), async (req, res) => 
 {
     try 
     {
@@ -96,7 +96,7 @@ app.post('/updateLiveChannel', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/deleteLiveChannel', upload.fields([]), async (req, res) =>
+app.post('/deleteLiveChannel', upload.none(), async (req, res) =>
 {
     try
     {
@@ -126,7 +126,7 @@ app.get('/getLiveInputs', async (req, res) =>
     }
 });
 
-app.post('/getLiveInput', upload.fields([]), async (req, res) =>
+app.post('/getLiveInput', upload.none(), async (req, res) =>
 {
     try
     {
@@ -141,7 +141,7 @@ app.post('/getLiveInput', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/createInput', upload.fields([]), async (req, res) =>
+app.post('/createInput', upload.none(), async (req, res) =>
 {
     try
     {
@@ -159,7 +159,7 @@ app.post('/createInput', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/updateInput', upload.fields([]), async (req, res) =>
+app.post('/updateInput', upload.none(), async (req, res) =>
 {
     try
     {
@@ -177,7 +177,7 @@ app.post('/updateInput', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/deleteInput', upload.fields([]), async (req, res) =>
+app.post('/deleteInput', upload.none(), async (req, res) =>
 {
     try
     {
@@ -192,7 +192,7 @@ app.post('/deleteInput', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/addAssetScheduleEvent', upload.fields([]), async (req, res) =>
+app.post('/addAssetScheduleEvent', upload.none(), async (req, res) =>
 {
     try
     {
@@ -213,7 +213,7 @@ app.post('/addAssetScheduleEvent', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/addLiveInputScheduleEvent', upload.fields([]), async (req, res) =>
+app.post('/addLiveInputScheduleEvent', upload.none(), async (req, res) =>
 {
     try
     {
@@ -233,7 +233,7 @@ app.post('/addLiveInputScheduleEvent', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/removeAssetScheduleEvent', upload.fields([]), async (req, res) =>
+app.post('/removeAssetScheduleEvent', upload.none(), async (req, res) =>
 {
     try
     {
@@ -248,7 +248,7 @@ app.post('/removeAssetScheduleEvent', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/removeLiveInputScheduleEvent', upload.fields([]), async (req, res) =>
+app.post('/removeLiveInputScheduleEvent', upload.none(), async (req, res) =>
 {
     try
     {
@@ -263,7 +263,7 @@ app.post('/removeLiveInputScheduleEvent', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/startLiveChannel', upload.fields([]), async (req, res) =>
+app.post('/startLiveChannel', upload.none(), async (req, res) =>
 {
     try
     {
@@ -278,7 +278,7 @@ app.post('/startLiveChannel', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/stopLiveChannel', upload.fields([]), async (req, res) =>
+app.post('/stopLiveChannel', upload.none(), async (req, res) =>
 {
     try
     {
@@ -308,7 +308,7 @@ app.get('/getLiveOperators', async (req, res) =>
     }
 });
 
-app.post('/getLiveOperator', upload.fields([]), async (req, res) =>
+app.post('/getLiveOperator', upload.none(), async (req, res) =>
 {
     try
     {
@@ -323,7 +323,7 @@ app.post('/getLiveOperator', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/startBroadcast', upload.fields([]), async (req, res) =>
+app.post('/startBroadcast', upload.none(), async (req, res) =>
 {
     try
     {
@@ -341,7 +341,7 @@ app.post('/startBroadcast', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/cancelBroadcast', upload.fields([]), async (req, res) =>
+app.post('/cancelBroadcast', upload.none(), async (req, res) =>
 {
     try
     {
@@ -356,7 +356,7 @@ app.post('/cancelBroadcast', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/stopBroadcast', upload.fields([]), async (req, res) =>
+app.post('/stopBroadcast', upload.none(), async (req, res) =>
 {
     try
     {
@@ -386,7 +386,7 @@ app.post('/getCompletedSegments', async (req, res) =>
     }
 });
 
-app.post('/startSegment', upload.fields([]), async (req, res) =>
+app.post('/startSegment', upload.none(), async (req, res) =>
 {
     try
     {
@@ -401,7 +401,7 @@ app.post('/startSegment', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/cancelSegment', upload.fields([]), async (req, res) =>
+app.post('/cancelSegment', upload.none(), async (req, res) =>
 {
     try
     {
@@ -416,7 +416,7 @@ app.post('/cancelSegment', upload.fields([]), async (req, res) =>
     }
 });
 
-app.post('/completeSegment', upload.fields([]), async (req, res) =>
+app.post('/completeSegment', upload.none(), async (req, res) =>
 {
     try
     {
