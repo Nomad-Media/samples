@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Content Admin</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="content-admin-api.css">
+
+    <!-- JS -->
+    <script type="module" src="content-admin-api.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Content Admin</h1>
+    <h3>Add Tag or Collection</h3>
+
+    <form id="addTagOrCollectionForm">
+        <label for="addTagOrCollection">Tag or Collection:</label>
+        <select id="addTagOrCollection">
+            <option value="tag">Tag</option>
+            <option value="collection">Collection</option>
+        </select><br><br>
+        
+        <label for="addTagContentId">Content Id:</label>
+        <input type="text" id="addTagContentId" required>
+
+        <label for="addTagContentDefinition">Content Definition:</label>
+        <input type="text" id="addTagContentDefinition" required>
+        
+        <label id="addTagNameLabel" for="addTagName">Tag Name:</label>
+        <input type="text" id="addTagName" required>
+
+        <label for="createNew">Create New:</label>
+        <select id="createNew">
+            <option value="true" selected>True</option>
+            <option value="false">False</option>
+        </select>
+
+        <div id="tagIdDiv" hidden>
+            <label id="addTagIdLabel" for="addTagId">Tag Id:</label>
+            <input type="text" id="addTagId">
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Remove Tag or Collection</h3>
+    <form id="removeTagOrCollectionForm">
+        <label for="removeTagOrCollection">Tag or Collection:</label>
+        <select id="removeTagOrCollection">
+            <option value="tag">Tag</option>
+            <option value="collection">Collection</option>
+        </select><br><br>
+
+        <label id="removeTagIdLabel" for="removeTagId">Tag Id:</label>
+        <input type="text" id="removeTagId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Tag of Collection</h3>
+    <form id="deleteTagOrCollectionForm">
+        <label for="deleteTagOrCollection">Tag or Collection:</label>
+        <select id="deleteTagOrCollection">
+            <option value="tag">Tag</option>
+            <option value="collection">Collection</option>
+        </select><br><br>
+
+        <label id="deleteTagIdLabel" for="deleteTagId">Tag Id:</label>
+        <input type="text" id="deleteTagId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Related Content</h3>
+    <form id="addRelatedContentForm">  
+        <label for="addRelatedContentId">Content Id:</label>
+        <input type="text" id="addRelatedContentId" required>
+
+        <label for="addRelatedRelatedContentId">Related Content Id:</label>
+        <input type="text" id="addRelatedRelatedContentId" required>
+
+        <label for="addRelatedContentDefinition">Content Definition:</label>
+        <input type="text" id="addRelatedContentDefinition" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Related Content</h3>
+    <form id="deleteRelatedContentForm">
+        <label for="deleteRelatedContentId">Content Id:</label>
+        <input type="text" id="deleteRelatedContentId" required>
+
+        <label for="deleteRelatedRelatedContent">Related Content Id:</label>
+        <input type="text" id="deleteRelatedRelatedContentId" required>
+        
+        <label for="deleteRelatedContentDefinition">Content Definition:</label>
+        <input type="text" id="deleteRelatedContentDefinition" required>
+        
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Add Custom Properties</h3>
+    <form id="addCustomProperties">
+        <label for="addCustomPropertiesAssetId">Asset Id:</label>
+        <input type="text" id="addCustomPropertiesAssetId">
+
+        <label for="addCustomPropertiesName">Display Name:</label>
+        <input type="text" id="name">
+
+        <label for="addCustomPropertiesNames">Custom Property Names (seperated by comma):</label>
+        <input type="text" id="addCustomPropertiesNames">
+
+        <label for="addCustomPropertiesValues">Custom Properties (seperated by comma)</label>
+        <input type="text" id="addCustomPropertiesValues">
+        <br><br>
+        <button type="submit">Submit</button>
+    </form> 
+
+</body>
+</html>
