@@ -571,7 +571,7 @@ class NomadSDK {
      * @description Adds custom properties to the specified content.
      * @param {string} CONTENT_ID - The ID of the content to add the custom properties to.
      * @param {string | null} NAME - The name of the content to add the custom properties to.
-     * @param {string | null} Date - The display date of the content to add to the custom properties.
+     * @param {string | null} DATE - The display date of the content to add to the custom properties.
      * @param {JSON} CUSTOM_PROPERTIES - A list of custom properties that should be saved for the 
      * asset. To remove a property value, set the value to null
      * @returns {Promise<JSON>} - A promise that resolves when the custom properties are added.
