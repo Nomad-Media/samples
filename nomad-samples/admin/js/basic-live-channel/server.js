@@ -1,0 +1,438 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
+
+import express from 'express';
+import multer from 'multer';
+
+const app = express();
+const upload = multer();
+const port = 4200;
+
+app.use(express.json());
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req, res) => {
+	res.sendFile(__dirname + '/public/basic-live-channel.html');
+});
+
+app.get('/getLiveChannels', async (req, res) => 
+{
+    try 
+    {
+        const LIVE_CHANNELS = await NomadSDK.getLiveChannels();
+        res.status(200).json(LIVE_CHANNELS);
+    } 
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/getLiveChannel', upload.fields([]), async (req, res) => 
+{
+    try 
+    {
+        const LIVE_CHANNEL = await NomadSDK.getLiveChannel(req.body.channelId);
+        res.status(200).json(LIVE_CHANNEL);
+    } 
+    catch (error) 
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/createLiveChannel', upload.fields([]), async (req, res) => 
+{
+    try 
+    {
+        const SECURITY_GROUPS = req.body.createSecurityGroups === null ? "" : req.body.createSecurityGroups.split(',');
+
+        const LIVE_CHANNEL = await NomadSDK.createLiveChannel(req.body.createChannelName, 
+            req.body.createChannelThumbnailImage, req.body.createChannelArchiveFolderAssetId,
+            req.body.createChannelEnableHighAvailability === "true", 
+            req.body.createChannelEnableLiveClipping === "true",
+            req.body.createChannelIsSecureOutput === "true", 
+            req.body.createChannelIsOutputScreenshots === "true",
+            req.body.createChannelType, req.body.createChannelUrl, SECURITY_GROUPS);
+        res.status(200).json(LIVE_CHANNEL);
+    } 
+    catch (error) 
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/updateLiveChannel', upload.fields([]), async (req, res) => 
+{
+    try 
+    {
+        console.log(JSON.stringify(req.body, null, 4));
+
+        const SECURITY_GROUPS = req.body.updateSecurityGroups === null ? "" : req.body.updateSecurityGroups.split(',');
+
+        const LIVE_CHANNEL = await NomadSDK.updateLiveChannel(req.body.updateChannelId,
+            req.body.updateChannelName, req.body.updateChannelThumbnailImage, 
+            req.body.updateChannelArchiveFolderAssetId,
+            req.body.updateChannelEnableHighAvailability === "true", 
+            req.body.updateChannelEnableLiveClipping === "true",
+            req.body.updateChannelIsSecureOutput === "true", 
+            req.body.updateChannelIsOutputScreenshots === "true",
+            req.body.updateChannelType, req.body.updateChannelUrl, 
+            SECURITY_GROUPS);
+        res.status(200).json(LIVE_CHANNEL);
+    } 
+    catch (error) 
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/deleteLiveChannel', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_CHANNEL = await NomadSDK.deleteLiveChannel(req.body.deleteChannelId,
+            req.body.deleteLiveInputs === "true");
+        res.status(200).json(LIVE_CHANNEL);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/getLiveInputs', async (req, res) => 
+{
+    try
+    {
+        const LIVE_INPUTS = await NomadSDK.getLiveInputs();
+
+        res.status(200).json(LIVE_INPUTS);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/getLiveInput', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_INPUT = await NomadSDK.getLiveInput(req.body.getInputId);
+
+        res.status(200).json(LIVE_INPUT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/createInput', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_INPUT = await NomadSDK.createLiveInput(req.body.createInputName, 
+            req.body.createInputSource, req.body.createInputType, 
+            req.body.createInputIsStandard === "true", req.body.createInputVideoAssetId,
+            req.body.createInputDestinations.split(","), req.body.createInputSources.split(","));
+
+        res.status(200).json(LIVE_INPUT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/updateInput', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_INPUT = await NomadSDK.updateLiveInput(req.body.updateInputId, 
+            req.body.updateInputName, req.body.updateInputSource, req.body.updateInputType, 
+            req.body.updateInputIsStandard === "true", req.body.updateInputVideoAssetId,
+            req.body.updateInputDestinations.split(","), req.body.updateInputSources.split(","));
+
+        res.status(200).json(LIVE_INPUT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/deleteInput', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_INPUT = await NomadSDK.deleteLiveInput(req.body.deleteInputId);
+
+        res.status(200).json(LIVE_INPUT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/addAssetScheduleEvent', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.addAssetScheduleEvent(
+            req.body.addAssetScheduleEventChannelId, req.body.addAssetScheduleEventAssetId,
+            req.body.addAssetScheduleEventAssetName, 
+            req.body.addAssetScheduleEventIsLoop === "true", 
+            req.body.addAssetScheduleEventDurationTimeCode, 
+            req.body.addAssetScheduleEventPreviousId);
+
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/addLiveInputScheduleEvent', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.addLiveInputScheduleEvent(
+            req.body.addInputScheduleEventChannelId, req.body.addInputScheduleEventInputId,
+            req.body.addInputScheduleEventInputName, req.body.addInputScheduleEventBackupInputId,
+            req.body.addInputScheduleEventBackupInputName, 
+            req.body.addInputScheduleEventFixedOnAirTimeUTC, 
+            req.body.addInputScheduleEventPreviousId);
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/removeAssetScheduleEvent', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.removeAssetScheduleEvent(req.body.removeAssetScheduleEventId);
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/removeLiveInputScheduleEvent', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.removeLiveInputScheduleEvent(req.body.removeLiveInputScheduleEventId);
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/startLiveChannel', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_CHANNEL = await NomadSDK.startLiveChannel(req.body.startLiveChannelId);
+
+        res.status(200).json(LIVE_CHANNEL);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/stopLiveChannel', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_CHANNEL = await NomadSDK.stopLiveChannel(req.body.stopLiveChannelId);
+
+        res.status(200).json(LIVE_CHANNEL);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/getLiveOperators', async (req, res) =>
+{
+    try
+    {
+        const LIVE_OPERATORS = await NomadSDK.getLiveOperators();
+
+        res.status(200).json(LIVE_OPERATORS);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/getLiveOperator', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const LIVE_OPERATOR = await NomadSDK.getLiveOperator(req.body.getLiveOperatorId);
+
+        res.status(200).json(LIVE_OPERATOR);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/startBroadcast', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const BROADCAST = await NomadSDK.startBroadcast(req.body.startBroadcastChannelId,
+            req.body.startBroadcastPrerollAssetId, req.body.startBroadcastPostrollAssetId,
+            req.body.startBroadcastLiveInputId, req.body.startBroadcastRelatedAssetIds.split(","),
+            req.body.startBroadcastTagIds.split(","));
+
+        res.status(200).json(BROADCAST);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/cancelBroadcast', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const BROADCAST = await NomadSDK.cancelBroadcast(req.body.cancelBroadcastChannelId);
+
+        res.status(200).json(BROADCAST);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/stopBroadcast', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const BROADCAST = await NomadSDK.stopBroadcast(req.body.stopBroadcastChannelId);
+
+        res.status(200).json(BROADCAST);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/getCompletedSegments', async (req, res) =>
+{
+    try
+    {
+        const COMPLETED_SEGMENTS = await NomadSDK.getCompletedSegments(req.body.getCompletedSegmentsChannelId);
+
+        res.status(200).json(COMPLETED_SEGMENTS);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/startSegment', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SEGMENTS = await NomadSDK.startSegments(req.body.startSegmentChannelId);
+
+        res.status(200).json(SEGMENTS);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/cancelSegment', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SEGMENTS = await NomadSDK.cancelSegments(req.body.cancelSegmentChannelId);
+
+        res.status(200).json(SEGMENTS);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/completeSegment', upload.fields([]), async (req, res) =>
+{
+    try
+    {
+        const SEGMENTS = await NomadSDK.completeSegments(req.body.completeSegmentChannelId,
+            req.body.completeSegmentRelatedAssetIds.split(","), 
+            req.body.completeSegmentTagIds.split(","));
+
+        res.status(200).json(SEGMENTS);
+    }
+    catch
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
