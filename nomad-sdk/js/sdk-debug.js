@@ -494,7 +494,7 @@ class NomadSDK {
      * @throws {Error} - An error is thrown if the content fails to get.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */ 
-    async getContent(CONTENT_DEFINITION_ID, CONTENT_ID, IS_REVISION)
+    async getContent(CONTENT_ID, CONTENT_DEFINITION_ID, IS_REVISION)
     {
         if (this.token === null)
         {
