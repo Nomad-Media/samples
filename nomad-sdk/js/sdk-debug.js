@@ -826,7 +826,7 @@ class NomadSDK {
  * @param {string} CONTENT_DEFINITION_ID - The content definition ID of the content to use for the 
  * event instance.
  * @param {string} INSTANCE_NAME - The name of the event instance.
- * @param {boolean} RECURRING - Whether the event instance is recurring.
+ * @param {boolean} IS_RECURRING - Whether the event instance is recurring.
  * @param {string | null} START_DATETIME - The start date and time of the event instance. 
  * Set to null if recurring.
  * @param {string | null} END_DATETIME - The end date and time of the event instance. 
@@ -839,7 +839,7 @@ class NomadSDK {
  * Set to null if not recurring.
  * @param {Array<string> | null} DAYS_OF_THE_WEEK - List of dates to use for the event instance. 
  * Set to null if not recurring.
- * @param {boolean} DISABLED - Whether the event instance is disabled.
+ * @param {boolean} IS_DISABLED - Whether the event instance is disabled.
  * @param {boolean} IS_EXISTING_SERIES - Whether the event instance is using an existing series.
  * Set to null if an existing series.
  * @param {boolean | null} OVERRIDE_SERIES_DETAILS - Whether to override the series details.
