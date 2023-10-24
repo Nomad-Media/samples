@@ -874,8 +874,8 @@ class NomadSDK {
  */
 
     async createAndUpdateEventInstance(CONTENT_ID, CONTENT_DEFINITION_ID, INSTANCE_NAME, 
-        RECURRING, START_DATETIME, END_DATETIME, RECURRING_WEEKS, START_TIME, END_TIME, 
-        DAYS_OF_THE_WEEK, DISABLED, IS_EXISTING_SERIES, OVERRIDE_SERIES_DETAILS, 
+        IS_RECURRING, START_DATETIME, END_DATETIME, RECURRING_WEEKS, START_TIME, END_TIME, 
+        DAYS_OF_THE_WEEK, IS_DISABLED, IS_EXISTING_SERIES, OVERRIDE_SERIES_DETAILS, 
         SERIES_NAME, SERIES_ID, DESCRIPTION, SLATE_VIDEO_ID, PREROLL_VIDEO_ID, 
         POSTROLL_VIDEO_ID, IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ID, LIVE_INPUT_A_ID, 
         LIVE_INPUT_B_ID, PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL)
@@ -895,11 +895,11 @@ class NomadSDK {
         try
         {
             let recurringDays;
-            RECURRING ? recurringDays = _processDates(DAYS_OF_THE_WEEK, START_TIME) : recurringDays = null;
+            IS_RECURRING ? recurringDays = _processDates(DAYS_OF_THE_WEEK, START_TIME) : recurringDays = null;
             const CREATE_EVENT_INSTANCE_INFO = await _createAndUpdateEventInstance(this.token, 
-                this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, INSTANCE_NAME, RECURRING,
+                this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, INSTANCE_NAME, IS_RECURRING,
                 START_DATETIME, END_DATETIME, RECURRING_WEEKS, START_TIME, END_TIME, recurringDays, 
-                DISABLED, IS_EXISTING_SERIES, OVERRIDE_SERIES_DETAILS, SERIES_NAME, 
+                IS_DISABLED, IS_EXISTING_SERIES, OVERRIDE_SERIES_DETAILS, SERIES_NAME, 
                 SERIES_ID, DESCRIPTION, SLATE_VIDEO_ID, PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, 
                 IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ID, LIVE_INPUT_A_ID, LIVE_INPUT_B_ID, 
                 PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL, this.debugMode);
@@ -5800,6 +5800,8 @@ function _apiExceptionHandler(error, message) {
         throw new Error(message);
     }
 
+    
+    console.log(typeof(error));
     // Check if error is a string
     if (typeof error === "string") {
         throw new Error(`${message}: ${error}`);
