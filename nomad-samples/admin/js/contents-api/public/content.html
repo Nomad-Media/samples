@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Content</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="content.css">
+
+    <!-- JS -->
+    <script type="module" src="content.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Content</h1>
+    <h3>Get Content</h3>
+    <form id="getContentForm">
+        <label for="getContentContentId">Content Id:</label>
+        <input type="text" id="getContentContentId" required>
+        
+        <label for="getContentContentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="getContentContentDefinitionId" required>
+
+        <label for="isRevision">Is Revision:</label>
+        <select id="isRevision">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Content</h3>
+    <form id="createForm">
+        <label for="createContentContentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="createContentCpmtemtDefinitionId" required>
+
+        <label for="createContentLanguageId">Language Id:</label>
+        <input type="text" id="createContentLanguageId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Content</h3>
+    <form id="updateForm">
+        <label for="updateContentContentId">Content Id:</label>
+        <input type="text" id="updateContentContentId" required>
+        
+        <label for="updateContentContentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="updateContentContentDefinitionId" required>
+
+        <label for="updateContentProperties">Properties (json):</label>
+        <input type="text" id="updateContentProperties" required>
+
+        <label for="updateContentLanguageId">Language Id:</label>
+        <input type="text" id="updateContentLanguageId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Content</h3>
+    <form id="deleteForm">
+        <label for="deleteContentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="deleteContentDefinitionId" required>
+        
+        <label for="deleteId">Content Id:</label>
+        <input type="text" id="deleteId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
