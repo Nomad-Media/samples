@@ -58,6 +58,12 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
+
+
 // common
 
 
@@ -93,7 +99,6 @@ import config from "./config/config.js";
 
 
 // helpers
-
 
 
 
@@ -819,66 +824,65 @@ class NomadSDK {
     
     // event instance functions
     /**
- * Creates and updates an event instance.
- * @function createAndUpdateEventInstance
- * @async
- * @param {string | null} ID - The ID of the event instance to update. Null for create.
- * @param {string} CONTENT_DEFINITION_ID - The content definition ID of the content to use for the 
- * event instance.
- * @param {string} INSTANCE_NAME - The name of the event instance.
- * @param {boolean} IS_RECURRING - Whether the event instance is recurring.
- * @param {string | null} START_DATETIME - The start date and time of the event instance. 
- * Set to null if recurring.
- * @param {string | null} END_DATETIME - The end date and time of the event instance. 
- * Set to null if recurring.
- * @param {string | null} RECURRING_WEEKS - The number of weeks to recur the event instance. 
- * Set to null if not recurring.
- * @param {string | null} START_TIME - The start time of the event instance. 
- * Set to null if not recurring.
- * @param {string | null} END_TIME - The end time of the event instance. 
- * Set to null if not recurring.
- * @param {Array<string> | null} DAYS_OF_THE_WEEK - List of dates to use for the event instance. 
- * Set to null if not recurring.
- * @param {boolean} IS_DISABLED - Whether the event instance is disabled.
- * @param {boolean} IS_EXISTING_SERIES - Whether the event instance is using an existing series.
- * Set to null if an existing series.
- * @param {boolean | null} OVERRIDE_SERIES_DETAILS - Whether to override the series details.
- * Set to null if not an existing series.
- * @param {string | null} SERIES_NAME - The name of the existing series. 
- * Set to null if not an existing series.
- * @param {string | null} SERIES_ID - The id of the existing series. 
- * Set to null if not an existing series.
- * @param {string | null} DESCRIPTION - The description of the event instance. 
- * Set to null if an existing series.
- * @param {string | null} SLATE_VIDEO_ID - The slate video ID of the event instance. 
- * Set to null if an existing series.
- * @param {string | null} PREROLL_VIDEO_ID - The preroll video ID of the event instance. 
- * Set to null if not an existing series.
- * @param {string | null} POSTROLL_VIDEO_ID - The postroll video ID of the event instance. 
- * Set to null if an existing series.
- * @param {boolean | null} IS_SECURE_OUTPUT - Whether the event instance is secure output. 
- * Set to null if an existing series.
- * @param {string | null} ARCHIVE_FOLDER_ID - The archive folder of the event instance. 
- * Set to null if an existing series.
- * @param {string | null} LIVE_INPUT_A_ID - The live input A ID of the event instance. 
- * Set to null if an existing series.
- * @param {string | null} LIVE_INPUT_B_ID - The live input B ID of the event instance. 
- * Set to null if an existing series.
- * @param {string | null} PRIMARY_LIVE_STREAM_URL - The primary live stream URL of the 
- * event instance. Set to null if an existing series.
- * @param {string | null} BACKUP_LIVESTREAM_URL - The backup live stream URL of the event instance. 
- * @returns {Promise<JSON>} A promise that resolves when the event instance is created and updated.
- * Returns the information of the created and updated event instance.
- * @throws {Error} An error is thrown if the event instance fails to create and update.
- * @throws {Error} An error is thrown if the API type is not admin.
- */
+    * Creates and updates an event instance.
+    * @function createAndUpdateEventInstance
+    * @async
+    * @param {string | null} CONTENT_ID - The content id of the event instance to update. Null for create.
+    * @param {string} CONTENT_DEFINITION_ID - The content definition id of the event instance.
+    * @param {string} NAME - The name of the event.
+    * @param {JSON | null} SERIES - The series name of the event instance.
+    * JSON format: { id: string, description: string }
+    * @param {string} START_DATETIME - The start date and time of the event instance.
+    * @param {string} END_DATETIME - The end date and time of the event instance.
+    * @param {JSON | null} PRIMARY_PERFORMER - The name and id of the primary performer.
+    * JSON format: { id: string, description: string }
+    * @param {string | null} SHORT_DESCRIPTION - The short description of the event instance.
+    * @param {string | null} LONG_DESCRIPTION - The long description of the event instance.
+    * @param {JSON | null} THUMBNAIL_IMAGE - The thumbnail image name and id of the event instance.
+    * JSON format: { id: string, description: string }
+    * @param {JSON | null} HERO_IMAGE - The hero image name and id of the event instance.
+    * JSON format: { id: string, description: string }
+    * @param {JSON | null} LOGO_IMAGE - The logo image name and id of the event instance.
+    * JSON format: { id: string, description: string }
+    * @param {JSON | null} INTELLIGENT_PROGRAM - The intelligent program of the event instance.
+    * JSON format: { id: string, description: string }
+    * @param {string | null} EXTERNAL_URL - The external URL of the event instance.
+    * @param {JSON | null} VENUE - The venue name and id of the event instance.
+    * JSON format: { id: string, description: string }
+    * @param {Array<JSON> | null} PERFORMERS - The performers of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} GENRES - The genres of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} MEDIA_ATTRIBUTES - The media attributes of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} LANGUAGES - The languages of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} PRODUCTS - The products of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} FEATURED_GROUPS - The featured groups of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {string | null} GROUP_SEQUENCE - The group sequence of the event instance.
+    * @param {Array<JSON> | null} RELATED_MEDIA_ITEMS - The related media items of the event instance.
+    * JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} RECOMMENDEDATION_SIMILAR_ITEMS - The recommended similar items of the
+    * event instance. JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} CONTENT_RATINGS - The content ratings of the event instance.
+    * @param {boolean | null} IS_DISABLED - Whether the event instance is disabled.
+    * Set to false by default.
+    * @param {JSON | null} LIVE_CHANNEL - The live channel of the event instance.
+    * JSON format: { id: string, description: string }
+    * @returns {Promise<JSON>} A promise that resolves when the event instance is created and updated.
+    * Returns the information of the created and updated event instance.
+    * @throws {Error} An error is thrown if the event instance fails to create and update.
+    * @throws {Error} An error is thrown if the API type is not admin.
+    */
 
-    async createAndUpdateEventInstance(CONTENT_ID, CONTENT_DEFINITION_ID, INSTANCE_NAME, 
-        IS_RECURRING, START_DATETIME, END_DATETIME, RECURRING_WEEKS, START_TIME, END_TIME, 
-        DAYS_OF_THE_WEEK, IS_DISABLED, IS_EXISTING_SERIES, OVERRIDE_SERIES_DETAILS, 
-        SERIES_NAME, SERIES_ID, DESCRIPTION, SLATE_VIDEO_ID, PREROLL_VIDEO_ID, 
-        POSTROLL_VIDEO_ID, IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ID, LIVE_INPUT_A_ID, 
-        LIVE_INPUT_B_ID, PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL)
+    async createAndUpdateEventInstance(CONTENT_ID, CONTENT_DEFINITION_ID, NAME, SERIES, 
+        START_DATETIME, END_DATETIME, PRIMARY_PERFORMER, SHORT_DESCRIPTION, LONG_DESCRIPTION, 
+        THUMBNAIL_IMAGE, HERO_IMAGE, LOGO_IMAGE, INTELLIGENT_PROGRAM, EXTERNAL_URL, VENUE, 
+        PERFORMERS, GENRES, MEDIA_ATTRIBUTES, LANGUAGES, PRODUCTS, FEATURED_GROUPS, 
+        GROUP_SEQUENCE, RELATED_MEDIA_ITEMS, RECOMMENDED_SIMILAR_ITEMS, CONTENT_RATINGS, 
+        IS_DISABLED, LIVE_CHANNEL)
     {
         if (this.token === null)
         {
@@ -889,29 +893,28 @@ class NomadSDK {
         {
             throw new Error("This function is only available for admin API type.");
         }
-
-        _printDatetime(`Creating/Updating event instance: ${INSTANCE_NAME}`);
+        
+        _printDatetime(`Creating/Updating event instance: ${NAME}`);
 
         try
         {
-            let recurringDays;
-            IS_RECURRING ? recurringDays = _processDates(DAYS_OF_THE_WEEK, START_TIME) : recurringDays = null;
             const CREATE_EVENT_INSTANCE_INFO = await _createAndUpdateEventInstance(this.token, 
-                this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, INSTANCE_NAME, IS_RECURRING,
-                START_DATETIME, END_DATETIME, RECURRING_WEEKS, START_TIME, END_TIME, recurringDays, 
-                IS_DISABLED, IS_EXISTING_SERIES, OVERRIDE_SERIES_DETAILS, SERIES_NAME, 
-                SERIES_ID, DESCRIPTION, SLATE_VIDEO_ID, PREROLL_VIDEO_ID, POSTROLL_VIDEO_ID, 
-                IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ID, LIVE_INPUT_A_ID, LIVE_INPUT_B_ID, 
-                PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL, this.debugMode);
+                this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, NAME, SERIES,
+                START_DATETIME, END_DATETIME, PRIMARY_PERFORMER, SHORT_DESCRIPTION, 
+                LONG_DESCRIPTION, THUMBNAIL_IMAGE, HERO_IMAGE, LOGO_IMAGE, INTELLIGENT_PROGRAM, 
+                EXTERNAL_URL, VENUE, PERFORMERS, GENRES, MEDIA_ATTRIBUTES, LANGUAGES, PRODUCTS, 
+                FEATURED_GROUPS, GROUP_SEQUENCE, RELATED_MEDIA_ITEMS, RECOMMENDED_SIMILAR_ITEMS, 
+                CONTENT_RATINGS, IS_DISABLED, LIVE_CHANNEL, this.debugMode);
             _printDatetime(`Event instance created/updated: ${CREATE_EVENT_INSTANCE_INFO}`);
             return CREATE_EVENT_INSTANCE_INFO;
         }
         catch (error)
         {
-            _printDatetime(`Event instance failed to create/update`);
+            _printDatetime(`Event instance failed to create/update: ${NAME}`);
             throw error;
         }
     }
+    
 
     /**
      * @function deleteEventInstance
@@ -947,6 +950,206 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Event instance failed to delete: ${CONTENT_ID}`);
+            throw error;
+        }
+    }
+
+    // live event schedule functions
+    /**
+     * @function addingLiveScheduleToEvent
+     * @async
+     * @description Adds a live schedule to an event and updated live schedule attatched to event.
+     * @param {string} EVENT_ID - The ID of the event to add the live schedule to.
+     * @param {JSON | null} SLATE_VIDEO - The slate video ID of the event instance. 
+     * JSON format: {"id": string, "description": string }
+     * @param {JSON | null} PREROLL_VIDEO - The preroll video of the event instance. 
+     * JSON format: {"id": string, "description": string }
+     * @param {JSON | null} POSTROLL_VIDEO_ID - The postroll video of the event instance. 
+     * JSON format: {"id": string, "description": string }
+     * @param {boolean | null} IS_SECURE_OUTPUT - Whether the event instance is secure output. 
+     * JSON format: { id: string, description: string }
+     * @param {JSON | null} ARCHIVE_FOLDER - The archive folder of the event instance. 
+     * JSON format: { id: string, description: string }
+     * @param {JSON | null} PRIMARY_LIVE_INPUT - The live input A ID of the event instance. 
+     * JSON format: { id: string, description: string }
+     * @param {JSON | null} BACKUP_LIVE_INPUT - The live input B ID of the event instance. 
+     * JSON format: { id: string, description: string }
+     * @param {JSON | null} PRIMARY_LIVESTREAM_INPUT_URL - The primary live stream URL of the 
+     * event instance. JSON format: { id: string, description: string }
+     * @param {JSON | null} BACKUP_LIVESTREAM_INPUT_URL - The backup live stream URL of the event instance. 
+     * @param {Array<JSON> | null} EXTERNAL_OUTPUT_PROFILES - The external output profiles of the event instance.
+     * @returns {Promise<null>} - A promise that resolves when the live event schedule is created.
+     * @throws {Error} - An error is thrown if the live event schedule fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */ 
+    async addLiveScheduleToEvent(EVENT_ID, SLATE_VIDEO, PREROLL_VIDEO, POSTROLL_VIDEO,
+        IS_SECURE_OUTPUT, ARCHIVE_FOLDER, PRIMARY_LIVE_INPUT, BACKUP_LIVE_INPUT, 
+        PRIMARY_LIVESTREAM_INPUT_URL, BACKUP_LIVESTREAM_INPUT_URL, EXTERNAL_OUTPUT_PROFILES)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Adding Live Schedule to Event: ${EVENT_ID}`);
+
+        try
+        {
+            await _addLiveScheduleToEvent(this.token, this.config.serviceApiUrl, EVENT_ID, 
+                SLATE_VIDEO, PREROLL_VIDEO, POSTROLL_VIDEO, IS_SECURE_OUTPUT, ARCHIVE_FOLDER, 
+                PRIMARY_LIVE_INPUT, BACKUP_LIVE_INPUT, PRIMARY_LIVESTREAM_INPUT_URL, 
+                BACKUP_LIVESTREAM_INPUT_URL, EXTERNAL_OUTPUT_PROFILES, this.debugMode);
+            _printDatetime(`Live Schedule added to Event: ${EVENT_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Schedule failed to add to Event: ${EVENT_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function extendLiveSchedule
+     * @async
+     * @description Extends the live schedule of an event.
+     * @param {string} EVENT_ID - The ID of the event to extend the live schedule of.
+     * @param {Array<string>} DAYS_OF_WEEK - The days of the week to extend the live schedule of.
+     * @param {string} RECURRING_WEEKS - The number of weeks to extend the live schedule of.
+     * @param {string | null} END_DATE - The end date to extend the live schedule of.
+     * @returns {Promise<null>} - A promise that resolves when the live schedule is extended.
+     * @throws {Error} - An error is thrown if the live schedule fails to extend.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async extendLiveSchedule(EVENT_ID, DAYS_OF_WEEK, RECURRING_WEEKS, END_DATE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error ("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Extending Live Schedule of Event: ${EVENT_ID}`);
+
+        try
+        {
+            const EVENT_INFO = await this.getContent(EVENT_ID, "412a30e3-73ee-4eae-b739-e1fc87601c7d")
+            const START_DATETIME = EVENT_INFO.properties.startDatetime;
+            const RECURRING_DAYS = _processDates(DAYS_OF_WEEK, START_DATETIME);
+
+            await _extendLiveSchedule(this.token, 
+                this.config.serviceApiUrl, EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS, END_DATE,
+                this.debugMode);
+            _printDatetime(`Live Schedule extended of Event: ${EVENT_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Schedule failed to extend of Event: ${EVENT_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getLiveSchedule
+     * @async
+     * @description Gets the live schedule of an event.
+     * @param {string} EVENT_ID - The ID of the event to get the live schedule of.
+     * @returns {Promise<JSON>} - A promise that resolves when the live schedule is retrieved.
+     * Returns the information of the live schedule.
+     * @throws {Error} - An error is thrown if the live schedule fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     * @throws {Error} - An error is thrown if the event does not have a live schedule.
+     * @throws {Error} - An error is thrown if the event does not exist.
+     */
+    async getLiveSchedule(EVENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting Live Schedule of Event: ${EVENT_ID}`);
+
+        try
+        {
+            const GET_LIVE_SCHEDULE_INFO = await _getLiveSchedule(this.token, 
+                this.config.serviceApiUrl, EVENT_ID, this.debugMode);
+            _printDatetime(`Live Schedule retrieved of Event: ${EVENT_ID}`);
+            return GET_LIVE_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Schedule failed to retrieve of Event: ${EVENT_ID}`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function startLiveSchedule
+     * @async
+     * @description Starts the live schedule of an event.
+     * @param {string} EVENT_ID - The ID of the event to start the live schedule of.
+     * @returns {Promise<null>} - A promise that resolves when the live schedule is started.
+     * @throws {Error} - An error is thrown if the live schedule fails to start.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */ 
+    async startLiveSchedule(EVENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Starting Live Schedule of Event: ${EVENT_ID}`);
+
+        try
+        {
+            await _startLiveSchedule(this.token, this.config.serviceApiUrl, EVENT_ID, 
+                this.debugMode);
+            _printDatetime(`Live Schedule started of Event: ${EVENT_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Schedule failed to start of Event: ${EVENT_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function stopLiveSchedule
+     * @async
+     * @description Stops the live schedule of an event.
+     * @param {string} EVENT_ID - The ID of the event to stop the live schedule of.
+     * @returns {Promise<null>} - A promise that resolves when the live schedule is stopped.
+     * @throws {Error} - An error is thrown if the live schedule fails to stop.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async stopLiveSchedule(EVENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        _printDatetime(`Stopping Live Schedule of Event: ${EVENT_ID}`);
+
+        try
+        {
+            await _stopLiveSchedule(this.token, this.config.serviceApiUrl, EVENT_ID, 
+                this.debugMode);
+            _printDatetime(`Live Schedule stopped of Event: ${EVENT_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Schedule failed to stop of Event: ${EVENT_ID}`);
             throw error;
         }
     }
@@ -1803,7 +2006,6 @@ class NomadSDK {
             throw error;
         }
     }
-
 
     // schedule event functions
     /**
@@ -3657,13 +3859,64 @@ async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID
 
 
 
+async function _addLiveScheduleToEvent(AUTH_TOKEN, URL, EVENT_ID, SLATE_VIDEO, 
+    PREROLL_VIDEO, POSTROLL_VIDEO, IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ASSET, 
+    PRIMARY_LIVE_INPUT, BACKUP_LIVE_INPUT_ID, PRIMARY_LIVESTREAM_INPUT_URL, 
+    BACKUP_LIVESTREAM_INPUT_URL, EXTERNAL_OUTPUT_PROFILES, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/liveSchedule`
 
-async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
-    INSTANCE_NAME, RECURRING, START_DATETIME, END_DATETIME, RECURRING_WEEKS, START_TIME, END_TIME, 
-    RECURRING_DATES, DISABLED, IS_EXISTING_SERIES, DESCRIPTION, SLATE_VIDEO_ID, PREROLL_VIDEO_ID, 
-    POSTROLL_VIDEO_ID, IS_SECURE_OUTPUT, ARCHIVE_FOLDER, LIVE_INPUT_A_ID, LIVE_INPUT_B_ID, 
-    PRIMARY_LIVE_STREAM_URL, BACKUP_LIVESTREAM_URL, OVERRIDE_SERIES_DETAILS, SERIES_NAME, 
-    SERIES_ID, DEBUG_MODE) 
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Build the payload body
+    const BODY = {
+        contentId: EVENT_ID,
+        slateVideo: (SLATE_VIDEO !== null) ? SLATE_VIDEO : "",
+        prerollVideo: (PREROLL_VIDEO !== null) ? PREROLL_VIDEO : "",
+        postrollVideo: (POSTROLL_VIDEO !== null) ? POSTROLL_VIDEO : "",
+        isSecureOutput: (IS_SECURE_OUTPUT !== null) ? IS_SECURE_OUTPUT : false,
+        archiveFolderAsset: (ARCHIVE_FOLDER_ASSET !== null) ? ARCHIVE_FOLDER_ASSET : "",
+        primaryLiveInput: (PRIMARY_LIVE_INPUT !== null) ? PRIMARY_LIVE_INPUT : "",
+        backupLiveInputId: (BACKUP_LIVE_INPUT_ID !== null) ? BACKUP_LIVE_INPUT_ID : "",
+        primaryLivestreamInputUrl: (PRIMARY_LIVESTREAM_INPUT_URL !== null) ? PRIMARY_LIVESTREAM_INPUT_URL : "",
+        backupLivestreamInputUrl: (BACKUP_LIVESTREAM_INPUT_URL !== null) ? BACKUP_LIVESTREAM_INPUT_URL : "",
+        externalOutputProfiles: (EXTERNAL_OUTPUT_PROFILES !== null) ? EXTERNAL_OUTPUT_PROFILES : ""
+    }
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Adding Live Schedule to Event Failed");
+    }
+}
+
+
+
+
+
+
+async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID,
+    CONTENT_DEFINITION_ID, NAME, SERIES, START_DATETIME, END_DATETIME, PRIMARY_PERFORMER, 
+    SHORT_DESCRIPTION, LONG_DESCRIPTION, THUMBNAIL_IMAGE, HERO_IMAGE, LOGO_IMAGE, 
+    INTELLIGENT_PROGRAM, EXTERNAL_URL, VENUE, PERFORMERS, GENRES, MEDIA_ATTRIBUTES, 
+    LANGUAGES, PRODUCTS, FEATURED_GROUPS, GROUP_SEQUENCE, RELATED_MEDIA_ITEMS, 
+    RECOMMENDED_SIMILAR_ITEMS, CONTENT_RATINGS, IS_DISABLED, LIVE_CHANNEL, DEBUG_MODE)
 {
     if (CONTENT_ID === null) CONTENT_ID = _newGuid();
     const API_URL = `${URL}/content/${CONTENT_ID}`;
@@ -3673,50 +3926,38 @@ async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID, CONTEN
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
-    let DATE = null;
-    if (RECURRING) DATE = RECURRING_DATES.startDate;
-
     const BODY = {
         contentId: CONTENT_ID,
-        contentDefinitionId: CONTENT_DEFINITION_ID,
+        contentDefinitionId : CONTENT_DEFINITION_ID,
         properties: {
-            instanceName: INSTANCE_NAME,
-            startDatetime: RECURRING ? `${DATE.getFullYear()}-${DATE.getMonth() + 1}-${DATE.getDate()}T${START_TIME}` : START_DATETIME,
-            endDatetime: RECURRING ? `${DATE.getFullYear()}-${DATE.getMonth() + 1}-${DATE.getDate()}T${END_TIME}` : END_DATETIME,
-            disabled: DISABLED,
-            overrideSeriesDetails: OVERRIDE_SERIES_DETAILS,
-            isRecurring: RECURRING,
-        },
+            contentRatings: (CONTENT_RATINGS !== null) ? CONTENT_RATINGS : "",
+            disabled: (IS_DISABLED !== null) ? IS_DISABLED : false,
+            endDatetime: END_DATETIME,
+            externalUrl: (EXTERNAL_URL !== null) ? EXTERNAL_URL : "",
+            featuredGroups: (FEATURED_GROUPS !== null) ? FEATURED_GROUPS : [],
+            genres: (GENRES !== null) ? GENRES : [],
+            groupSequence: (GROUP_SEQUENCE !== null) ? GROUP_SEQUENCE : "",
+            heroImage: (HERO_IMAGE !== null) ? HERO_IMAGE : "",
+            intelligentProgram: (INTELLIGENT_PROGRAM !== null) ? INTELLIGENT_PROGRAM : "",
+            languages: (LANGUAGES !== null) ? LANGUAGES : [],
+            liveChannel: (LIVE_CHANNEL !== null) ? LIVE_CHANNEL : "",
+            logoImage: (LOGO_IMAGE !== null) ? LOGO_IMAGE : "",
+            longDescription: (LONG_DESCRIPTION !== null) ? LONG_DESCRIPTION : "",
+            mediaAttributes: (MEDIA_ATTRIBUTES !== null) ? MEDIA_ATTRIBUTES : [],
+            name: NAME,
+            performers: (PERFORMERS !== null) ? PERFORMERS : [],
+            primaryPerformer: (PRIMARY_PERFORMER !== null) ? PRIMARY_PERFORMER : "",
+            products: (PRODUCTS !== null) ? PRODUCTS : [],
+            recommendedSimilarItems: (RECOMMENDED_SIMILAR_ITEMS !== null) ? RECOMMENDED_SIMILAR_ITEMS : [],
+            relatedMediaItems: (RELATED_MEDIA_ITEMS !== null) ? RELATED_MEDIA_ITEMS : [],
+            routeName : _slugify(NAME),
+            series: (SERIES !== null) ? SERIES : "",
+            shortDescription: (SHORT_DESCRIPTION !== null) ? SHORT_DESCRIPTION : "",
+            startDatetime: START_DATETIME,
+            thumbnailImage: (THUMBNAIL_IMAGE !== null) ? THUMBNAIL_IMAGE : "",
+            venue: (VENUE !== null) ? VENUE : ""
+        }
     };
-
-    if (RECURRING)
-    {
-        BODY.properties.recurringDays = RECURRING_DATES.dates;
-        BODY.properties.recurringWeeks = RECURRING_WEEKS;
-    }
-
-    if (IS_EXISTING_SERIES)
-    {
-        BODY.properties.series = {
-            description: SERIES_NAME,
-            id: SERIES_ID,
-            properties: {}
-        };
-    }
-
-    if (OVERRIDE_SERIES_DETAILS || !IS_EXISTING_SERIES)
-    {
-        BODY.description = DESCRIPTION;
-        BODY.isSecureOutput = IS_SECURE_OUTPUT;
-        BODY.primaryLiveStreamInputUrl = PRIMARY_LIVE_STREAM_URL;
-        BODY.backupLiveStreamInputUrl = BACKUP_LIVESTREAM_URL;
-        BODY.properties.prerollVideo = PREROLL_VIDEO_ID === "" ? "" : { id: PREROLL_VIDEO_ID };
-        BODY.properties.postrollVideo = POSTROLL_VIDEO_ID === "" ? "" : { id: POSTROLL_VIDEO_ID };
-        BODY.properties.archiveFolder = ARCHIVE_FOLDER === "" ? "" : { id: ARCHIVE_FOLDER };
-        BODY.properties.slateVideo = SLATE_VIDEO_ID === "" ? "" : { id: SLATE_VIDEO_ID };
-        BODY.properties.liveInputA = LIVE_INPUT_A_ID === "" ? "" : { id: LIVE_INPUT_A_ID };
-        BODY.properties.liveInputB = LIVE_INPUT_B_ID === "" ? "" : { id: LIVE_INPUT_B_ID };
-    }
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
@@ -3773,6 +4014,78 @@ async function _deleteEventInstance(AUTH_TOKEN, URL, ID, CONTENT_DEFINITION_ID, 
 }
 
 
+
+
+async function _extendLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS,
+    END_DATE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/liveSchedule/content/${EVENT_ID}/copy`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        endDate: (END_DATE !== null) ? END_DATE : "",
+        recurringDays: RECURRING_DAYS,
+        recurringWeeks: RECURRING_WEEKS,
+        timeZoneOffsetSeconds: new Date().getTimezoneOffset() * -60
+        
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Extending Live Schedule Failed");
+    }
+}
+
+
+
+
+async function _getLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE) 
+{
+  	const API_URL = `${URL}/admin/liveSchedule/content/${EVENT_ID}`;
+
+  	// Create header for the request
+  	const HEADERS = new Headers();
+  	HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+  	if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+  	try {
+  	  	const RESPONSE = await fetch(API_URL, {
+  	  	  	method: "GET",
+  	  	  	headers: HEADERS
+  	  	});
+	  
+  	  	if (!RESPONSE.ok) {
+  	  	  throw await RESPONSE.json();
+  	  	}
+	  
+  	  	return await RESPONSE.json();
+  	} 
+	catch (error) 
+	{
+  	  	_apiExceptionHandler(error, "Get Live Schedule Failed");
+  	}
+}
+
+
 const Lookup = (key, value) => ({
     key: key,
     value: value,
@@ -3788,7 +4101,7 @@ const DAY_OF_WEEK = {
     Saturday: Lookup("6", 'cf4c7688-417f-48d4-8b9d-fc6e6132d34e'),
 };
 
-function _processDates(DATE_CHECKBOX, START_TIME)
+function _processDates(DATE_CHECKBOX, START_DATETIME)
 {
 // goes through checkbox elements and 
     const DATE_LIST = [];
@@ -3819,7 +4132,7 @@ function _processDates(DATE_CHECKBOX, START_TIME)
     while (minimum < 0)
     {
         let diff = DAY_OF_WEEK[DATE_CHECKBOX[startIdx]].key - DATE.getDay();
-        if (diff > 0 || (diff === 0 && parseInt(START_TIME.substr(0,2)) - DATE.getHours() >= 1))
+        if (diff > 0 || ((new Date(START_DATETIME).getTime() - DATE.getTime()) / (1000 * 60 * 60) >= 1))
         {
             minimum = diff;
         }
@@ -3832,7 +4145,7 @@ function _processDates(DATE_CHECKBOX, START_TIME)
         let diff = DAY_OF_WEEK[DATE_CHECKBOX[dateIdx]].key - DATE.getDay();
         if (diff < minimum)
         {
-            if (diff === 0 && parseInt(START_TIME.substr(0,2)) - DATE.getHours() < 1)
+            if ((new Date(START_DATETIME).getTime() - DATE.getTime()) / (1000 * 60 * 60) < 1)
             {
                 continue;
             }
@@ -3845,7 +4158,67 @@ function _processDates(DATE_CHECKBOX, START_TIME)
 
     DATE.setDate(DATE.getDate() + minimum);
 
-    return { startDate : DATE, dates: DATE_LIST }
+    return DATE_LIST
+}
+
+
+
+
+async function _startLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE) 
+{
+  	const API_URL = `${URL}/admin/liveSchedule/content/${EVENT_ID}/start`;
+
+  	// Create header for the request
+  	const HEADERS = new Headers();
+  	HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+  	HEADERS.append("Content-Type", "application/json");
+
+  	if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+  	try {
+  	  	const RESPONSE = await fetch(API_URL, {
+  	  	  	method: "POST",
+  	  	  	headers: HEADERS
+  	  	});
+      
+  	  	if (!RESPONSE.ok) {
+  	  	    throw await RESPONSE.json();
+  	  	}
+  	} 
+    catch (error) 
+    {
+  	  	_apiExceptionHandler(error, "Start Live Schedule Failed");
+  	}
+}
+
+
+
+
+async function _stopLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE) 
+{
+  	const API_URL = `${URL}/admin/liveSchedule/content/${EVENT_ID}/stop`;
+
+  	// Create header for the request
+  	const HEADERS = new Headers();
+  	HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+  	HEADERS.append("Content-Type", "application/json");
+
+  	if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+  	try {
+  	  	const RESPONSE = await fetch(API_URL, {
+  	  	  	method: "POST",
+  	  	  	headers: HEADERS
+  	  	});
+      
+  	  	if (!RESPONSE.ok) {
+  	  	  throw await RESPONSE.json();
+  	  	}
+  	} 
+    catch (error) 
+    {
+  	  	_apiExceptionHandler(error, "Stop Live Schedule Failed");
+  	}
 }
 
 
@@ -5800,21 +6173,30 @@ function _apiExceptionHandler(error, message) {
         throw new Error(message);
     }
 
-    
-    console.log(typeof(error));
     // Check if error is a string
     if (typeof error === "string") {
         throw new Error(`${message}: ${error}`);
     }
-    else if (error.errors || error.errors.length !== 0)
+    else if (error.errors)
     {
-        let errorString = "";
-        for (let key in error.errors) {
-            if (Object.prototype.hasOwnProperty.call(error.errors, key)) {
-              errorString += `${key}: ${error.errors[key]}\n`;
+        if (Array.isArray(error.errors)) {
+            let errorString = "";
+            for (let key in error.errors) {
+                if (Object.prototype.hasOwnProperty.call(error.errors, key)) {
+                  errorString += `${key}: ${error.errors[key]}\n`;
+                }
             }
+            throw new Error(`${message}: ${errorString}`);
+        } 
+        else if (typeof error.errors === "object") {
+            let errorString = "";
+            for (let key in error.errors) {
+                if (Object.prototype.hasOwnProperty.call(error.errors, key)) {
+                  errorString += `${key}: ${error.errors[key]}\n`;
+                }
+            }
+            throw new Error(`${message}: ${errorString}`);
         }
-        throw new Error(`${message}: ${errorString}`);
     }
     else
     {
