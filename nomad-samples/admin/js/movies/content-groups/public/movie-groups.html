@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Movie Groups</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="movie-groups.css">
+
+    <!-- JS -->
+    <script type="module" src="movie-groups.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Movie Groups</h1>
+    <h2>Create Movie Group</h2>
+    <form id="createForm">
+        <label for="createName">Movie Group Name:</label>
+        <input type="text" id="createName">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Get Movie Groups</h2>
+    <form id="getGroupsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Get Movie Group</h2>
+    <form id="getGroupForm">
+        <label for="getGroupId">Movie Group Id:</label>
+        <input type="text" id="getGroupId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+
+    <h2>Add Movie To Movie Group</h2>
+    <form id="addForm">
+        <label for="addGroupId">Movie Group Id:</label>
+        <input type="text" id="addGroupId" required>
+
+        <label for="addContentIds">Movie Ids (separate by comma):</label>
+        <input type="text" id="addContentIds" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Remove Movie From Movie Group</h2>
+    <form id="removeForm">
+        <label for="removeGroupId">Movie Group Id:</label>
+        <input type="text" id="removeGroupId" required>
+
+        <label for="removeContentIds">Movie Ids (separate by comma):</label>
+        <input type="text" id="removeContentIds" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Rename Movie Group</h2>
+    <form id="renameForm">
+        <label for="renameGroupId">Movie Group Id:</label>
+        <input type="text" id="renameGroupId" required>
+
+        <label for="renameGroup">New Movie Group Name:</label>
+        <input type="text" id="renameGroup" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Add Shared Users To Movie Group</h2>
+    <form id="shareForm">
+        <label for="shareGroupId">Movie Group Id:</label>
+        <input type="text" id="shareGroupId" required>
+
+        <label for="sharedUserIds">User Ids (separated by comma):</label>
+        <input type="text" id="sharedUserIds" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Remove Shared Users To Movie Group</h2>
+    <form id="stopShareForm">
+        <label for="stopSharingGroupId">Movie Group Id:</label>
+        <input type="text" id="stopSharingGroupId" required>
+
+        <label for="removeSharedUserIds">User Id (separated by comma):</label>
+        <input type="text" id="removeSharedUserId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Delete Movie Group</h2>
+    <form id="deleteForm">
+        <label for="deleteGroupId">Movie Group Id:</label>
+        <input type="text" id="deleteGroupId" required>
+        
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

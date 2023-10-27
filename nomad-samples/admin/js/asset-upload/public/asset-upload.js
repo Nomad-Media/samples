@@ -1,7 +1,5 @@
 const START_FORM = document.getElementById("startForm");
 
-sessionStorage.clear();
-
 START_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
