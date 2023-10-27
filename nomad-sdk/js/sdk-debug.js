@@ -259,6 +259,7 @@ class NomadSDK {
                 // Schedule a refresh slightly before token expiration
                 this.refreshTimer = setTimeout(async () => {
                     await this.__refreshToken();
+                    this.__scheduleTokenRefresh();
                 }, remainingTime - 5000); // Refresh 5 seconds before expiration
             }
         }
