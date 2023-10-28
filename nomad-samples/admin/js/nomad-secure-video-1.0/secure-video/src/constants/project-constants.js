@@ -1,2 +1,1 @@
-export const CLIENT_ID = "demo1";
-export const SERVER_URL = `https://admin-app2.${CLIENT_ID}.nomad-cms.com/api`;
+export const ADMIN_API_URL = "https://admin-app.dev-05.demos.media/api";

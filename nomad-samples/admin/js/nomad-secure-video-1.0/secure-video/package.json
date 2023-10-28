@@ -10,11 +10,11 @@
     "author": "Gabe",
     "license": "ISC",
     "devDependencies": {
-        "parcel": "^2.0.0-rc.0",
+        "parcel": "^2.10.1",
         "video.js": "^7.14.3"
     },
     "scripts": {
-        "start": "parcel serve ./src/sync.html",
-        "build": "parcel build --no-source-maps --no-content-hash --dist-dir ./src/dist ./src/sync.html"
+        "start": "parcel serve ./src/secure-video.html --port 4200",
+        "build": "parcel build --no-source-maps --no-content-hash --dist-dir ./src/dist ./src/secure-video.html"
     }
 }

@@ -557,6 +557,7 @@ class NomadSDK {
 
         try
         {
+            console.log(PROPERTIES);
             const UPDATE_CONTENT_INFO = await _updateContent(this.token, this.config.serviceApiUrl, 
                 CONTENT_ID, CONTENT_DEFINITION_ID, PROPERTIES, LANGUAGE_ID, this.debugMode);
             _printDatetime(`Content updated: ${CONTENT_ID}`);

@@ -10,7 +10,7 @@ export default async function getRelatedVideoCookies(assetId, relatedAssetId, au
     headers.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/admin/asset/${assetId}/set-cookies/${relatedAssetId}`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/admin/asset/${assetId}/set-cookies/${relatedAssetId}`, {
         method: "GET",
         headers: headers,
     });
