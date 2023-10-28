@@ -10,7 +10,7 @@ export default async function getAssetDetails(assetId, authToken) {
     headers.append("Authorization", `Bearer ${authToken}`);
 
     // Send the request
-    const response = await fetch(`${prjConstants.SERVER_URL}/admin/asset/${assetId}/detail`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/admin/asset/${assetId}/detail`, {
         method: "GET",
         headers: headers,
     });

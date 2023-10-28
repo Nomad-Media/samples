@@ -20,7 +20,7 @@ export default async function login(username, password) {
     };
 
     // Send the request
-    const response = await fetch(`https://app.${prjConstants.CLIENT_ID}.nomad-cms.com/api/account/login`, {
+    const response = await fetch(`${prjConstants.ADMIN_API_URL}/account/login`, {
         method: "POST",
         headers: headers,
         body: JSON.stringify(body),
