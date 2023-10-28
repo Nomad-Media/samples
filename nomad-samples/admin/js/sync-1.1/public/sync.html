@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>CRUD</title>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Prism JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.25.0/themes/prism-coy.min.css" integrity="sha512-CKzEMG9cS0+lcH4wtn/UnxnmxkaTFrviChikDEk1MAWICCSN59sDWIF0Q5oDgdG9lxVrvbENSV1FtjLiBnMx7Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="sync.css" />
+
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- JS -->
+    <script type="module" src="sync.js" defer></script>
+</head>
+
+<body>
+
+    <h1>CRUD</h1>
+    <h3>Create/Update Movie</h3>
+    <form id="createForm">
+        <label for="typeSelect">Create or Update:</label>
+        <select id="typeSelect">
+            <option value="Create">Create</option>
+            <option value="Update">Update</option>
+        </select>
+        <div id="updateIdDiv" hidden="true">
+            <label for="updateId">Movie Id:</label>
+            <input type="text" id="updateId">
+        </div>
+
+        <label for="title">Title:</label>
+        <input type="text" id="title">
+        
+        <label for="plot">Plot:</label>
+        <input type="text" id="plot">
+
+        <label for="date">Release Date:</label>
+        <input type="date" id="date">
+        
+        <div id="genreDiv">
+            <label for="genreSelect">Genre:</label>
+            <select id="genreSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="performerDiv">
+            <label for="performerSelect">Performer:</label>
+            <select id="performerSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="tagDiv">
+            <label for="tagSelect">Tag:</label>
+            <select id="tagSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="ratingDiv">
+            <label for="ratingSelect">Rating:</label>
+            <select id="ratingSelect"></select>
+            <br><br>
+        </div>
+
+        <label for="imageFile">Choose an image file to upload:</label>
+        <input type="file" id="imageFile">
+
+        <label for="videoFile">Choose a video file to upload:</label>
+        <input type="file" id="videoFile">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Sync</h3>
+    <form id="syncForm">
+        <button type="submit">Sync</button>
+    </form>
+
+    <h3>Delete Movie</h3>
+    <form id="deleteForm">
+        <label for="deleteId">Movie Id:</label>
+        <input type="deleteId" id="deleteId">
+
+        <br><br>
+        <button type="submit">Delete</button>
+    </form>
+
+
+</body>
+</html>
