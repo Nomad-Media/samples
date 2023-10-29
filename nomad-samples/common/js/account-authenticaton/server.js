@@ -17,8 +17,6 @@ const port = 4200;
 app.use(express.json());
 app.use(express.static(__dirname + '/public'));
 
-const MOVIE_CONTENT_DEFINITION_ID = "eb710e28-7c44-492e-91f9-8acd0cd9331c";
-
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/account-authentication.html');
 });
