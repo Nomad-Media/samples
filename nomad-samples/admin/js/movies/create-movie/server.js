@@ -170,8 +170,6 @@ app.post('/search-movies', upload.none(), async (req, res) =>
 {
     try
     {
-        console.log(req.body);
-
         const FILTERS = [{
             fieldName: "contentDefinitionId",
             operator: "Equals",
