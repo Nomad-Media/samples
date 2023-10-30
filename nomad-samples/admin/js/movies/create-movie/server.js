@@ -166,6 +166,109 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
     }
 });
 
+app.post('/search-movies', upload.none(), async (req, res) =>
+{
+    try
+    {
+        console.log(req.body);
+
+        const FILTERS = [{
+            fieldName: "contentDefinitionId",
+            operator: "Equals",
+            values: MOVIE_CONTENT_DEFINITION_ID
+        }];
+
+        if (req.body.fieldName)
+        {
+            if (typeof req.body.fieldName === 'string') 
+            {
+                FILTERS.push({
+                    fieldName: req.body.fieldName,
+                    operator: req.body.operator,
+                    values: req.body.value,
+                });
+            } 
+            else 
+            {
+                for (let idx = 0; idx < req.body.value.length; ++idx)
+                {
+                    FILTERS.push({
+                        fieldName: req.body.fieldName[idx],
+                        operator: req.body.operator[idx],
+                        values: req.body.value[idx],
+                    });
+                }
+            }
+        }
+
+        const SORT_FIELDS = [];
+        if (req.body.sortFieldName)
+        {
+            if (typeof req.body.sortFieldName === 'string') 
+            {
+                SORT_FIELDS.push({
+                    fieldName: req.body.sortFieldName,
+                    sortType: req.body.sortType,
+                });
+            }
+            else
+            {
+                for (let idx = 0; idx < req.body.sortFieldName.length; ++idx)
+                {
+                    SORT_FIELDS.push({
+                        fieldName: req.body.sortFieldName[idx],
+                        sortType: req.body.sortType[idx],
+                    });
+                }
+            }
+        }
+
+        const RESULT_FIELD_NAMES = Array.isArray(req.body.resultFieldNames) ? [req.body.resultFieldNames] : req.body.resultFieldNames;
+
+        const SEARCH_MOVIE_INFO = await NomadSDK.search(req.body.searchQuery,
+            req.body.pageOffset, req.body.pageSize, FILTERS, SORT_FIELDS,
+            RESULT_FIELD_NAMES, req.body.similarAssetId, req.body.minScore, 
+            req.body.excludeTotalRecordCount, req.body.filterBinder);
+
+        res.status(200).json(SEARCH_MOVIE_INFO);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/get-movie', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const GET_MOVIE_INFO = await NomadSDK.getContent(req.body.getId, MOVIE_CONTENT_DEFINITION_ID);
+
+        res.status(200).json(GET_MOVIE_INFO);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/delete-movie', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const DELETE_MOVIE_INFO = await NomadSDK.deleteContent(req.body.deleteId);
+
+        res.status(200).json(DELETE_MOVIE_INFO);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
