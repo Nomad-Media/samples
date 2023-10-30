@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Search</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="search.css">
+
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- JS -->
+    <script type="module" src="search.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Search</h1>
+    <form id="searchForm">
+        <label for="pageOffset">Page Offset:</label>
+        <input type="text" id="pageOffset">
+
+        <label for="pageSize">Page Size:</label>
+        <input type="text" id="pageSize">
+
+        <label for="searchQuery">Search Query:</label>
+        <input type="text" id="searchQuery">
+
+        <label for="minScore">Min Score:</label>
+        <input type="minScore" id="minScore">
+
+        <label for="excludeTotalRecordCount">Exclude Total Record Count:</label>
+        <select id="excludeTotalRecordCount">
+            <option value="True" selected>True</option>
+            <option value="False">False</option>
+        </select>
+
+        <label for="similarAssetId">Similar Asset Id:</label>
+        <input type="similarAssetId" id="similarAssetId">
+
+        <label for="filterBinder">Filter Binder:</label>
+        <input type="filterBinder" id="filterBinder">
+
+        <h3>Filters</h3>
+        <div id="filtersDiv"></div>
+        <br><br>
+        <button type="button" id="addFilterButton">Add Filter</button>
+
+        <label for="resultFieldNames">Result Field Names</label>
+        <select class="select2" id="resultFieldNames" multiple>
+            <option value="Content Definition Id">Content Definition Id</option>
+            <option value="Content Definition Title">Content Definition Title</option>
+            <option value="Plot">Plot</option>
+            <option value="Genre">Genre</option>
+            <option value="Release Date">Release Date</option>
+            <option value="Image">Image</option>
+            <option value="Movie File">Movie File</option>
+        </select>
+
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2();
+            });
+        </script>
+
+
+        <h3>Sort Fields</h3>
+        <div id="sortFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="addSortFieldsButton">Add Sort Field</button>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
