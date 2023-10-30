@@ -141,7 +141,7 @@ class NomadSDK {
         await this.login();
 
         // Schedule token refresh
-        this._scheduleTokenRefresh();
+        this.__scheduleTokenRefresh();
     }
 
     // account
@@ -248,7 +248,7 @@ class NomadSDK {
      * Updates the token class variable.
      * @throws {Error} - An error is thrown if the token refresh fails.
      */ 
-    _scheduleTokenRefresh() {
+    __scheduleTokenRefresh() {
         if (this.token && this.expirationSeconds) {
             const remainingTime = this.expirationSeconds - Date.now();
             if (remainingTime > 0) {
@@ -557,7 +557,6 @@ class NomadSDK {
 
         try
         {
-            console.log(PROPERTIES);
             const UPDATE_CONTENT_INFO = await _updateContent(this.token, this.config.serviceApiUrl, 
                 CONTENT_ID, CONTENT_DEFINITION_ID, PROPERTIES, LANGUAGE_ID, this.debugMode);
             _printDatetime(`Content updated: ${CONTENT_ID}`);
@@ -6560,7 +6559,7 @@ async function _addContentsToContentGroup(AUTH_TOKEN, URL, CONTENT_GROUP_ID, CON
 
 async function _createContentGroup(AUTH_TOKEN, URL, NAME, DEBUG_MODE) 
 {
-    const API_URL = `${URL}/contentgroup`;
+    const API_URL = `${URL}/contentGroup`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -6568,7 +6567,7 @@ async function _createContentGroup(AUTH_TOKEN, URL, NAME, DEBUG_MODE)
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     const BODY = {};
-    if (NAME ) BODY.name = NAME;
+    if (NAME) BODY.name = NAME;
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
