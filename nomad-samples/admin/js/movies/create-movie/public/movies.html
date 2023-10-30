@@ -105,62 +105,48 @@
         <label for="searchQuery">Search Query:</label>
         <input type="text" id="searchQuery">
 
+        <label for="minScore">Min Score:</label>
+        <input type="minScore" id="minScore">
+
+        <label for="excludeTotalRecordCount">Exclude Total Record Count:</label>
+        <select id="excludeTotalRecordCount">
+            <option value="True" selected>True</option>
+            <option value="False">False</option>
+        </select>
+
+        <label for="similarAssetId">Similar Asset Id:</label>
+        <input type="similarAssetId" id="similarAssetId">
+
+        <label for="filterBinder">Filter Binder:</label>
+        <input type="filterBinder" id="filterBinder">
+
         <h3>Filters</h3>
-        <div id="filtersContainer">
-           
-        </div>
+        <div id="filtersDiv"></div>
         <br><br>
-        <button type="button" id="addButton">Add Filter</button>
+        <button type="button" id="addFilterButton">Add Filter</button>
 
-        <div class="checkbox-dropdown">
-            <h3>Result Field Names</h3>
-            <div id="checkboxList">
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="contentDefinitionId">ContentDefinitionId
-                </label>
+        <label for="resultFieldNames">Result Field Names</label>
+        <select class="select2" id="resultFieldNames" multiple>
+            <option value="Content Definition Id">Content Definition Id</option>
+            <option value="Content Definition Title">Content Definition Title</option>
+            <option value="Plot">Plot</option>
+            <option value="Genre">Genre</option>
+            <option value="Release Date">Release Date</option>
+            <option value="Image">Image</option>
+            <option value="Movie File">Movie File</option>
+        </select>
 
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="contentDefinitionTitle">ContentDefinitionTitle
-                </label>
-
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="plot">Plot
-                </label>
-            
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="genre">Genre
-                </label>
-            
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="releaseDate">Release Date
-                </label>
-            
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="image">Image
-                </label>
-            
-                <label id="checkbox">
-                    <input type="checkbox" name="fieldCheckbox" value="movieFile">Movies
-                </label>
-            </div>
-        </div>
+        <script>
+            $(document).ready(function() {
+                $('.select2').select2();
+            });
+        </script>
 
 
         <h3>Sort Fields</h3>
-        <label for="contentSortFieldName">Field Name:</label>
-        <input type="text" id="contentSortFieldName">
-    
-        <label for="contentSortType">Sort By:</label>
-        <select id="contentSortType">
-            <option value="Ascending" selected>Ascending</option>
-            <option value="Descending">Descending</option>
-        </select>
-
-        <label for="isAdmin">Which URL do you want to user?</label>
-        <select id="isAdmin">
-            <option value="false" selected>Portal</option>
-            <option value="true">Admin</option>
-        </select>
+        <div id="sortFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="addSortFieldsButton">Add Sort Field</button>
 
         <br><br>
         <button type="submit">Submit</button>
