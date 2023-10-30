@@ -23,16 +23,33 @@ app.get('/', (req, res) => {
 
 app.post('/forgot-password', upload.none(), async (req, res) => 
 {
-    const RESPONSE = await NomadSDK.forgotPassword(req.body.forgotPasswordUsername);
-    console.log(RESPONSE);
-    res.send(RESPONSE);
-});
+    try
+    {
+        await NomadSDK.forgotPassword(req.body.forgotPasswordUsername);
+
+        res.send(200);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+}); 
 
 app.post('/reset-password', upload.none(), async (req, res) =>
 {
-    const RESPONSE = await NomadSDK.resetPassword(req.body.resetPasswordUsername, 
-        req.body.resetPasswordCide, req.body.resetPasswordNewPassword);
-    console.log(RESPONSE);
+    try
+    {
+        await NomadSDK.resetPassword(req.body.resetPasswordUsername, 
+            req.body.resetPasswordCide, req.body.resetPasswordNewPassword);
+
+        res.send(200);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
 });
 
 app.listen(port, () => {
