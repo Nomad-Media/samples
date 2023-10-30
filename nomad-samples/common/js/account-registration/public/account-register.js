@@ -1,5 +1,5 @@
 const REGISTER_FORM = document.getElementById("registerForm");
-const VERIFY_FORM = document.getElementById("tokenForm");
+const VERIFY_FORM = document.getElementById("verifyForm");
 const RESEND_FORM = document.getElementById("resendForm");
 
 REGISTER_FORM.addEventListener("submit", async function (event) 
