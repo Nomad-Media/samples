@@ -23,16 +23,16 @@ app.get('/', (req, res) => {
 
 app.post('/forgot-password', upload.none(), async (req, res) => 
 {
-    const response = await NomadSDK.forgotPassword(req.body.forgotPasswordUsername);
-    console.log(response);
-    res.send(response);
+    const RESPONSE = await NomadSDK.forgotPassword(req.body.forgotPasswordUsername);
+    console.log(RESPONSE);
+    res.send(RESPONSE);
 });
 
 app.post('/reset-password', upload.none(), async (req, res) =>
 {
-    const response = await NomadSDK.resetPassword(req.body.resetPasswordUsername, 
+    const RESPONSE = await NomadSDK.resetPassword(req.body.resetPasswordUsername, 
         req.body.resetPasswordCide, req.body.resetPasswordNewPassword);
-    console.log(response);
+    console.log(RESPONSE);
 });
 
 app.listen(port, () => {
