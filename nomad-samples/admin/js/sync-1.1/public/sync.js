@@ -100,7 +100,9 @@ CREATE_FORM.addEventListener("submit", async function (event) {
 
     const FORM_DATA = getElements(CREATE_FORM);
 
-    await sendRequest("/create", "POST", FORM_DATA);
+    console.log(FORM_DATA);
+
+    await sendRequest("/create-movie", "POST", FORM_DATA);
 });
 
 
