@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk-debug.js";
+import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
 import express from 'express';
 import multer from 'multer';
 
@@ -28,7 +28,7 @@ app.post('/invite', upload.none(), async (req, res) =>
             req.body.contentDefinitionId, req.body.emails.split(","), 
             req.body.contentSecurityAttribute);
 
-        res.send(INVITE);
+        req.status(200).json(INVITE);
     }
     catch (error)
     {
@@ -45,7 +45,7 @@ app.post('/remove-invite', upload.none(), async (req, res) =>
             req.body.contentDefinitionId, req.body.emails.split(","), 
             req.body.contentSecurityAttribute);
 
-        res.send(REMOVE);
+        req.status(200).json(REMOVE);
     }
     catch (error)
     {
@@ -61,7 +61,7 @@ app.post('/register', upload.none(), async (req, res) =>
         const REGISTER = await NomadSDK.registerGuest(req.body.email, 
             req.body.firstName, req.body.lastName, req.body.password);
 
-        res.send(REGISTER);
+        req.status(200).json(REGISTER);
     }
     catch (error)
     {
@@ -76,7 +76,7 @@ app.get('/ping', upload.none(), async (req, res) =>
     {
         const PING = await NomadSDK.ping()
 
-        res.send(PING);
+        req.status(200).json(PING);
     }
     catch (error)
     {
@@ -91,7 +91,7 @@ app.get('/ppq', upload.none(), async (req, res) =>
     {
         const PPQ = await NomadSDK.participantPanelQuery();
 
-        res.send(PPQ);
+        req.status(200).json(PPQ);
     }
     catch (error)
     {
