@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Account Updates</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="account-updates.css">
+
+    <!-- JS -->
+    <script type="module" src="account-updates.js" defer></script>
+</head>
+
+<body>
+    <h1>Account Updates</h1>
+    <h3>Update User</h3>
+
+    <form id="updateForm">
+        <label for="address1">Address1:</label>
+        <input type="text" id="address1">
+
+        <label for="address2">Address2:</label>
+        <input type="text" id="address2">
+
+        <label for="city">City:</label>
+        <input type="text" id="city">
+
+        <label for="country">Country:</label>
+        <select id="country"></select>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName">
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName">
+
+        <label for="organization">Organizaion:</label>
+        <input type="text" id="organization">
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber">
+
+        <label for="phoneExt">Phone Extention:</label>
+        <input type="text" id="phoneExt">
+
+        <label for="postalCode">Postal Code:</label>
+        <input type="text" id="postalCode">
+
+        <label for="state">State:</label>
+        <select id="state"></select>
+
+        <br><br>
+        <button type="submit">Update</button>
+    </form>
+
+    <h3> Change Email </h3>
+    <form id="changeEmailForm">
+        <label for="changeEmail">Change Email:</label>
+        <input type="text" id="changeEmail" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3> Change Password </h3>
+    <form id="changePassForm">
+        <label for="currentPassword">Current Password:</label>
+        <input type="text" id="currentPassword" required>
+
+        <label for="newPassword">New Password:</label>
+        <input type="text" id="newPassword" required>
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

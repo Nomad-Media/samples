@@ -102,6 +102,7 @@ import config from "./config/config.js";
 
 
 
+
 /**
  * @class NomadSDK
  * @classdesc This class is used to interact with the Nomad API.
@@ -3194,6 +3195,69 @@ class NomadSDK {
         {
             _printDatetime(`Video tracking failed to get: ${ASSET_ID}`);
             throw error;
+        }
+    }
+
+    // misc functions
+    /**
+     * @function miscFunctons
+     * @async
+     * @description Calls any nomad function given URL method and body.
+     * @param {string} URL_PATH - The URL path of the function.
+     * @param {string} METHOD - The method of the function.
+     * @param {JSON | null} BODY - The body of the api call.
+     * @param {boolean | null} NOT_API_PATH - If the path has /api.
+     * @returns {Promise<JSON>} - A promise that resolves when the function is called.
+     * Returns the information of the called function.
+     * @throws {Error} - An error is thrown if the function fails to call.
+     */
+
+    async miscFunctions(URL_PATH, METHOD, BODY, NOT_API_PATH)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        try
+        {
+            let API_URL = `${this.config.serviceApiUrl}/${URL_PATH}`;
+            if (NOT_API_PATH) {
+                API_URL = API_URL.replace('/api', '');
+                API_URL = API_URL.replace('app-api.', '');
+                API_URL = API_URL.replace('admin-app', '');
+            }
+
+            const HEADERS = new Headers();
+            HEADERS.append("Content-Type", "application/json");
+            HEADERS.append("Authorization", `Bearer ${this.token}`);
+
+            if (this.debugMode) 
+            {
+                console.log(`URL: ${API_URL}\nMETHOD: ${METHOD}`);
+                if (BODY) console.log(`BODY: ${JSON.stringify(BODY, null, 4 )}`);
+            }
+
+            const REQUEST = {
+                method: METHOD,
+                headers: HEADERS
+            };
+            if (BODY) {
+                REQUEST.body = JSON.stringify(BODY);
+            }
+
+            const RESPONSE = await fetch(API_URL, REQUEST);
+
+            if (!RESPONSE.ok)
+            {
+                throw await RESPONSE.json();
+            }
+
+            return await RESPONSE.json();
+        }
+        catch (error)
+        {
+            _apiExceptionHandler(error, "API call failed");
         }
     }
 }
@@ -6462,14 +6526,17 @@ async function _updateUser(AUTH_TOKEN, URL, ADDRESS, ADDRESS2, CITY, COUNTRY,
   
   	const BODY = {};
 
-    const COUNTRY_SELECTED = _getCountries(URL, DEBUG_MODE).find(country => country["name"] === COUNTRY);
-    const STATE_SELECTED = _getStates(URL, DEBUG_MODE).find(state => state["name"] === STATE);
+    const COUNTRY_INFO = await _getCountries(AUTH_TOKEN, URL, DEBUG_MODE);
+    const COUNTRY_SELECTED = COUNTRY_INFO.find(country => country["label"] === COUNTRY);
+
+    const STATE_INFO = await _getStates(AUTH_TOKEN, URL, DEBUG_MODE);
+    const STATE_SELECTED = STATE_INFO.find(state => state["label"] === STATE)["label"];
 
     const keyValues = {
         address: ADDRESS,
         address2: ADDRESS2,
         city: CITY,
-        stateId: STATE_SELECTED,
+        state: STATE_SELECTED,
         country: COUNTRY_SELECTED,
         firstName: FIRST_NAME,
         lastName: LAST_NAME,
