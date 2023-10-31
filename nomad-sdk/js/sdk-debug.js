@@ -3185,10 +3185,9 @@ class NomadSDK {
 
         try
         {
-            const GET_VIDEO_TRACKING_INFO = await _getVideoTracking(this.token, 
+            await _getVideoTracking(this.token, 
                 this.config.serviceApiUrl, ASSET_ID, TRACKING_EVENT, SECONDS, this.debugMode);
             _printDatetime(`Video tracking gotten: ${ASSET_ID}`);
-            return GET_VIDEO_TRACKING_INFO;
         }
         catch (error)
         {
@@ -7267,8 +7266,6 @@ async function _getVideoTracking(AUTH_TOKEN, URL, ASSET_ID, TRACKING_EVENT, SECO
         if (!RESPONSE.ok) {
             throw await RESPONSE.json()
         }
-        
-        return await RESPONSE.json();
     }
     catch (error)
     {
