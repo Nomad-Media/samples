@@ -29,7 +29,7 @@ app.post('/register', upload.none(), async (req, res) =>
         const REGISTER_INFO = await NomadSDK.register(req.body.email, req.body.firstName,
             req.body.lastName, req.body.password);
 
-        res.send(200).json(REGISTER_INFO);
+        res.stauts(200).json(REGISTER_INFO);
     }
     catch (error)
     {
@@ -44,7 +44,7 @@ app.post('/verify', upload.none(), async (req, res) =>
     {
         const VERIFY_INFO = await NomadSDK.verify(req.body.email, req.body.code);
 
-        res.send(200).json(VERIFY_INFO);
+        res.status(200).json(VERIFY_INFO);
     }
     catch (error)
     {
@@ -59,7 +59,7 @@ app.post('/resend', upload.none(), async (req, res) =>
     {
         const RESEND_INFO = await NomadSDK.resend(req.body.email);
 
-        res.send(200).json(RESEND_INFO);
+        res.status(200).json(RESEND_INFO);
     }
     catch (error)
     {

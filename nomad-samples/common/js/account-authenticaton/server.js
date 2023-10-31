@@ -27,7 +27,7 @@ app.post('/forgot-password', upload.none(), async (req, res) =>
     {
         await NomadSDK.forgotPassword(req.body.forgotPasswordUsername);
 
-        res.send(200);
+        res.status(200);
     }
     catch (error)
     {
@@ -43,7 +43,7 @@ app.post('/reset-password', upload.none(), async (req, res) =>
         await NomadSDK.resetPassword(req.body.resetPasswordUsername, 
             req.body.resetPasswordCide, req.body.resetPasswordNewPassword);
 
-        res.send(200);
+        res.status(200);
     }
     catch (error)
     {
