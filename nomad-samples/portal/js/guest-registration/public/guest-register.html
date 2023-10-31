@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Register Guest User</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="guest-register.css">
+
+    <!-- JS -->
+    <script type="module" src="guest-register.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Invite Guest User</h1>
+
+    <h3>Invite User</h3>
+    <form id="inviteForm">
+        <label for="contentId">Enter Content Id:</label>
+        <input type="text" id="contentId">
+
+        <label for="contentDefinitionId">Enter Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId">
+
+        <label for="emails">Enter Emails (separated by comma):</label>
+        <input type="text" id="emails">
+
+        <label for="contentSecurityAttribute">Enter Content Security Attribute:</label>
+        <select id="contentSecurityAttribute">
+            <option value="Undefined">Undefined</option>
+            <option value="Guest">Guest</option>
+            <option value="Demo">Demo</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Invite</button>
+    </form>
+
+    <h3>Remove Invite</h3>
+    <form id="removeInviteForm">
+        <label for=contentId>Enter Content Id:</label>
+        <input type="text" id="contentId">
+
+        <label for="contentDefinitionId">Enter Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId">
+
+        <label for="email">Enter Emails (separated by comma):</label>
+        <input type="text" id="email" required>
+
+        <label for="contentSecurityAttribute">Enter Content Security Attribute:</label>
+        <select id="contentSecurityAttribute">
+            <option value="Undefined">Undefined</option>
+            <option value="Guest">Guest</option>
+            <option value="Demo">Demo</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Register Guest</h3>
+    <form id="registerForm">
+        <label for="email">Enter Email:</label>
+        <input type="text" id="email" required>
+
+        <label for="firstName">Enter First Name:</label>
+        <input type="text" id="firstName">
+
+        <label for="lastName">Enter Last Name:</label>
+        <input type="text" id="lastName">
+
+        <label for="password">Enter Password:</label>
+        <input type="password" id="password" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Ping User</h3>
+    <form id="pingForm">
+        <button type="submit">Ping</button>
+    </form>
+
+    <h3>Participant Panel Query</h3>
+    <form id="ppqForm">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
