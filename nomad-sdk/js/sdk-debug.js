@@ -2927,8 +2927,7 @@ class NomadSDK {
      * @description Searches for media.
      * @param {string | null} SEARCH_QUERY - The search query of the search.
      * @param {Array<string> | null} IDS - The IDs of the media to be searched.
-     * @param {string | null} FIELD_NAME - The field name of the search.
-     * @param {string | null} SORT_TYPE - The sort type of the search.
+     * @param {Array<JSON> | null} SORT_FIELDS - The sort fields of the search.
      * @param {int | null} PAGE_OFFSET - The page offset of the search.
      * @param {int | null} PAGE_SIZE - The page size of the search.
      * @returns {Promise<JSON>} - A promise that resolves when the media are searched.
@@ -2936,7 +2935,7 @@ class NomadSDK {
      * @throws {Error} - An error is thrown if the media fail to search.
      * @throws {Error} - An error is thrown if the API type is not portal.
      */ 
-    async mediaSearch(SEARCH_QUERY, IDS, FIELD_NAME, SORT_TYPE, PAGE_OFFSET, PAGE_SIZE)
+    async mediaSearch(SEARCH_QUERY, IDS, SORT_FIELDS, PAGE_OFFSET, PAGE_SIZE)
     {
         if (this.token === null)
         {
@@ -2953,7 +2952,7 @@ class NomadSDK {
         try
         {
             const MEDIA_SEARCH_INFO = await _mediaSearch(this.token, this.config.serviceApiUrl, 
-                SEARCH_QUERY, IDS, FIELD_NAME, SORT_TYPE, PAGE_OFFSET, PAGE_SIZE, this.debugMode);
+                SEARCH_QUERY, IDS, SORT_FIELDS, PAGE_OFFSET, PAGE_SIZE, this.debugMode);
             _printDatetime(`Media search complete`);
             return MEDIA_SEARCH_INFO;
         }
@@ -7193,7 +7192,7 @@ async function _createForm(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, FORM_INFO, DE
 
 
 
-async function _mediaSearch(AUTH_TOKEN, URL, SEARCH_QUERY, IDS, FIELD_NAME, SORT_TYPE, 
+async function _mediaSearch(AUTH_TOKEN, URL, SEARCH_QUERY, IDS, SORT_FIELDS, 
     PAGE_OFFSET, PAGE_SIZE, DEBUG_MODE) 
 {
     const API_URL = `${URL}/media/search`;
@@ -7206,12 +7205,7 @@ async function _mediaSearch(AUTH_TOKEN, URL, SEARCH_QUERY, IDS, FIELD_NAME, SORT
     const BODY = {  
         searchQuery: SEARCH_QUERY,
         ids: IDS,
-        sortFields: [  
-            {  
-                fieldName: FIELD_NAME,
-                sortType: SORT_TYPE  
-            }  
-        ]  
+        sortFields: SORT_FIELDS
     };
 
     PAGE_OFFSET ? BODY["pageOffset"] = PAGE_OFFSET : BODY["pageOffset"] = 0;
