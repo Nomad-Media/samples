@@ -26,7 +26,7 @@ app.post('/get-group', upload.none(), async (req, res) =>
     {
         const GROUP = await NomadSDK.getContentGroup(req.body.groupId);
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -41,7 +41,7 @@ app.get('/get-groups', upload.none(), async (req, res) =>
     {
         const GROUPS = await NomadSDK.getContentGroups();
 
-        res.send(GROUPS);
+        req.status(200).json(GROUPS);
     }
     catch (error)
     {
@@ -56,7 +56,7 @@ app.post('/create-group', upload.none(), async (req, res) =>
     {
         const GROUP = await NomadSDK.createContentGroup(req.body.name);
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -72,7 +72,7 @@ app.post('/add-content', upload.none(), async (req, res) =>
         const GROUP = await NomadSDK.addContentsToContentGroup(req.body.groupId, 
             req.body.contentIds.split(','));
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -88,7 +88,7 @@ app.post('/remove-content', upload.none(), async (req, res) =>
         const GROUP = await NomadSDK.removeContentsFromContentGroup(req.body.groupId, 
             req.body.contentIds.split(','));
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -104,7 +104,7 @@ app.post('/rename-group', upload.none(), async (req, res) =>
         const GROUP = await NomadSDK.renameContentGroup(req.body.groupId, 
             req.body.renameGroup);
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -120,7 +120,7 @@ app.post('/share-group', upload.none(), async (req, res) =>
         const GROUP = await NomadSDK.shareContentGroupWithUsers(req.body.groupId, 
             req.body.userIds.split(','));
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -136,7 +136,7 @@ app.post('/stop-sharing-group', upload.none(), async (req, res) =>
         const GROUP = await NomadSDK.stopSharingContentGroupWithUsers(req.body.groupId, 
             req.body.userIds.split(','));
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -152,7 +152,7 @@ app.post('/portal', upload.none(), async (req, res) =>
         const GROUP = await NomadSDK.getPortalGroups(req.body.groupNames.split(','), 
             req.body.portalId);
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
@@ -167,7 +167,7 @@ app.post('/delete-group', upload.none(), async (req, res) =>
     {
         const GROUP = await NomadSDK.deleteContentGroup(req.body.groupId);
 
-        res.send(GROUP);
+        req.status(200).json(GROUP);
     }
     catch (error)
     {
