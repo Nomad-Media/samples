@@ -1,9 +1,10 @@
 const config = {
-    "username": "USERNAME",
-    "password": "PASSWORD",
-    "serviceApiUrl": "SERVICE_API_URL",
-    "apiType": "API_TYPE",
-    "debugMode": "DEBUG_MODE",
+    "username": "***REMOVED***",
+    "password": "***REMOVED***!!",
+    "serviceApiUrl": "https://admin-app.dev-05.demos.media/api",
+    //"serviceApiUrl": "https://app-api.dev-05.demos.media/api",
+    "apiType": "admin",
+    "debugMode": true
 };
 
 export default config;
