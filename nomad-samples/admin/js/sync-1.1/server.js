@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
+import NomadSDK from "../../../../nomad-sdk/js/sdk-debug.js";
 
 import express from 'express';
 import multer from 'multer';
@@ -20,6 +20,11 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/sync.html');
 });
+
+const IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
+const IMAGE_ASSET_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
+const VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
+const VIDEO_ASSET_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
 
 const GENRE_CONTENT_DEFINITION_ID = "dbbace1f-ddb1-462b-9cae-c9be7d5990ac";
 const PERFORMER_CONTENT_DEFINITION_ID = "33cec5ca-6170-4237-842b-78bf1ef17932";
@@ -103,11 +108,79 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
             CONTENT_ID = req.body.updateId;
         }
 
-        const IMAGE_ID = await NomadSDK.uploadAsset(null, null, null, null, null, null, 'replace',
-            req.files.imageFile[0], null);
+        let image = null;
+        if (req.files.imageFile && req.body.imageId === "")
+        {
+            const IMAGE_ID = await NomadSDK.uploadAsset(null, null, null, null, null, null, 'replace',
+                req.files.imageFile[0], null);
 
-        const VIDEO_ID = await NomadSDK.uploadAsset(null, null, null, null, null, null, 'replace',
-            req.files.videoFile[0], null);
+            image = { id: IMAGE_ID, description: req.files.imageFile[0].originalname }
+        }
+        else
+        {
+            const IMAGE_INFO = await NomadSDK.search(null, null, null, 
+                [
+                    {
+                        fieldName: "parentId",
+                        operator: "Equals",
+                        values: IMAGE_ASSET_CONTENT_DEFINITION_ID,
+                    },
+                    {
+                        fieldName: "contentDefinitionId",
+                        operator: "Equals",
+                        values: IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
+                    },
+                    {
+                        fieldName: "assetType",
+                        operator: "Equals",
+                        values: 2
+                    },
+                    {
+                        fieldName: "id",
+                        operator: "Equals",
+                        values: req.body.imageId
+                    }
+                ], null, null, null, null, true, null);
+
+            image = { id: IMAGE_INFO[0].id, description: IMAGE_INFO[0].title };
+        }
+
+        let video = null;
+        if (req.files.movieFile && req.body.videoId === "")
+        {
+            const VIDEO_ID = await NomadSDK.uploadAsset(null, null, null, null, null, null, 'replace',
+                req.files.videoFile[0], null);
+
+            video = { id: VIDEO_ID, description: req.files.videoFile[0].originalname }
+        }
+        else
+        {
+            const VIDEO_INFO = await NomadSDK.search(null, null, null, 
+                [
+                    {
+                        fieldName: "parentId",
+                        operator: "Equals",
+                        values: VIDEO_ASSET_CONTENT_DEFINITION_ID,
+                    },
+                    {
+                        fieldName: "contentDefinitionId",
+                        operator: "Equals",
+                        values: VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
+                    },
+                    {
+                        fieldName: "assetType",
+                        operator: "Equals",
+                        values: 1
+                    },
+                    {
+                        fieldName: "id",
+                        operator: "Equals",
+                        values: req.body.videoId
+                    }
+                ], null, null, null, null, true, null);
+
+            video = { id: VIDEO_INFO[0].id, description: VIDEO_INFO[0].title };
+        }
 
         const MOVIE_INFO = await NomadSDK.updateContent(CONTENT_ID, MOVIE_CONTENT_DEFINITION_ID, {
             ...(req.body.title && { title: req.body.title }),
@@ -117,10 +190,8 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
             ...(req.body.performerSelect && { performers: req.body.performerSelect }),
             ...(req.body.tagSelect && { tags: req.body.tagSelect }),
             ...(req.body.ratingSelect && { rating: req.body.ratingSelect }),
-            ...(req.files["imageFile"] && { image: { id: IMAGE_ID,
-                description: req.files.imageFile[0].originalname } }),
-            ...(req.files["videoFile"] && { movieFile: { id: VIDEO_ID,
-                description: req.files.videoFile[0].originalname } }),
+            ...(req.files["imageFile"] && { image: image }),
+            ...(req.files["videoFile"] && { movieFile: video }),
         });
 
         res.status(200).json(MOVIE_INFO);
