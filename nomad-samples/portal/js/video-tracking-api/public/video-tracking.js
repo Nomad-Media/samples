@@ -62,13 +62,7 @@ async function sendRequest(PATH, METHOD, BODY)
         if (BODY) REQUEST["body"] = BODY;
         const RESPONSE = await fetch(PATH, REQUEST);
 
-        if (RESPONSE.ok)
-        {
-            const DATA = await RESPONSE.json();
-            console.log(DATA);
-            return DATA;
-        }
-        else
+        if (!RESPONSE.ok)
         {
             const INFO = await RESPONSE.json();
             console.error(JSON.stringify(INFO, null, 4));
