@@ -3876,6 +3876,7 @@ async function _getContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID,
 
 
 
+import deepEqual from "deep-equal";
 
 async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID,
     PROPERTIES, LANGUAGE_ID, DEBUG_MODE)
@@ -3888,29 +3889,38 @@ async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     // Build the payload body
-    const BODY = await _getContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
-        null, DEBUG_MODE);
+    let body = null;
+    try
+    {
+        body = await _getContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
+            null, DEBUG_MODE);
 
-    
-    if (BODY.contentDefinitionId !== CONTENT_DEFINITION_ID) BODY.contentDefinitionId = CONTENT_DEFINITION_ID;
-    if (BODY.contentId !== CONTENT_ID)
-    if (BODY.languageId !== LANGUAGE_ID)
+        
+        if (body.contentDefinitionId !== CONTENT_DEFINITION_ID) body.contentDefinitionId = CONTENT_DEFINITION_ID;
+        if (body.contentId !== CONTENT_ID) body.contentId = CONTENT_ID;
+        if (body.languageId !== LANGUAGE_ID) body.languageId = LANGUAGE_ID;
 
-    for (const property in PROPERTIES) {
-        if (BODY[property] !== PROPERTIES[property]) {
-            BODY[property] = PROPERTIES[property];
+        _updateProperties(body, PROPERTIES);
+    }
+    catch (error)
+    {
+        body = {
+            contentDefinitionId: CONTENT_DEFINITION_ID,
+            contentId: CONTENT_ID,
+            languageId: LANGUAGE_ID,
+            properties: PROPERTIES
         }
     }
     
     // Debug mode
-    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(body, null, 4 )}`);
 
     try
     {
         const RESPONSE = await fetch(API_URL, {
             method: "PUT",
             headers: HEADERS,
-            body: JSON.stringify(BODY),
+            body: JSON.stringify(body),
         });
 
         // Check for success
@@ -3923,6 +3933,32 @@ async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID
     catch (error)
     {
         _apiExceptionHandler(error, "Update Content Failed");
+    }
+}
+
+function _updateProperties(body, properties) {
+    for (const property in properties) {
+        if (Array.isArray(properties[property])) 
+        {
+            for (let i = 0; i < properties[property].length; ++i) 
+            {
+                if (!deepEqual(body.properties[property][i], properties[property][i])) 
+                {
+                    body.properties[property][i] = properties[property][i];
+                }
+            }
+        } 
+        else if (typeof properties[property] === 'object') 
+        {
+            if (!deepEqual(body.properties[property], properties[property])) 
+            {
+                body.properties[property] = properties[property];
+            }
+        }
+        else if (body.properties[property] !== properties[property]) 
+        {
+            body.properties[property] = properties[property];
+        }
     }
 }
 
