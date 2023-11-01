@@ -38,7 +38,7 @@ app.post('/get-genre-list', upload.none(), async (req, res) =>
     {
         const GENRE_LIST = await getGroups(GENRE_CONTENT_DEFINITION_ID);
 
-        res.status(200).json(GENRE_LIST);
+        res.status(200).json(GENRE_LIST.items);
     }
     catch (error)
     {
@@ -53,7 +53,7 @@ app.post('/get-performer-list', upload.none(), async (req, res) =>
     {
         const PERFORMER_LIST = await getGroups(PERFORMER_CONTENT_DEFINITION_ID);
 
-        res.status(200).json(PERFORMER_LIST);
+        res.status(200).json(PERFORMER_LIST.items);
     }
     catch (error)
     {
@@ -66,7 +66,16 @@ app.post('/get-tag-list', upload.none(), async (req, res) =>
 {
     try
     {
-        const TAG_LIST = await getGroups(TAG_CONTENT_DEFINITION_ID);
+        const TAG_LIST = [];
+        let offset = 0;
+        while (true)
+        {
+            const TAGS = await getGroups(TAG_CONTENT_DEFINITION_ID, offset, false);
+            console.log(TAGS);
+            TAG_LIST.push(...TAGS[items]);
+
+            if (TAGS.totalItemCount < 100) break;
+        }
 
         res.status(200).json(TAG_LIST);
     }
@@ -83,7 +92,7 @@ app.post('/get-rating-list', upload.none(), async (req, res) =>
     {
         const RATING_LIST = await getGroups(RATING_CONTENT_DEFINITION_ID);
 
-        res.status(200).json(RATING_LIST);
+        res.status(200).json(RATING_LIST.items);
     }
     catch (error)
     {
@@ -142,7 +151,7 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                     }
                 ], null, null, null, null, true, null);
 
-            image = { id: IMAGE_INFO[0].id, description: IMAGE_INFO[0].title };
+            image = { id: IMAGE_INFO.items[0].id, description: IMAGE_INFO.items[0].title };
         }
 
         let video = null;
@@ -179,7 +188,7 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                     }
                 ], null, null, null, null, true, null);
 
-            video = { id: VIDEO_INFO[0].id, description: VIDEO_INFO[0].title };
+            video = { id: VIDEO_INFO.items[0].id, description: VIDEO_INFO.items[0].title };
         }
 
         const MOVIE_INFO = await NomadSDK.updateContent(contentId, MOVIE_CONTENT_DEFINITION_ID, {
@@ -234,8 +243,8 @@ app.post('/sync', upload.none(), async (req, res) =>
             const MOVIE_RATING = await addUniqueContent(MOVIE.rating, RATING_CONTENT_DEFINITION_ID);
 
             let CORRESPONDING_NOMAD_MOVIE = null;
-            for (let index = 0; index < NOMAD_MOVIES.length; index++) {
-                const NOMAD_MOVIE = NOMAD_MOVIES[index];
+            for (let index = 0; index < NOMAD_MOVIES.items.length; index++) {
+                const NOMAD_MOVIE = NOMAD_MOVIES.items[index];
                 if (NOMAD_MOVIE.title === MOVIE.title) {
                     CORRESPONDING_NOMAD_MOVIE = NOMAD_MOVIE;
                     break;
@@ -325,9 +334,10 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-async function getGroups(GROUP_CONTENT_DEFINITION_ID)
+async function getGroups(GROUP_CONTENT_DEFINITION_ID, OFFSET = 0, 
+    EXCLUDE_TOTAL_RECORD_COUNT = true)
 {
-    const GROUP_LIST = await NomadSDK.search(null, null, null, 
+    const GROUP_LIST = await NomadSDK.search(null, OFFSET, null, 
         [
             {
                 fieldName: "contentDefinitionId",
@@ -339,14 +349,15 @@ async function getGroups(GROUP_CONTENT_DEFINITION_ID)
                 operator: "Equals",
                 values: "c66131cd-27fc-4f83-9b89-b57575ac0ed8"
             }
-        ], null, null, null, null, true, null);
+        ], null, null, null, null, EXCLUDE_TOTAL_RECORD_COUNT, null);
 
     return GROUP_LIST;
 }
 
 async function addUniqueContent(names, GROUP_CONTENT_DEFINITION_ID, IS_SLUGGED = true)
 {
-    const GROUP_LIST = await getGroups(GROUP_CONTENT_DEFINITION_ID);
+    const GROUP_LIST_INFO = await getGroups(GROUP_CONTENT_DEFINITION_ID);
+    const GROUP_LIST = GROUP_LIST_INFO.items;
 
     names = Array.isArray(names) ? names : [names];
 

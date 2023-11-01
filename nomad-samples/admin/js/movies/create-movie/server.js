@@ -38,7 +38,7 @@ app.post('/get-genre-list', upload.none(), async (req, res) =>
                 }
             ], null, null, null, null, true, null);
 
-        res.status(200).json(GENRE_LIST);
+        res.status(200).json(GENRE_LIST.items);
     }
     catch (error)
     {
@@ -61,7 +61,7 @@ app.post('/get-performer-list', upload.none(), async (req, res) =>
                     values: PERFORMER_CONTENT_DEFINITION_ID,
                 }
             ], null, null, null, null, true, null);
-        res.status(200).json(PERFORMER_LIST);
+        res.status(200).json(PERFORMER_LIST.items);
     }
     catch (error)
     {
@@ -84,7 +84,7 @@ app.post('/get-tag-list', upload.none(), async (req, res) =>
                     values: TAG_CONTENT_DEFINITION_ID,
                 }
             ], null, null, null, null, true, null);
-        res.status(200).json(TAG_LIST);
+        res.status(200).json(TAG_LIST.items);
     }
     catch (error)
     {
@@ -112,7 +112,7 @@ app.post('/get-rating-list', upload.none(), async (req, res) =>
                     values: "c66131cd-27fc-4f83-9b89-b57575ac0ed8"
                 }
             ], null, null, null, null, true, null);
-        res.status(200).json(RATING_LIST);
+        res.status(200).json(RATING_LIST.items);
     }
     catch (error)
     {
