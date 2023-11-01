@@ -266,8 +266,8 @@ app.post('/sync', upload.none(), async (req, res) =>
             const MOVIE_RATING = await addUniqueContent(MOVIE.rating, RATING_CONTENT_DEFINITION_ID);
 
             let CORRESPONDING_NOMAD_MOVIE = null;
-            for (let index = 0; index < NOMAD_MOVIES.items.length; index++) {
-                const NOMAD_MOVIE = NOMAD_MOVIES.items[index];
+            for (let index = 0; index < NOMAD_MOVIES.length; index++) {
+                const NOMAD_MOVIE = NOMAD_MOVIES[index];
                 if (NOMAD_MOVIE.title === MOVIE.title) {
                     CORRESPONDING_NOMAD_MOVIE = NOMAD_MOVIE;
                     break;
@@ -377,6 +377,7 @@ async function getGroups(GROUP_CONTENT_DEFINITION_ID)
                 }
             ], null, null, null, null, true, null);
 
+        if (!SEARCH_INFO) return [];
         GROUP_LIST.push(...SEARCH_INFO.items);
 
         ++offset;
