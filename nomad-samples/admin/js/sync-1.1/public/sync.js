@@ -95,12 +95,11 @@ async function getRatingList()
     return RATING_LIST;
 }
 
-CREATE_FORM.addEventListener("submit", async function (event) {
+CREATE_FORM.addEventListener("submit", async function (event) 
+{
     event.preventDefault();
 
     const FORM_DATA = getElements(CREATE_FORM);
-
-    console.log(FORM_DATA);
 
     await sendRequest("/create-movie", "POST", FORM_DATA);
 });
