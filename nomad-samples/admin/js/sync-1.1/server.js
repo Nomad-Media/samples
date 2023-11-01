@@ -97,15 +97,15 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
 {
     try
     {
-        let CONTENT_ID = null;
+        let contentId = null;
         if (req.body.typeSelect === "Create")
         {
             const CREATE_MOVIE_INFO = await NomadSDK.createContent(MOVIE_CONTENT_DEFINITION_ID);
-            CONTENT_ID = CREATE_MOVIE_INFO.contentId;
+            contentId = CREATE_MOVIE_INFO.contentId;
         }
         else
         {
-            CONTENT_ID = req.body.updateId;
+            contentId = req.body.updateId;
         }
 
         let image = null;
@@ -182,7 +182,7 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
             video = { id: VIDEO_INFO[0].id, description: VIDEO_INFO[0].title };
         }
 
-        const MOVIE_INFO = await NomadSDK.updateContent(CONTENT_ID, MOVIE_CONTENT_DEFINITION_ID, {
+        const MOVIE_INFO = await NomadSDK.updateContent(contentId, MOVIE_CONTENT_DEFINITION_ID, {
             ...(req.body.title && { title: req.body.title }),
             ...(req.body.plot && { plot: req.body.plot }),
             ...(req.body.date && { releaseDate: req.body.date }),
