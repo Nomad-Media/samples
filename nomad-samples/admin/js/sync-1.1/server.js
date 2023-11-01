@@ -70,11 +70,12 @@ app.post('/get-tag-list', upload.none(), async (req, res) =>
         let offset = 0;
         while (true)
         {
-            const TAGS = await getGroups(TAG_CONTENT_DEFINITION_ID, offset, false);
-            console.log(TAGS);
-            TAG_LIST.push(...TAGS[items]);
+            const TAGS = await getGroups(TAG_CONTENT_DEFINITION_ID, offset);
+            TAG_LIST.push(...TAGS.items);
 
-            if (TAGS.totalItemCount < 100) break;
+            ++offset;
+
+            if (TAGS.items.length < 100) break;
         }
 
         res.status(200).json(TAG_LIST);
@@ -91,6 +92,7 @@ app.post('/get-rating-list', upload.none(), async (req, res) =>
     try
     {
         const RATING_LIST = await getGroups(RATING_CONTENT_DEFINITION_ID);
+        console.log(RATING_LIST);
 
         res.status(200).json(RATING_LIST.items);
     }
@@ -334,8 +336,7 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-async function getGroups(GROUP_CONTENT_DEFINITION_ID, OFFSET = 0, 
-    EXCLUDE_TOTAL_RECORD_COUNT = true)
+async function getGroups(GROUP_CONTENT_DEFINITION_ID, OFFSET = 0)
 {
     const GROUP_LIST = await NomadSDK.search(null, OFFSET, null, 
         [
@@ -349,7 +350,7 @@ async function getGroups(GROUP_CONTENT_DEFINITION_ID, OFFSET = 0,
                 operator: "Equals",
                 values: "c66131cd-27fc-4f83-9b89-b57575ac0ed8"
             }
-        ], null, null, null, null, EXCLUDE_TOTAL_RECORD_COUNT, null);
+        ], null, null, null, null, true, null);
 
     return GROUP_LIST;
 }
@@ -357,7 +358,7 @@ async function getGroups(GROUP_CONTENT_DEFINITION_ID, OFFSET = 0,
 async function addUniqueContent(names, GROUP_CONTENT_DEFINITION_ID, IS_SLUGGED = true)
 {
     const GROUP_LIST_INFO = await getGroups(GROUP_CONTENT_DEFINITION_ID);
-    const GROUP_LIST = GROUP_LIST_INFO.items;
+    const GROUP_LIST = GROUP_LIST_INFO;
 
     names = Array.isArray(names) ? names : [names];
 
