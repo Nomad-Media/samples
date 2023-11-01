@@ -21,7 +21,7 @@ TYPE_SELECT.addEventListener("change", async function (event)
 {
     event.preventDefault();
 
-    TYPE_SELECT.value === "create" ? UPDATE_ID_DIV.hidden = true : UPDATE_ID_DIV.hidden = false;
+    TYPE_SELECT.value === "Create" ? UPDATE_ID_DIV.hidden = true : UPDATE_ID_DIV.hidden = false;
 });
 
 await getGenreList();

@@ -21,10 +21,10 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/sync.html');
 });
 
-const IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
-const IMAGE_ASSET_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
-const VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
-const VIDEO_ASSET_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
+const IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
+const IMAGE_ASSET_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
+const VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
+const VIDEO_ASSET_CONTENT_DEFINITION_ID = "91f46281-8eed-4cd8-8256-07b948e2d86e";
 
 const GENRE_CONTENT_DEFINITION_ID = "dbbace1f-ddb1-462b-9cae-c9be7d5990ac";
 const PERFORMER_CONTENT_DEFINITION_ID = "33cec5ca-6170-4237-842b-78bf1ef17932";
@@ -38,7 +38,7 @@ app.post('/get-genre-list', upload.none(), async (req, res) =>
     {
         const GENRE_LIST = await getGroups(GENRE_CONTENT_DEFINITION_ID);
 
-        res.status(200).json(GENRE_LIST.items);
+        res.status(200).json(GENRE_LIST);
     }
     catch (error)
     {
@@ -53,7 +53,7 @@ app.post('/get-performer-list', upload.none(), async (req, res) =>
     {
         const PERFORMER_LIST = await getGroups(PERFORMER_CONTENT_DEFINITION_ID);
 
-        res.status(200).json(PERFORMER_LIST.items);
+        res.status(200).json(PERFORMER_LIST);
     }
     catch (error)
     {
@@ -66,17 +66,7 @@ app.post('/get-tag-list', upload.none(), async (req, res) =>
 {
     try
     {
-        const TAG_LIST = [];
-        let offset = 0;
-        while (true)
-        {
-            const TAGS = await getGroups(TAG_CONTENT_DEFINITION_ID, offset);
-            TAG_LIST.push(...TAGS.items);
-
-            ++offset;
-
-            if (TAGS.items.length < 100) break;
-        }
+        const TAG_LIST = [] = await getGroups(TAG_CONTENT_DEFINITION_ID);
 
         res.status(200).json(TAG_LIST);
     }
@@ -92,9 +82,8 @@ app.post('/get-rating-list', upload.none(), async (req, res) =>
     try
     {
         const RATING_LIST = await getGroups(RATING_CONTENT_DEFINITION_ID);
-        console.log(RATING_LIST);
 
-        res.status(200).json(RATING_LIST.items);
+        res.status(200).json(RATING_LIST);
     }
     catch (error)
     {
@@ -125,7 +114,7 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
             const IMAGE_ID = await NomadSDK.uploadAsset(null, null, null, null, null, null, 'replace',
                 req.files.imageFile[0], null);
 
-            image = { id: IMAGE_ID, description: req.files.imageFile[0].originalname }
+            image = { description: req.files.imageFile[0].originalname, id: IMAGE_ID }
         }
         else
         {
@@ -134,12 +123,12 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                     {
                         fieldName: "parentId",
                         operator: "Equals",
-                        values: IMAGE_ASSET_CONTENT_DEFINITION_ID,
+                        values: IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
                     },
                     {
                         fieldName: "contentDefinitionId",
                         operator: "Equals",
-                        values: IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
+                        values: IMAGE_ASSET_CONTENT_DEFINITION_ID,
                     },
                     {
                         fieldName: "assetType",
@@ -153,7 +142,10 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                     }
                 ], null, null, null, null, true, null);
 
-            image = { id: IMAGE_INFO.items[0].id, description: IMAGE_INFO.items[0].title };
+            if (IMAGE_INFO)
+            {
+                image = { description: IMAGE_INFO.items[0].title, id: IMAGE_INFO.items[0].id };
+            }   
         }
 
         let video = null;
@@ -162,7 +154,7 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
             const VIDEO_ID = await NomadSDK.uploadAsset(null, null, null, null, null, null, 'replace',
                 req.files.videoFile[0], null);
 
-            video = { id: VIDEO_ID, description: req.files.videoFile[0].originalname }
+            video = { description: req.files.videoFile[0].originalname, id: VIDEO_ID }
         }
         else
         {
@@ -171,12 +163,12 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                     {
                         fieldName: "parentId",
                         operator: "Equals",
-                        values: VIDEO_ASSET_CONTENT_DEFINITION_ID,
+                        values: VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
                     },
                     {
                         fieldName: "contentDefinitionId",
                         operator: "Equals",
-                        values: VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
+                        values: VIDEO_ASSET_CONTENT_DEFINITION_ID,
                     },
                     {
                         fieldName: "assetType",
@@ -189,18 +181,47 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                         values: req.body.videoId
                     }
                 ], null, null, null, null, true, null);
+            if (VIDEO_INFO)
+            {
+                video = { description: VIDEO_INFO.items[0].title, id: VIDEO_INFO.items[0].id, };
+            }
+        }
 
-            video = { id: VIDEO_INFO.items[0].id, description: VIDEO_INFO.items[0].title };
+        let genres = null;
+        if (req.body.genreSelect)
+        {
+            const GENRES_PARSED = JSON.parse(req.body.genreSelect);
+            genres = Array.isArray(GENRES_PARSED) ? GENRES_PARSED : [GENRES_PARSED];
+        }
+
+        let performers = null;
+        if (req.body.performerSelect)
+        {
+            const PERFORMERS_PARSED = JSON.parse(req.body.performerSelect);
+            performers = Array.isArray(PERFORMERS_PARSED) ? PERFORMERS_PARSED : [PERFORMERS_PARSED];
+        }
+
+        let tags = null;
+        if (req.body.tagSelect)
+        {
+            const TAGS_PARSED = JSON.parse(req.body.tagSelect);
+            tags = Array.isArray(TAGS_PARSED) ? TAGS_PARSED : [TAGS_PARSED];
+        }
+
+        let ratings = null;
+        if (req.body.ratingSelect)
+        {
+            ratings = JSON.parse(req.body.ratingSelect);
         }
 
         const MOVIE_INFO = await NomadSDK.updateContent(contentId, MOVIE_CONTENT_DEFINITION_ID, {
             ...(req.body.title && { title: req.body.title }),
             ...(req.body.plot && { plot: req.body.plot }),
-            ...(req.body.date && { releaseDate: req.body.date }),
-            ...(req.body.genreSelect && { genres: req.body.genreSelect }),
-            ...(req.body.performerSelect && { performers: req.body.performerSelect }),
-            ...(req.body.tagSelect && { tags: req.body.tagSelect }),
-            ...(req.body.ratingSelect && { rating: req.body.ratingSelect }),
+            ...(req.body.date && { releaseDate: `${req.body.date}T00:00:00Z` }),
+            ...(req.body.genreSelect && { genres: genres }),
+            ...(req.body.performerSelect && { performers: performers }),
+            ...(req.body.tagSelect && { tags: tags }),
+            ...(req.body.ratingSelect && { ratings: ratings }),
             ...(req.files["imageFile"] && { image: image }),
             ...(req.files["videoFile"] && { movieFile: video }),
         });
@@ -336,22 +357,32 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
 
-async function getGroups(GROUP_CONTENT_DEFINITION_ID, OFFSET = 0)
+async function getGroups(GROUP_CONTENT_DEFINITION_ID)
 {
-    const GROUP_LIST = await NomadSDK.search(null, OFFSET, null, 
-        [
-            {
-                fieldName: "contentDefinitionId",
-                operator: "Equals",
-                values: GROUP_CONTENT_DEFINITION_ID,
-            },
-            {
-                fieldName: "languageId",
-                operator: "Equals",
-                values: "c66131cd-27fc-4f83-9b89-b57575ac0ed8"
-            }
-        ], null, null, null, null, true, null);
+    const GROUP_LIST = [];
+    let offset = 0;
+    while (true)
+    {
+        const SEARCH_INFO = await NomadSDK.search(null, offset, null, 
+            [
+                {
+                    fieldName: "contentDefinitionId",
+                    operator: "Equals",
+                    values: GROUP_CONTENT_DEFINITION_ID,
+                },
+                {
+                    fieldName: "languageId",
+                    operator: "Equals",
+                    values: "c66131cd-27fc-4f83-9b89-b57575ac0ed8"
+                }
+            ], null, null, null, null, true, null);
 
+        GROUP_LIST.push(...SEARCH_INFO.items);
+
+        ++offset;
+
+        if (SEARCH_INFO.items.length < 100) break;
+    }
     return GROUP_LIST;
 }
 
@@ -367,7 +398,7 @@ async function addUniqueContent(names, GROUP_CONTENT_DEFINITION_ID, IS_SLUGGED =
             const GROUP_FOUND = GROUP_LIST.find((group) => group.title === name);
 
             if (GROUP_FOUND) {
-                return { id: GROUP_FOUND.id, description: GROUP_FOUND.title };
+                return { description: GROUP_FOUND.title, id: GROUP_FOUND.id };
             } else {
                 const CREATE_GROUP_INFO = await NomadSDK.createContent(
                     GROUP_CONTENT_DEFINITION_ID
@@ -379,7 +410,7 @@ async function addUniqueContent(names, GROUP_CONTENT_DEFINITION_ID, IS_SLUGGED =
                 const UPDATE_GROUP = await NomadSDK.updateContent(CREATE_GROUP_INFO.contentId, 
                     GROUP_CONTENT_DEFINITION_ID, PROPERTIES);
 
-                return { id: UPDATE_GROUP, description: name };
+                return { description: name, id: UPDATE_GROUP };
             }
         })
     );
