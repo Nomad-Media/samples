@@ -3876,6 +3876,7 @@ async function _getContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID,
 
 
 
+
 async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID,
     PROPERTIES, LANGUAGE_ID, DEBUG_MODE)
 {
@@ -3887,12 +3888,19 @@ async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     // Build the payload body
-    const BODY = {
-        contentDefinitionId: CONTENT_DEFINITION_ID,
-        contentId: CONTENT_ID,
-        properties: PROPERTIES,
-        languageId: LANGUAGE_ID
-    };
+    const BODY = await _getContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
+        null, DEBUG_MODE);
+    
+    
+    if (BODY.contentDefinitionId !== CONTENT_DEFINITION_ID) BODY.contentDefinitionId = CONTENT_DEFINITION_ID;
+    if (BODY.contentId !== CONTENT_ID)
+    if (BODY.languageId !== LANGUAGE_ID)
+
+    for (const property in PROPERTIES) {
+        if (BODY[property] !== PROPERTIES[property]) {
+            BODY[property] = PROPERTIES[property];
+        }
+    }
     
     // Debug mode
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
