@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 const IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
 const IMAGE_ASSET_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
 const VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
-const VIDEO_ASSET_CONTENT_DEFINITION_ID = "91f46281-8eed-4cd8-8256-07b948e2d86e";
+const VIDEO_ASSET_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
 
 const GENRE_CONTENT_DEFINITION_ID = "dbbace1f-ddb1-462b-9cae-c9be7d5990ac";
 const PERFORMER_CONTENT_DEFINITION_ID = "33cec5ca-6170-4237-842b-78bf1ef17932";
@@ -173,7 +173,7 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
                     {
                         fieldName: "assetType",
                         operator: "Equals",
-                        values: 1
+                        values: 2
                     },
                     {
                         fieldName: "id",
@@ -222,8 +222,8 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
             ...(req.body.performerSelect && { performers: performers }),
             ...(req.body.tagSelect && { tags: tags }),
             ...(req.body.ratingSelect && { ratings: ratings }),
-            ...(req.files["imageFile"] && { image: image }),
-            ...(req.files["videoFile"] && { movieFile: video }),
+            ...(image && { image: image }),
+            ...(video && { movieFile: video }),
         });
 
         res.status(200).json(MOVIE_INFO);
