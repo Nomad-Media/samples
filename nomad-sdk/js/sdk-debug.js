@@ -2310,7 +2310,7 @@ class NomadSDK {
                 SIZE, FILTERS, SORT_FIELDS, RESULT_FIELDS, SIMILAR_ASSET_ID, MIN_SCORE, 
                 EXCLUDE_TOTAL_RECORD_COUNT, FILTER_BINDER, this.config.apiType, this.debugMode);
             _printDatetime(`Search complete`);
-            return SEARCH_INFO.hasItems ? SEARCH_INFO.items : false
+            return SEARCH_INFO.hasItems ? SEARCH_INFO : false
         }
         catch (error)
         {
@@ -3890,7 +3890,7 @@ async function _updateContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID
     // Build the payload body
     const BODY = await _getContent(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
         null, DEBUG_MODE);
-    
+
     
     if (BODY.contentDefinitionId !== CONTENT_DEFINITION_ID) BODY.contentDefinitionId = CONTENT_DEFINITION_ID;
     if (BODY.contentId !== CONTENT_ID)
