@@ -122,7 +122,7 @@ DELETE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(DELETE_FORM);
 
-    await sendRequest("/delete", "DELETE", FORM_DATA);
+    await sendRequest("/delete", "POST", FORM_DATA);
 });
 
 function getElements(FORM)
@@ -173,7 +173,7 @@ async function sendRequest(PATH, METHOD, BODY)
         if (RESPONSE.ok)
         {
             const DATA = await RESPONSE.json();
-            return DATA;
+            if (DATA) return DATA;
         }
         else
         {
