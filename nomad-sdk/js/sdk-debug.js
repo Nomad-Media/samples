@@ -2348,8 +2348,8 @@ class NomadSDK {
      * "array<string>" | "string"} ...]
      * @param {Array<JSON> | null} SORT_FIELDS - The sort fields of the search.
      * Array format: [{"fieldName": "string", "sortType": ("Ascending" | "Descending")} ...]
-     * @param {Array<string> | null} RESULT_FIELDS - The result fields of the search.
-     * Array format: [{"name": "string"} ...]
+     * @param {Array<JSON> | null} SEARCH_RESULT_FIELDS - The property fields you want to show
+     * in the result. Array format: [{"name": "string"} ...]
      * @param {string | null} SIMILAR_ASSET_ID - When SimilarAssetId has a value, then the search 
      * results are a special type of results and bring back the items that are the most similar to 
      * the item represented here. This search is only enabled when Vector searching has been enabled.
@@ -2363,7 +2363,7 @@ class NomadSDK {
      * Returns the information of the search.
      * @throws {Error} - An error is thrown if the assets fail to search.
      */ 
-    async search(QUERY, OFFSET, SIZE, FILTERS, SORT_FIELDS, RESULT_FIELDS, SIMILAR_ASSET_ID, 
+    async search(QUERY, OFFSET, SIZE, FILTERS, SORT_FIELDS, SEARCH_RESULT_FIELDS, SIMILAR_ASSET_ID, 
         MIN_SCORE, EXCLUDE_TOTAL_RECORD_COUNT, FILTER_BINDER)
     {
         if (this.token === null)
@@ -2376,7 +2376,7 @@ class NomadSDK {
         try
         {
             const SEARCH_INFO = await _search(this.token, this.config.serviceApiUrl, QUERY, OFFSET, 
-                SIZE, FILTERS, SORT_FIELDS, RESULT_FIELDS, SIMILAR_ASSET_ID, MIN_SCORE, 
+                SIZE, FILTERS, SORT_FIELDS, SEARCH_RESULT_FIELDS, SIMILAR_ASSET_ID, MIN_SCORE, 
                 EXCLUDE_TOTAL_RECORD_COUNT, FILTER_BINDER, this.config.apiType, this.debugMode);
             _printDatetime(`Search complete`);
             return SEARCH_INFO.hasItems ? SEARCH_INFO : false
@@ -6370,7 +6370,7 @@ async function _getAssetDetails(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, DEBUG_MODE)
 
 
 
-async function _search(AUTH_TOKEN, URL, QUERY, OFFSET, SIZE , FILTERS, SORT_FIELDS, RESULT_FIELDS, 
+async function _search(AUTH_TOKEN, URL, QUERY, OFFSET, SIZE , FILTERS, SORT_FIELDS, SEARCH_RESULT_FIELDS, 
     SIMILAR_ASSET_ID, MIN_SCORE, EXCLUDE_TOTAL_RECORD_COUNT, FILTER_BINDER, API_TYPE, DEBUG_MODE)
 {
     const API_URL = `${URL}/${API_TYPE}/search`;
@@ -6387,7 +6387,7 @@ async function _search(AUTH_TOKEN, URL, QUERY, OFFSET, SIZE , FILTERS, SORT_FIEL
     SIZE? BODY["pageSize"] = SIZE : BODY["pageSize"] = 100;
     if (FILTERS) BODY["filters"] = FILTERS;
     if (SORT_FIELDS) BODY["sortFields"] = SORT_FIELDS;
-    if (RESULT_FIELDS) BODY["resultFields"] = RESULT_FIELDS;
+    if (SEARCH_RESULT_FIELDS) BODY["searchResultFields"] = SEARCH_RESULT_FIELDS;
     if (SIMILAR_ASSET_ID) BODY["similarAssetId"] = SIMILAR_ASSET_ID;
     if (MIN_SCORE) BODY["minScore"] = MIN_SCORE;
     if (EXCLUDE_TOTAL_RECORD_COUNT) BODY["excludeTotalRecordCount"] = EXCLUDE_TOTAL_RECORD_COUNT;
