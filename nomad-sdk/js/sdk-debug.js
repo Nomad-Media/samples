@@ -72,6 +72,8 @@ import config from "./config/config.js";
 
 
 
+
+
 // portal
 
 
@@ -146,7 +148,39 @@ class NomadSDK {
         this.__scheduleTokenRefresh();
     }
 
-    // account
+    /**
+     * @function getAssetDetails
+     * @async
+     * @description Gets the asset details for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the details for.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset details are retrieved.
+     * Returns the asset details.
+     * @throws {Error} - An error is thrown if the asset details fail to retrieve.
+     */
+    
+    async getAssetDetails(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting asset details for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_DETAILS = await _getAssetDetails(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.config.apiType, this.debugMode);
+            _printDatetime(`Asset details retrieved for ${ASSET_ID}`);
+            return ASSET_DETAILS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset details failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+    
     // account functions
     /**
      * @function login
@@ -6296,6 +6330,41 @@ async function _resetPassword(URL, USERNAME, TOKEN, NEW_PASSWORD, DEBUG_MODE)
 		_apiExceptionHandler(error, "Reset Password Failed");
 	}
     
+}
+
+
+
+
+async function _getAssetDetails(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, DEBUG_MODE)
+{
+    const API_URL = API_TYPE === "admin" ? `${URL}/admin/asset/${ASSET_ID}/detail` : `${URL}/asset/${ASSET_ID}/detail`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Details Failed");
+    }
 }
 
 
