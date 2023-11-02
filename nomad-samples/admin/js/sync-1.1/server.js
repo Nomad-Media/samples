@@ -22,16 +22,11 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/sync.html');
 });
 
-const IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
-const IMAGE_ASSET_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
-const VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID = "73d06e60-9607-4018-b666-775790c0f0c2";
-const VIDEO_ASSET_CONTENT_DEFINITION_ID = "3ff29f61-bd0b-4c17-b855-49db5a292aeb";
-
 const GENRE_CONTENT_DEFINITION_ID = "dbbace1f-ddb1-462b-9cae-c9be7d5990ac";
 const PERFORMER_CONTENT_DEFINITION_ID = "33cec5ca-6170-4237-842b-78bf1ef17932";
 const TAG_CONTENT_DEFINITION_ID = "c806783c-f127-48ae-90c9-32175f4e1fff";
 const RATING_CONTENT_DEFINITION_ID = "dd72aac1-a5a2-4b68-a59c-9f57e5858517";
-const MOVIE_CONTENT_DEFINITION_ID = "eb710e28-7c44-492e-91f9-8acd0cd9331c"
+const MOVIE_CONTENT_DEFINITION_ID = "eb710e28-7c44-492e-91f9-8acd0cd9331c";
 
 app.post('/get-genre-list', upload.none(), async (req, res) => 
 {
@@ -119,33 +114,11 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
         }
         else
         {
-            const IMAGE_INFO = await NomadSDK.search(null, null, null, 
-                [
-                    {
-                        fieldName: "parentId",
-                        operator: "Equals",
-                        values: IMAGE_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
-                    },
-                    {
-                        fieldName: "contentDefinitionId",
-                        operator: "Equals",
-                        values: IMAGE_ASSET_CONTENT_DEFINITION_ID,
-                    },
-                    {
-                        fieldName: "assetType",
-                        operator: "Equals",
-                        values: 2
-                    },
-                    {
-                        fieldName: "id",
-                        operator: "Equals",
-                        values: req.body.imageId
-                    }
-                ], null, null, null, null, true, null);
+            const IMAGE_INFO = await NomadSDK.getAssetDetails(req.body.imageId);
 
             if (IMAGE_INFO)
             {
-                image = { description: IMAGE_INFO.items[0].title, id: IMAGE_INFO.items[0].id };
+                image = { description: IMAGE_INFO.properties.displayName, id: req.body.imageId};
             }   
         }
 
@@ -159,32 +132,10 @@ app.post('/create-movie', upload.fields([{ name: "imageFile", maxCount: 1 },
         }
         else
         {
-            const VIDEO_INFO = await NomadSDK.search(null, null, null, 
-                [
-                    {
-                        fieldName: "parentId",
-                        operator: "Equals",
-                        values: VIDEO_ASSET_DIRECTORY_CONTENT_DEFINITION_ID,
-                    },
-                    {
-                        fieldName: "contentDefinitionId",
-                        operator: "Equals",
-                        values: VIDEO_ASSET_CONTENT_DEFINITION_ID,
-                    },
-                    {
-                        fieldName: "assetType",
-                        operator: "Equals",
-                        values: 2
-                    },
-                    {
-                        fieldName: "id",
-                        operator: "Equals",
-                        values: req.body.videoId
-                    }
-                ], null, null, null, null, true, null);
+            const VIDEO_INFO = await NomadSDK.getAssetDetails(req.body.videoId);
             if (VIDEO_INFO)
             {
-                video = { description: VIDEO_INFO.items[0].title, id: VIDEO_INFO.items[0].id, };
+                video = { description: VIDEO_INFO.properties.displayName, id: req.body.videoId, };
             }
         }
 
