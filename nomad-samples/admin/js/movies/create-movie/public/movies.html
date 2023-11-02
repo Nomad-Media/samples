@@ -86,13 +86,19 @@
         <label for="imageFile">Choose an image file to upload:</label>
         <input type="file" id="imageFile">
 
+        <label for="imageId">Or enter an image id:</label>
+        <input type="text" id="imageId">
+
         <label for="videoFile">Choose a video file to upload:</label>
         <input type="file" id="videoFile">
+
+        <label for="videoId">Or enter a video id:</label>
+        <input type="text" id="videoId">
 
         <br><br>
         <button type="submit">Submit</button>
     </form>
-
+    
     <h3>Search Movie</h3>
     
     <form id="searchMoviesForm">
@@ -127,13 +133,14 @@
 
         <label for="resultFieldNames">Result Field Names</label>
         <select class="select2" id="resultFieldNames" multiple>
-            <option value="Content Definition Id">Content Definition Id</option>
-            <option value="Content Definition Title">Content Definition Title</option>
-            <option value="Plot">Plot</option>
-            <option value="Genre">Genre</option>
-            <option value="Release Date">Release Date</option>
-            <option value="Image">Image</option>
-            <option value="Movie File">Movie File</option>
+            <option value="plot">Plot</option>
+            <option value="genres">Genres</option>
+            <option value="performers">Performers</option>
+            <option value="tags">Tags</option>
+            <option value="ratings">Rating</option>
+            <option value="releaseDate">Release Date</option>
+            <option value="image">Image</option>
+            <option value="movieFile">Movie File</option>
         </select>
 
         <script>
@@ -153,7 +160,7 @@
     </form>
     
     <h3>Get Movie</h3>
-    <form id="getMovieByIdForm">
+    <form id="getMovieForm">
         <label for="getId">Movie Id:</label>
         <input type="text" id="getId" required>
 

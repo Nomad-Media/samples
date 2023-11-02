@@ -1,5 +1,6 @@
 const CREATE_FORM = document.getElementById("createForm");
 const SEARCH_MOVIES_FORM = document.getElementById("searchMoviesForm");
+const GET_MOVIE_FORM = document.getElementById("getMovieForm");
 const DELETE_MOVIE_FORM = document.getElementById("deleteMovieForm");
 
 const TYPE_SELECT = document.getElementById("typeSelect");
@@ -105,7 +106,7 @@ CREATE_FORM.addEventListener("submit", function (event)
 
     const FORM_DATA = getElements(CREATE_FORM);
 
-    sendRequest("/create-movie", "POST", FORM_DATA);
+    console.log(sendRequest("/create-movie", "POST", FORM_DATA));
 });
 
 ADD_FILTER_BUTTON.addEventListener('click', function(event)
@@ -228,22 +229,31 @@ ADD_SORT_FIELDS_BUTTON.addEventListener('click', function(event)
     SORT_FIELDS_DIV.appendChild(removeButton);
 });
 
-SEARCH_MOVIES_FORM.addEventListener("submit", function (event)
+SEARCH_MOVIES_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
     const FORM_DATA = getElements(SEARCH_MOVIES_FORM);
 
-    sendRequest("/search-movies", "POST", FORM_DATA);
+    console.log(await sendRequest("/search-movies", "POST", FORM_DATA));
 });
 
-DELETE_MOVIE_FORM.addEventListener("submit", function(event)
+GET_MOVIE_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_MOVIE_FORM);
+
+    console.log(await sendRequest("/get-movie", "POST", FORM_DATA));
+});
+
+DELETE_MOVIE_FORM.addEventListener("submit", async function(event)
 {
     event.preventDefault();
 
     const FORM_DATA = getElements(DELETE_MOVIE_FORM);
 
-    sendRequest("/delete-movie", "POST", FORM_DATA);
+    console.log(await sendRequest("/delete-movie", "POST", FORM_DATA));
 });
 
 function getElements(FORM)
@@ -255,7 +265,7 @@ function getElements(FORM)
             const SELECTED_OPTIONS = []
             for (let element of input) {
                 if (element.selected) {
-                    if (element.value === element.label) {
+                    if (element.value.trim().toLowerCase() === element.label.trim().toLowerCase()) {
                         if (input.id) {
                             FORM_DATA.append(input.id, element.value);
                         } else {
@@ -302,8 +312,7 @@ async function sendRequest(PATH, METHOD, BODY)
         if (RESPONSE.ok)
         {
             const DATA = await RESPONSE.json();
-            console.log(DATA);
-            return DATA;
+            if (DATA) return DATA;
         }
         else
         {
