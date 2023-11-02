@@ -9,9 +9,11 @@
         "tags": ["1957", "archaeologist", "adventurer", "soviet", "crystal skull", "alien"],
         "rating": "PG-13",
         "image": {
+            "description": "1D_RAW.thumbnail.jpg",
             "id": "8dce5abc-3150-4534-9283-ed13bd138105"
         },
         "movieFile": {
+            "description": "1 Test Clip.mp4 ",
             "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
         }
     },
@@ -25,9 +27,11 @@
         "tags": ["magic", "wizard", "school of magic", "based on young adult novel"],
         "rating": "PG-13",
         "image": {
+            "description": "1D_RAW.thumbnail.jpg",
             "id": "8dce5abc-3150-4534-9283-ed13bd138105"
         },
         "movieFile": {
+            "description": "1 Test Clip.mp4 ",
             "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
         }
     },
@@ -41,9 +45,11 @@
         "tags": ["monster", "giant monster", "kaiju", "giant ape"],
         "rating": "PG-13",
         "image": {
+            "description": "1D_RAW.thumbnail.jpg",
             "id": "8dce5abc-3150-4534-9283-ed13bd138105"
         },
         "movieFile": {
+            "description": "1 Test Clip.mp4 ",
             "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
         }
     },
@@ -54,12 +60,14 @@
         "releaseDate": "2020-12-12T12:00:00Z",
         "genres": ["Action"],
         "performers": ["Gal Gadot", "Chris Pine", "Kristen Wiig"],
-        "tags": ["1984", "DC", "superhero", "sequel", "based on comic book"],
+        "tags": ["1984", "DC", "sequel", "based on comic book"],
         "rating": "PG-13",
         "image": {
+            "description": "1D_RAW.thumbnail.jpg",
             "id": "8dce5abc-3150-4534-9283-ed13bd138105"
         },
         "movieFile": {
+            "description": "1 Test Clip.mp4 ",
             "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
         }
     },
@@ -70,12 +78,14 @@
         "releaseDate": "2007-12-12T12:00:00Z",
         "genres": ["Adventure"],
         "performers": ["Tobey Maguire", "Kirsten Dunst", "James Franco"],
-        "tags": ["Marvel", "superhero", "based on comic book", "sandman", "venom"],
+        "tags": ["Marvel", "based on comic book", "sandman", "venom"],
         "rating": "PG-13",
         "image": {
+            "description": "1D_RAW.thumbnail.jpg",
             "id": "8dce5abc-3150-4534-9283-ed13bd138105"
         },
         "movieFile": {
+            "description": "1 Test Clip.mp4 ",
             "id": "91eedd63-4295-4aff-8e85-625a8a03294c"
         }
     }

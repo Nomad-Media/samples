@@ -9,6 +9,7 @@ import NomadSDK from "../../../../nomad-sdk/js/sdk-debug.js";
 import express from 'express';
 import multer from 'multer';
 import fs from 'fs';
+import deepEqual from 'deep-equal';
 
 const app = express();
 const upload = multer();
@@ -263,8 +264,8 @@ app.post('/sync', upload.none(), async (req, res) =>
             const MOVIE_GENRE = await addUniqueContent(MOVIE.genres, GENRE_CONTENT_DEFINITION_ID);
             const MOVIE_PERFORMER = await addUniqueContent(MOVIE.performers, PERFORMER_CONTENT_DEFINITION_ID);
             const MOVIE_TAG = await addUniqueContent(MOVIE.tags, TAG_CONTENT_DEFINITION_ID, false);
-            const MOVIE_RATING = await addUniqueContent(MOVIE.rating, RATING_CONTENT_DEFINITION_ID);
-
+            const RETURN = await addUniqueContent(MOVIE.rating, RATING_CONTENT_DEFINITION_ID);
+            const MOVIE_RATING = RETURN[0];
             let CORRESPONDING_NOMAD_MOVIE = null;
             for (let index = 0; index < NOMAD_MOVIES.length; index++) {
                 const NOMAD_MOVIE = NOMAD_MOVIES[index];
@@ -273,17 +274,17 @@ app.post('/sync', upload.none(), async (req, res) =>
                     break;
                 }
             }
-
+            
             if (CORRESPONDING_NOMAD_MOVIE) {
                 if (CORRESPONDING_NOMAD_MOVIE.title === MOVIE.title && 
-                    CORRESPONDING_NOMAD_MOVIE.plot === MOVIE.plot && 
-                    CORRESPONDING_NOMAD_MOVIE.releaseDate === MOVIE.releaseDate && 
-                    CORRESPONDING_NOMAD_MOVIE.genres === MOVIE_GENRE && 
-                    CORRESPONDING_NOMAD_MOVIE.performers === MOVIE_PERFORMER && 
-                    CORRESPONDING_NOMAD_MOVIE.tags === MOVIE_TAG && 
-                    CORRESPONDING_NOMAD_MOVIE.rating === MOVIE_RATING &&
-                    CORRESPONDING_NOMAD_MOVIE.image === MOVIE.image &&
-                    CORRESPONDING_NOMAD_MOVIE.movieFile === MOVIE.movieFile) 
+                    CORRESPONDING_NOMAD_MOVIE.identifiers.plot === MOVIE.plot && 
+                    CORRESPONDING_NOMAD_MOVIE.identifiers.releaseDate === MOVIE.releaseDate && 
+                    deepEqual(CORRESPONDING_NOMAD_MOVIE.identifiers.genres, MOVIE_GENRE) && 
+                    deepEqual(CORRESPONDING_NOMAD_MOVIE.identifiers.performers, MOVIE_PERFORMER) && 
+                    deepEqual(CORRESPONDING_NOMAD_MOVIE.identifiers.tags, MOVIE_TAG) && 
+                    deepEqual(CORRESPONDING_NOMAD_MOVIE.identifiers.ratings, MOVIE_RATING) &&
+                    deepEqual(CORRESPONDING_NOMAD_MOVIE.identifiers.image, MOVIE.image) &&
+                    deepEqual(CORRESPONDING_NOMAD_MOVIE.identifiers.movieFile, MOVIE.movieFile)) 
                 {
                     console.log(`\tSkipping Movie ${MOVIE.title}...`);
                 }
@@ -299,7 +300,7 @@ app.post('/sync', upload.none(), async (req, res) =>
                             genres: MOVIE_GENRE,
                             performers: MOVIE_PERFORMER,
                             tags: MOVIE_TAG,
-                            rating: MOVIE_RATING,
+                            ratings: MOVIE_RATING,
                             image: MOVIE.image,
                             movieFile: MOVIE.movieFile
                         });
@@ -387,34 +388,48 @@ async function getGroups(GROUP_CONTENT_DEFINITION_ID)
     return GROUP_LIST;
 }
 
-async function addUniqueContent(names, GROUP_CONTENT_DEFINITION_ID, IS_SLUGGED = true)
+async function addUniqueContent(names, GROUP_CONTENT_DEFINITION_ID)
 {
-    const GROUP_LIST_INFO = await getGroups(GROUP_CONTENT_DEFINITION_ID);
-    const GROUP_LIST = GROUP_LIST_INFO;
+    const GROUP_LIST= await getGroups(GROUP_CONTENT_DEFINITION_ID);
 
     names = Array.isArray(names) ? names : [names];
 
-    const GROUPS = await Promise.all(
-        names.map(async (name) => {
-            const GROUP_FOUND = GROUP_LIST.find((group) => group.title === name);
+    const GROUPS = [];
 
-            if (GROUP_FOUND) {
-                return { description: GROUP_FOUND.title, id: GROUP_FOUND.id };
-            } else {
+    for (let i = 0; i < names.length; i++) {
+        const name = names[i];
+        const GROUP_FOUND = GROUP_LIST.find((group) => group.title === name);
+
+        if (GROUP_FOUND) 
+        {
+            GROUPS.push({ description: GROUP_FOUND.title, id: GROUP_FOUND.id });
+        } 
+        else 
+        {
+            let updateGroup = null;
+            if (TAG_CONTENT_DEFINITION_ID == GROUP_CONTENT_DEFINITION_ID)
+            {
+
+                updateGroup = await NomadSDK.createTagOrCollection("tag", name);
+                updateGroup = updateGroup.id;
+            }
+            else
+            {
                 const CREATE_GROUP_INFO = await NomadSDK.createContent(
                     GROUP_CONTENT_DEFINITION_ID
                 );
 
-                const PROPERTIES = { name: name };
-                if (IS_SLUGGED) PROPERTIES["slug"] = slugify(name);
-                
-                const UPDATE_GROUP = await NomadSDK.updateContent(CREATE_GROUP_INFO.contentId, 
+                const PROPERTIES = { 
+                    name: name,
+                    slug: slugify(name),
+                };
+            
+                updateGroup = await NomadSDK.updateContent(CREATE_GROUP_INFO.contentId, 
                     GROUP_CONTENT_DEFINITION_ID, PROPERTIES);
-
-                return { description: name, id: UPDATE_GROUP };
             }
-        })
-    );
+            GROUPS.push({ description: name, id: updateGroup });
+        }
+    }
 
     return GROUPS;
 }

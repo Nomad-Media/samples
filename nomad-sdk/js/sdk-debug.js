@@ -64,6 +64,7 @@ import config from "./config/config.js";
 
 
 
+
 // common
 
 
@@ -697,6 +698,40 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Adding ${TYPE} to content: ${CONTENT_ID} failed`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createTagOrCollection
+     * @async
+     * @description Creates a tag or collection.
+     * @param {string} TYPE - Specify if the content being managed is a tag or a collection.
+     * @param {string} TAG_NAME - The name of the tag or collection to create.
+     * @returns {Promise<JSON>} - A promise that resolves when the tag or collection is created.
+     * Returns the id of the created tag or collection.
+     * @throws {Error} - An error is thrown if the tag or collection fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createTagOrCollection(TYPE, TAG_NAME)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Creating ${TYPE}: ${TAG_NAME}`);
+
+        try
+        {
+            const CREATE_TAG_OR_COLLECTION_INFO = await _createTagOrCollection(this.token, 
+                this.config.serviceApiUrl, TYPE, TAG_NAME, this.debugMode);
+            _printDatetime(`${TYPE} created: ${TAG_NAME}`);
+            return CREATE_TAG_OR_COLLECTION_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`${TYPE} failed to create: ${TAG_NAME}`);
             throw error;
         }
     }
@@ -3611,6 +3646,46 @@ async function _addTagOrCollection(AUTH_TOKEN, URL, TYPE, CONTENT_ID, CONTENT_DE
     {
         BODY.items[0][`${TYPE}Id`] = TAG_ID;
     }
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Adding Tag or Collection Failed");
+    }
+}
+
+
+
+
+async function _createTagOrCollection(AUTH_TOKEN, URL, TYPE, TAG_NAME, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/${TYPE}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        name: TAG_NAME,
+    };
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
