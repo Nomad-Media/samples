@@ -46,7 +46,7 @@ GET_CHANNELS_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/getLiveChannels", "GET");
+    console.log(await sendRequest("/getLiveChannels", "GET"));
 });
 
 GET_CHANNEL_FORM.addEventListener("submit", async function (event)
@@ -55,7 +55,7 @@ GET_CHANNEL_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(GET_CHANNEL_FORM);
 
-    await sendRequest("/getLiveChannel", "POST", FORM_DATA);
+    console.log(await sendRequest("/getLiveChannel", "POST", FORM_DATA));
 });
 
 CREATE_CHANNEL_TYPE.addEventListener("change", async function (event)
@@ -72,7 +72,7 @@ CREATE_CHANNEL_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(CREATE_CHANNEL_FORM);
 
-    await sendRequest("/createLiveChannel", "POST", FORM_DATA);
+    console.log(await sendRequest("/createLiveChannel", "POST", FORM_DATA));
 });
 
 
@@ -90,7 +90,7 @@ UPDATE_CHANNEL_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(UPDATE_CHANNEL_FORM);
 
-    await sendRequest("/updateLiveChannel", "POST", FORM_DATA);
+    console.log(await sendRequest("/updateLiveChannel", "POST", FORM_DATA));
 
 });
 
@@ -98,7 +98,7 @@ GET_INPUTS_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/getLiveInputs", "GET");
+    console.log(await sendRequest("/getLiveInputs", "GET"));
 });
 
 GET_INPUT_FORM.addEventListener("submit", async function (event)
@@ -107,7 +107,7 @@ GET_INPUT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(GET_INPUT_FORM);
 
-    await sendRequest("/getLiveInput", "POST", FORM_DATA);
+    console.log(await sendRequest("/getLiveInput", "POST", FORM_DATA));
 });
 
 CREATE_INPUT_SOURCE_TYPE.addEventListener("change", async function (event) 
@@ -172,7 +172,7 @@ CREATE_INPUT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(CREATE_INPUT_FORM);
 
-    await sendRequest("/createLiveInput", "POST", FORM_DATA);
+    console.log(await sendRequest("/createLiveInput", "POST", FORM_DATA));
 });
 
 UPDATE_INPUT_SOURCE_TYPE.addEventListener("change", async function (event)
@@ -200,7 +200,7 @@ UPDATE_INPUT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(UPDATE_FORM);
 
-    await sendRequest("/updateLiveInput", "POST", FORM_DATA);
+    console.log(await sendRequest("/updateLiveInput", "POST", FORM_DATA));
 });
 
 ADD_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
@@ -209,7 +209,7 @@ ADD_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_ASSET_SCHEDULE_EVENT_FORM);
 
-    await sendRequest("/addAssetScheduleEvent", "POST", FORM_DATA);
+    console.log(await sendRequest("/addAssetScheduleEvent", "POST", FORM_DATA));
 });
 
 REMOVE_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
@@ -218,7 +218,7 @@ REMOVE_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (even
 
     const FORM_DATA = getElements(REMOVE_ASSET_SCHEDULE_EVENT_FORM);
 
-    await sendRequest("/removeAssetScheduleEvent", "POST", FORM_DATA);
+    console.log(await sendRequest("/removeAssetScheduleEvent", "POST", FORM_DATA));
 });
 
 ADD_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
@@ -227,7 +227,7 @@ ADD_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_INPUT_SCHEDULE_EVENT_FORM);
 
-    await sendRequest("/addInputScheduleEvent", "POST", FORM_DATA);
+    console.log(await sendRequest("/addInputScheduleEvent", "POST", FORM_DATA));
 });
 
 REMOVE_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
@@ -236,7 +236,7 @@ REMOVE_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (even
 
     const FORM_DATA = getElements(REMOVE_INPUT_SCHEDULE_EVENT_FORM);
 
-    await sendRequest("/removeInputScheduleEvent", "POST", FORM_DATA);
+    console.log(await sendRequest("/removeInputScheduleEvent", "POST", FORM_DATA));
 });
 
 START_CHANNEL_FORM.addEventListener("submit", async function (event)
@@ -279,7 +279,7 @@ GET_OPERATORS_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/getLiveOperators", "GET");
+    console.log(await sendRequest("/getLiveOperators", "GET"));
 });
 
 GET_OPERATOR_FORM.addEventListener("submit", async function (event)
@@ -288,7 +288,7 @@ GET_OPERATOR_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(GET_OPERATOR_FORM);
 
-    await sendRequest("/getLiveOperator", "POST", FORM_DATA);
+    console.log(await sendRequest("/getLiveOperator", "POST", FORM_DATA));
 });
 
 START_BROADCAST_FORM.addEventListener("submit", async function (event)
@@ -324,7 +324,7 @@ GET_COMPLETED_SEGMENTS_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(GET_COMPLETED_SEGMENTS_FORM);
 
-    await sendRequest("/getCompletedSegments", "POST", FORM_DATA);
+    console.log(await sendRequest("/getCompletedSegments", "POST", FORM_DATA));
 });
 
 START_SEGMENT_FORM.addEventListener("submit", async function (event)
@@ -342,7 +342,7 @@ CANCEL_SEGMENT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(CANCEL_SEGMENT_FORM);
 
-    await sendRequest("/cancelSegment", "POST", FORM_DATA);
+    console.log(await sendRequest("/cancelSegment", "POST", FORM_DATA));
 });
 
 COMPLETE_SEGMENT_FORM.addEventListener("submit", async function (event)

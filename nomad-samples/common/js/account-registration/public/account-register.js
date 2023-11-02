@@ -8,7 +8,7 @@ REGISTER_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(REGISTER_FORM);
 
-    await sendRequest("/register", "POST", FORM_DATA);
+    console.log(await sendRequest("/register", "POST", FORM_DATA));
 });
 
 
@@ -18,7 +18,7 @@ VERIFY_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(VERIFY_FORM);
 
-    await sendRequest("/verify", "POST", FORM_DATA);
+    console.log(await sendRequest("/verify", "POST", FORM_DATA));
 });
 
 
@@ -28,7 +28,7 @@ RESEND_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(RESEND_FORM);
 
-    await sendRequest("/resend", "POST", FORM_DATA);
+    console.log(await sendRequest("/resend", "POST", FORM_DATA));
 });
 
 function getElements(FORM)

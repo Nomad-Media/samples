@@ -132,7 +132,7 @@ SEARCH_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(SEARCH_FORM);
 
-    await sendRequest("/search", "POST", FORM_DATA);
+    console.log(await sendRequest("/search", "POST", FORM_DATA));
 });
 
 function getElements(FORM)

@@ -10,7 +10,7 @@ INVITE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(INVITE_FORM);
 
-    await sendRequest("/invite", "POST", FORM_DATA);
+    console.log(await sendRequest("/invite", "POST", FORM_DATA));
 });
 
 REMOVE_INVITE_FORM.addEventListener("submit", async function (event) 
@@ -19,7 +19,7 @@ REMOVE_INVITE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(REMOVE_INVITE_FORM);
 
-    await sendRequest("/remove-invite", "POST", FORM_DATA);
+    console.log(await sendRequest("/remove-invite", "POST", FORM_DATA));
 });
 
 REGISTER_FORM.addEventListener("submit", async function (event) 
@@ -28,21 +28,21 @@ REGISTER_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(REGISTER_FORM);
 
-    await sendRequest("/register", "POST", FORM_DATA);
+    console.log(await sendRequest("/register", "POST", FORM_DATA));
 });
 
 PING_FORM.addEventListener("submit", async function (event) 
 {
     event.preventDefault();
 
-    await sendRequest("/ping", "GET",);
+    console.log(await sendRequest("/ping", "GET",));
 });
 
 PPQ_FORM.addEventListener("submit", async function (event) 
 {
     event.preventDefault();
 
-    await sendRequest("/ppq", "GET");
+    console.log(await sendRequest("/ppq", "GET"));
 });
 
 function getElements(FORM)

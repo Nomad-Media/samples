@@ -38,7 +38,7 @@ ADD_TAG_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_TAG_FORM);
 
-    await sendRequest("/add-tag-or-collection", "POST", FORM_DATA);
+    console.log(await sendRequest("/add-tag-or-collection", "POST", FORM_DATA));
 });
 
 REMOVE_TAG_OR_COLLECTION.addEventListener("change", async function (event)
@@ -54,7 +54,7 @@ REMOVE_TAG_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(REMOVE_TAG_FORM);
 
-    await sendRequest("/remove-tag-or-collection", "POST", FORM_DATA);
+    console.log(await sendRequest("/remove-tag-or-collection", "POST", FORM_DATA));
 });
 
 DELETE_TAG_OR_COLLECTION.addEventListener("change", async function (event)
@@ -70,7 +70,7 @@ DELETE_TAG_FORM.addEventListener("submit", async function (event)
     
     const FORM_DATA = getElements(DELETE_TAG_FORM);
 
-    await sendRequest("/delete-tag-or-collection", "POST", FORM_DATA);
+    console.log(await sendRequest("/delete-tag-or-collection", "POST", FORM_DATA));
 });
 
 ADD_RELATED_CONTENT_FORM.addEventListener("submit", async function (event)
@@ -79,7 +79,7 @@ ADD_RELATED_CONTENT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_RELATED_CONTENT_FORM);
 
-    await sendRequest("/add-related-content", "POST", FORM_DATA);
+    console.log(await sendRequest("/add-related-content", "POST", FORM_DATA));
 });
 
 DELETE_RELATED_CONTENT_FORM.addEventListener("submit", async function (event)
@@ -88,7 +88,7 @@ DELETE_RELATED_CONTENT_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(DELETE_RELATED_CONTENT_FORM);
 
-    await sendRequest("/delete-related-content", "POST", FORM_DATA);
+    console.log(await sendRequest("/delete-related-content", "POST", FORM_DATA));
 });
 
 ADD_CUSTOM_PROPERTIES_FORM.addEventListener("submit", async function (event)
@@ -97,7 +97,7 @@ ADD_CUSTOM_PROPERTIES_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_CUSTOM_PROPERTIES_FORM);
 
-    await sendRequest("/add-custom-properties", "POST", FORM_DATA);
+    console.log(await sendRequest("/add-custom-properties", "POST", FORM_DATA));
 });
 
 function getElements(FORM)

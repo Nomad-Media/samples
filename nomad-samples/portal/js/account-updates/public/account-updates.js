@@ -30,31 +30,31 @@ async function getOptions()
 }
 await getOptions();
 
-UPDATE_FORM.addEventListener("submit", function (event) 
+UPDATE_FORM.addEventListener("submit", async function (event) 
 {
     event.preventDefault();
     
     const FORM_DATA = getElements(UPDATE_FORM);
 
-    sendRequest("/update-user", "POST", FORM_DATA);
+    console.log(await sendRequest("/update-user", "POST", FORM_DATA));
 });
 
-EMAIL_FORM.addEventListener("submit", function (event)
+EMAIL_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
     
     const FORM_DATA = getElements(EMAIL_FORM);
 
-    sendRequest("/change-email", "POST", FORM_DATA);
+    console.log(await sendRequest("/change-email", "POST", FORM_DATA));
 });
 
-PASSWORD_FORM.addEventListener("submit", function (event)
+PASSWORD_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
     
     const FORM_DATA = getElements(PASSWORD_FORM);
 
-    sendRequest("/change-password", "POST", FORM_DATA);
+    console.log(await sendRequest("/change-password", "POST", FORM_DATA));
 });
 
 function getElements(FORM)

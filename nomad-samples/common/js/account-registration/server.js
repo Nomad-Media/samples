@@ -29,7 +29,7 @@ app.post('/register', upload.none(), async (req, res) =>
         const REGISTER_INFO = await NomadSDK.register(req.body.email, req.body.firstName,
             req.body.lastName, req.body.password);
 
-        res.stauts(200).json(REGISTER_INFO);
+        res.status(200).json(REGISTER_INFO);
     }
     catch (error)
     {

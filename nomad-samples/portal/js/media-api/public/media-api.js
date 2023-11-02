@@ -69,7 +69,7 @@ MEDIA_SEARCH_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(MEDIA_SEARCH_FORM);
 
-    await sendRequest("/search", "POST", FORM_DATA);
+    console.log(await sendRequest("/search", "POST", FORM_DATA));
 });
 
 FORM_FORM.addEventListener("submit", async function (event)
@@ -78,7 +78,7 @@ FORM_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(FORM_FORM);
 
-    await sendRequest("/form", "POST", FORM_DATA);
+    console.log(await sendRequest("/form", "POST", FORM_DATA));
 });
 
 function getElements(FORM)

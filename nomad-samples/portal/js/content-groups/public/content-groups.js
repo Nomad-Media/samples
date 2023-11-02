@@ -15,14 +15,14 @@ GET_GROUP_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(GET_GROUP_FORM);
 
-    await sendRequest("/get-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/get-group", "POST", FORM_DATA));
 });
 
 GET_GROUPS_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/get-groups", "GET");
+    console.log(await sendRequest("/get-groups", "GET"));
 });
 
 CREATE_FORM.addEventListener("submit", async function (event)
@@ -31,7 +31,7 @@ CREATE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(CREATE_FORM);
 
-    await sendRequest("/create-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/create-group", "POST", FORM_DATA));
 });
 
 ADD_FORM.addEventListener("submit", async function (event)
@@ -40,7 +40,7 @@ ADD_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_FORM);
 
-    await sendRequest("/add-content", "POST", FORM_DATA);
+    console.log(await sendRequest("/add-content", "POST", FORM_DATA));
 });
 
 REMOVE_FORM.addEventListener("submit", async function (event)
@@ -49,7 +49,7 @@ REMOVE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(REMOVE_FORM);
 
-    await sendRequest("/remove-content", "POST", FORM_DATA);
+    console.log(await sendRequest("/remove-content", "POST", FORM_DATA));
 });
 
 RENAME_FORM.addEventListener("submit", async function (event)
@@ -58,7 +58,7 @@ RENAME_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(RENAME_FORM);
 
-    await sendRequest("/rename-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/rename-group", "POST", FORM_DATA));
 });
 
 SHARE_FORM.addEventListener("submit", async function (event)
@@ -67,7 +67,7 @@ SHARE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(SHARE_FORM);
 
-    await sendRequest("/share-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/share-group", "POST", FORM_DATA));
 });
 
 STOP_SHARING_FORM.addEventListener("submit", async function (event)
@@ -76,7 +76,7 @@ STOP_SHARING_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(STOP_SHARING_FORM);
 
-    await sendRequest("/stop-sharing-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/stop-sharing-group", "POST", FORM_DATA));
 });
 
 PORTAL_FORM.addEventListener("submit", async function (event)
@@ -85,7 +85,7 @@ PORTAL_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(PORTAL_FORM);
 
-    await sendRequest("/portal", "POST", FORM_DATA);
+    console.log(await sendRequest("/portal", "POST", FORM_DATA));
 });
 
 DELETE_FORM.addEventListener("submit", async function (event)
@@ -94,7 +94,7 @@ DELETE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(DELETE_FORM);
 
-    await sendRequest("/delete-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/delete-group", "POST", FORM_DATA));
 });
 
 function getElements(FORM)
