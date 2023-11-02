@@ -52,6 +52,21 @@ app.post('/reset-password', upload.none(), async (req, res) =>
     }
 });
 
+app.post('/logout', upload.none(), async (req, res) =>
+{
+    try
+    {
+        await NomadSDK.logout();
+
+        res.status(200);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
