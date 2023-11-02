@@ -14,14 +14,14 @@ GET_GROUP_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(GET_GROUP_FORM);
 
-    await sendRequest("/get-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/get-movie-group", "POST", FORM_DATA));
 });
 
 GET_GROUPS_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
     
-    await sendRequest("/get-movie-groups", "GET");
+    console.log(await sendRequest("/get-movie-groups", "GET"));
 });
 
 CREATE_FORM.addEventListener("submit", async function (event)
@@ -30,7 +30,7 @@ CREATE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(CREATE_FORM);
 
-    await sendRequest("/create-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/create-movie-group", "POST", FORM_DATA));
 });
 
 ADD_FORM.addEventListener("submit", async function (event)
@@ -39,7 +39,7 @@ ADD_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(ADD_FORM);
 
-    await sendRequest("/add-movie-to-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/add-movie-to-movie-group", "POST", FORM_DATA));
 });
 
 REMOVE_FORM.addEventListener("submit", async function (event)
@@ -48,7 +48,7 @@ REMOVE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(REMOVE_FORM);
 
-    await sendRequest("/remove-movie-from-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/remove-movie-from-movie-group", "POST", FORM_DATA));
 });
 
 RENAME_FORM.addEventListener("submit", async function (event)
@@ -57,7 +57,7 @@ RENAME_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(RENAME_FORM);
 
-    await sendRequest("/rename-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/rename-movie-group", "POST", FORM_DATA));
 });
 
 SHARE_FORM.addEventListener("submit", async function (event)
@@ -66,7 +66,7 @@ SHARE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(SHARE_FORM);
 
-    await sendRequest("/share-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/share-movie-group", "POST", FORM_DATA));
 });
 
 STOP_SHARE_FORM.addEventListener("submit", async function (event)
@@ -75,7 +75,7 @@ STOP_SHARE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(STOP_SHARE_FORM);
 
-    await sendRequest("/stop-sharing-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/stop-sharing-movie-group", "POST", FORM_DATA));
 });
 
 DELETE_FORM.addEventListener("submit", async function (event)
@@ -84,7 +84,7 @@ DELETE_FORM.addEventListener("submit", async function (event)
 
     const FORM_DATA = getElements(DELETE_FORM);
 
-    await sendRequest("/delete-movie-group", "POST", FORM_DATA);
+    console.log(await sendRequest("/delete-movie-group", "POST", FORM_DATA));
 });
 
 function getElements(FORM)
@@ -114,7 +114,7 @@ async function sendRequest(PATH, METHOD, BODY)
         if (RESPONSE.ok)
         {
             const DATA = await RESPONSE.json();
-            console.log(DATA);
+            if (DATA) return DATA;
         }
         else
         {
