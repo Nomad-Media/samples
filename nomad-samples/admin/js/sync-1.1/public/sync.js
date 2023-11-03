@@ -12,10 +12,6 @@ const TAG_INPUT = document.getElementById("tag");
 const RATING_SELECT = document.getElementById("ratingSelect");
 
 const UPDATE_ID_DIV = document.getElementById("updateIdDiv");
-const GENRE_DIV = document.getElementById("genreDiv");
-const TAG_DIV = document.getElementById("tagDiv");
-const PERFORMER_DIV = document.getElementById("performerDiv");
-const RATING_DIV = document.getElementById("ratingDiv");
 
 TYPE_SELECT.addEventListener("change", async function (event)
 {
