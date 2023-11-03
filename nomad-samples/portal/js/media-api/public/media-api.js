@@ -137,8 +137,7 @@ async function sendRequest(PATH, METHOD, BODY)
         if (RESPONSE.ok)
         {
             const DATA = await RESPONSE.json();
-            console.log(DATA);
-            return DATA;
+            if (DATA) return DATA;
         }
         else
         {

@@ -33,7 +33,7 @@ START_FORM.addEventListener("submit", async function (event)
         if (RESPONSE.ok)
         {
             const DATA = await RESPONSE.json();
-            console.log(DATA);
+            if (DATA) return DATA;
         }
         else
         {
