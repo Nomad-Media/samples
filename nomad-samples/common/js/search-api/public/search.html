@@ -67,16 +67,8 @@
         <br><br>
         <button type="button" id="addFilterButton">Add Filter</button>
 
-        <label for="resultFieldNames">Result Field Names</label>
-        <select class="select2" id="resultFieldNames" multiple>
-            <option value="Content Definition Id">Content Definition Id</option>
-            <option value="Content Definition Title">Content Definition Title</option>
-            <option value="Plot">Plot</option>
-            <option value="Genre">Genre</option>
-            <option value="Release Date">Release Date</option>
-            <option value="Image">Image</option>
-            <option value="Movie File">Movie File</option>
-        </select>
+        <label for="resultFieldNames">Result Field Names (separate by comma)</label>
+        <input type="text" id="resultFieldNames">
 
         <script>
             $(document).ready(function() {

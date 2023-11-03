@@ -71,7 +71,7 @@ app.post('/search', upload.none(), async (req, res) =>
             }
         }
 
-        const RESULT_FIELD_NAMES = Array.isArray(req.body.resultFieldNames) ? [req.body.resultFieldNames] : req.body.resultFieldNames;
+        const RESULT_FIELD_NAMES = req.body.resultFieldNames.split(",").map(elem => ({ "name": elem }));
 
         const SEARCH_MOVIE_INFO = await NomadSDK.search(req.body.searchQuery,
             req.body.pageOffset, req.body.pageSize, FILTERS, SORT_FIELDS,
