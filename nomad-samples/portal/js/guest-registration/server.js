@@ -28,7 +28,7 @@ app.post('/invite', upload.none(), async (req, res) =>
             req.body.contentDefinitionId, req.body.emails.split(","), 
             req.body.contentSecurityAttribute);
 
-        req.status(200).json(INVITE);
+        res.status(200).json(INVITE);
     }
     catch (error)
     {
@@ -45,7 +45,7 @@ app.post('/remove-invite', upload.none(), async (req, res) =>
             req.body.contentDefinitionId, req.body.emails.split(","), 
             req.body.contentSecurityAttribute);
 
-        req.status(200).json(REMOVE);
+        res.status(200).json(REMOVE);
     }
     catch (error)
     {
@@ -61,7 +61,7 @@ app.post('/register', upload.none(), async (req, res) =>
         const REGISTER = await NomadSDK.registerGuest(req.body.email, 
             req.body.firstName, req.body.lastName, req.body.password);
 
-        req.status(200).json(REGISTER);
+        res.status(200).json(REGISTER);
     }
     catch (error)
     {
@@ -76,7 +76,7 @@ app.get('/ping', upload.none(), async (req, res) =>
     {
         const PING = await NomadSDK.ping()
 
-        req.status(200).json(PING);
+        res.status(200).json(PING);
     }
     catch (error)
     {
@@ -91,7 +91,7 @@ app.get('/ppq', upload.none(), async (req, res) =>
     {
         const PPQ = await NomadSDK.participantPanelQuery();
 
-        req.status(200).json(PPQ);
+        res.status(200).json(PPQ);
     }
     catch (error)
     {
