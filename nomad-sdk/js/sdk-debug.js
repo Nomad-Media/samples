@@ -65,6 +65,8 @@ import config from "./config/config.js";
 
 
 
+
+
 // common
 
 
@@ -123,7 +125,7 @@ class NomadSDK {
     constructor(config) {
         this.config = config;
         this.token = null;
-        this.refreshToken = null;
+        this.refreshTokenVal = null;
         this.expirationSeconds = null;
         this.userSessionId = null;
         this.id = null
@@ -147,7 +149,185 @@ class NomadSDK {
         // Schedule token refresh
         this.__scheduleTokenRefresh();
     }
+    
+    // account functions
+    /**
+     * @function login
+     * @async
+     * @private
+     * @description Logs in using the username and password from the config.
+     * @returns {Promise<void>} - A promise that resolves when the login is successful.
+     * Updates the token, refresh token, expiration seconds, and user session ID class varibles. 
+     * @throws {Error} - An error is thrown if the login fails.
+     */ 
+    async login()
+    {
 
+        _printDatetime(`Logging in as ${this.config.username}`);
+
+        try
+        {
+            const LOGIN_INFO = await _login(this.config.username, this.config.password, 
+                                            this.config.serviceApiUrl, this.debugMode);
+            this.token = LOGIN_INFO["token"];
+            this.refreshTokenVal = LOGIN_INFO["refreshToken"];
+            this.expirationSeconds = Date.now() + LOGIN_INFO["expirationSeconds"] * 1000;
+            this.userSessionId = LOGIN_INFO["userSessionId"];
+            this.id = LOGIN_INFO["id"];
+            _printDatetime(`Login successful`);
+        }
+        catch (error) 
+        {
+            _printDatetime(`Login failed`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function logout
+     * @async
+     * @description Logs out the current user.
+     * @returns {Promise<null>} - A promise that resolves when the logout is successful.
+     * @throws {Error} - An error is thrown if the logout fails.
+     */
+    async logout()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Logging out`);
+
+        try
+        {
+            await _logout(this.token, this.userSessionId, this.config.serviceApiUrl, this.debugMode);
+            this.token = null;
+            this.refreshTokenVal = null;
+            this.expirationSeconds = null;
+            this.userSessionId = null;
+            this.id = null;
+            
+            _printDatetime(`Logout successful`);
+        }
+        catch (error)
+        {
+            _printDatetime("Loggout failed");
+            throw error;
+        }
+    }
+
+    /**
+     * @function refreshToken
+     * @async
+     * @private
+     * @description Refreshes the current token.
+     * @returns {Promise<void>} - A promise that resolves when the token is refreshed.
+     * Updates the token class variable.
+     * @throws {Error} - An error is thrown if the token refresh fails.
+     */ 
+    async refreshToken()
+    {
+        _printDatetime(`Refreshing token`);
+
+        try
+        {
+            const TOKEN_INFO = await _refreshToken(this.refreshTokenVal, this.config.serviceApiUrl, 
+                this.debugMode);
+            this.token = TOKEN_INFO["token"];
+            _printDatetime(`Token refresh successful`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Token refresh failed`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function scheduleTokenRefresh
+     * @private
+     * @description Schedules a token refresh for the duration set by the value returned in the login.
+     * @returns {Promise<void>} - A promise that resolves when the token is refreshed.
+     * Updates the token class variable.
+     * @throws {Error} - An error is thrown if the token refresh fails.
+     */ 
+    __scheduleTokenRefresh() {
+        if (this.token && this.expirationSeconds) {
+            const remainingTime = this.expirationSeconds - Date.now();
+            if (remainingTime > 0) {
+                // Clear existing timer (if any)
+                if (this.refreshTimer) {
+                    clearTimeout(this.refreshTimer);
+                }
+                // Schedule a refresh slightly before token expiration
+                this.refreshTimer = setTimeout(async () => {
+                    await this.refreshToken();
+                    this.__scheduleTokenRefresh();
+                }, remainingTime - 5000); // Refresh 5 seconds before expiration
+            }
+        }
+    }
+
+    /**
+     * @function forgotPassword
+     * @async
+     * @description Sends a code to the email to the user to be used 
+     * be used to reset the password.
+     * @returns {Promise<void>}
+     * Sends email with code to reset password.
+     * @throws {Error} - An error is thrown if the code fails to send.
+     */  
+    async forgotPassword()
+    {
+        const USERNAME = this.config.username;
+
+         _printDatetime(`Sending code to ${USERNAME}`);
+
+        try
+        {
+            await _forgotPassword(this.config.serviceApiUrl, USERNAME, this.debugMode);
+            _printDatetime(`Code sent to ${USERNAME}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Code failed to send to ${USERNAME}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function resetPassword
+     * @async
+     * @description Resets the password for the specified username.
+     * @param {string} CODE - The code to use to reset the password. Sent to the user's email
+     * by calling forgotPassword().
+     * @param {string} NEW_PASSWORD - The new password to set.
+     * @returns {Promise<void>}
+     * Resets the password for the specified username.
+     * @throws {Error} - An error is thrown if the password fails to reset.
+     */ 
+    async resetPassword(CODE, NEW_PASSWORD)
+    {
+        const USERNAME = this.config.username;
+
+        _printDatetime(`Resetting password for ${USERNAME}`);
+
+        try
+        {
+            await _resetPassword(this.config.serviceApiUrl, USERNAME, CODE, NEW_PASSWORD,  
+                this.debugMode);
+            _printDatetime(`Password reset for ${USERNAME}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Password failed to reset for ${USERNAME}`);
+            throw error;
+        }
+    }
+
+    // admin
+    // asset functions
     /**
      * @function getAssetDetails
      * @async
@@ -180,192 +360,7 @@ class NomadSDK {
             throw error;
         }
     }
-    
-    // account functions
-    /**
-     * @function login
-     * @async
-     * @private
-     * @description Logs in using the username and password from the config.
-     * @returns {Promise<void>} - A promise that resolves when the login is successful.
-     * Updates the token, refresh token, expiration seconds, and user session ID class varibles. 
-     * @throws {Error} - An error is thrown if the login fails.
-     */ 
-    async login()
-    {
 
-        _printDatetime(`Logging in as ${this.config.username}`);
-
-        try
-        {
-            const LOGIN_INFO = await _login(this.config.username, this.config.password, 
-                                            this.config.serviceApiUrl, this.debugMode);
-            this.token = LOGIN_INFO["token"];
-            this.refreshToken = LOGIN_INFO["refreshToken"];
-            this.expirationSeconds = Date.now() + LOGIN_INFO["expirationSeconds"] * 1000;
-            this.userSessionId = LOGIN_INFO["userSessionId"];
-            this.id = LOGIN_INFO["id"];
-            _printDatetime(`Login successful`);
-        }
-        catch (error) 
-        {
-            _printDatetime(`Login failed`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function logout
-     * @async
-     * @description Logs out the current user.
-     * @returns {Promise<string>} - A promise that resolves when the logout is successful.
-     * Returns the User Session ID
-     * @throws {Error} - An error is thrown if the logout fails.
-     */
-    async logout()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-        _printDatetime(`Logging out`);
-
-        try
-        {
-            await _logout(this.token, this.userSessionId, this.config.serviceApiUrl, this.debugMode);
-            this.token = null;
-            this.refreshToken = null;
-            this.expirationSeconds = null;
-            this.userSessionId = null;
-            this.id = null;
-            
-            _printDatetime(`Logout successful`);
-        }
-        catch (error)
-        {
-            _printDatetime("Loggout failed");
-            throw error;
-        }
-    }
-
-    /**
-     * @function refreshToken
-     * @async
-     * @private
-     * @description Refreshes the current token.
-     * @returns {Promise<void>} - A promise that resolves when the token is refreshed.
-     * Updates the token class variable.
-     * @throws {Error} - An error is thrown if the token refresh fails.
-     */ 
-    async __refreshToken()
-    {
-        _printDatetime(`Refreshing token`);
-
-        try
-        {
-            const TOKEN_INFO = await _refreshToken(this.refreshToken, this.config.serviceApiUrl, 
-                this.debugMode);
-            this.token = TOKEN_INFO["token"];
-            _printDatetime(`Token refresh successful`);
-        }
-        catch (error)
-        {
-            _printDatetime(`Token refresh failed`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function scheduleTokenRefresh
-     * @private
-     * @description Schedules a token refresh for the duration set by the value returned in the login.
-     * @returns {Promise<void>} - A promise that resolves when the token is refreshed.
-     * Updates the token class variable.
-     * @throws {Error} - An error is thrown if the token refresh fails.
-     */ 
-    __scheduleTokenRefresh() {
-        if (this.token && this.expirationSeconds) {
-            const remainingTime = this.expirationSeconds - Date.now();
-            if (remainingTime > 0) {
-                // Clear existing timer (if any)
-                if (this.refreshTimer) {
-                    clearTimeout(this.refreshTimer);
-                }
-                // Schedule a refresh slightly before token expiration
-                this.refreshTimer = setTimeout(async () => {
-                    await this.__refreshToken();
-                    this.__scheduleTokenRefresh();
-                }, remainingTime - 5000); // Refresh 5 seconds before expiration
-            }
-        }
-    }
-
-    /**
-     * @function forgotPassword
-     * @async
-     * @description Sends a code to the specified username.
-     * @param {string} USERNAME - The username to send the code to.
-     * @returns {Promise<void>}
-     * Sends email with code to reset password.
-     * @throws {Error} - An error is thrown if the code fails to send.
-     */  
-    async forgotPassword(USERNAME)
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-         _printDatetime(`Sending code to ${USERNAME}`);
-
-        try
-        {
-            await _forgotPassword(this.config.serviceApiUrl, USERNAME, this.debugMode);
-            _printDatetime(`Code sent to ${USERNAME}`);
-        }
-        catch (error)
-        {
-            _printDatetime(`Code failed to send to ${USERNAME}`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function resetPassword
-     * @async
-     * @description Resets the password for the specified username.
-     * @param {string} USERNAME - The username to reset the password for.
-     * * @param {string} TOKEN - The token to use to reset the password. Sent to the user's email
-     * by calling forgotPassword().
-     * @param {string} NEW_PASSWORD - The new password to set.
-     * @returns {Promise<void>}
-     * Resets the password for the specified username.
-     * @throws {Error} - An error is thrown if the password fails to reset.
-     */ 
-    async resetPassword(USERNAME, TOKEN, NEW_PASSWORD)
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-        _printDatetime(`Resetting password for ${USERNAME}`);
-
-        try
-        {
-            await _resetPassword(this.config.serviceApiUrl, USERNAME, TOKEN, NEW_PASSWORD,  
-                this.debugMode);
-            _printDatetime(`Password reset for ${USERNAME}`);
-        }
-        catch (error)
-        {
-            _printDatetime(`Password failed to reset for ${USERNAME}`);
-            throw error;
-        }
-    }
-
-    // admin
     // asset upload functions
     /**
      * @function uploadAsset
@@ -449,15 +444,15 @@ class NomadSDK {
      * @function createContent
      * @async
      * @description Creates content using the specified content definition.
-     * @param {string} CONTENT_DEFINITION - The content definition to use when creating the content.
-     * @param {string | null} LANGUAGE_ID - The language id of the asset to upload. 
+     * @param {string} CONTENT_DEFINITION_ID - The content definition id where the content will be created.
+     * @param {string | null} LANGUAGE_ID - The language id of the content. 
      * If this is left blank then the default system language is used.
      * @returns {Promise<JSON>} - A promise that resolves when the content is created.
      * Returns the content information of the created content.
      * @throws {Error} - An error is thrown if the content fails to create.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */
-    async createContent(CONTENT_DEFINITION, LANGUAGE_ID)
+    async createContent(CONTENT_DEFINITION_ID, LANGUAGE_ID)
     {
         if (this.token === null)
         {
@@ -474,7 +469,7 @@ class NomadSDK {
         try
         {
             const CREATE_CONTENT_INFO = await _createContent(this.token, this.config.serviceApiUrl, 
-                CONTENT_DEFINITION, LANGUAGE_ID, this.debugMode);
+                CONTENT_DEFINITION_ID, LANGUAGE_ID, this.debugMode);
             _printDatetime(`Content created: ${CREATE_CONTENT_INFO["contentId"]}`);
             return CREATE_CONTENT_INFO;
         } 
@@ -699,7 +694,7 @@ class NomadSDK {
      * @param {string} CONTENT_ID - The ID of the content to add the tag or collection to.
      * @param {string} CONTENT_DEFINITION - The content definition of the tag or collection to add.
      * @param {string} TAG_NAME - The name of the tag or collection to add.
-     * @param {string} TAG_ID - The ID of the tag or collection to add.
+     * @param {string | null} TAG_ID - The ID of the tag or collection to add.
      * @param {boolean} CREATE_NEW - Whether to create a new tag or collection if it does not exist.
      * @returns {Promise<JSON>} - A promise that resolves when the tag or collection is added.
      * Returns the information of the added tag or collection.
@@ -893,62 +888,63 @@ class NomadSDK {
     }
     
     
-    // event instance functions
+    // event functions
     /**
-    * Creates and updates an event instance.
-    * @function createAndUpdateEventInstance
+    * Creates and updates an event.
+    * @function createAndUpdateEvent
     * @async
-    * @param {string | null} CONTENT_ID - The content id of the event instance to update. Null for create.
-    * @param {string} CONTENT_DEFINITION_ID - The content definition id of the event instance.
+    * @param {string | null} CONTENT_ID - The content id of the event to update. Null for create.
+    * @param {string} CONTENT_DEFINITION_ID - The content definition id of the event.
     * @param {string} NAME - The name of the event.
-    * @param {JSON | null} SERIES - The series name of the event instance.
+    * @param {JSON | null} SERIES - The series of the event.
     * JSON format: { id: string, description: string }
-    * @param {string} START_DATETIME - The start date and time of the event instance.
-    * @param {string} END_DATETIME - The end date and time of the event instance.
+    * @param {string} START_DATETIME - The start date and time of the event.
+    * @param {string} END_DATETIME - The end date and time of the event.
     * @param {JSON | null} PRIMARY_PERFORMER - The name and id of the primary performer.
     * JSON format: { id: string, description: string }
-    * @param {string | null} SHORT_DESCRIPTION - The short description of the event instance.
-    * @param {string | null} LONG_DESCRIPTION - The long description of the event instance.
-    * @param {JSON | null} THUMBNAIL_IMAGE - The thumbnail image name and id of the event instance.
+    * @param {string | null} SHORT_DESCRIPTION - The short description of the event.
+    * @param {string | null} LONG_DESCRIPTION - The long description of the event.
+    * @param {JSON | null} THUMBNAIL_IMAGE - The thumbnail image name and id of the event.
     * JSON format: { id: string, description: string }
-    * @param {JSON | null} HERO_IMAGE - The hero image name and id of the event instance.
+    * @param {JSON | null} HERO_IMAGE - The hero image name and id of the event.
     * JSON format: { id: string, description: string }
-    * @param {JSON | null} LOGO_IMAGE - The logo image name and id of the event instance.
+    * @param {JSON | null} LOGO_IMAGE - The logo image name and id of the event.
     * JSON format: { id: string, description: string }
-    * @param {JSON | null} INTELLIGENT_PROGRAM - The intelligent program of the event instance.
+    * @param {JSON | null} INTELLIGENT_PROGRAM - The intelligent program of the event.
     * JSON format: { id: string, description: string }
-    * @param {string | null} EXTERNAL_URL - The external URL of the event instance.
-    * @param {JSON | null} VENUE - The venue name and id of the event instance.
+    * @param {string | null} EXTERNAL_URL - The external URL of the event.
+    * @param {JSON | null} VENUE - The venue name and id of the event.
     * JSON format: { id: string, description: string }
-    * @param {Array<JSON> | null} PERFORMERS - The performers of the event instance.
+    * @param {Array<JSON> | null} PERFORMERS - The performers of the event.
     * JSON format: [{ id: string, description: string },]
-    * @param {Array<JSON> | null} GENRES - The genres of the event instance.
+    * @param {Array<JSON> | null} GENRES - The genres of the event.
     * JSON format: [{ id: string, description: string },]
-    * @param {Array<JSON> | null} MEDIA_ATTRIBUTES - The media attributes of the event instance.
+    * @param {Array<JSON> | null} MEDIA_ATTRIBUTES - The media attributes of the event.
     * JSON format: [{ id: string, description: string },]
-    * @param {Array<JSON> | null} LANGUAGES - The languages of the event instance.
+    * @param {Array<JSON> | null} LANGUAGES - The languages of the event.
     * JSON format: [{ id: string, description: string },]
-    * @param {Array<JSON> | null} PRODUCTS - The products of the event instance.
+    * @param {Array<JSON> | null} PRODUCTS - The products of the event.
     * JSON format: [{ id: string, description: string },]
-    * @param {Array<JSON> | null} FEATURED_GROUPS - The featured groups of the event instance.
+    * @param {Array<JSON> | null} FEATURED_GROUPS - The featured groups of the event.
     * JSON format: [{ id: string, description: string },]
-    * @param {string | null} GROUP_SEQUENCE - The group sequence of the event instance.
-    * @param {Array<JSON> | null} RELATED_MEDIA_ITEMS - The related media items of the event instance.
+    * @param {string | null} GROUP_SEQUENCE - The group sequence of the event.
+    * @param {Array<JSON> | null} RELATED_MEDIA_ITEMS - The related media items of the event.
     * JSON format: [{ id: string, description: string },]
     * @param {Array<JSON> | null} RECOMMENDEDATION_SIMILAR_ITEMS - The recommended similar items of the
-    * event instance. JSON format: [{ id: string, description: string },]
-    * @param {Array<JSON> | null} CONTENT_RATINGS - The content ratings of the event instance.
-    * @param {boolean | null} IS_DISABLED - Whether the event instance is disabled.
+    * event. JSON format: [{ id: string, description: string },]
+    * @param {Array<JSON> | null} CONTENT_RATINGS - The content ratings of the event.
+    * JSON format: [{ id: string, description: string },]
+    * @param {boolean | null} IS_DISABLED - Whether the event is disabled.
     * Set to false by default.
-    * @param {JSON | null} LIVE_CHANNEL - The live channel of the event instance.
+    * @param {JSON | null} LIVE_CHANNEL - The live channel of the event.
     * JSON format: { id: string, description: string }
-    * @returns {Promise<JSON>} A promise that resolves when the event instance is created and updated.
-    * Returns the information of the created and updated event instance.
-    * @throws {Error} An error is thrown if the event instance fails to create and update.
+    * @returns {Promise<JSON>} A promise that resolves when the event is created and updated.
+    * Returns the information of the created and updated event.
+    * @throws {Error} An error is thrown if the event fails to create and update.
     * @throws {Error} An error is thrown if the API type is not admin.
     */
 
-    async createAndUpdateEventInstance(CONTENT_ID, CONTENT_DEFINITION_ID, NAME, SERIES, 
+    async createAndUpdateEvent(CONTENT_ID, CONTENT_DEFINITION_ID, NAME, SERIES, 
         START_DATETIME, END_DATETIME, PRIMARY_PERFORMER, SHORT_DESCRIPTION, LONG_DESCRIPTION, 
         THUMBNAIL_IMAGE, HERO_IMAGE, LOGO_IMAGE, INTELLIGENT_PROGRAM, EXTERNAL_URL, VENUE, 
         PERFORMERS, GENRES, MEDIA_ATTRIBUTES, LANGUAGES, PRODUCTS, FEATURED_GROUPS, 
@@ -965,40 +961,40 @@ class NomadSDK {
             throw new Error("This function is only available for admin API type.");
         }
         
-        _printDatetime(`Creating/Updating event instance: ${NAME}`);
+        _printDatetime(`Creating/Updating event: ${NAME}`);
 
         try
         {
-            const CREATE_EVENT_INSTANCE_INFO = await _createAndUpdateEventInstance(this.token, 
+            const CREATE_EVENT_INFO = await _createAndUpdateEvent(this.token, 
                 this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, NAME, SERIES,
                 START_DATETIME, END_DATETIME, PRIMARY_PERFORMER, SHORT_DESCRIPTION, 
                 LONG_DESCRIPTION, THUMBNAIL_IMAGE, HERO_IMAGE, LOGO_IMAGE, INTELLIGENT_PROGRAM, 
                 EXTERNAL_URL, VENUE, PERFORMERS, GENRES, MEDIA_ATTRIBUTES, LANGUAGES, PRODUCTS, 
                 FEATURED_GROUPS, GROUP_SEQUENCE, RELATED_MEDIA_ITEMS, RECOMMENDED_SIMILAR_ITEMS, 
                 CONTENT_RATINGS, IS_DISABLED, LIVE_CHANNEL, this.debugMode);
-            _printDatetime(`Event instance created/updated: ${CREATE_EVENT_INSTANCE_INFO}`);
-            return CREATE_EVENT_INSTANCE_INFO;
+            _printDatetime(`Event created/updated: ${CREATE_EVENT_INFO}`);
+            return CREATE_EVENT_INFO;
         }
         catch (error)
         {
-            _printDatetime(`Event instance failed to create/update: ${NAME}`);
+            _printDatetime(`Event failed to create/update: ${NAME}`);
             throw error;
         }
     }
     
 
     /**
-     * @function deleteEventInstance
+     * @function deleteEvent
      * @async
-     * @description Deletes an event instance.
-     * @param {string} CONTENT_ID - The ID of the event instance to delete.
-     * @param {string} CONTENT_DEFINITION_ID - The content definition ID of the event instance to
+     * @description Deletes an event.
+     * @param {string} CONTENT_ID - The ID of the event to delete.
+     * @param {string} CONTENT_DEFINITION_ID - The content definition ID of the event to
      * delete.
-     * @returns {Promise<void>} - A promise that resolves when the event instance is deleted.
-     * @throws {Error} - An error is thrown if the event instance fails to delete.
+     * @returns {Promise<void>} - A promise that resolves when the event is deleted.
+     * @throws {Error} - An error is thrown if the event fails to delete.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */
-    async deleteEventInstance(CONTENT_ID, CONTENT_DEFINITION_ID)
+    async deleteEvent(CONTENT_ID, CONTENT_DEFINITION_ID)
     {
         if (this.token === null)
         {
@@ -1010,45 +1006,44 @@ class NomadSDK {
             throw new Error("This function is only available for admin API type.");
         }
 
-        _printDatetime(`Deleting event instance: ${CONTENT_ID}`);
+        _printDatetime(`Deleting event: ${CONTENT_ID}`);
 
         try
         {
-            await _deleteEventInstance(this.token, this.config.serviceApiUrl, 
+            await _deleteEvent(this.token, this.config.serviceApiUrl, 
                 CONTENT_ID, CONTENT_DEFINITION_ID, this.debugMode);
-            _printDatetime(`Event instance deleted: ${CONTENT_ID}`);
+            _printDatetime(`Event deleted: ${CONTENT_ID}`);
         }
         catch (error)
         {
-            _printDatetime(`Event instance failed to delete: ${CONTENT_ID}`);
+            _printDatetime(`Event failed to delete: ${CONTENT_ID}`);
             throw error;
         }
     }
 
-    // live event schedule functions
     /**
-     * @function addingLiveScheduleToEvent
+     * @function addLiveScheduleToEvent
      * @async
      * @description Adds a live schedule to an event and updated live schedule attatched to event.
      * @param {string} EVENT_ID - The ID of the event to add the live schedule to.
-     * @param {JSON | null} SLATE_VIDEO - The slate video ID of the event instance. 
+     * @param {JSON | null} SLATE_VIDEO - The slate video ID of the event. 
      * JSON format: {"id": string, "description": string }
-     * @param {JSON | null} PREROLL_VIDEO - The preroll video of the event instance. 
+     * @param {JSON | null} PREROLL_VIDEO - The preroll video of the event. 
      * JSON format: {"id": string, "description": string }
-     * @param {JSON | null} POSTROLL_VIDEO_ID - The postroll video of the event instance. 
+     * @param {JSON | null} POSTROLL_VIDEO_ID - The postroll video of the event. 
      * JSON format: {"id": string, "description": string }
-     * @param {boolean | null} IS_SECURE_OUTPUT - Whether the event instance is secure output. 
+     * @param {boolean | null} IS_SECURE_OUTPUT - Whether the event is secure output. 
      * JSON format: { id: string, description: string }
-     * @param {JSON | null} ARCHIVE_FOLDER - The archive folder of the event instance. 
+     * @param {JSON | null} ARCHIVE_FOLDER - The archive folder of the event. 
      * JSON format: { id: string, description: string }
-     * @param {JSON | null} PRIMARY_LIVE_INPUT - The live input A ID of the event instance. 
+     * @param {JSON | null} PRIMARY_LIVE_INPUT - The live input A ID of the event. 
      * JSON format: { id: string, description: string }
-     * @param {JSON | null} BACKUP_LIVE_INPUT - The live input B ID of the event instance. 
+     * @param {JSON | null} BACKUP_LIVE_INPUT - The live input B ID of the event. 
      * JSON format: { id: string, description: string }
      * @param {JSON | null} PRIMARY_LIVESTREAM_INPUT_URL - The primary live stream URL of the 
-     * event instance. JSON format: { id: string, description: string }
-     * @param {JSON | null} BACKUP_LIVESTREAM_INPUT_URL - The backup live stream URL of the event instance. 
-     * @param {Array<JSON> | null} EXTERNAL_OUTPUT_PROFILES - The external output profiles of the event instance.
+     * event. JSON format: { id: string, description: string }
+     * @param {JSON | null} BACKUP_LIVESTREAM_INPUT_URL - The backup live stream URL of the event. 
+     * @param {Array<JSON> | null} EXTERNAL_OUTPUT_PROFILES - The external output profiles of the event.
      * @returns {Promise<null>} - A promise that resolves when the live event schedule is created.
      * @throws {Error} - An error is thrown if the live event schedule fails to create.
      * @throws {Error} - An error is thrown if the API type is not admin.
@@ -1090,7 +1085,7 @@ class NomadSDK {
      * @description Extends the live schedule of an event.
      * @param {string} EVENT_ID - The ID of the event to extend the live schedule of.
      * @param {Array<string>} DAYS_OF_WEEK - The days of the week to extend the live schedule of.
-     * @param {string} RECURRING_WEEKS - The number of weeks to extend the live schedule of.
+     * @param {integer} RECURRING_WEEKS - The number of weeks to extend the live schedule of.
      * @param {string | null} END_DATE - The end date to extend the live schedule of.
      * @returns {Promise<null>} - A promise that resolves when the live schedule is extended.
      * @throws {Error} - An error is thrown if the live schedule fails to extend.
@@ -1231,7 +1226,7 @@ class NomadSDK {
      * @function createLiveChannel
      * @async
      * @description Creates a live channel.
-     * @param {string | null} NAME - The name of the live channel.
+     * @param {string} NAME - The name of the live channel.
      * @param {string | null} THUMBNAIL_IMAGE_ID - The thumbnail image ID of the live channel.
      * @param {string | null} ARCHIVE_FOLDER_ASSET_ID - The archive folder asset ID of the live channel.
      * @param {boolean | null} ENABLE_HIGH_AVAILABILITY - Whether to enable high availability for the live
@@ -1242,8 +1237,10 @@ class NomadSDK {
      * @param {string | null} TYPE - The type of the live channel. The types are External, IVS, Normal, and Realtime.
      * @param {string | null} EXTERNAL_SERVICE_API_URL - The external service API URL of the live channel.
      * Only required if the type is External.
+     * @param {JSON | null} EXTERNAL_OUTPUT_PROFILES - The external output profiles of the live channel.
+     * JSON format: [{ id: string, description: string },]
      * @param {Array<string> | null} SECURITY_GROUPS - The security groups of the live channel.
-     * The security groups are: Content Manager, Everyone,and Guest.
+     * The security groups are: Content Manager, Everyone, and Guest.
      * @returns {Promise<JSON>} - A promise that resolves when the live channel is created.
      * Returns the information of the created live channel.
      * @throws {Error} - An error is thrown if the live channel fails to create.
@@ -1251,7 +1248,7 @@ class NomadSDK {
      */
     async createLiveChannel(NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, 
         ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, IS_OUTPUT_SCREENSHOTS,
-        TYPE, EXTERNAL_SERVICE_API_URL, SECURITY_GROUPS)
+        TYPE, EXTERNAL_SERVICE_API_URL, EXTERNAL_OUTPUT_PROFILES, SECURITY_GROUPS)
     {
         if (this.token === null)
         {
@@ -1270,7 +1267,8 @@ class NomadSDK {
             const CREATE_LIVE_CHANNEL_INFO = await _createLiveChannel(this.token, 
                 this.config.serviceApiUrl, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, 
                 ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, 
-                IS_OUTPUT_SCREENSHOTS, TYPE, EXTERNAL_SERVICE_API_URL, SECURITY_GROUPS, this.debugMode);
+                IS_OUTPUT_SCREENSHOTS, TYPE, EXTERNAL_SERVICE_API_URL, EXTERNAL_OUTPUT_PROFILES, 
+                SECURITY_GROUPS, this.debugMode);
             _printDatetime(`Live Channel created: ${CREATE_LIVE_CHANNEL_INFO["id"]}`);
             return CREATE_LIVE_CHANNEL_INFO;
         }
@@ -1484,6 +1482,8 @@ class NomadSDK {
      * @param {string | null} TYPE - The type of the live channel. The types are External, IVS, Normal, and Realtime.
      * @param {string | null} EXTERNAL_SERVICE_API_URL - The external service API URL of the live channel.
      * Only required for the External type.
+     * @param {Array<JSON> | null} EXTERNAL_OUTPUT_PROFILES - The external output profiles of the live channel.
+     * JSON format: [{ id: string, description: string },]
      * @param {Array<string> | null} SECURITY_GROUPS - The security groups of the live channel.
      * The security groups are: Content Manager, Everyone,and Guest.
      * @returns {Promise<JSON>} - A promise that resolves when the live channel is created.
@@ -1493,7 +1493,7 @@ class NomadSDK {
      */
     async updateLiveChannel(LIVE_CHANNEL_ID, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID, 
         ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, IS_OUTPUT_SCREENSHOTS, TYPE, 
-        EXTERNAL_SERVICE_API_URL, SECURITY_GROUPS)
+        EXTERNAL_SERVICE_API_URL, EXTERNAL_OUTPUT_PROFILES, SECURITY_GROUPS)
     {
         if (this.token === null)
         {
@@ -1512,7 +1512,8 @@ class NomadSDK {
             const UPDATE_LIVE_CHANNEL_INFO = await _updateLiveChannel(this.token, 
                 this.config.serviceApiUrl, LIVE_CHANNEL_ID, NAME, THUMBNAIL_IMAGE_ID, 
                 ARCHIVE_FOLDER_ASSET_ID, ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, 
-                IS_OUTPUT_SCREENSHOTS, TYPE, EXTERNAL_SERVICE_API_URL, SECURITY_GROUPS, this.debugMode);
+                IS_OUTPUT_SCREENSHOTS, TYPE, EXTERNAL_SERVICE_API_URL, EXTERNAL_OUTPUT_PROFILES,
+                SECURITY_GROUPS, this.debugMode);
             _printDatetime(`Live Channel updated: ${LIVE_CHANNEL_ID}`);
             return UPDATE_LIVE_CHANNEL_INFO;
         }
@@ -1528,7 +1529,7 @@ class NomadSDK {
      * @function createLiveInput
      * @async
      * @description Creates a live input.
-     * @param {string | null} NAME - The name of the live input.
+     * @param {string} NAME - The name of the live input.
      * @param {string | null} SOURCE - The source of the live input.
      * @param {string} TYPE - The type of the live input. The types are RTMP_PULL, RTMP_PUSH, RTP_PUSH, UDP_PUSH, 
      * and URL_PULL.
@@ -2084,8 +2085,8 @@ class NomadSDK {
      * @async
      * @description Adds an asset schedule event.
      * @param {string} CHANNEL_ID - The channel ID of the schedule event.
-     * @param {string} ASSET_ID - The asset ID of the schedule event.
-     * @param {string | null} ASSET_NAME - The asset name of the schedule event.
+     * @param {JSON} ASSET - The asset of the schedule event.
+     * JSON format: {"id": "string", "name": "string"}
      * @param {boolean} IS_LOOP - Whether the schedule event is loop.
      * @param {string | null} DURATION_TIME_CODE - The duration time code of the schedule event.
      * Please use the following format: hh:mm:ss;ff. Set to null if IS_LOOP is true.
@@ -2095,7 +2096,7 @@ class NomadSDK {
      * @throws {Error} - An error is thrown if the asset schedule event fails to add.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */ 
-    async addAssetScheduleEvent(CHANNEL_ID, ASSET_ID, ASSET_NAME, IS_LOOP, DURATION_TIME_CODE, 
+    async addAssetScheduleEvent(CHANNEL_ID, ASSET, IS_LOOP, DURATION_TIME_CODE, 
         PREVIOUS_ID)
     {
         if (this.token === null)
@@ -2108,20 +2109,19 @@ class NomadSDK {
             throw new Error("This function is only available for admin API type.");
         }
 
-        _printDatetime(`Adding asset schedule event: ${ASSET_ID}`);
+        _printDatetime(`Adding asset schedule event: ${ASSET.id}`);
 
         try
         {
-            const ID = _newGuid();
             const ADD_ASSET_SCHEDULE_EVENT_INFO = await _addAssetScheduleEvent(this.token, 
-                this.config.serviceApiUrl, ID, CHANNEL_ID, ASSET_ID, ASSET_NAME, IS_LOOP, 
+                this.config.serviceApiUrl, CHANNEL_ID, ASSET, IS_LOOP, 
                 DURATION_TIME_CODE, PREVIOUS_ID, this.debugMode);
-            _printDatetime(`Asset schedule event added: ${ASSET_ID}`);
+            _printDatetime(`Asset schedule event added: ${ASSET.id}`);
             return ADD_ASSET_SCHEDULE_EVENT_INFO;
         }
         catch (error)
         {
-            _printDatetime(`Asset schedule event failed to add: ${ASSET_ID}`);
+            _printDatetime(`Asset schedule event failed to add: ${ASSET.id}`);
             throw error;
         }
     }
@@ -2131,10 +2131,10 @@ class NomadSDK {
      * @async
      * @description Adds an input schedule event.
      * @param {string} CHANNEL_ID - The channel ID of the schedule event.
-     * @param {string} INPUT_ID - The input ID of the schedule event.
-     * @param {string | null} INPUT_NAME - The input name of the schedule event.
-     * @param {string | null} BACKUP_INPUT_ID - The backup input ID of the schedule event.
-     * @param {string | null} BACKUP_INPUT_NAME - The backup input name of the schedule event.
+     * @param {JSON} INPUT - The input of the schedule event.
+     * JSON format: {"id": "string", "name": "string"}
+     * @param {JSON | null} BACKUP_INPUT - The backup input of the schedule event.
+     * JSON format: {"id": "string", "name": "string"}
      * @param {string | null} FIXED_ON_AIR_TIME_UTC - The fixed on air time UTC of the schedule event.
      * Please use the following format: hh:mm:ss.
      * @param {string | null} PREVIOUS_ID - The previous ID of the schedule event.
@@ -2143,8 +2143,7 @@ class NomadSDK {
      * @throws {Error} - An error is thrown if the input schedule event fails to add.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */ 
-    async addInputScheduleEvent(CHANNEL_ID, INPUT_ID, INPUT_NAME, BACKUP_INPUT_ID, 
-        BACKUP_INPUT_NAME, FIXED_ON_AIR_TIME_UTC, 
+    async addInputScheduleEvent(CHANNEL_ID, INPUT, BACKUP_INPUT, FIXED_ON_AIR_TIME_UTC, 
         PREVIOUS_ID)
     {
         if (this.token === null)
@@ -2162,8 +2161,8 @@ class NomadSDK {
         try
         {
             const ADD_INPUT_SCHEDULE_EVENT_INFO = await _addInputScheduleEvent(this.token, 
-                this.config.serviceApiUrl, CHANNEL_ID, INPUT_ID, INPUT_NAME, BACKUP_INPUT_ID, 
-                BACKUP_INPUT_NAME, FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, this.debugMode);
+                this.config.serviceApiUrl, CHANNEL_ID, INPUT, BACKUP_INPUT, 
+                FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, this.debugMode);
             _printDatetime(`Input schedule event added`);
             return ADD_INPUT_SCHEDULE_EVENT_INFO;
         }
@@ -2173,7 +2172,6 @@ class NomadSDK {
             throw error;
         }
     }
-
 
     /**
      * @function removeAssetScheduleEvent
@@ -2201,10 +2199,9 @@ class NomadSDK {
 
         try
         {
-            const REMOVE_ASSET_SCHEDULE_EVENT_INFO = await _removeAssetScheduleEvent(this.token, 
+            await _removeAssetScheduleEvent(this.token, 
                 this.config.serviceApiUrl, CHANNEL_ID, SCHEDULE_EVENT_ID, this.debugMode);
             _printDatetime(`Asset schedule event removed: ${CHANNEL_ID}`);
-            return REMOVE_ASSET_SCHEDULE_EVENT_INFO;
         }
         catch (error)
         {
@@ -2239,10 +2236,9 @@ class NomadSDK {
 
         try
         {
-            const REMOVE_INPUT_SCHEDULE_EVENT_INFO = await _removeInputScheduleEvent(this.token, 
+            await _removeInputScheduleEvent(this.token, 
                 this.config.serviceApiUrl, CHANNEL_ID, INPUT_ID, this.debugMode);
             _printDatetime(`Input schedule event removed`);
-            return REMOVE_INPUT_SCHEDULE_EVENT_INFO;
         }
         catch (error)
         {
@@ -2250,6 +2246,101 @@ class NomadSDK {
             throw error;
         }
     }      
+
+    /**
+     * @function updateAssetScheduleEvent
+     * @async
+     * @description Adds an asset schedule event.
+     * @param {string} ID - The ID of the schedule event.
+     * @param {string} CHANNEL_ID - The channel ID of the schedule event.
+     * @param {JSON} ASSET - The asset of the schedule event.
+     * JSON format: {"id": "string", "name": "string"}
+     * @param {boolean} IS_LOOP - Whether the schedule event is loop.
+     * @param {string | null} DURATION_TIME_CODE - The duration time code of the schedule event.
+     * Please use the following format: hh:mm:ss;ff. Set to null if IS_LOOP is true.
+     * @param {string | null} PREVIOUS_ID - The previous ID of the schedule event.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset schedule event is added.
+     * Returns the information of the added asset schedule event.
+     * @throws {Error} - An error is thrown if the asset schedule event fails to add.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */ 
+        async updateAssetScheduleEvent(ID, CHANNEL_ID, ASSET, IS_LOOP, DURATION_TIME_CODE, 
+            PREVIOUS_ID)
+        {
+            if (this.token === null)
+            {
+                await this._init();
+            }
+    
+            if (this.config.apiType !== "admin")
+            {
+                throw new Error("This function is only available for admin API type.");
+            }
+    
+            _printDatetime(`Updating asset schedule event: ${ASSET.id}`);
+    
+            try
+            {
+                const ADD_ASSET_SCHEDULE_EVENT_INFO = await _updateAssetScheduleEvent(this.token, 
+                    this.config.serviceApiUrl, ID, CHANNEL_ID, ASSET, IS_LOOP, 
+                    DURATION_TIME_CODE, PREVIOUS_ID, this.debugMode);
+                _printDatetime(`Asset schedule event updated: ${ASSET.id}`);
+                return ADD_ASSET_SCHEDULE_EVENT_INFO;
+            }
+            catch (error)
+            {
+                _printDatetime(`Asset schedule event failed to update: ${ASSET.id}`);
+                throw error;
+            }
+        }
+    
+        /**
+         * @function updateInputScheduleEvent
+         * @async
+         * @description Adds an input schedule event.
+         * @param {string} ID - The ID of the Input schedule event.
+         * @param {string} CHANNEL_ID - The channel ID of the schedule event.
+         * @param {JSON} INPUT - The input of the schedule event.
+         * JSON format: {"id": "string", "name": "string"}
+         * @param {JSON | null} BACKUP_INPUT - The backup input of the schedule event.
+         * JSON format: {"id": "string", "name": "string"}
+         * @param {string | null} FIXED_ON_AIR_TIME_UTC - The fixed on air time UTC of the schedule event.
+         * Please use the following format: hh:mm:ss.
+         * @param {string | null} PREVIOUS_ID - The previous ID of the schedule event.
+         * @returns {Promise<JSON>} - A promise that resolves when the input schedule event is added.
+         * Returns the information of the added input schedule event.
+         * @throws {Error} - An error is thrown if the input schedule event fails to add.
+         * @throws {Error} - An error is thrown if the API type is not admin.
+         */ 
+        async updateInputScheduleEvent(ID, CHANNEL_ID, INPUT, BACKUP_INPUT, FIXED_ON_AIR_TIME_UTC, 
+            PREVIOUS_ID)
+        {
+            if (this.token === null)
+            {
+                await this._init();
+            }
+    
+            if (this.config.apiType !== "admin")
+            {
+                throw new Error("This function is only available for admin API type.");
+            }
+    
+            _printDatetime(`Updating input schedule event`);
+    
+            try
+            {
+                const ADD_INPUT_SCHEDULE_EVENT_INFO = await _updateInputScheduleEvent(this.token, 
+                    this.config.serviceApiUrl, ID, CHANNEL_ID, INPUT, BACKUP_INPUT, 
+                    FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, this.debugMode);
+                _printDatetime(`Input schedule event updated`);
+                return ADD_INPUT_SCHEDULE_EVENT_INFO;
+            }
+            catch (error)
+            {
+                _printDatetime(`Input schedule event failed to update`);
+                throw error;
+            }
+        }
 
     // common
     // registration functions
@@ -2354,7 +2445,7 @@ class NomadSDK {
      * results are a special type of results and bring back the items that are the most similar to 
      * the item represented here. This search is only enabled when Vector searching has been enabled.
      * When this has a value, the SearchQuery value and PageOffset values are ignored.
-     * @param {int | null} MIN_SCORE - Specifies the minimum score to match when returning results. 
+     * @param {number | null} MIN_SCORE - Specifies the minimum score to match when returning results. 
      * If omitted, the system default will be used - which is usually .65
      * @param {boolean | null} EXCLUDE_TOTAL_RECORD_COUNT - Normally, the total record count is 
      * returned but the query can be made faster if this value is excluded.
@@ -2512,7 +2603,8 @@ class NomadSDK {
      * @param {string | null} ADDRESS - The address of the user.
      * @param {string | null} ADDRESS2 - The address2 of the user.
      * @param {string | null} CITY - The city of the user.
-     * @param {string | null} COUNTRY - The country of the user.
+     * @param {JSON | null} COUNTRY - The country of the user.
+     * JSON format: {"id": "string", "name": "string"}
      * @param {string | null} FIRST_NAME - The first name of the user.
      * @param {string | null} LAST_NAME - The last name of the user.
      * @param {string | null} ORGANIZATION - The organization of the user.
@@ -2956,7 +3048,8 @@ class NomadSDK {
      * @description Gets media.
      * @param {string} CONTENT_DEFINITION_ID - The ID of the content definition the form
      * is going in.
-     * @param {MAP} FORM_INFO - The information of the form.
+     * @param {JSON} FORM_INFO - The information of the form.
+     * JSON format: whatever key value pairs you want to add to the form.
      * @returns {Promise<JSON>} - A promise that resolves when the from is created.
      * Returns the id of the form.
      * @throws {Error} - An error is thrown if the media fails to get.
@@ -2994,17 +3087,18 @@ class NomadSDK {
      * @function mediaSearch
      * @async
      * @description Searches for media.
-     * @param {string | null} SEARCH_QUERY - The search query of the search.
+     * @param {string | null} QUERY - The query of the search.
      * @param {Array<string> | null} IDS - The IDs of the media to be searched.
      * @param {Array<JSON> | null} SORT_FIELDS - The sort fields of the search.
-     * @param {int | null} PAGE_OFFSET - The page offset of the search.
-     * @param {int | null} PAGE_SIZE - The page size of the search.
+     * JSON format: [{"fieldName": "string", "sortType": ("Ascending" | "Descending")} ...]
+     * @param {int | null} OFFSET - The page offset of the search.
+     * @param {int | null} SIZE - The page size of the search.
      * @returns {Promise<JSON>} - A promise that resolves when the media are searched.
      * Returns the information of the searched media.
      * @throws {Error} - An error is thrown if the media fail to search.
      * @throws {Error} - An error is thrown if the API type is not portal.
      */ 
-    async mediaSearch(SEARCH_QUERY, IDS, SORT_FIELDS, PAGE_OFFSET, PAGE_SIZE)
+    async mediaSearch(QUERY, IDS, SORT_FIELDS, OFFSET, SIZE)
     {
         if (this.token === null)
         {
@@ -3021,7 +3115,7 @@ class NomadSDK {
         try
         {
             const MEDIA_SEARCH_INFO = await _mediaSearch(this.token, this.config.serviceApiUrl, 
-                SEARCH_QUERY, IDS, SORT_FIELDS, PAGE_OFFSET, PAGE_SIZE, this.debugMode);
+                QUERY, IDS, SORT_FIELDS, OFFSET, SIZE, this.debugMode);
             _printDatetime(`Media search complete`);
             return MEDIA_SEARCH_INFO;
         }
@@ -3184,8 +3278,8 @@ class NomadSDK {
      * @function removeGuest
      * @async
      * @description Removes a guest.
-     * @param {string} CONTENT_ID - The ID of the content.
-     * @param {string} CONTENT_DEFINITION_ID - The ID of the content definition.
+     * @param {string | null} CONTENT_ID - The ID of the content.
+     * @param {string | null} CONTENT_DEFINITION_ID - The ID of the content definition.
      * @param {Array<string>} EMAILS - The email(s) of the guest.
      * @param {string} CONTENT_SECURITY_ATTRIBUTE - The content security attribute of the guest.
      * @returns {Promise<void>} - A promise that resolves when the guest is removed.
@@ -4077,7 +4171,7 @@ function _updateProperties(body, properties) {
 
 async function _addLiveScheduleToEvent(AUTH_TOKEN, URL, EVENT_ID, SLATE_VIDEO, 
     PREROLL_VIDEO, POSTROLL_VIDEO, IS_SECURE_OUTPUT, ARCHIVE_FOLDER_ASSET, 
-    PRIMARY_LIVE_INPUT, BACKUP_LIVE_INPUT_ID, PRIMARY_LIVESTREAM_INPUT_URL, 
+    PRIMARY_LIVE_INPUT, BACKUP_LIVE_INPUT, PRIMARY_LIVESTREAM_INPUT_URL, 
     BACKUP_LIVESTREAM_INPUT_URL, EXTERNAL_OUTPUT_PROFILES, DEBUG_MODE)
 {
     const API_URL = `${URL}/admin/liveSchedule`
@@ -4096,7 +4190,7 @@ async function _addLiveScheduleToEvent(AUTH_TOKEN, URL, EVENT_ID, SLATE_VIDEO,
         isSecureOutput: (IS_SECURE_OUTPUT !== null) ? IS_SECURE_OUTPUT : false,
         archiveFolderAsset: (ARCHIVE_FOLDER_ASSET !== null) ? ARCHIVE_FOLDER_ASSET : "",
         primaryLiveInput: (PRIMARY_LIVE_INPUT !== null) ? PRIMARY_LIVE_INPUT : "",
-        backupLiveInputId: (BACKUP_LIVE_INPUT_ID !== null) ? BACKUP_LIVE_INPUT_ID : "",
+        backupLiveInputId: (BACKUP_LIVE_INPUT !== null) ? BACKUP_LIVE_INPUT : "",
         primaryLivestreamInputUrl: (PRIMARY_LIVESTREAM_INPUT_URL !== null) ? PRIMARY_LIVESTREAM_INPUT_URL : "",
         backupLivestreamInputUrl: (BACKUP_LIVESTREAM_INPUT_URL !== null) ? BACKUP_LIVESTREAM_INPUT_URL : "",
         externalOutputProfiles: (EXTERNAL_OUTPUT_PROFILES !== null) ? EXTERNAL_OUTPUT_PROFILES : ""
@@ -4126,21 +4220,46 @@ async function _addLiveScheduleToEvent(AUTH_TOKEN, URL, EVENT_ID, SLATE_VIDEO,
 
 
 
-
-async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID,
+async function _createAndUpdateEvent(AUTH_TOKEN, URL, CONTENT_ID,
     CONTENT_DEFINITION_ID, NAME, SERIES, START_DATETIME, END_DATETIME, PRIMARY_PERFORMER, 
     SHORT_DESCRIPTION, LONG_DESCRIPTION, THUMBNAIL_IMAGE, HERO_IMAGE, LOGO_IMAGE, 
     INTELLIGENT_PROGRAM, EXTERNAL_URL, VENUE, PERFORMERS, GENRES, MEDIA_ATTRIBUTES, 
     LANGUAGES, PRODUCTS, FEATURED_GROUPS, GROUP_SEQUENCE, RELATED_MEDIA_ITEMS, 
     RECOMMENDED_SIMILAR_ITEMS, CONTENT_RATINGS, IS_DISABLED, LIVE_CHANNEL, DEBUG_MODE)
 {
-    if (CONTENT_ID === null) CONTENT_ID = _newGuid();
-    const API_URL = `${URL}/content/${CONTENT_ID}`;
-
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (CONTENT_ID === null)
+    {
+        const GET_API_URL = `${URL}/content/new?contentDefinitionId=${CONTENT_DEFINITION_ID}`;
+
+        if (DEBUG_MODE) console.log(`URL: ${GET_API_URL}\nMETHOD: GET`);
+
+        try
+        {
+            const RESPONSE = await fetch(GET_API_URL, {
+                method: "GET",
+                headers: HEADERS
+            });
+
+            // Check for success
+            if (!RESPONSE.ok) {
+                throw await RESPONSE.json()
+            }
+
+            const INFO = await RESPONSE.json();
+            CONTENT_ID = INFO.contentId
+        }
+        catch (error)
+        {
+            _apiExceptionHandler(error, "Get Content ID Failed");
+        }
+    }
+    
+    const API_URL = `${URL}/content/${CONTENT_ID}`;
 
     const BODY = {
         contentId: CONTENT_ID,
@@ -4164,7 +4283,7 @@ async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID,
             performers: (PERFORMERS !== null) ? PERFORMERS : [],
             primaryPerformer: (PRIMARY_PERFORMER !== null) ? PRIMARY_PERFORMER : "",
             products: (PRODUCTS !== null) ? PRODUCTS : [],
-            recommendedSimilarItems: (RECOMMENDED_SIMILAR_ITEMS !== null) ? RECOMMENDED_SIMILAR_ITEMS : [],
+            recommendationSimilarItems: (RECOMMENDED_SIMILAR_ITEMS !== null) ? RECOMMENDED_SIMILAR_ITEMS : [],
             relatedMediaItems: (RELATED_MEDIA_ITEMS !== null) ? RELATED_MEDIA_ITEMS : [],
             routeName : _slugify(NAME),
             series: (SERIES !== null) ? SERIES : "",
@@ -4175,12 +4294,12 @@ async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID,
         }
     };
 
-    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
     try
     {
         const RESPONSE = await fetch(API_URL, {
-            method: "POST",
+            method: "PUT",
             headers: HEADERS,
             body: JSON.stringify(BODY)
         });
@@ -4201,7 +4320,7 @@ async function _createAndUpdateEventInstance(AUTH_TOKEN, URL, CONTENT_ID,
 
 
 
-async function _deleteEventInstance(AUTH_TOKEN, URL, ID, CONTENT_DEFINITION_ID, DEBUG_MODE) 
+async function _deleteEvent(AUTH_TOKEN, URL, ID, CONTENT_DEFINITION_ID, DEBUG_MODE) 
 {
     const API_URL = `${URL}/content/${ID}?contentDefinitionId=${CONTENT_DEFINITION_ID}`;
 
@@ -4225,7 +4344,7 @@ async function _deleteEventInstance(AUTH_TOKEN, URL, ID, CONTENT_DEFINITION_ID, 
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Delete Event Instance Failed");
+        _apiExceptionHandler(error, "Delete Event Failed");
     }
 }
 
@@ -4271,6 +4390,7 @@ async function _extendLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, RECURRING_DAYS, RE
 }
 
 
+import { expect } from "chai";
 
 
 async function _getLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE) 
@@ -4283,18 +4403,26 @@ async function _getLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE)
 
   	if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
 
-  	try {
-  	  	const RESPONSE = await fetch(API_URL, {
-  	  	  	method: "GET",
-  	  	  	headers: HEADERS
-  	  	});
-	  
-  	  	if (!RESPONSE.ok) {
-  	  	  throw await RESPONSE.json();
-  	  	}
-	  
-  	  	return await RESPONSE.json();
-  	} 
+	try 
+	{
+		const RESPONSE = await fetch(API_URL, {
+			method: "GET",
+			headers: HEADERS
+		});
+
+		if (!RESPONSE.ok) {
+			throw await RESPONSE.json();
+		}
+
+		try
+		{
+			return await RESPONSE.json();
+		}
+		catch (error)
+		{
+			return false;
+		}
+	}
 	catch (error) 
 	{
   	  	_apiExceptionHandler(error, "Get Live Schedule Failed");
@@ -4447,7 +4575,7 @@ async function _stopLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE)
 
 async function _createLiveChannel(AUTH_TOKEN, URL, NAME, THUMBNAIL_IMAGE_ID, ARCHIVE_FOLDER_ASSET_ID,
     ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, IS_OUTPUT_SCREENSHOTS, 
-    TYPE, EXTERNAL_URL, SECURITY_GROUPS, DEBUG_MODE) 
+    TYPE, EXTERNAL_URL, EXTERNAL_OUTPUT_PROFILES, SECURITY_GROUPS, DEBUG_MODE) 
 {
     const API_URL = `${URL}/liveChannel`;
 
@@ -4462,6 +4590,7 @@ async function _createLiveChannel(AUTH_TOKEN, URL, NAME, THUMBNAIL_IMAGE_ID, ARC
         routeName: _slugify(NAME),
         enableHighAvailability: ENABLE_HIGH_AVAILABILITY,
         enableLiveClipping: ENABLE_LIVE_CLIPPING,
+        externalOutputProfiles: EXTERNAL_OUTPUT_PROFILES,
         isSecureOutput: IS_SECURE_OUTPUT,
         outputScreenshots: IS_OUTPUT_SCREENSHOTS,
         type: { 
@@ -4931,7 +5060,7 @@ async function _stopLiveChannel(AUTH_TOKEN, URL, CHANNEL_ID, DEBUG_MODE)
 
 async function _updateLiveChannel(AUTH_TOKEN, URL, ID, NAME, THUMBNAIL_IMAGE_ID, 
     ARCHIVE_FOLDER_ASSET_ID, ENABLE_HIGH_AVAILABILITY, ENABLE_LIVE_CLIPPING, IS_SECURE_OUTPUT, 
-    OUTPUT_SCREENSHOTS, TYPE, EXTERNAL_URL, SECURITY_GROUPS, DEBUG_MODE) 
+    OUTPUT_SCREENSHOTS, TYPE, EXTERNAL_URL, EXTERNAL_OUTPUT_PROFILES, SECURITY_GROUPS, DEBUG_MODE) 
 {
     const LIVE_CHANNEL_INFO = await _getLiveChannel(AUTH_TOKEN, URL, ID, DEBUG_MODE);
 
@@ -4957,6 +5086,7 @@ async function _updateLiveChannel(AUTH_TOKEN, URL, ID, NAME, THUMBNAIL_IMAGE_ID,
     if (IS_SECURE_OUTPUT && IS_SECURE_OUTPUT !== BODY.isSecureOutput) BODY.isSecureOutput = IS_SECURE_OUTPUT;
     if (OUTPUT_SCREENSHOTS && OUTPUT_SCREENSHOTS !== BODY.outputScreenshots) BODY.outputScreenshots = OUTPUT_SCREENSHOTS;
     if (TYPE && _LIVE_CHANNEL_STATUSES[TYPE] !== BODY.type.id) BODY.type = { id: _LIVE_CHANNEL_TYPES[TYPE] };
+    if (EXTERNAL_OUTPUT_PROFILES && EXTERNAL_OUTPUT_PROFILES !== BODY.externalOutputProfiles) BODY.externalOutputProfiles = EXTERNAL_OUTPUT_PROFILES;
 
 
     // Set the appropriate fields based on the channel type
@@ -5836,7 +5966,7 @@ async function _waitForLiveOperatorStatus(AUTH_TOKEN, URL, OPERATOR_ID, STATUS_T
 
 
 
-async function _addAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET_ID, ASSET_NAME, IS_LOOP, 
+async function _addAssetScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, ASSET, IS_LOOP, 
     DURATION_TIME_CODE, PREVIOUS_ID, DEBUG_MODE) 
 {
     const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
@@ -5847,7 +5977,6 @@ async function _addAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET_ID,
 
     // Build the payload body
     const BODY = {
-        id: ID,
         isLoop: IS_LOOP,
         channelId: CHANNEL_ID,
         durationTimeCode: DURATION_TIME_CODE,
@@ -5856,10 +5985,7 @@ async function _addAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET_ID,
             id: _eventType.videoAsset,
             description: "Video Asset"
         },
-        asset: {
-            id: ASSET_ID,
-            description: ASSET_NAME
-        }
+        asset: ASSET
     };
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
@@ -5890,8 +6016,8 @@ async function _addAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET_ID,
 
 
 
-async function _addInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, INPUT_ID, INPUT_NAME, 
-    BACKUP_INPUT_ID, BACKUP_INPUT_NAME, FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, DEBUG_MODE) 
+async function _addInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, INPUT, BACKUP_INPUT, 
+    FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, DEBUG_MODE) 
 {
     const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
 
@@ -5908,19 +6034,13 @@ async function _addInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, INPUT_ID, INP
             id: _eventType.liveInput,
             description: "Live Input"
         },
-        liveInput: {
-            id: INPUT_ID,
-            description: INPUT_NAME
-        },
+        liveInput: INPUT,
         previousId: PREVIOUS_ID
     };
 
-    if (BACKUP_INPUT_ID) 
+    if (BACKUP_INPUT) 
     {
-        BODY["liveInput2"] = {
-            id: BACKUP_INPUT_ID,
-            description: BACKUP_INPUT_NAME
-        };
+        BODY["liveInput2"] = BACKUP_INPUT;
     }
 
 
@@ -6016,6 +6136,115 @@ async function _removeInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, INPUT_ID, 
     catch (error)
     {
         _apiExceptionHandler(error, "Remove Input Schedule Event Failed");
+    }
+}
+
+
+
+
+
+async function _updateAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET, IS_LOOP, 
+    DURATION_TIME_CODE, PREVIOUS_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
+
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Build the payload body
+    const BODY = {
+        id: ID,
+        isLoop: IS_LOOP,
+        channelId: CHANNEL_ID,
+        durationTimeCode: DURATION_TIME_CODE,
+        previousId: PREVIOUS_ID,
+        type: {
+            id: _eventType.videoAsset,
+            description: "Video Asset"
+        },
+        asset: ASSET
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        const INFO = await RESPONSE.json();
+        return INFO.changeList[0];
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Adding Asset Schedule Event Failed");
+    }
+}
+
+
+
+
+
+
+async function _updateInputScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, INPUT, BACKUP_INPUT, 
+    FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Build the payload body
+    const BODY = {
+        channelId: CHANNEL_ID,
+        fixedOnAirTimeUtc: FIXED_ON_AIR_TIME_UTC,
+        id: ID,
+        type: {
+            id: _eventType.liveInput,
+            description: "Live Input"
+        },
+        liveInput: INPUT,
+        previousId: PREVIOUS_ID
+    };
+
+    if (BACKUP_INPUT) 
+    {
+        BODY["liveInput2"] = BACKUP_INPUT;
+    }
+
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        const INFO = await RESPONSE.json();
+        return INFO.changeList[0];
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Adding Input Schedule Event Failed");
     }
 }
 
@@ -6432,10 +6661,9 @@ function _apiExceptionHandler(error, message) {
     {
         if (Array.isArray(error.errors)) {
             let errorString = "";
-            for (let key in error.errors) {
-                if (Object.prototype.hasOwnProperty.call(error.errors, key)) {
-                  errorString += `${key}: ${error.errors[key]}\n`;
-                }
+            for (let errorIdx = 0; errorIdx < error.errors.length; errorIdx++) 
+            {
+                errorString += `${error.errors[errorIdx].code}: ${error.errors[errorIdx].field}: ${error.errors[errorIdx].message}\n`; 
             }
             throw new Error(`${message}: ${errorString}`);
         } 
@@ -6443,7 +6671,7 @@ function _apiExceptionHandler(error, message) {
             let errorString = "";
             for (let key in error.errors) {
                 if (Object.prototype.hasOwnProperty.call(error.errors, key)) {
-                  errorString += `${key}: ${error.errors[key]}\n`;
+                    errorString += `${key}: ${error.errors[key]}\n`;
                 }
             }
             throw new Error(`${message}: ${errorString}`);
