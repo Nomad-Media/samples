@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Event Scheduler</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="event-scheduler.css">
+
+    <!-- JS -->
+    <script type="module" src="event-scheduler.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Event Scheduler</h1>
+    <h3>Creating and Updating Event</h3>
+
+    <form id="createForm">
+        
+        <label for="createOrUpdateEvent">Create or Update:</label>
+        <select id="createOrUpdateEvent">
+            <option value="create">Create</option>
+            <option value="update">Update</option>
+        </select>
+
+        <div id="createOrUpdateEventDiv" hidden>
+            <label for="contentId">Content Id:</label>
+            <input type="text" id="contentId">
+        </div>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <div id="seriesDiv">
+            <label for="seriesSelect">Series:</label>
+            <select id="seriesSelect"></select>
+            <br><br>
+        </div>
+
+        <label for="startDatetime">Start Datetime:</label>
+        <input type="datetime-local" id="startDatetime" required>
+
+        <label for="endDatetime">End Datetime:</label>
+        <input type="datetime-local" id="endDatetime" required>
+
+        <div id="primaryPerformerDiv">
+            <label for="primaryPerformerSelect">Primary Performer:</label>
+            <select id="primaryPerformerSelect"></select>
+            <br><br>
+        </div>
+
+        <div id="performersDiv">
+            <label for="performersSelect">Performers:</label>
+            <select id="performersSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <label for="shortDescription">Short Description:</label>
+        <input type="text" id="shortDescription">
+
+        <label for="longDescription">Long Description:</label>
+        <input type="text" id="longDescription">
+
+        <h4>Thumbnail Image</h4>
+        <label for="thumbnailImageId">Thumbnail Image Id:</label>
+        <input type="text" id="thumbnailImageId">
+        <label for="thumbnailImageName">Thumbnail Image Name:</label>
+        <input type="text" id="thumbnailImageName">
+
+        <h4>Hero Image</h4>
+        <label for="heroImageId">Hero Image:</label>
+        <input type="text" id="heroImageId">
+        <label for="heroImageName">Hero Image Name:</label>
+        <input type="text" id="heroImageName">
+
+        <h4>Logo Image</h4>
+        <label for="logoImageId">Logo Image:</label>
+        <input type="text" id="logoImageId">
+        <label for="logoImageName">Logo Image Name:</label>
+        <input type="text" id="logoImageName">
+
+        <label for="externalUrl">External Url:</label>
+        <input type="text" id="externalUrl">
+
+        <div id="venueDiv">
+            <label for="venueSelect">Venue:</label>
+            <select id="venueSelect"></select>
+            <br><br>
+        </div>
+
+        <div id="genresDiv">
+            <label for="genresSelect">Genres:</label>
+            <select id="genresSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="mediaAttributes">
+            <label for="mediaAttributesSelect">Media Attributes:</label>
+            <select id="mediaAttributesSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="languages">
+            <label for="languagesSelect">Languages:</label>
+            <select id="languagesSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="products">
+            <label for="productsSelect">Products:</label>
+            <select id="productsSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="featuredGroups">
+            <label for="featuredGroupsSelect">Featured Groups:</label>
+            <select id="featuredGroupsSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <label for="groupSequence">Group Sequence:</label>
+        <input type="text" id="groupSequence">
+
+        <div id="relatedMediaItems">
+            <label for="relatedMediaItemsSelect">Related Media Items:</label>
+            <select id="relatedMediaItemsSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="recommendationSimilarItems">
+            <label for="recommendationSimilarItemsSelect">Recommendation Similar Items:</label>
+            <select id="recommendationSimilarItemsSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <div id="rating">
+            <label for="ratingSelect">Rating:</label>
+            <select id="ratingSelect"></select>
+            <br><br>
+        </div>
+
+        <div id="liveChannel">
+            <label for="liveChannelSelect">Live Channel:</label>
+            <select id="liveChannelSelect"></select>
+            <br><br>
+        </div>
+
+        <label for="isDisabled">Is Disabled:</label>
+        <select id="isDisabled">
+            <option value="false">False</option>
+            <option value="true">True</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <form id="addForm">
+        <h3>Add Live Schedule To Event</h3>
+
+        <label for="addEventId">Event Id:</label>
+        <input type="text" id="addEventId" required>
+
+        <h4>Slate Video</h4>
+        <label for="slateVideoId">Slate Video Id:</label>
+        <input type="text" id="slateVideoId">
+
+        <label for="slateVideoName">Slate Video Name:</label>
+        <input type="text" id="slateVideoName">
+
+        <h4>Preroll Video</h4>
+        <label for="prerollVideoId">Preroll Video Id:</label>
+        <input type="text" id="prerollVideoId">
+
+        <label for="prerollVideoName">Preroll Video Name:</label>
+        <input type="text" id="prerollVideoName">
+
+        <h4>Postroll Video</h4>
+        <label for="postrollVideoId">Postroll Video Id:</label>
+        <input type="text" id="postrollVideoId">
+
+        <label for="postrollVideoName">Postroll Video Name:</label>
+        <input type="text" id="postrollVideoName">
+
+        <label for="isSecureOutput">Is Secure Output:</label>
+        <select id="isSecureOutput">
+            <option value="false">False</option>
+            <option value="true">True</option>
+        </select>
+
+        <h4>Archive Folder</h4>
+        <label for="archiveFolderId">Archive Folder Id:</label>
+        <input type="text" id="archiveFolderId">
+
+        <label for="archiveFolderName">Archive Folder Name:</label>
+        <input type="text" id="archiveFolderName">
+
+        <div id="primaryLivestreamInput">
+            <label for="primaryLivestreamInputSelect">Primary Livestream Input:</label>
+            <select id="primaryLivestreamInputSelect"></select>
+            <br><br>
+        </div>
+
+        <div id="backupLiveInput">
+            <label for="backupLivestreamInputSelect">Backup Livestream Input:</label>
+            <select id="backupLivestreamInputSelect"></select>
+            <br><br>
+        </div>
+
+        <h4>Primary Livestream Input URL</h4>
+        <label for="primaryLivestreamInputUrl">Primary Livestream Input URL:</label>
+        <input type="text" id="primaryLivestreamInputUrl">
+
+        <h4>Backup Livestream Input URL</h4>
+        <label for="backupLivestreamInputUrl">Backup Livestream Input URL:</label>
+        <input type="text" id="backupLivestreamInputUrl">
+
+        <div id="externalOutputProfiles">
+            <label for="externalOutputProfilesSelect">External Output Profiles:</label>
+            <select id="externalOutputProfilesSelect" multiple></select>
+            <br><br>
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Extend Live Schedule</h3>
+    <form id="extendForm">
+        <label for="extendEventId">Event Id:</label>
+        <input type="text" id="extendEventId" required>
+
+        <label for="daysOfTheWeek">Days Of The Week:</label>
+        <select id="daysOfTheWeek" required multiple>
+            <option value="Sunday">Sunday</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+        </select>
+        <script>
+            $(document).ready(function() {
+                $('#daysOfTheWeek').select2();
+            });
+        </script>
+
+        <label for="recurringWeeks">Recurring Weeks:</label>
+        <input type="text" id="recurringWeeks" required>
+
+        <label for="endDatetime">End Datetime:</label>
+        <input type="datetime-local" id="endDatetime">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>'
+
+    <h3>Get Live Schedule</h3>
+    <form id="getForm">
+        <label for="getEventId">Event Id:</label>
+        <input type="text" id="getEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Live Schedule</h3>
+    <form id="startForm">
+        <label for="startEventId">Event Id:</label>
+        <input type="text" id="startEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Stop Live Schedule</h3>
+    <form id="stopForm">
+        <label for="stopEventId">Event Id:</label>
+        <input type="text" id="stopEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Event</h3>
+    <form id="deleteForm">
+        <label for="deleteId">Content Id:</label>
+        <input type="text" id="deleteId" required>
+
+        <label for="deleteContentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="deleteContentDefinitionId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
