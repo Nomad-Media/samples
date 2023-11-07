@@ -9,7 +9,7 @@ class App extends Component {
     "siteName": "Test Site",
     "hideSidebar": true,
     "supportSharing": false,
-    "bottomShareIcon": false,
+    "bottomShareIcon": true,
     "googleTagManager": "GTM-0000000",
     "players": [
       {
