@@ -1,6 +1,22 @@
+const LOGIN_FORM = document.getElementById("loginForm");
+const REFRESH_TOKEN_FORM = document.getElementById("refreshTokenForm");
 const FORGOT_PASS_FORM = document.getElementById("forgotPasswordForm");
 const RESET_PASS_FORM = document.getElementById("resetPasswordForm");
 const LOGOUT_FORM = document.getElementById("logoutForm");
+
+LOGIN_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    await sendRequest("/login", "GET");
+});
+
+REFRESH_TOKEN_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    await sendRequest("/refresh-token", "GET");
+});
 
 FORGOT_PASS_FORM.addEventListener("submit", async function (event) 
 {
