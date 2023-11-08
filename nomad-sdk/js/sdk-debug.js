@@ -67,6 +67,8 @@ import config from "./config/config.js";
 
 
 
+
+
 // common
 
 
@@ -2109,19 +2111,19 @@ class NomadSDK {
             throw new Error("This function is only available for admin API type.");
         }
 
-        _printDatetime(`Adding asset schedule event: ${ASSET.id}`);
+        _printDatetime(`Adding asset schedule event: ${ID}`);
 
         try
         {
             const ADD_ASSET_SCHEDULE_EVENT_INFO = await _addAssetScheduleEvent(this.token, 
                 this.config.serviceApiUrl, CHANNEL_ID, ASSET, IS_LOOP, 
                 DURATION_TIME_CODE, PREVIOUS_ID, this.debugMode);
-            _printDatetime(`Asset schedule event added: ${ASSET.id}`);
+            _printDatetime(`Asset schedule event added: ${ID}`);
             return ADD_ASSET_SCHEDULE_EVENT_INFO;
         }
         catch (error)
         {
-            _printDatetime(`Asset schedule event failed to add: ${ASSET.id}`);
+            _printDatetime(`Asset schedule event failed to add: ${ID}`);
             throw error;
         }
     }
@@ -2169,6 +2171,84 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Input schedule event failed to add`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetScheduleEvent
+     * @async
+     * @description Gets an asset schedule event.
+     * @param {string} CHANNEL_ID - The channel ID of the schedule event.
+     * @param {string} SCHEDULE_EVENT_ID - The schedule event ID of the schedule event.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset schedule event is gotten.
+     * Returns the information of the gotten asset schedule event.
+     * @throws {Error} - An error is thrown if the asset schedule event fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetScheduleEvent(CHANNEL_ID, SCHEDULE_EVENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Getting asset schedule event: ${CHANNEL_ID}`);
+        
+        try
+        {
+            const GET_ASSET_SCHEDULE_EVENT_INFO = await _getAssetScheduleEvent(this.token, 
+                this.config.serviceApiUrl, CHANNEL_ID, SCHEDULE_EVENT_ID, this.debugMode);
+            _printDatetime(`Asset schedule event gotten: ${CHANNEL_ID}`);
+            return GET_ASSET_SCHEDULE_EVENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset schedule event failed to get: ${CHANNEL_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getInputScheduleEvent
+     * @async
+     * @description Gets an input schedule event.
+     * @param {string} CHANNEL_ID - The channel ID of the schedule event.
+     * @param {string} SCHEDULE_EVENT_ID - The schedule event ID of the schedule event.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset schedule event is gotten.
+     * Returns the information of the gotten asset schedule event.
+     * @throws {Error} - An error is thrown if the asset schedule event fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getInputScheduleEvent(CHANNEL_ID, SCHEDULE_EVENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Getting asset schedule event: ${CHANNEL_ID}`);
+        
+        try
+        {
+            const GET_INPUT_SCHEDULE_EVENT_INFO = await _getInputScheduleEvent(this.token, 
+                this.config.serviceApiUrl, CHANNEL_ID, SCHEDULE_EVENT_ID, this.debugMode);
+            _printDatetime(`Asset schedule event gotten: ${CHANNEL_ID}`);
+            return GET_INPUT_SCHEDULE_EVENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Input schedule event failed to get: ${CHANNEL_ID}`);
             throw error;
         }
     }
@@ -2245,7 +2325,7 @@ class NomadSDK {
             _printDatetime(`Input schedule event failed to remove`);
             throw error;
         }
-    }      
+    }
 
     /**
      * @function updateAssetScheduleEvent
@@ -2258,7 +2338,6 @@ class NomadSDK {
      * @param {boolean} IS_LOOP - Whether the schedule event is loop.
      * @param {string | null} DURATION_TIME_CODE - The duration time code of the schedule event.
      * Please use the following format: hh:mm:ss;ff. Set to null if IS_LOOP is true.
-     * @param {string | null} PREVIOUS_ID - The previous ID of the schedule event.
      * @returns {Promise<JSON>} - A promise that resolves when the asset schedule event is added.
      * Returns the information of the added asset schedule event.
      * @throws {Error} - An error is thrown if the asset schedule event fails to add.
@@ -2277,19 +2356,19 @@ class NomadSDK {
                 throw new Error("This function is only available for admin API type.");
             }
     
-            _printDatetime(`Updating asset schedule event: ${ASSET.id}`);
+            _printDatetime(`Updating asset schedule event: ${ID}`);
     
             try
             {
                 const ADD_ASSET_SCHEDULE_EVENT_INFO = await _updateAssetScheduleEvent(this.token, 
                     this.config.serviceApiUrl, ID, CHANNEL_ID, ASSET, IS_LOOP, 
                     DURATION_TIME_CODE, PREVIOUS_ID, this.debugMode);
-                _printDatetime(`Asset schedule event updated: ${ASSET.id}`);
+                _printDatetime(`Asset schedule event updated: ${ID}`);
                 return ADD_ASSET_SCHEDULE_EVENT_INFO;
             }
             catch (error)
             {
-                _printDatetime(`Asset schedule event failed to update: ${ASSET.id}`);
+                _printDatetime(`Asset schedule event failed to update: ${ID}`);
                 throw error;
             }
         }
@@ -2306,7 +2385,6 @@ class NomadSDK {
          * JSON format: {"id": "string", "name": "string"}
          * @param {string | null} FIXED_ON_AIR_TIME_UTC - The fixed on air time UTC of the schedule event.
          * Please use the following format: hh:mm:ss.
-         * @param {string | null} PREVIOUS_ID - The previous ID of the schedule event.
          * @returns {Promise<JSON>} - A promise that resolves when the input schedule event is added.
          * Returns the information of the added input schedule event.
          * @throws {Error} - An error is thrown if the input schedule event fails to add.
@@ -6076,6 +6154,84 @@ const _eventType = {
 
 
 
+async function _getAssetScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, SCHEDULE_EVENT_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/${CHANNEL_ID}/liveScheduleEvent/${SCHEDULE_EVENT_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json();
+        }
+
+        try
+        {
+            return await RESPONSE.json();
+        }
+        catch (error)
+        {
+            return false;
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Schedule Event Failed");
+    }
+}
+
+
+
+
+async function _getInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, SCHEDULE_EVENT_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/${CHANNEL_ID}/liveScheduleEvent/${SCHEDULE_EVENT_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json();
+        }
+
+        try
+        {
+            return await RESPONSE.json();
+        }
+        catch (error)
+        {
+            return false;
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Schedule Event Failed");
+    }
+}
+
+
+
+
 async function _removeAssetScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, SCHEDULE_EVENT_ID, DEBUG_MODE) 
 {
     const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent/${SCHEDULE_EVENT_ID}`;
@@ -6143,11 +6299,13 @@ async function _removeInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, INPUT_ID, 
 
 
 
-async function _updateAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET, IS_LOOP, 
-    DURATION_TIME_CODE, PREVIOUS_ID, DEBUG_MODE) 
-{
-    const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
 
+async function _updateAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET, IS_LOOP, 
+    DURATION_TIME_CODE, DEBUG_MODE) 
+{
+    const SCHEDULE_EVENT_INFO = await _getAssetScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, ID, DEBUG_MODE);
+
+    const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -6156,17 +6314,17 @@ async function _updateAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET,
 
     // Build the payload body
     const BODY = {
-        id: ID,
-        isLoop: IS_LOOP,
-        channelId: CHANNEL_ID,
-        durationTimeCode: DURATION_TIME_CODE,
-        previousId: PREVIOUS_ID,
         type: {
             id: _eventType.videoAsset,
             description: "Video Asset"
-        },
-        asset: ASSET
+        }
     };
+
+    BODY.id = ID && ID !== SCHEDULE_EVENT_INFO.id ? ID : SCHEDULE_EVENT_INFO.id;
+    BODY.isLoop = IS_LOOP && IS_LOOP !== SCHEDULE_EVENT_INFO.isLoop ? IS_LOOP : SCHEDULE_EVENT_INFO.isLoop;
+    BODY.channelId = CHANNEL_ID && CHANNEL_ID !== SCHEDULE_EVENT_INFO.channelId ? CHANNEL_ID : SCHEDULE_EVENT_INFO.channelId;
+    BODY.durationTimeCode = DURATION_TIME_CODE && DURATION_TIME_CODE !== SCHEDULE_EVENT_INFO.durationTimeCode ? DURATION_TIME_CODE : SCHEDULE_EVENT_INFO.durationTimeCode;
+    BODY.asset = ASSET && ASSET !== SCHEDULE_EVENT_INFO.asset ? ASSET : SCHEDULE_EVENT_INFO.asset;
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
@@ -6182,12 +6340,11 @@ async function _updateAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET,
             throw await RESPONSE.json()
         }
 
-        const INFO = await RESPONSE.json();
-        return INFO.changeList[0];
+        return await RESPONSE.json();
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Adding Asset Schedule Event Failed");
+        _apiExceptionHandler(error, "Updating Asset Schedule Event Failed");
     }
 }
 
@@ -6196,9 +6353,12 @@ async function _updateAssetScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, ASSET,
 
 
 
+
 async function _updateInputScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, INPUT, BACKUP_INPUT, 
-    FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, DEBUG_MODE) 
+    FIXED_ON_AIR_TIME_UTC, DEBUG_MODE) 
 {
+    const SCHEDULE_EVENT_INFO = await _getInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, ID, DEBUG_MODE);
+
     const API_URL = `${URL}/LiveChannel/${CHANNEL_ID}/liveScheduleEvent`;
 
     // Create header for the request
@@ -6208,22 +6368,17 @@ async function _updateInputScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, INPUT,
 
     // Build the payload body
     const BODY = {
-        channelId: CHANNEL_ID,
-        fixedOnAirTimeUtc: FIXED_ON_AIR_TIME_UTC,
-        id: ID,
         type: {
             id: _eventType.liveInput,
             description: "Live Input"
         },
-        liveInput: INPUT,
-        previousId: PREVIOUS_ID
     };
 
-    if (BACKUP_INPUT) 
-    {
-        BODY["liveInput2"] = BACKUP_INPUT;
-    }
-
+    BODY.id = ID && ID !== SCHEDULE_EVENT_INFO.id ? ID : SCHEDULE_EVENT_INFO.id;
+    BODY.channelId = CHANNEL_ID && CHANNEL_ID !== SCHEDULE_EVENT_INFO.channelId ? CHANNEL_ID : SCHEDULE_EVENT_INFO.channelId;
+    BODY.fixedOnAirTimeUtc = FIXED_ON_AIR_TIME_UTC && FIXED_ON_AIR_TIME_UTC !== SCHEDULE_EVENT_INFO.fixedOnAirTimeUtc ? FIXED_ON_AIR_TIME_UTC : SCHEDULE_EVENT_INFO.fixedOnAirTimeUtc;
+    BODY.liveInput = INPUT && INPUT !== SCHEDULE_EVENT_INFO.liveInput ? INPUT : SCHEDULE_EVENT_INFO.liveInput;
+    BODY.liveInput2 = BACKUP_INPUT && BACKUP_INPUT !== SCHEDULE_EVENT_INFO.liveInput2 ? BACKUP_INPUT : SCHEDULE_EVENT_INFO.liveInput2;
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
@@ -6239,12 +6394,11 @@ async function _updateInputScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, INPUT,
             throw await RESPONSE.json()
         }
 
-        const INFO = await RESPONSE.json();
-        return INFO.changeList[0];
+        return await RESPONSE.json();
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Adding Input Schedule Event Failed");
+        _apiExceptionHandler(error, "Updating Input Schedule Event Failed");
     }
 }
 
