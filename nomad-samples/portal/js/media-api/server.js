@@ -75,6 +75,21 @@ app.post('/get-media-group', upload.none(), async (req, res) =>
     }
 });
 
+app.post('/get-media-item', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const MEDIA_ITEM = await NomadSDK.getMediaItem(req.body.mediaItemId);
+
+        res.status(200).json(MEDIA_ITEM);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/form', upload.none(), async (req, res) =>
 {
     try
