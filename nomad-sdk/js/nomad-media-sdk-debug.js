@@ -107,6 +107,7 @@ import config from "./config/config.js";
 
 
 
+
 // helpers
 
 
@@ -3226,6 +3227,39 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Media group failed to get: ${MEDIA_GROUP_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getMediaItem
+     * @async
+     * @description Gets media.
+     * @param {string} MEDIA_ITEM_ID - The ID of the media item.
+     * @returns {Promise<JSON>} - A promise that resolves when the media item is gotten.
+     * Returns the information of the gotten media item.
+     * @throws {Error} - An error is thrown if the media item fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getMediaItem(MEDIA_ITEM_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting media item: ${MEDIA_ITEM_ID}`);
+
+        try
+        {
+            const GET_MEDIA_ITEM_INFO = await _getMediaItem(this.token, this.config.serviceApiUrl, 
+                MEDIA_ITEM_ID, this.debugMode);
+            _printDatetime(`Media item gotten: ${MEDIA_ITEM_ID}`);
+            return GET_MEDIA_ITEM_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Media item failed to get: ${MEDIA_ITEM_ID}`);
             throw error;
         }
     }
@@ -7890,7 +7924,40 @@ async function _getMediaGroup(AUTH_TOKEN, URL, ID, DEBUG_MODE)
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Media Search Failed");
+        _apiExceptionHandler(error, "Get Media Group Failed");
+    }
+}
+
+
+
+
+async function _getMediaItem(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/item/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Media Item Failed");
     }
 }
 
