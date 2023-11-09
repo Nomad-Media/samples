@@ -108,6 +108,8 @@ import config from "./config/config.js";
 
 
 
+
+
 // helpers
 
 
@@ -3199,6 +3201,76 @@ class NomadSDK {
     }
 
     /**
+     * @function getDynamicContent
+     * @async
+     * @description Gets dynamic content.
+     * @param {string} DYNAMIC_CONTENT_RECORD_ID - The dynamic content record ID.
+     * @returns {Promise<JSON>} - A promise that resolves when the dynamic content is gotten.
+     * Returns the information of the gotten dynamic content.
+     * @throws {Error} - An error is thrown if the dynamic content fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getDynamicContent(DYNAMIC_CONTENT_RECORD_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting dynamic content: ${DYNAMIC_CONTENT_RECORD_ID}`);
+
+        try
+        {
+            const GET_DYNAMIC_CONTENT_INFO = await _getDynamicContent(this.token, 
+                this.config.serviceApiUrl, DYNAMIC_CONTENT_RECORD_ID, this.debugMode);
+            _printDatetime(`Dynamic content gotten: ${DYNAMIC_CONTENT_RECORD_ID}`);
+            return GET_DYNAMIC_CONTENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Dynamic content failed to get: ${DYNAMIC_CONTENT_RECORD_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getDynamicContents
+     * @async
+     * @description Gets dynamic contents.
+     * @returns {Promise<Array<JSON>>} - A promise that resolves when the dynamic contents is gotten.
+     * Returns the information of the gotten dynamic content.
+     * @throws {Error} - An error is thrown if the dynamic content fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getDynamicContents()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Getting dynamic contents`);
+
+        try
+        {
+            const GET_DYNAMIC_CONTENTS_INFO = await _getDynamicContents(this.token, 
+                this.config.serviceApiUrl, this.debugMode);
+            _printDatetime(`Dynamic contents gotten`);
+            return GET_DYNAMIC_CONTENTS_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Dynamic contents failed to get`);
+            throw error;
+        }
+    }
+
+    /**
      * @function getMediaGroup
      * @async
      * @description Gets media.
@@ -3213,6 +3285,11 @@ class NomadSDK {
         if (this.token === null)
         {
             await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
         }
 
         _printDatetime(`Getting media group: ${MEDIA_GROUP_ID}`);
@@ -3246,6 +3323,11 @@ class NomadSDK {
         if (this.token === null)
         {
             await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
         }
 
         _printDatetime(`Getting media item: ${MEDIA_ITEM_ID}`);
@@ -7892,6 +7974,72 @@ async function _createForm(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, FORM_INFO, DE
     catch (error)
     {
         _apiExceptionHandler(error, "Creating Form Failed");
+    }
+}
+
+
+
+
+async function _getDynamicContent(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/content/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Media Group Failed");
+    }
+}
+
+
+
+
+async function _getDynamicContents(AUTH_TOKEN, URL, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/content`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Media Group Failed");
     }
 }
 
