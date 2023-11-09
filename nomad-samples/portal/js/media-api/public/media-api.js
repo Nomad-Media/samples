@@ -1,4 +1,6 @@
 const MEDIA_SEARCH_FORM = document.getElementById("mediaSearchForm");
+const GET_DYNAMIC_CONTENT_FORM = document.getElementById("getDynamicContentForm");
+const GET_DYNAMIC_CONTENTS_FORM = document.getElementById("getDynamicContentsForm");
 const GET_MEDIA_GROUP_FORM = document.getElementById("getMediaGroupForm");
 const GET_MEDIA_ITEM_FORM = document.getElementById("getMediaItemForm");
 const FORM_FORM = document.getElementById("formForm");
@@ -72,6 +74,22 @@ MEDIA_SEARCH_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(MEDIA_SEARCH_FORM);
 
     console.log(await sendRequest("/search", "POST", FORM_DATA));
+});
+
+GET_DYNAMIC_CONTENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_DYNAMIC_CONTENT_FORM);
+
+    console.log(await sendRequest("/get-dynamic-content", "POST", FORM_DATA));
+});
+
+GET_DYNAMIC_CONTENTS_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    console.log(await sendRequest("/get-dynamic-contents", "GET"));
 });
 
 GET_MEDIA_GROUP_FORM.addEventListener("submit", async function (event)

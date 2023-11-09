@@ -60,6 +60,36 @@ app.post('/search', upload.none(), async (req, res) =>
     }
 });
 
+app.post('/get-dynamic-content', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const DYNAMIC_CONTENT = await NomadSDK.getDynamicContent(req.body.dynamicContentId);
+
+        res.status(200).json(DYNAMIC_CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.get('/get-dynamic-contents', async (req, res) =>
+{
+    try
+    {
+        const DYNAMIC_CONTENTS = await NomadSDK.getDynamicContents();
+
+        res.status(200).json(DYNAMIC_CONTENTS);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/get-media-group', upload.none(), async (req, res) =>
 {
     try
