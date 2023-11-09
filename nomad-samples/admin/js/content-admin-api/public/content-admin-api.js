@@ -1,12 +1,18 @@
+const CREATE_TAG_FORM = document.getElementById("createTagOrCollectionForm");
 const ADD_TAG_FORM = document.getElementById("addTagOrCollectionForm");
+const GET_TAG_FORM = document.getElementById("getTagOrCollectionForm");
 const REMOVE_TAG_FORM = document.getElementById("removeTagOrCollectionForm");
 const DELETE_TAG_FORM = document.getElementById("deleteTagOrCollectionForm");
 const ADD_RELATED_CONTENT_FORM = document.getElementById("addRelatedContentForm");
 const DELETE_RELATED_CONTENT_FORM = document.getElementById("deleteRelatedContentForm");
 const ADD_CUSTOM_PROPERTIES_FORM = document.getElementById("addCustomProperties");
 
+const CREATE_TAG_OR_COLLECTION = document.getElementById("createTagOrCollection");
+const CREATE_TAG_NAME_LABEL = document.getElementById("createTagNameLabel");
 const ADD_TAG_OR_COLLECTION = document.getElementById("addTagOrCollection");
 const ADD_TAG_NAME_LABEL = document.getElementById("addTagNameLabel");
+const GET_TAG_OR_COLLECTION = document.getElementById("getTagOrCollection");
+const GET_TAG_ID_LABEL = document.getElementById("getTagIdLabel");
 const CREATE_NEW = document.getElementById("createNew");
 const ADD_TAG_ID_LABEL = document.getElementById("addTagIdLabel");
 const REMOVE_TAG_OR_COLLECTION = document.getElementById("removeTagOrCollection");
@@ -15,6 +21,22 @@ const DELETE_TAG_OR_COLLECTION = document.getElementById("deleteTagOrCollection"
 const DELETE_TAG_ID_LABEL = document.getElementById("deleteTagIdLabel");
 
 const TAG_ID_DIV = document.getElementById("tagIdDiv");
+
+CREATE_TAG_OR_COLLECTION.addEventListener("change", async function (event)
+{
+    event.preventDefault();
+
+    CREATE_TAG_OR_COLLECTION.value === "tag" ? CREATE_TAG_NAME_LABEL.textContent = "Tag Name:" : CREATE_TAG_NAME_LABEL.textContent = "Collection Name:";
+});
+
+CREATE_TAG_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(CREATE_TAG_FORM);
+
+    console.log(await sendRequest("/create-tag-or-collection", "POST", FORM_DATA));
+});
 
 ADD_TAG_OR_COLLECTION.addEventListener("change", async function (event)
 {
@@ -39,6 +61,22 @@ ADD_TAG_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(ADD_TAG_FORM);
 
     console.log(await sendRequest("/add-tag-or-collection", "POST", FORM_DATA));
+});
+
+GET_TAG_OR_COLLECTION.addEventListener("change", async function (event)
+{
+    event.preventDefault();
+    
+    GET_TAG_OR_COLLECTION.value === "tag" ? GET_TAG_ID_LABEL.textContent = "Tag Id:" : GET_TAG_ID_LABEL.textContent = "Collection Id:";
+});
+
+GET_TAG_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_TAG_FORM);
+
+    console.log(await sendRequest("/get-tag-or-collection", "POST", FORM_DATA));
 });
 
 REMOVE_TAG_OR_COLLECTION.addEventListener("change", async function (event)
