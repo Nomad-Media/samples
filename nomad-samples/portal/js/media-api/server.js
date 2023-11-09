@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk.min.js";
+import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk-debug.js";
 import express from 'express';
 import multer from 'multer';
 
@@ -64,9 +64,15 @@ app.post('/form', upload.none(), async (req, res) =>
 {
     try
     {
-        const FORM = await NomadSDK.getForm(req.body.id, req.body.firstName, 
-            req.body.lastName, req.body.active, req.body.startDate, req.body.lookupId,
-            req.body.description);
+        const FORM = await NomadSDK.createForm(req.body.contentDefinitionId,
+            {
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                active: req.body.active,
+                startDate: req.body.startDate,
+                lookupId: req.body.lookupId,
+                description: req.body.description,
+            });
 
         res.status(200).json(FORM);
     }
