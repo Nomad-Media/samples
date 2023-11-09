@@ -3,6 +3,8 @@ const GET_DYNAMIC_CONTENT_FORM = document.getElementById("getDynamicContentForm"
 const GET_DYNAMIC_CONTENTS_FORM = document.getElementById("getDynamicContentsForm");
 const GET_MEDIA_GROUP_FORM = document.getElementById("getMediaGroupForm");
 const GET_MEDIA_ITEM_FORM = document.getElementById("getMediaItemForm");
+const GET_DEFAULT_SITE_CONFIG_FORM = document.getElementById("getDefaultSiteConfigForm");
+const GET_SITE_CONFIG_FORM = document.getElementById("getSiteConfigForm");
 const FORM_FORM = document.getElementById("formForm");
 
 const SORT_FIELDS_DIV = document.getElementById("sortFieldsDiv");
@@ -108,6 +110,22 @@ GET_MEDIA_ITEM_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(GET_MEDIA_ITEM_FORM);
 
     console.log(await sendRequest("/get-media-item", "POST", FORM_DATA));
+});
+
+GET_DEFAULT_SITE_CONFIG_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    console.log(await sendRequest("/get-default-site-config", "GET"));
+});
+
+GET_SITE_CONFIG_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_SITE_CONFIG_FORM);
+
+    console.log(await sendRequest("/get-site-config", "POST", FORM_DATA));
 });
 
 FORM_FORM.addEventListener("submit", async function (event)

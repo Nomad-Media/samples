@@ -60,13 +60,13 @@ app.post('/search', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-dynamic-content', upload.none(), async (req, res) =>
+app.get('/get-dynamic-contents', async (req, res) =>
 {
     try
     {
-        const DYNAMIC_CONTENT = await NomadSDK.getDynamicContent(req.body.dynamicContentId);
+        const DYNAMIC_CONTENTS = await NomadSDK.getDynamicContents();
 
-        res.status(200).json(DYNAMIC_CONTENT);
+        res.status(200).json(DYNAMIC_CONTENTS);
     }
     catch (error)
     {
@@ -75,13 +75,13 @@ app.post('/get-dynamic-content', upload.none(), async (req, res) =>
     }
 });
 
-app.get('/get-dynamic-contents', async (req, res) =>
+app.post('/get-dynamic-content', upload.none(), async (req, res) =>
 {
     try
     {
-        const DYNAMIC_CONTENTS = await NomadSDK.getDynamicContents();
+        const DYNAMIC_CONTENT = await NomadSDK.getDynamicContent(req.body.dynamicContentId);
 
-        res.status(200).json(DYNAMIC_CONTENTS);
+        res.status(200).json(DYNAMIC_CONTENT);
     }
     catch (error)
     {
@@ -112,6 +112,36 @@ app.post('/get-media-item', upload.none(), async (req, res) =>
         const MEDIA_ITEM = await NomadSDK.getMediaItem(req.body.mediaItemId);
 
         res.status(200).json(MEDIA_ITEM);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.get('/get-default-site-config', async (req, res) =>
+{
+    try
+    {
+        const SITE_CONFIG = await NomadSDK.getDefaultSiteConfig();
+
+        res.status(200).json(SITE_CONFIG);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.post('/get-site-config', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SITE_CONFIG = await NomadSDK.getSiteConfig(req.body.siteConfigId);
+
+        res.status(200).json(SITE_CONFIG);
     }
     catch (error)
     {
