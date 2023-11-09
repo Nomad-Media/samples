@@ -3150,7 +3150,7 @@ class NomadSDK {
         try
         {
             const GET_FORMS_INFO = await _createForm(this.token, this.config.serviceApiUrl, 
-                CONTENT_DEFINITION_ID. FORM_INFO, this.debugMode);
+                CONTENT_DEFINITION_ID, FORM_INFO, this.debugMode);
             _printDatetime(`Form created`);
             return GET_FORMS_INFO;
         }
