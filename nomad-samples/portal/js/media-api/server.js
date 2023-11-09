@@ -60,6 +60,21 @@ app.post('/search', upload.none(), async (req, res) =>
     }
 });
 
+app.post('/get-media-group', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const MEDIA_GROUP = await NomadSDK.getMediaGroup(req.body.mediaGroupId);
+
+        res.status(200).json(MEDIA_GROUP);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/form', upload.none(), async (req, res) =>
 {
     try

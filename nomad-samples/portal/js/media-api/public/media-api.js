@@ -1,4 +1,5 @@
 const MEDIA_SEARCH_FORM = document.getElementById("mediaSearchForm");
+const GET_MEDIA_GROUP_FORM = document.getElementById("getMediaGroupForm");
 const FORM_FORM = document.getElementById("formForm");
 
 const SORT_FIELDS_DIV = document.getElementById("sortFieldsDiv");
@@ -70,6 +71,15 @@ MEDIA_SEARCH_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(MEDIA_SEARCH_FORM);
 
     console.log(await sendRequest("/search", "POST", FORM_DATA));
+});
+
+GET_MEDIA_GROUP_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_MEDIA_GROUP_FORM);
+
+    console.log(await sendRequest("/get-media-group", "POST", FORM_DATA));
 });
 
 FORM_FORM.addEventListener("submit", async function (event)
