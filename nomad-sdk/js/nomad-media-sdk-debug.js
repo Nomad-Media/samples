@@ -69,6 +69,7 @@ import config from "./config/config.js";
 
 
 
+
 // common
 
 
@@ -79,6 +80,7 @@ import config from "./config/config.js";
 
 
 // portal
+
 
 
 
@@ -843,6 +845,40 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Tag or collection failed to delete: ${TAG_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getTagOrCollection
+     * @async
+     * @description Gets the specified tag or collection.
+     * @param {string} TYPE - Specify if the content being managed is a tag or a collection.
+     * @param {string} ID - The ID of the tag or collection to get.
+     * @returns {Promise<JSON>} - A promise that resolves when the tag or collection is retrieved.
+     * Returns the information of the retrieved tag or collection.
+     * @throws {Error} - An error is thrown if the tag or collection fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getTagOrCollection(TYPE, ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting ${TYPE}: ${ID}`);
+
+        try
+        {
+            const GET_TAG_OR_COLLECTION_INFO = await _getTagOrCollection(this.token, 
+                this.config.serviceApiUrl, TYPE, ID, this.debugMode);
+            _printDatetime(`${TYPE} retrieved: ${ID}`);
+            return GET_TAG_OR_COLLECTION_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`${TYPE} failed to retrieve: ${ID}`);
             throw error;
         }
     }
@@ -3162,6 +3198,39 @@ class NomadSDK {
     }
 
     /**
+     * @function getMediaGroup
+     * @async
+     * @description Gets media.
+     * @param {string} MEDIA_GROUP_ID - The ID of the media group.
+     * @returns {Promise<JSON>} - A promise that resolves when the media group is gotten.
+     * Returns the information of the gotten media group.
+     * @throws {Error} - An error is thrown if the media group fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getMediaGroup(MEDIA_GROUP_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting media group: ${MEDIA_GROUP_ID}`);
+
+        try
+        {
+            const GET_MEDIA_GROUP_INFO = await _getMediaGroup(this.token, this.config.serviceApiUrl, 
+                MEDIA_GROUP_ID, this.debugMode);
+            _printDatetime(`Media group gotten: ${MEDIA_GROUP_ID}`);
+            return GET_MEDIA_GROUP_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Media group failed to get: ${MEDIA_GROUP_ID}`);
+            throw error;
+        }
+    }
+
+    /**
      * @function mediaSearch
      * @async
      * @description Searches for media.
@@ -3995,6 +4064,41 @@ async function _deleteTagOrCollection(AUTH_TOKEN, URL, TYPE, TAG_ID, DEBUG_MODE)
     catch (error)
     {
         _apiExceptionHandler(error, "Delete Tag or Collection Failed");
+    }
+}
+
+
+
+
+async function _getTagOrCollection(AUTH_TOKEN, URL, TYPE, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/${TYPE}/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Getting Tag or Collection Failed");
     }
 }
 
@@ -7754,6 +7858,39 @@ async function _createForm(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, FORM_INFO, DE
     catch (error)
     {
         _apiExceptionHandler(error, "Creating Form Failed");
+    }
+}
+
+
+
+
+async function _getMediaGroup(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/group/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Media Search Failed");
     }
 }
 
