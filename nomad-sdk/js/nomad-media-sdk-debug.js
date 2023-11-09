@@ -110,6 +110,9 @@ import config from "./config/config.js";
 
 
 
+
+
+
 // helpers
 
 
@@ -3201,6 +3204,43 @@ class NomadSDK {
     }
 
     /**
+     * @function getDefaultSiteConfig
+     * @async
+     * @description Gets default site config.
+     * @returns {Promise<Array<JSON>>} - A promise that resolves when the default site config is gotten.
+     * Returns the information of the gotten dynamic content.
+     * @throws {Error} - An error is thrown if the dynamic content fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getDefaultSiteConfig()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Getting default site config`);
+
+        try
+        {
+            const GET_DYNAMIC_CONTENTS_INFO = await _getDefaultSiteConfig(this.token, 
+                this.config.serviceApiUrl, this.debugMode);
+            _printDatetime(`Default site config gotten`);
+            return GET_DYNAMIC_CONTENTS_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Default site config failed to get`);
+            throw error;
+        }
+    }
+
+    /**
      * @function getDynamicContent
      * @async
      * @description Gets dynamic content.
@@ -3342,6 +3382,78 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Media item failed to get: ${MEDIA_ITEM_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getMyContent
+     * @async
+     * @description Gets favorites and continue watching lists of IDs for the logged in user.
+     * @returns {Promise<JSON>} - A promise that resolves when the favorites and continue watching
+     * lists of IDs are gotten.
+     * Returns the information of the gotten favorites and continue watching lists of IDs.
+     * @throws {Error} - An error is thrown if the favorites and continue watching lists of IDs fail
+     * to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getMyContent()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType === "portal")
+        {
+            throw new Error("This function is not available for portal API type.");
+        }
+
+        _printDatetime(`Getting my content`);
+
+        try
+        {
+            const GET_MY_CONTENT_INFO = await _getMyContent(this.token, this.config.serviceApiUrl, 
+                this.debugMode);
+            _printDatetime(`My content gotten`);
+            return GET_MY_CONTENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`My content failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getSiteConfig
+     * @async
+     * @description Gets site config.
+     * @param {string} SITE_CONFIG_RECORD_ID - The site config record ID.
+     * @returns {Promise<JSON>} - A promise that resolves when the site config is gotten.
+     * Returns the information of the gotten site config.
+     * @throws {Error} - An error is thrown if the site config fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getSiteConfig(SITE_CONFIG_RECORD_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting site config: ${SITE_CONFIG_RECORD_ID}`);
+
+        try
+        {
+            const GET_DYNAMIC_CONTENT_INFO = await _getSiteConfig(this.token, 
+                this.config.serviceApiUrl, SITE_CONFIG_RECORD_ID, this.debugMode);
+            _printDatetime(`Site config gotten: ${SITE_CONFIG_RECORD_ID}`);
+            return GET_DYNAMIC_CONTENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Site config failed to get: ${SITE_CONFIG_RECORD_ID}`);
             throw error;
         }
     }
@@ -7980,6 +8092,39 @@ async function _createForm(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, FORM_INFO, DE
 
 
 
+async function _getDefaultSiteConfig(AUTH_TOKEN, URL, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/config`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Default Site Config Failed");
+    }
+}
+
+
+
+
 async function _getDynamicContent(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
 {
     const API_URL = `${URL}/media/content/${ID}`;
@@ -8006,7 +8151,7 @@ async function _getDynamicContent(AUTH_TOKEN, URL, ID, DEBUG_MODE)
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Get Media Group Failed");
+        _apiExceptionHandler(error, "Get Dynamic Content Failed");
     }
 }
 
@@ -8039,7 +8184,7 @@ async function _getDynamicContents(AUTH_TOKEN, URL, DEBUG_MODE)
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Get Media Group Failed");
+        _apiExceptionHandler(error, "Get Dynamic Contents Failed");
     }
 }
 
@@ -8106,6 +8251,72 @@ async function _getMediaItem(AUTH_TOKEN, URL, ID, DEBUG_MODE)
     catch (error)
     {
         _apiExceptionHandler(error, "Get Media Item Failed");
+    }
+}
+
+
+
+
+async function _getMyContent(AUTH_TOKEN, URL, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/my-content`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get My Content Failed");
+    }
+}
+
+
+
+
+async function _getSiteConfig(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/config/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Site Config Failed");
     }
 }
 
