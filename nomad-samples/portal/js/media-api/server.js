@@ -165,6 +165,21 @@ app.get('/get-my-content', async (req, res) =>
     }
 });
 
+app.post('/get-my-group', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const MY_GROUP = await NomadSDK.getMyGroup(req.body.myGroupId);
+
+        res.status(200).json(MY_GROUP);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.get('/clear-watchlist', async (req, res) =>
 {
     try
