@@ -165,6 +165,21 @@ app.get('/get-my-content', async (req, res) =>
     }
 });
 
+app.get('/clear-watchlist', async (req, res) =>
+{
+    try
+    {
+        const WATCHLIST = await NomadSDK.clearWatchlist();
+
+        res.status(200).json(WATCHLIST);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/form', upload.none(), async (req, res) =>
 {
     try

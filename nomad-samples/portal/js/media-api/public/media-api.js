@@ -6,6 +6,7 @@ const GET_MEDIA_ITEM_FORM = document.getElementById("getMediaItemForm");
 const GET_DEFAULT_SITE_CONFIG_FORM = document.getElementById("getDefaultSiteConfigForm");
 const GET_SITE_CONFIG_FORM = document.getElementById("getSiteConfigForm");
 const GET_MY_CONTENT_FORM = document.getElementById("getMyContentForm");
+const CLEAR_WATCHLIST_FORM = document.getElementById("clearWatchlistForm");
 const FORM_FORM = document.getElementById("formForm");
 
 const SORT_FIELDS_DIV = document.getElementById("sortFieldsDiv");
@@ -134,6 +135,13 @@ GET_MY_CONTENT_FORM.addEventListener("submit", async function (event)
     event.preventDefault();
 
     console.log(await sendRequest("/get-my-content", "GET"));
+});
+
+CLEAR_WATCHLIST_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    console.log(await sendRequest("/clear-watchlist", "GET"));
 });
 
 FORM_FORM.addEventListener("submit", async function (event)
