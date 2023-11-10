@@ -3404,7 +3404,7 @@ class NomadSDK {
             await this._init();
         }
 
-        if (this.config.apiType === "portal")
+        if (this.config.apiType !== "portal")
         {
             throw new Error("This function is not available for portal API type.");
         }
