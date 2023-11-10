@@ -180,6 +180,22 @@ app.get('/clear-watchlist', async (req, res) =>
     }
 });
 
+app.post('/clear-continue-watching', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const CONTINUE_WATCHING = await NomadSDK.clearContinueWatching(req.body.userId,
+            req.body.assetId);
+
+        res.status(200).json(CONTINUE_WATCHING);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/form', upload.none(), async (req, res) =>
 {
     try
