@@ -116,6 +116,7 @@ import config from "./config/config.js";
 
 
 
+
 // helpers
 
 
@@ -3276,6 +3277,46 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Form failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getContentCookies
+     * @async
+     * @description Gets content cookies.
+     * @param {string} CONTENT_ID - The Id of the content to retrieve the cookies for. 
+     * This can be the ID for the content definition of the LiveChannel, or a folder asset 
+     * ID or a specific Asset ID.
+     * @returns {Promise<JSON>} - A promise that resolves when the content cookies are gotten.
+     * Returns the information of the gotten content cookies.
+     * @throws {Error} - An error is thrown if the content cookies fail to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getContentCookies(CONTENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+              throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Getting content cookies`);
+
+        try
+        {
+            const GET_CONTENT_COOKIES_INFO = await _getContentCookies(this.token, 
+                this.config.serviceApiUrl, CONTENT_ID, this.debugMode);
+            _printDatetime(`Content cookies gotten`);
+            return GET_CONTENT_COOKIES_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Content cookies failed to get`);
             throw error;
         }
     }
@@ -8263,6 +8304,39 @@ async function _createForm(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, FORM_INFO, DE
     catch (error)
     {
         _apiExceptionHandler(error, "Creating Form Failed");
+    }
+}
+
+
+
+
+async function _getContentCookies(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/set-cookies/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Content Cookies Failed");
     }
 }
 
