@@ -113,6 +113,7 @@ import config from "./config/config.js";
 
 
 
+
 // helpers
 
 
@@ -3162,6 +3163,40 @@ class NomadSDK {
     }
 
     // media functions
+    /**
+     * @function clearWatchlist
+     * @async
+     * @description Clears the watchlist.
+     * @returns {Promise<void>} - A promise that resolves when the watchlist is cleared.
+     * @throws {Error} - An error is thrown if the watchlist fails to clear.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async clearWatchlist()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {   
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Clearing watchlist`);
+
+        try
+        {
+            await _clearWatchlist(this.token, this.config.serviceApiUrl, this.id, this.debugMode);
+            _printDatetime(`Watchlist cleared`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Watchlist failed to clear`);
+            throw error;
+        }
+    }
+
     /**
      * @function createForm
      * @async
@@ -8051,6 +8086,37 @@ async function _removeGuest(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
 	{
 		_apiExceptionHandler(error,"Remove guest failed");
 	}
+}
+
+
+
+
+async function _clearWatchlist(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/clear-watchlist?userId=${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Clear Watchlist Failed");
+    }
 }
 
 
