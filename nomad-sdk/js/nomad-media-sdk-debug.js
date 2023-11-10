@@ -70,6 +70,9 @@ import config from "./config/config.js";
 
 
 
+
+
+
 // common
 
 
@@ -2389,82 +2392,152 @@ class NomadSDK {
      * @throws {Error} - An error is thrown if the asset schedule event fails to add.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */ 
-        async updateAssetScheduleEvent(ID, CHANNEL_ID, ASSET, IS_LOOP, DURATION_TIME_CODE, 
-            PREVIOUS_ID)
+    async updateAssetScheduleEvent(ID, CHANNEL_ID, ASSET, IS_LOOP, DURATION_TIME_CODE, 
+        PREVIOUS_ID)
+    {
+        if (this.token === null)
         {
-            if (this.token === null)
-            {
-                await this._init();
-            }
-    
-            if (this.config.apiType !== "admin")
-            {
-                throw new Error("This function is only available for admin API type.");
-            }
-    
-            _printDatetime(`Updating asset schedule event: ${ID}`);
-    
-            try
-            {
-                const ADD_ASSET_SCHEDULE_EVENT_INFO = await _updateAssetScheduleEvent(this.token, 
-                    this.config.serviceApiUrl, ID, CHANNEL_ID, ASSET, IS_LOOP, 
-                    DURATION_TIME_CODE, PREVIOUS_ID, this.debugMode);
-                _printDatetime(`Asset schedule event updated: ${ID}`);
-                return ADD_ASSET_SCHEDULE_EVENT_INFO;
-            }
-            catch (error)
-            {
-                _printDatetime(`Asset schedule event failed to update: ${ID}`);
-                throw error;
-            }
+            await this._init();
         }
-    
-        /**
-         * @function updateInputScheduleEvent
-         * @async
-         * @description Adds an input schedule event.
-         * @param {string} ID - The ID of the Input schedule event.
-         * @param {string} CHANNEL_ID - The channel ID of the schedule event.
-         * @param {JSON} INPUT - The input of the schedule event.
-         * JSON format: {"id": "string", "name": "string"}
-         * @param {JSON | null} BACKUP_INPUT - The backup input of the schedule event.
-         * JSON format: {"id": "string", "name": "string"}
-         * @param {string | null} FIXED_ON_AIR_TIME_UTC - The fixed on air time UTC of the schedule event.
-         * Please use the following format: hh:mm:ss.
-         * @returns {Promise<JSON>} - A promise that resolves when the input schedule event is added.
-         * Returns the information of the added input schedule event.
-         * @throws {Error} - An error is thrown if the input schedule event fails to add.
-         * @throws {Error} - An error is thrown if the API type is not admin.
-         */ 
-        async updateInputScheduleEvent(ID, CHANNEL_ID, INPUT, BACKUP_INPUT, FIXED_ON_AIR_TIME_UTC, 
-            PREVIOUS_ID)
+
+        if (this.config.apiType !== "admin")
         {
-            if (this.token === null)
-            {
-                await this._init();
-            }
-    
-            if (this.config.apiType !== "admin")
-            {
-                throw new Error("This function is only available for admin API type.");
-            }
-    
-            _printDatetime(`Updating input schedule event`);
-    
-            try
-            {
-                const ADD_INPUT_SCHEDULE_EVENT_INFO = await _updateInputScheduleEvent(this.token, 
-                    this.config.serviceApiUrl, ID, CHANNEL_ID, INPUT, BACKUP_INPUT, 
-                    FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, this.debugMode);
-                _printDatetime(`Input schedule event updated`);
-                return ADD_INPUT_SCHEDULE_EVENT_INFO;
-            }
-            catch (error)
-            {
-                _printDatetime(`Input schedule event failed to update`);
-                throw error;
-            }
+            throw new Error("This function is only available for admin API type.");
         }
+
+        _printDatetime(`Updating asset schedule event: ${ID}`);
+
+        try
+        {
+            const ADD_ASSET_SCHEDULE_EVENT_INFO = await _updateAssetScheduleEvent(this.token, 
+                this.config.serviceApiUrl, ID, CHANNEL_ID, ASSET, IS_LOOP, 
+                DURATION_TIME_CODE, PREVIOUS_ID, this.debugMode);
+            _printDatetime(`Asset schedule event updated: ${ID}`);
+            return ADD_ASSET_SCHEDULE_EVENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset schedule event failed to update: ${ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateInputScheduleEvent
+        * @async
+        * @description Adds an input schedule event.
+        * @param {string} ID - The ID of the Input schedule event.
+        * @param {string} CHANNEL_ID - The channel ID of the schedule event.
+        * @param {JSON} INPUT - The input of the schedule event.
+        * JSON format: {"id": "string", "name": "string"}
+        * @param {JSON | null} BACKUP_INPUT - The backup input of the schedule event.
+        * JSON format: {"id": "string", "name": "string"}
+        * @param {string | null} FIXED_ON_AIR_TIME_UTC - The fixed on air time UTC of the schedule event.
+        * Please use the following format: hh:mm:ss.
+        * @returns {Promise<JSON>} - A promise that resolves when the input schedule event is added.
+        * Returns the information of the added input schedule event.
+        * @throws {Error} - An error is thrown if the input schedule event fails to add.
+        * @throws {Error} - An error is thrown if the API type is not admin.
+        */ 
+    async updateInputScheduleEvent(ID, CHANNEL_ID, INPUT, BACKUP_INPUT, FIXED_ON_AIR_TIME_UTC, 
+        PREVIOUS_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating input schedule event`);
+
+        try
+        {
+            const ADD_INPUT_SCHEDULE_EVENT_INFO = await _updateInputScheduleEvent(this.token, 
+                this.config.serviceApiUrl, ID, CHANNEL_ID, INPUT, BACKUP_INPUT, 
+                FIXED_ON_AIR_TIME_UTC, PREVIOUS_ID, this.debugMode);
+            _printDatetime(`Input schedule event updated`);
+            return ADD_INPUT_SCHEDULE_EVENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Input schedule event failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function changeSessionStatus
+     * @async
+     * @description Changes the status of a user session.
+     * @param {string} USER_SESSION_STATUS - The status of the user session.
+     * @param {string | null} APPLICATION_ID - The application ID of the user session.
+     * @returns {Promise<void>} - A promise that resolves when the status of the user session is changed.
+     * @throws {Error} - An error is thrown if the status of the user session fails to change.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async changeSessionStatus(USER_SESSION_STATUS, APPLICATION_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Changing session status`);
+
+        try
+        {
+            const SESSION_STATUS = await _changeSessionStatus(this.token, this.config.serviceApiUrl, 
+                this.userSessionId, USER_SESSION_STATUS, APPLICATION_ID, this.debugMode);
+            _printDatetime(`Session status changed`);
+            return SESSION_STATUS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Session status failed to change`);
+            throw error;
+        }
+    }
+
+    // user session functions
+    /**
+     * @function getUserSession
+     * @async
+     * @description Gets a user session.
+     * @returns {Promise<JSON>} - A promise that resolves when the user session is gotten.
+     * Returns the information of the gotten user session.
+     * @throws {Error} - An error is thrown if the user session fails to get.
+     */
+    async getUserSession()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        _printDatetime(`Getting user session`);
+
+        try
+        {
+            const GET_USER_SESSION_INFO = await _getUserSession(this.token, this.config.serviceApiUrl, 
+                this.userSessionId, this.debugMode);
+            _printDatetime(`User session gotten`);
+            return GET_USER_SESSION_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`User session failed to get`);
+            throw error;
+        }
+    }
 
     // common
     // registration functions
@@ -2602,7 +2675,6 @@ class NomadSDK {
             throw error;
         }
     }
-
 
     // portal
     // account updates
@@ -6881,6 +6953,81 @@ async function _updateInputScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, INPUT,
     catch (error)
     {
         _apiExceptionHandler(error, "Updating Input Schedule Event Failed");
+    }
+}
+
+
+
+
+async function _changeSessionStatus(AUTH_TOKEN, URL, USER_SESSION_ID, USER_SESSION_STATUS,
+    APPLICATION_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user-session`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = JSON.stringify({
+        "id": USER_SESSION_ID,
+        "userSessionStatus": USER_SESSION_STATUS,
+        "applicationId": APPLICATION_ID
+    });
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${BODY}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: BODY
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Change Session Status Failed");
+    }
+}
+
+
+
+
+async function _getUserSession(AUTH_TOKEN, URL, USER_SESSION_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user-session/${USER_SESSION_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get User Session Failed");
     }
 }
 
