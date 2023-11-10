@@ -114,6 +114,7 @@ import config from "./config/config.js";
 
 
 
+
 // helpers
 
 
@@ -3196,6 +3197,46 @@ class NomadSDK {
             throw error;
         }
     }
+
+    /**
+     * @function clearContinueWatching
+     * @async
+     * @description Delete continue watching markers.
+     * @param {string | null} USER_ID - The user ID of the user to clear the continue watching list.
+     * If not user Id is passed it clears the markers of the logged in user.
+     * @param {string | null} ASSET_ID - The asset ID of the asset to clear the continue watching
+     * list. If not asset Id is passed it clears the markers of all assets.
+     * @returns {Promise<void>} - A promise that resolves when the continue watching list is cleared.
+     * @throws {Error} - An error is thrown if the continue watching list fails to clear.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async clearContinueWatching(USER_ID, ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal") 
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Clearing continue watching`);
+
+        try
+        {
+            await _clearContinueWatching(this.token, this.config.serviceApiUrl, USER_ID, ASSET_ID, 
+                this.debugMode);
+            _printDatetime(`Continue watching cleared`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Continue watching failed to clear`);
+            throw error;
+        }
+    }
+
 
     /**
      * @function createForm
@@ -8086,6 +8127,42 @@ async function _removeGuest(AUTH_TOKEN, URL, CONTENT_ID, CONTENT_DEFINITION_ID, 
 	{
 		_apiExceptionHandler(error,"Remove guest failed");
 	}
+}
+
+
+
+
+async function _clearContinueWatching(AUTH_TOKEN, URL, USER_ID, ASSET_ID, DEBUG_MODE) 
+{
+    let apiUrl = `${URL}/media/clear-watching`;
+
+    let params = [];
+    if (USER_ID) params.push(`userId=${USER_ID}`);
+    if (ASSET_ID) params.push(`assetId=${ASSET_ID}`);
+    apiUrl += params.length ? `?${params.join('&')}` : '';
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${apiUrl}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${apiUrl}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Clear Continue Watching Failed");
+    }
 }
 
 
