@@ -115,6 +115,7 @@ import config from "./config/config.js";
 
 
 
+
 // helpers
 
 
@@ -3497,6 +3498,39 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`My content failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getMyGroup
+     * @async
+     * @description Gets user's group.
+     * @param {string} GROUP_ID - The ID of the group.
+     * @returns {Promise<JSON>} - A promise that resolves when the user's group is gotten.
+     * Returns the information of the gotten user's group.
+     * @throws {Error} - An error is thrown if the user's group fails to get.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getMyGroup(GROUP_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting my group: ${GROUP_ID}`);
+
+        try
+        {
+            const GET_MY_GROUP_INFO = await _getMyGroup(this.token, this.config.serviceApiUrl, 
+                GROUP_ID, this.debugMode);
+            _printDatetime(`My group gotten: ${GROUP_ID}`);
+            return GET_MY_GROUP_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`My group failed to get: ${GROUP_ID}`);
             throw error;
         }
     }
@@ -8427,6 +8461,39 @@ async function _getMyContent(AUTH_TOKEN, URL, DEBUG_MODE)
     catch (error)
     {
         _apiExceptionHandler(error, "Get My Content Failed");
+    }
+}
+
+
+
+
+async function _getMyGroup(AUTH_TOKEN, URL, ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/media/my-group/${ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    
+  	    return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get My Group Failed");
     }
 }
 
