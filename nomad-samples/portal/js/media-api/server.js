@@ -150,6 +150,21 @@ app.post('/get-site-config', upload.none(), async (req, res) =>
     }
 });
 
+app.get('/get-my-content', async (req, res) =>
+{
+    try
+    {
+        const MY_CONTENT = await NomadSDK.getMyContent();
+
+        res.status(200).json(MY_CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/form', upload.none(), async (req, res) =>
 {
     try

@@ -5,6 +5,7 @@ const GET_MEDIA_GROUP_FORM = document.getElementById("getMediaGroupForm");
 const GET_MEDIA_ITEM_FORM = document.getElementById("getMediaItemForm");
 const GET_DEFAULT_SITE_CONFIG_FORM = document.getElementById("getDefaultSiteConfigForm");
 const GET_SITE_CONFIG_FORM = document.getElementById("getSiteConfigForm");
+const GET_MY_CONTENT_FORM = document.getElementById("getMyContentForm");
 const FORM_FORM = document.getElementById("formForm");
 
 const SORT_FIELDS_DIV = document.getElementById("sortFieldsDiv");
@@ -126,6 +127,13 @@ GET_SITE_CONFIG_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(GET_SITE_CONFIG_FORM);
 
     console.log(await sendRequest("/get-site-config", "POST", FORM_DATA));
+});
+
+GET_MY_CONTENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    console.log(await sendRequest("/get-my-content", "GET"));
 });
 
 FORM_FORM.addEventListener("submit", async function (event)
