@@ -211,6 +211,21 @@ app.post('/clear-continue-watching', upload.none(), async (req, res) =>
     }
 });
 
+app.post('/get-content-cookies', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const CONTENT_COOKIES = await NomadSDK.getContentCookies(req.body.contentId);
+
+        res.status(200).json(CONTENT_COOKIES);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
 app.post('/form', upload.none(), async (req, res) =>
 {
     try

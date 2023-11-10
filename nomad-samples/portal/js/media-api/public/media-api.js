@@ -9,6 +9,7 @@ const GET_MY_CONTENT_FORM = document.getElementById("getMyContentForm");
 const GET_MY_GROUP_FORM = document.getElementById("getMyGroupForm");
 const CLEAR_WATCHLIST_FORM = document.getElementById("clearWatchlistForm");
 const CLEAR_CONTINUE_WATCHING_FORM = document.getElementById("clearContinueWatchingForm");
+const GET_CONTENT_COOKIES_FORM = document.getElementById("getContentCookiesForm");
 const FORM_FORM = document.getElementById("formForm");
 
 const SORT_FIELDS_DIV = document.getElementById("sortFieldsDiv");
@@ -162,6 +163,15 @@ CLEAR_CONTINUE_WATCHING_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(CLEAR_CONTINUE_WATCHING_FORM);
 
     console.log(await sendRequest("/clear-continue-watching", "POST", FORM_DATA));
+});
+
+GET_CONTENT_COOKIES_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_CONTENT_COOKIES_FORM);
+
+    console.log(await sendRequest("/get-content-cookies", "POST", FORM_DATA));
 });
 
 FORM_FORM.addEventListener("submit", async function (event)
