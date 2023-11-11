@@ -73,6 +73,18 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 // common
 
 
@@ -2469,6 +2481,7 @@ class NomadSDK {
         }
     }
 
+    // user session functions
     /**
      * @function changeSessionStatus
      * @async
@@ -2507,7 +2520,6 @@ class NomadSDK {
         }
     }
 
-    // user session functions
     /**
      * @function getUserSession
      * @async
@@ -2521,6 +2533,11 @@ class NomadSDK {
         if (this.token === null)
         {
             await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
         }
         
         _printDatetime(`Getting user session`);
@@ -2538,6 +2555,421 @@ class NomadSDK {
             throw error;
         }
     }
+
+    // user functions
+    /**
+     * @function deleteUserContentAttributeData
+     * @async
+     * @description Deletes a user content attribute data.
+     * @returns {Promise<void>} - A promise that resolves when the user content attribute data is deleted.
+     * @throws {Error} - An error is thrown if the user content attribute data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserContentAttributeData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user content attribute data`);
+
+        try
+        {
+            await _deleteUserContentAttributeData(this.token, this.config.serviceApiUrl, 
+                this.id, this.debugMode);
+            _printDatetime(`User content attribute data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User content attribute data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserContentGroupData
+     * @async
+     * @description Deletes a user content group data.
+     * @returns {Promise<void>} - A promise that resolves when the user content group data is deleted.
+     * @throws {Error} - An error is thrown if the user content group data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserContentGroupData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user content group data`);
+
+        try
+        {
+            await _deleteUserContentGroupData(this.token, this.config.serviceApiUrl, 
+                this.id, this.debugMode);
+            _printDatetime(`User content group data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User content group data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserContentSecurityData
+     * @async
+     * @description Deletes a user content security data.
+     * @param {string | null} CONTENT_ID - The content ID of the user content security data.
+     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID of the user 
+     * content security data.
+     * @param {string | null} EMAIL - The email of the user content security data.
+     * @param {string | null} ID - The ID of the user content security data.
+     * @param {string | null} KEY_NAME - The key name of the user content security data.
+     * @param {string | null} EXPIRATION_DATE - The expiration date of the user content 
+     * security data.
+     * @returns {Promise<void>} - A promise that resolves when the user content security data 
+     * is deleted.
+     * @throws {Error} - An error is thrown if the user content security data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserContentSecurityData(CONTENT_ID, CONTENT_DEFINITION_ID, EMAIL, ID,
+        KEY_NAME, EXPIRATION_DATE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user content security data`);
+
+        try
+        {
+            await _deleteUserContentSecurityData(this.token, this.config.serviceApiUrl, 
+                CONTENT_ID, CONTENT_DEFINITION_ID, this.id, EMAIL, ID, KEY_NAME, 
+                EXPIRATION_DATE, this.debugMode);
+            _printDatetime(`User content security data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User content security data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserData
+     * @async
+     * @description Deletes a user data.
+     * @returns {Promise<void>} - A promise that resolves when the user data is deleted.
+     * @throws {Error} - An error is thrown if the user data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user data`);
+
+        try
+        {
+            await _deleteUserData(this.token, this.config.serviceApiUrl, 
+                this.id, this.debugMode);
+            _printDatetime(`User data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserDislikesData
+     * @async
+     * @description Deletes a user dislikes data.
+     * @returns {Promise<void>} - A promise that resolves when the user dislikes data is deleted.
+     * @throws {Error} - An error is thrown if the user dislikes data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserDislikesData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user dislikes data`);
+
+        try
+        {
+            await _deleteUserDislikesData(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User dislikes data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User dislikes data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserFavoritesData
+     * @async
+     * @description Deletes a user favorites data.
+     * @returns {Promise<void>} - A promise that resolves when the user favorites data is deleted.
+     * @throws {Error} - An error is thrown if the user favorites data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+
+    async deleteUserFavoritesData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user favorites data`);
+
+        try
+        {
+            await _deleteUserFavoritesData(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User favorites data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User favorites data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserLikesData
+     * @async
+     * @description Deletes a user likes data.
+     * @returns {Promise<void>} - A promise that resolves when the user likes data is deleted.
+     * @throws {Error} - An error is thrown if the user likes data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserLikesData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user likes data`);
+
+        try
+        {
+            await _deleteUserLikesData(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User likes data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User likes data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserSavedSearchData
+     * @async
+     * @description Deletes a user saved search data.
+     * @returns {Promise<void>} - A promise that resolves when the user saved search data is deleted.
+     * @throws {Error} - An error is thrown if the user saved search data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserSavedSearchData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user saved search data`);
+
+        try
+        {
+            await _deleteUserSavedSearchData(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User saved search data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User saved search data failed to delete`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function deleteUserSessionData
+     * @async
+     * @description Deletes a user session data.
+     * @returns {Promise<void>} - A promise that resolves when the user session data is deleted.
+     * @throws {Error} - An error is thrown if the user session data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserSessionData()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Deleting user session data`);
+
+        try
+        {
+            await _deleteUserSessionData(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User session data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User session data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserVideoTrackingData
+     * @async
+     * @description Deletes a user video tracking data.
+     * @param {string | null} ASSET_ID - The asset ID of the user video tracking data.
+     * @param {string | null} CONTENT_ID - The content ID of the user video tracking data.
+     * @param {string | null} VIDEO_TRACKING_ATTRIBUTE_ID - The video tracking attribute ID of the
+     * user video tracking data. Possible values: "Undefined", "Watchlist", "LiveStream".
+     * @param {string | null} ID - The ID of the user video tracking data.
+     * @param {boolean | null} IS_FIRST_QUARTILE - The first quartile of the user video tracking data.
+     * @param {boolean | null} IS_MIDPOINT - The midpoint of the user video tracking data.
+     * @param {boolean | null} IS_THIRD_QUARTILE - The third quartile of the user video tracking data.
+     * @param {boolean | null} IS_COMPLETE - The complete of the user video tracking data.
+     * @param {boolean | null} IS_HIDDEN - The hidden of the user video tracking data.
+     * @param {boolean | null} IS_LIVE_STREAM - The live stream of the user video tracking data.
+     * @param {double | null} MAX_SECOND - The max second of the user video tracking data.
+     * @param {double | null} LAST_SECOND - The last second of the user video tracking data.
+     * @param {double | null} TOTAL_SECOND - The total second of the user video tracking data.
+     * @param {string | null} LAST_BEACON_DATE - The last beacon date of the user video tracking data.
+     * @param {string | null} KEY_NAME - The key name of the user video tracking data.
+     * @returns {Promise<void>} - A promise that resolves when the user video tracking data is deleted.
+     * @throws {Error} - An error is thrown if the user video tracking data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserVideoTrackingData(ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID, ID,
+        IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE, IS_COMPLETE, IS_HIDDEN, IS_LIVE_STREAM,
+        MAX_SECOND, LAST_SECOND, TOTAL_SECOND, LAST_BEACON_DATE, KEY_NAME)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        try
+        {
+            await _deleteUserVideoTrackingData(this.token, this.config.serviceApiUrl,
+                ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID, this.id, ID,
+                IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE, IS_COMPLETE, IS_HIDDEN, 
+                IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECOND, LAST_BEACON_DATE, KEY_NAME,
+                this.debugMode);
+            _printDatetime(`User video tracking data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User video tracking data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUser
+     * @async
+     * @description Deletes a user.
+     * @returns {Promise<void>} - A promise that resolves when the user is deleted.
+     * @throws {Error} - An error is thrown if the user fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUser()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        try
+        {
+            await _deleteUser(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User failed to delete`);
+            throw error;
+        }
+    } 
 
     // common
     // registration functions
@@ -6970,11 +7402,11 @@ async function _changeSessionStatus(AUTH_TOKEN, URL, USER_SESSION_ID, USER_SESSI
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     // Create body for the request
-    const BODY = JSON.stringify({
+    const BODY = {
         "id": USER_SESSION_ID,
         "userSessionStatus": USER_SESSION_STATUS,
         "applicationId": APPLICATION_ID
-    });
+    };
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${BODY}`);
 
@@ -7028,6 +7460,382 @@ async function _getUserSession(AUTH_TOKEN, URL, USER_SESSION_ID, DEBUG_MODE)
     catch (error)
     {
         _apiExceptionHandler(error, "Get User Session Failed");
+    }
+}
+
+
+
+
+async function _deleteUserContentAttributeData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/userContentAttribute/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Content Attribute Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserContentGroupData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/contentGroup/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Content Group Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserContentSecurityData(AUTH_TOKEN, URL, CONTENT_ID, 
+    CONTENT_DEFINITION_ID, USER_ID, EMAIL, ID, KEY_NAME, EXPIRATION_DATE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/userContentSecurity/delete`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        contentId: CONTENT_ID,
+        contentDefinitionId: CONTENT_DEFINITION_ID,
+        userId: USER_ID,
+        email: EMAIL,
+        id: ID,
+        keyName: KEY_NAME,
+        expirationDate: EXPIRATION_DATE
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Content Security Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/userData/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserDislikesData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/dislike/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Dislikes Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserFavoritesData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/favorite/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Favorites Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserLikesData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/like/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Likes Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserSavedSearchData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/savedSearch/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Saved Search Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserSessionData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/userSession/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Session Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUserVideoTrackingData(AUTH_TOKEN, URL, ASSET_ID, CONTENT_ID,
+    VIDEO_TRACKING_ATTRIBUTE, USER_ID, ID, IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE,
+    IS_COMPLETE, IS_HIDDEN, IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECOND, 
+    LAST_BEACON_DATE, KEY_NAME ,DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/userVideoTracking/delete`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        assetId: ASSET_ID,
+        contentId: CONTENT_ID,
+        videoTrackingAttribute: VIDEO_TRACKING_ATTRIBUTE,
+        userId: USER_ID,
+        id: ID,
+        isFirstQuartile: IS_FIRST_QUARTILE,
+        isMidpoint: IS_MIDPOINT,
+        isThirdQuartile: IS_THIRD_QUARTILE,
+        isComplete: IS_COMPLETE,
+        isHidden: IS_HIDDEN,
+        isLiveStream: IS_LIVE_STREAM,
+        maxSecond: MAX_SECOND,
+        lastSecond: LAST_SECOND,
+        totalSecond: TOTAL_SECOND,
+        lastBeaconDate: LAST_BEACON_DATE,
+        keyName: KEY_NAME
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Video Tracking Data Failed");
+    }
+}
+
+
+
+
+async function _deleteUser(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/user/${USER_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete User Failed");
     }
 }
 
