@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>User</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="user.css">
+
+    <!-- JS -->
+    <script type="module" src="user.js" defer></script>
+</head>
+
+<body>
+
+    <h1>User</h1>
+    <h3>Delete User</h3>
+    <form id="deleteUserForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Data</h3>
+    <form id="deleteUserDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Content Attribute Data</h3>
+    <form id="deleteUserContentAttributeDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Content Group Data</h3>
+    <form id="deleteUserContentGroupDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Dislikes Data</h3>
+    <form id="deleteUserDislikesDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Likes Data</h3>
+    <form id="deleteUserLikesDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Favorites Data</h3>
+    <form id="deleteUserFavoritesDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Saved Search Data</h3>
+    <form id="deleteUserSavedSearchDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Session Data</h3>
+    <form id="deleteUserSessionDataForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Content Security Data</h3>
+    <form id="deleteUserContentSecurityDataForm">
+        <label for="contentId">Content Id:</label>
+        <input type="text" id="contentId">
+
+        <label for="contentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId">
+
+        <label for="email">Email:</label>
+        <input type="text" id="email">
+
+        <label for="id">Id:</label>
+        <input type="text" id="id">
+
+        <label for="keyName">Key Name:</label>
+        <input type="text" id="keyName">
+
+        <label for="expirationDate">Expiration Date:</label>
+        <input type="datetime-local" id="expirationDate">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete User Video Tracking Data</h3>
+    <form id="deleteUserVideoTrackingDataForm">
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId">
+
+        <label for="contentId">Content Id:</label>
+        <input type="text" id="contentId">
+
+        <label for="videoTrackingAttribute">Video Tracking Attribute:</label>
+        <select id="videoTrackingAttribute">
+            <option value="Undefined">Undefined</option>
+            <option value="Watchlist">Watchlist</option>
+            <option value="LiveStream">LiveStream</option>
+        </select>
+
+        <label for="id">Id:</label>
+        <input type="text" id="id">
+
+        <label for="isFirstQuartile">Is First Quartile:</label>
+        <select id="isFirstQuartile">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="isMidPoint">Is Mid Point:</label>
+        <select id="isMidPoint">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="isThirdQuartile">Is Third Quartile:</label>
+        <select id="isThirdQuartile">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="isComplete">Is Complete:</label>
+        <select id="isComplete">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="isHidden">Is Hidden:</label>
+        <select id="isHidden">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="isLiveStream">Is Live Stream:</label>
+        <select id="isLiveStream">
+            <option value="true">True</option>
+            <option value="false">False</option>
+        </select>
+
+        <label for="maxSeconds">Max Seconds:</label>
+        <input type="string" id="maxSeconds">
+
+        <label for="lastSeconds">Last Seconds:</label>
+        <input type="string" id="lastSeconds">
+
+        <label for="totalSeconds">Total Seconds:</label>
+        <input type="string" id="totalSeconds">
+
+        <label for="lastBeaconDate">Last Beacon Date:</label>
+        <input type="datetime-local" id="lastBeaconDate">
+
+        <label for="keyName">Key Name:</label>
+        <input type="text" id="keyName">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>
