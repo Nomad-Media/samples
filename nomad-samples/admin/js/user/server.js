@@ -20,11 +20,11 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/user.html');
 });
 
-app.delete('/delete-user', upload.none(), async (req, res) =>
+app.post('/delete-user', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUser();
+        await NomadSDK.deleteUser(req.body.userId);
 
         res.status(200).json();
     }
@@ -35,11 +35,11 @@ app.delete('/delete-user', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-data', upload.none(), async (req, res) =>
+app.post('/delete-user-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserData();
+        await NomadSDK.deleteUserData(req.body.userId);
 
         res.status(200).json();
     }
@@ -50,11 +50,11 @@ app.delete('/delete-user-data', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-content-attribute-data', upload.none(), async (req, res) =>
+app.post('/delete-user-content-attribute-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserContentAttributeData();
+        await NomadSDK.deleteUserContentAttributeData(req.body.userId);
 
         res.status(200).json();
     }
@@ -65,11 +65,11 @@ app.delete('/delete-user-content-attribute-data', upload.none(), async (req, res
     }
 });
 
-app.delete('/delete-user-content-group-data', upload.none(), async (req, res) =>
+app.post('/delete-user-content-group-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserContentGroupData();
+        await NomadSDK.deleteUserContentGroupData(req.body.userId);
 
         res.status(200).json();
     }
@@ -80,11 +80,11 @@ app.delete('/delete-user-content-group-data', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-dislikes-data', upload.none(), async (req, res) =>
+app.post('/delete-user-dislikes-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserDislikesData();
+        await NomadSDK.deleteUserDislikesData(req.body.userId);
 
         res.status(200).json();
     }
@@ -95,11 +95,11 @@ app.delete('/delete-user-dislikes-data', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-likes-data', upload.none(), async (req, res) =>
+app.post('/delete-user-likes-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserLikesData();
+        await NomadSDK.deleteUserLikesData(req.body.userId);
 
         res.status(200).json();
     }
@@ -110,11 +110,11 @@ app.delete('/delete-user-likes-data', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-favorites-data', upload.none(), async (req, res) =>
+app.post('/delete-user-favorites-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserFavoritesData();
+        await NomadSDK.deleteUserFavoritesData(req.body.userId);
 
         res.status(200).json();
     }
@@ -125,11 +125,11 @@ app.delete('/delete-user-favorites-data', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-saved-search-data', upload.none(), async (req, res) =>
+app.post('/delete-user-saved-search-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserSavedSearchData();
+        await NomadSDK.deleteUserSavedSearchData(req.body.userId);
 
         res.status(200).json();
     }
@@ -140,11 +140,11 @@ app.delete('/delete-user-saved-search-data', upload.none(), async (req, res) =>
     }
 });
 
-app.delete('/delete-user-session-data', upload.none(), async (req, res) =>
+app.post('/delete-user-session-data', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteUserSessionData();
+        await NomadSDK.deleteUserSessionData(req.body.userId);
 
         res.status(200).json();
     }

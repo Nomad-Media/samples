@@ -14,63 +14,81 @@ DELETE_USER_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_FORM);
+
+    await sendRequest("/delete-user", "POST", USER_DATA);
 });
 
 DELETE_USER_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_DATA_FORM);
+
+    await sendRequest("/delete-user-data", "POST", USER_DATA);
 });
 
 DELETE_USER_CONTENT_ATTRIBUTE_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-content-attribute-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_CONTENT_ATTRIBUTE_DATA_FORM);
+
+    await sendRequest("/delete-user-content-attribute-data", "POST", USER_DATA);
 });
 
 DELETE_USER_CONTENT_GROUP_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-content-group-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_CONTENT_GROUP_DATA_FORM);
+
+    await sendRequest("/delete-user-content-group-data", "POST", USER_DATA);
 });
 
 DELETE_USER_DISLIKES_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-dislikes-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_DISLIKES_DATA_FORM);
+
+    await sendRequest("/delete-user-dislikes-data", "POST", USER_DATA);
 });
 
 DELETE_USER_LIKES_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-likes-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_LIKES_DATA_FORM);
+
+    await sendRequest("/delete-user-likes-data", "POST", USER_DATA);
 });
 
 DELETE_USER_FAVORITES_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-favorites-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_FAVORITES_DATA_FORM);
+
+    await sendRequest("/delete-user-favorites-data", "POST", USER_DATA);
 });
 
 DELETE_USER_SAVED_SEARCH_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-saved-search-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_SAVED_SEARCH_DATA_FORM);
+
+    await sendRequest("/delete-user-saved-search-data", "POST", USER_DATA);
 });
 
 DELETE_USER_SESSION_DATA_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    await sendRequest("/delete-user-session-data", "DELETE");
+    const USER_DATA = getElements(DELETE_USER_SESSION_DATA_FORM);
+
+    await sendRequest("/delete-user-session-data", "POST", USER_DATA);
 });
 
 DELETE_USER_CONTENT_SECURITY_DATA_FORM.addEventListener("submit", async function (event)
