@@ -85,6 +85,36 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // common
 
 
@@ -949,7 +979,6 @@ class NomadSDK {
             throw error;
         }
     }
-    
     
     // event functions
     /**
@@ -2481,6 +2510,1805 @@ class NomadSDK {
         }
     }
 
+    // schedule functions
+    /**
+     * @function createIntelligentPlaylist
+     * @async
+     * @description Creates an intelligent playlist.
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the intelligent playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} END_SEARCH_DATE - The end search date of the intelligent playlist.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer} END_SEARCH_DURATION_IN_MINUTES - The end search duration in minutes of the
+     * intelligent playlist.
+     * @param {string} NAME - The name of the intelligent playlist.
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related content of the intelligent playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} SEARCH_DATE - The search date of the intelligent playlist.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer} SEARCH_DURATION_IN_MINUTES - The search duration in minutes of the
+     * intelligent playlist.
+     * @param {integer} SEARCH_FILTER_TYPE - The search filter type of the intelligent playlist.
+     * Values: Random: 1, Random within a Date Range: 2, Newest: 3, Newest Not Played: 4
+     * @param {Array<JSON>} TAGS - The tags of the intelligent playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the intelligent playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the intelligent playlist is created.
+     * Returns the information of the created intelligent playlist.
+     * @throws {Error} - An error is thrown if the intelligent playlist fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createIntelligentPlaylist(COLLECTIONS, END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES,
+        NAME, RELATED_CONTENTS, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS,
+        THUMBNAIL_ASSET)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        if (COLLECTIONS === null) COLLECTIONS = [];
+        if (RELATED_CONTENTS === null) RELATED_CONTENTS = [];
+        if (TAGS === null) TAGS = [];
+
+        _printDatetime(`Creating intelligent playlist`);
+
+        try
+        {
+            const CREATE_INTELLIGENT_PLAYLIST_INFO = await _createIntelligentPlaylist(this.token, 
+                this.config.serviceApiUrl, COLLECTIONS, END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES,
+                NAME, RELATED_CONTENTS, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS,
+                THUMBNAIL_ASSET, this.debugMode);
+            _printDatetime(`Intelligent playlist created`);
+            return CREATE_INTELLIGENT_PLAYLIST_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent playlist failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createIntelligentSchedule
+     * @async
+     * @description Creates an intelligent schedule.
+     * @param {JSON} DEFAULT_VIDEO_ASSET - The default video asset of the intelligent schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} NAME - The name of the intelligent schedule.
+     * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the intelligent schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} TIME_ZONE_ID - The time zone ID of the intelligent schedule.
+     * @returns {Promise<JSON>} - A promise that resolves when the intelligent schedule is created.
+     * Returns the information of the created intelligent schedule.
+     * @throws {Error} - An error is thrown if the intelligent schedule fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createIntelligentSchedule(DEFAULT_VIDEO_ASSET, NAME, THUMBNAIL_ASSET, TIME_ZONE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Creating intelligent schedule`);
+
+        try
+        {
+            const CREATE_INTELLIGENT_SCHEDULE_INFO = await _createIntelligentSchedule(this.token, 
+                this.config.serviceApiUrl, DEFAULT_VIDEO_ASSET, NAME, THUMBNAIL_ASSET, TIME_ZONE_ID,
+                this.debugMode);
+            _printDatetime(`Intelligent schedule created`);
+            return CREATE_INTELLIGENT_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent schedule failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createPlaylist
+     * @async
+     * @description Creates a playlist.
+     * @param {JSON | null} DEFAULT_VIDEO_ASSET - The default video asset of the playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {boolean} LOOP_PLAYLIST - Whether the playlist is looped.
+     * @param {string} NAME - The name of the playlist.
+     * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the playlist is created.
+     * Returns the information of the created playlist.
+     * @throws {Error} - An error is thrown if the playlist fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createPlaylist(DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, THUMBNAIL_ASSET)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Creating playlist`);
+
+        try
+        {
+            const CREATE_PLAYLIST_INFO = await _createPlaylist(this.token, 
+                this.config.serviceApiUrl, DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, THUMBNAIL_ASSET,
+                this.debugMode);
+            _printDatetime(`Playlist created`);
+            return CREATE_PLAYLIST_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Playlist failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createScheduleItemAsset
+     * @async
+     * @description Creates a schedule item asset.
+     * @param {string} SCHEDULE_ID - The id of the schedule the asset item is to be added to.
+     * @param {JSON} ASSET - The asset of the schedule item asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON>} DAYS - The days of the schedule item asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} END_TIME_CODE - The end time code of the schedule item asset.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item asset.
+     * @param {string} TIME_CODE - The time code of the schedule item asset.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item asset is created.
+     * Returns the information of the created schedule item asset.
+     * @throws {Error} - An error is thrown if the schedule item asset fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createScheduleItemAsset(SCHEDULE_ID, ASSET, DAYS, DURATION_TIME_CODE, END_TIME_CODE,
+        PREVIOUS_ITEM, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Creating schedule item asset`);
+
+        try
+        {
+            const CREATE_SCHEDULE_ITEM_ASSET_INFO = await _createScheduleItemAsset(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ASSET, DAYS, DURATION_TIME_CODE, END_TIME_CODE,
+                PREVIOUS_ITEM, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item asset created`);
+            return CREATE_SCHEDULE_ITEM_ASSET_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item asset failed to create`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function createScheduleItemLiveChannel
+     * @async
+     * @description Creates a schedule item live channel.
+     * @param {string} SCHEDULE_ID - The id of the schedule the live channel item is to 
+     * be added to.
+     * @param {Array<JSON>} DAYS - The days of the schedule item live channel.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} END_TIME_CODE - The end time code of the schedule item live channel.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {JSON} LIVE_CHANNEL - The live channel of the schedule item live channel.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item live channel.
+     * @param {string} TIME_CODE - The time code of the schedule item live channel.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item live channel
+     * is created.
+     * Returns the information of the created schedule item live channel.
+     * @throws {Error} - An error is thrown if the schedule item live channel fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createScheduleItemLiveChannel(SCHEDULE_ID, DAYS, DURATION_TIME_CODE, END_TIME_CODE,
+        LIVE_CHANNEL, PREVIOUS_ITEM, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Creating schedule item live channel`);
+
+        try
+        {
+            const CREATE_SCHEDULE_ITEM_LIVE_CHANNEL_INFO = await _createScheduleItemLiveChannel(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, DAYS, DURATION_TIME_CODE, END_TIME_CODE,
+                LIVE_CHANNEL, PREVIOUS_ITEM, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item live channel created`);
+            return CREATE_SCHEDULE_ITEM_LIVE_CHANNEL_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item live channel failed to create`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function createScheduleItemSearchFilter
+     * @async
+     * @description Creates a schedule item search filter.
+     * @param {string} SCHEDULE_ID - The id of the schedule the search filter item is to
+     * be added to.
+     * @param {Array<JSON>} COLLECTIONS - The collections of the schedule item search filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON>} DAYS - The days of the schedule item search filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} END_SEARCH_DATE - The end search date of the schedule item search filter.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer} END_SEARCH_DURATION_IN_MINUTES - The end search duration in minutes of the
+     * schedule item search filter.
+     * @param {string} END_TIME_CODE - The end time code of the schedule item search filter.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item search filter.
+     * @param {Array<JSON>} RELATED_CONTENTS - The related contents of the schedule item search filter.
+     * @param {string} SEARCH_DATE - The search date of the schedule item search filter.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {string} SEARCH_DURATION_IN_MINUTES - The search duration in minutes of the
+     * schedule item search filter.
+     * @param {string} SEARCH_FILTER_TYPE - The search filter type of the schedule item search
+     * filter.
+     * Values: Random: 1, Random within a Date Range: 2, Newest: 3, Newest Not Played: 4
+     * @param {Array<JSON>} TAGS - The tags of the schedule item search filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} TIME_CODE - The time code of the schedule item search filter.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item search filter
+     * is created.
+     * Returns the information of the created schedule item search filter.
+     * @throws {Error} - An error is thrown if the schedule item search filter fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createScheduleItemSearchFilter(SCHEDULE_ID, COLLECTIONS, DAYS, DURATION_TIME_CODE,
+        END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, END_TIME_CODE, PREVIOUS_ITEM,
+        RELATED_CONTENTS, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, 
+        TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        if (COLLECTIONS === null) COLLECTIONS = [];
+        if (RELATED_CONTENTS === null) RELATED_CONTENTS = [];
+
+        _printDatetime(`Creating schedule item search filter`);
+
+        try
+        {
+            const CREATE_SCHEDULE_ITEM_SEARCH_FILTER_INFO = await _createScheduleItemSearchFilter(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, COLLECTIONS, DAYS, DURATION_TIME_CODE,
+                END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, END_TIME_CODE, PREVIOUS_ITEM,
+                RELATED_CONTENTS, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS,
+                TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item search filter created`);
+            return CREATE_SCHEDULE_ITEM_SEARCH_FILTER_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item search filter failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createScheduleItemPlaylistSchedule
+     * @async
+     * @description Creates a schedule item playlist schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule the playlist schedule item is to
+     * @param {Array<JSON>} DAYS - The days of the schedule item playlist schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} END_TIME_CODE - The end time code of the schedule item playlist schedule.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {JSON} PLAYLIST_SCHEDULE - The playlist schedule of the schedule item 
+     * playlist schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item playlist schedule.
+     * @param {string} TIME_CODE - The time code of the schedule item playlist schedule.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item playlist schedule
+     * is created.
+     * Returns the information of the created schedule item playlist schedule.
+     * @throws {Error} - An error is thrown if the schedule item playlist schedule fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createScheduleItemPlaylistSchedule(SCHEDULE_ID, DAYS, DURATION_TIME_CODE,
+        END_TIME_CODE, PLAYLIST_SCHEDULE, PREVIOUS_ITEM, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Creating schedule item playlist schedule`);
+
+        try
+        {
+            const CREATE_SCHEDULE_ITEM_PLAYLIST_SCHEDULE_INFO = await _createScheduleItemPlaylistSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, DAYS, DURATION_TIME_CODE,
+                END_TIME_CODE, PLAYLIST_SCHEDULE, PREVIOUS_ITEM, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item playlist schedule created`);
+            return CREATE_SCHEDULE_ITEM_PLAYLIST_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item playlist schedule failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteIntelligentPlaylist
+     * @async
+     * @description Deletes an intelligent playlist.
+     * @param {string} SCHEDULE_ID - The id of the intelligent playlist to be deleted.
+     * @returns {Promise<void>} - A promise that resolves when the intelligent playlist is deleted.
+     * @throws {Error} - An error is thrown if the intelligent playlist fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteIntelligentPlaylist(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting intelligent playlist`);
+
+        try
+        {
+            await _deleteIntelligentPlaylist(this.token, this.config.serviceApiUrl, 
+                SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Intelligent playlist deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent playlist failed to delete`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function deleteIntelligentSchedule
+     * @async
+     * @description Deletes a schedule.
+     * @param {string} SCHEDULE_ID - The id of the intelligent schedule to be deleted.
+     * @returns {Promise<void>} - A promise that resolves when the intelligent 
+     * schedule is deleted.
+     * @throws {Error} - An error is thrown if the intelligent schedule fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteIntelligentSchedule(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting intelligent schedule`);
+
+        try
+        {
+            await _deleteIntelligentSchedule(this.token, this.config.serviceApiUrl, 
+                SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Intelligent schedule deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent schedule failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deletePlaylist
+     * @async
+     * @description Deletes a playlist.
+     * @param {string} SCHEDULE_ID - The id of the playlist to be deleted.
+     * @returns {Promise<void>} - A promise that resolves when the playlist is deleted.
+     * @throws {Error} - An error is thrown if the playlist fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deletePlaylist(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Deleting playlist`);
+
+        try
+        {
+            await _deletePlaylist(this.token, this.config.serviceApiUrl, 
+                SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Playlist deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Playlist failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteScheduleItem
+     * @async
+     * @description Deletes a schedule item.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item is to be deleted from.
+     * @param {string} ITEM_ID - The id of the item to be deleted.
+     * @returns {Promise<void>} - A promise that resolves when the schedule item is deleted.
+     * @throws {Error} - An error is thrown if the schedule item fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteScheduleItem(SCHEDULE_ID, ITEM_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        _printDatetime(`Deleting schedule item`);
+
+        try
+        {
+            await _deleteScheduleItem(this.token, this.config.serviceApiUrl, SCHEDULE_ID, 
+                ITEM_ID, this.debugMode);
+            _printDatetime(`Schedule item deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function generateSchedule
+     * @async
+     * @description Generates a schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule to be generated.
+     * @returns {Promise<void>} - A promise that resolves when the schedule is generated.
+     * @throws {Error} - An error is thrown if the schedule fails to generate.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async generateSchedule(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Generating schedule`);
+
+        try
+        {
+            await _generateSchedule(this.token, this.config.serviceApiUrl, 
+                SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Schedule generated`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule failed to generate`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getIntelligentPlaylist
+     * @async
+     * @description Gets an intelligent playlist.
+     * @param {string} SCHEDULE_ID - The id of the intelligent playlist to be gotten.
+     * @returns {Promise<JSON>} - A promise that resolves when the intelligent playlist is gotten.
+     * Returns the information of the gotten intelligent playlist.
+     * @throws {Error} - An error is thrown if the intelligent playlist fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getIntelligentPlaylist(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Getting intelligent playlist`);
+
+        try
+        {
+            const GET_INTELLIGENT_PLAYLIST_INFO = await _getIntelligentPlaylist(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Intelligent playlist gotten`);
+            return GET_INTELLIGENT_PLAYLIST_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent playlist failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getIntelligentSchedule
+     * @async
+     * @description Gets an intelligent schedule.
+     * @param {string} SCHEDULE_ID - The id of the intelligent schedule to be gotten.
+     * @returns {Promise<JSON>} - A promise that resolves when the intelligent schedule is gotten.
+     * Returns the information of the gotten intelligent schedule.
+     * @throws {Error} - An error is thrown if the intelligent schedule fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getIntelligentSchedule(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Getting intelligent schedule`);
+
+        try
+        {
+            const GET_INTELLIGENT_SCHEDULE_INFO = await _getIntelligentSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Intelligent schedule gotten`);
+            return GET_INTELLIGENT_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent schedule failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getPlaylist
+     * @async
+     * @description Gets a playlist.
+     * @param {string} SCHEDULE_ID - The id of the schedule the playlist is to be gotten from.
+     * @returns {Promise<JSON>} - A promise that resolves when the playlist is gotten.
+     * Returns the information of the gotten playlist.
+     * @throws {Error} - An error is thrown if the playlist fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getPlaylist(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Getting playlist`);
+
+        try
+        {
+            const GET_PLAYLIST_INFO = await _getPlaylist(this.token, this.config.serviceApiUrl, 
+                SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Playlist gotten`);
+            return GET_PLAYLIST_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Playlist failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getScheduleItem
+     * @async
+     * @description Gets a schedule item.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item is to be gotten from.
+     * @param {string} ITEM_ID - The id of the item to be gotten.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item is gotten.
+     * Returns the information of the gotten schedule item.
+     * @throws {Error} - An error is thrown if the schedule item fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getScheduleItem(SCHEDULE_ID, ITEM_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting schedule item`);
+
+        try
+        {
+            const GET_SCHEDULE_ITEM_INFO = await _getScheduleItem(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ITEM_ID, this.debugMode);
+            _printDatetime(`Schedule item gotten`);
+            return GET_SCHEDULE_ITEM_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getScheduleItems
+     * @async
+     * @description Gets the schedule items of a schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule items are to be gotten from.
+     * @returns {Promise<Array<JSON>>} - A promise that resolves when the schedule items are gotten.
+     * Returns the information of the gotten schedule items.
+     * @throws {Error} - An error is thrown if the schedule items fail to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getScheduleItems(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting schedule items`);
+
+        try
+        {
+            const GET_SCHEDULE_ITEMS_INFO = await _getScheduleItems(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Schedule items gotten`);
+            return GET_SCHEDULE_ITEMS_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule items failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getSchedulePreview
+     * @async
+     * @description Gets a schedule preview.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule preview is to be gotten from.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule preview is gotten.
+     * Returns the information of the gotten schedule preview.
+     * @throws {Error} - An error is thrown if the schedule preview fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getSchedulePreview(SCHEDULE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+
+        _printDatetime(`Getting schedule preview`);
+
+        try
+        {
+            const GET_SCHEDULE_PREVIEW_INFO = await _getSchedulePreview(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, this.debugMode);
+            _printDatetime(`Schedule preview gotten`);
+            return GET_SCHEDULE_PREVIEW_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule preview failed to get`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function moveScheduleItem
+     * @async
+     * @description Moves a schedule item.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item is to be moved from.
+     * @param {string} ITEM_ID - The id of the item to be moved.
+     * @param {string} PREVIOUS_ITEM - The previous item of the schedule item.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item is moved.
+     * Returns the information of the moved schedule item.
+     * @throws {Error} - An error is thrown if the schedule item fails to move.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async moveScheduleItem(SCHEDULE_ID, ITEM_ID, PREVIOUS_ITEM)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Moving schedule item`);
+
+        try
+        {
+            const MOVE_SCHEDULE_ITEM_INFO = await _moveScheduleItem(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ITEM_ID, PREVIOUS_ITEM, this.debugMode);
+            _printDatetime(`Schedule item moved`);
+            return MOVE_SCHEDULE_ITEM_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item failed to move`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function publishIntelligentSchedule
+     * @async
+     * @description Publishes an intelligent schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule to be published.
+     * @param {integer} NUMBER_OF_LOCKED_DAYS - The number of locked days of the 
+     * intelligent schedule.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule is published.
+     * Returns the information of the published schedule.
+     * @throws {Error} - An error is thrown if the schedule fails to publish.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async publishIntelligentSchedule(SCHEDULE_ID, NUMBER_OF_LOCKED_DAYS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Publishing intelligent schedule`);
+
+        try
+        {
+            const PUBLISH_INTELLIGENT_SCHEDULE_INFO = await _publishIntelligentSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, NUMBER_OF_LOCKED_DAYS, this.debugMode);
+            _printDatetime(`Intelligent schedule published`);
+            return PUBLISH_INTELLIGENT_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent schedule failed to publish`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function startSchedule
+     * @async
+     * @description Starts a schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule to be started.
+     * @param {boolean | null} SKIP_CLEANUP_ON_FAILURE - Whether or not to skip cleanup on failure.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule is started.
+     * Returns the information of the started schedule.
+     * @throws {Error} - An error is thrown if the schedule fails to start.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async startSchedule(SCHEDULE_ID, SKIP_CLEANUP_ON_FAILURE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Starting schedule`);
+
+        try
+        {
+            const START_SCHEDULE_INFO = await _startSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, SKIP_CLEANUP_ON_FAILURE, this.debugMode);
+            _printDatetime(`Schedule started`);
+            return START_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule failed to start`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function stopSchedule
+     * @async
+     * @description Stops a schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule to be stopped.
+     * @param {boolean | null} FORCE_STOP - Whether or not to force a stop.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule is stopped.
+     * Returns the information of the stopped schedule.
+     * @throws {Error} - An error is thrown if the schedule fails to stop.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async stopSchedule(SCHEDULE_ID, FORCE_STOP)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Stopping schedule`);
+
+        try
+        {
+            const STOP_SCHEDULE_INFO = await _stopSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, FORCE_STOP, this.debugMode);
+            _printDatetime(`Schedule stopped`);
+            return STOP_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule failed to stop`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function updateIntelligentPlaylist
+     * @async
+     * @description Updates an intelligent playlist.
+     * @param {string} SCHEDULE_ID - The id of the schedule the intelligent playlist is 
+     * to be updated.
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the intelligent playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} END_SEARCH_DATE - The end search date of the intelligent playlist.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer | null} END_SEARCH_DURATION_IN_MINUTES - The end search duration in minutes of the
+     * intelligent playlist.
+     * @param {string | null} NAME - The name of the intelligent playlist.
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related content of the intelligent playlist.
+     * @param {string | null} SEARCH_DATE - The search date of the intelligent playlist.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer | null} SEARCH_DURATION_IN_MINUTES - The search duration in minutes of the
+     * intelligent playlist.
+     * @param {string | null} SEARCH_FILTER_TYPE - The search filter type of the intelligent playlist.
+     * Values: Random: 1, Random within a Date Range: 2, Newest: 3, Newest Not Played: 4
+     * @param {Array<JSON> | null} TAGS - The tags of the intelligent playlist.
+     * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the intelligent playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the intelligent playlist is updated.
+     * Returns the information of the updated intelligent playlist.
+     * @throws {Error} - An error is thrown if the intelligent playlist fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateIntelligentPlaylist(SCHEDULE_ID, COLLECTIONS, END_SEARCH_DATE,
+        END_SEARCH_DURATION_IN_MINUTES, NAME, RELATED_CONTENTS, SEARCH_DATE,
+        SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, THUMBNAIL_ASSET)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        if (COLLECTIONS === null) COLLECTIONS = [];
+        if (RELATED_CONTENTS === null) RELATED_CONTENTS = [];
+        if (TAGS === null) TAGS = [];
+
+        _printDatetime(`Updating intelligent playlist`);
+
+        try
+        {
+            const UPDATE_INTELLIGENT_PLAYLIST_INFO = await _updateIntelligentPlaylist(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, COLLECTIONS, END_SEARCH_DATE,
+                END_SEARCH_DURATION_IN_MINUTES, NAME, RELATED_CONTENTS, SEARCH_DATE,
+                SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, THUMBNAIL_ASSET, this.debugMode);
+            _printDatetime(`Intelligent playlist updated`);
+            return UPDATE_INTELLIGENT_PLAYLIST_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent playlist failed to update`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function updateIntelligentSchedule
+     * @async
+     * @description Updates an intelligent schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule the intelligent schedule is
+     * to be updated.
+     * @param {JSON | null} DEFAULT_VIDEO_ASSET - The default video asset of the intelligent schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} NAME - The name of the intelligent schedule.
+     * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the intelligent schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} TIME_ZONE_ID - The time zone id of the intelligent schedule.
+     * @returns {Promise<JSON>} - A promise that resolves when the intelligent schedule is updated.
+     * Returns the information of the updated intelligent schedule.
+     * @throws {Error} - An error is thrown if the intelligent schedule fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateIntelligentSchedule(SCHEDULE_ID, DEFAULT_VIDEO_ASSET, NAME, THUMBNAIL_ASSET,
+        TIME_ZONE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating intelligent schedule`);
+
+        try
+        {
+            const UPDATE_INTELLIGENT_SCHEDULE_INFO = await _updateIntelligentSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, DEFAULT_VIDEO_ASSET, NAME, THUMBNAIL_ASSET,
+                TIME_ZONE_ID, this.debugMode);
+            _printDatetime(`Intelligent schedule updated`);
+            return UPDATE_INTELLIGENT_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Intelligent schedule failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updatePlaylist
+     * @async
+     * @description Updates a playlist.
+     * @param {string} SCHEDULE_ID - The id of the schedule the playlist is to be updated from.
+     * @param {Array<JSON> | null} DEFAULT_VIDEO_ASSET - The default video asset of the playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {boolean | null} LOOP_PLAYLIST - Whether or not to loop the playlist.
+     * @param {string | null} NAME - The name of the playlist.
+     * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the playlist.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the playlist is updated.
+     * Returns the information of the updated playlist.
+     * @throws {Error} - An error is thrown if the playlist fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updatePlaylist(SCHEDULE_ID, DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, THUMBNAIL_ASSET)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (DEFAULT_VIDEO_ASSET === null) DEFAULT_VIDEO_ASSET = {};
+        if (THUMBNAIL_ASSET === null) THUMBNAIL_ASSET = {};
+
+        _printDatetime(`Updating playlist`);
+
+        try
+        {
+            const UPDATE_PLAYLIST_INFO = await _updatePlaylist(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, 
+                NAME, THUMBNAIL_ASSET, this.debugMode);
+            _printDatetime(`Playlist updated`);
+            return UPDATE_PLAYLIST_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Playlist failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateScheduleItemAsset
+     * @async
+     * @description Updates a schedule item asset.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item asset is to be updated from.
+     * @param {string} ITEM_ID - The id of the item to be updated.
+     * @param {JSON | null} ASSET - The asset of the schedule item asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} DAYS - The days of the schedule item asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} END_TIME_CODE - The end time code of the schedule item asset.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} TIME_CODE - The time code of the schedule item asset.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item asset is updated.
+     * Returns the information of the updated schedule item asset.
+     * @throws {Error} - An error is thrown if the schedule item asset fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateScheduleItemAsset(SCHEDULE_ID, ITEM_ID, ASSET, DAYS, DURATION_TIME_CODE,
+        END_TIME_CODE, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Updating schedule item asset`);
+
+        try
+        {
+            const UPDATE_SCHEDULE_ITEM_ASSET_INFO = await _updateScheduleItemAsset(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ITEM_ID, ASSET, DAYS, DURATION_TIME_CODE,
+                END_TIME_CODE, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item asset updated`);
+            return UPDATE_SCHEDULE_ITEM_ASSET_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item asset failed to update`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function updateScheduleItemLiveChannel
+     * @async
+     * @description Updates a schedule item live channel.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item live channel is to be
+     * updated from.
+     * @param {string} ITEM_ID - The id of the item to be updated.
+     * @param {Array<JSON> | null} DAYS - The days of the schedule item live channel.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} END_TIME_CODE - The end time code of the schedule item live channel.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {JSON | null} LIVE_CHANNEL - The live channel of the schedule item live channel.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} TIME_CODE - The time code of the schedule item live channel.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item live channel is updated.
+     * Returns the information of the updated schedule item live channel.
+     * @throws {Error} - An error is thrown if the schedule item live channel fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateScheduleItemLiveChannel(SCHEDULE_ID, ITEM_ID, DAYS, DURATION_TIME_CODE,
+        END_TIME_CODE, LIVE_CHANNEL, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating schedule item live channel`);
+
+        try
+        {
+            const UPDATE_SCHEDULE_ITEM_LIVE_CHANNEL_INFO = await _updateScheduleItemLiveChannel(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ITEM_ID, DAYS, DURATION_TIME_CODE,
+                END_TIME_CODE, LIVE_CHANNEL, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item live channel updated`);
+            return UPDATE_SCHEDULE_ITEM_LIVE_CHANNEL_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item live channel failed to update`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function updateScheduleItemSearchFilter
+     * @async
+     * @description Updates a schedule item search filter.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item search filter is to be
+     * updated from.
+     * @param {string} ITEM_ID - The id of the item to be updated.
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the schedule item search filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} DAYS - The days of the schedule item search filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} END_SEARCH_DATE - The end search date of the schedule item search filter.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer | null} END_SEARCH_DURATION_IN_MINUTES - The end search duration in minutes of the
+     * schedule item search filter.
+     * @param {string | null} END_TIME_CODE - The end time code of the schedule item search filter.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item search filter.
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related content of the schedule item search
+     * filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} SEARCH_DATE - The search date of the schedule item search filter.
+     * Only use when SEARCH_FILTER_TYPE = 2.
+     * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
+     * @param {integer | null} SEARCH_DURATION_IN_MINUTES - The search duration in minutes of the
+     * schedule item search filter.
+     * @param {string | null} SEARCH_FILTER_TYPE - The search filter type of the schedule item search
+     * filter.
+     * Values: Random: 1, Random within a Date Range: 2, Newest: 3, Newest Not Played: 4
+     * @param {Array<JSON> | null} TAGS - The tags of the schedule item search filter.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} TIME_CODE - The time code of the schedule item search filter.
+     * Please use the following format: hh:mm:ss;ff.
+     * @return {Promise<JSON>} - A promise that resolves when the schedule item search filter is updated.
+     * Returns the information of the updated schedule item search filter.
+     * @throws {Error} - An error is thrown if the schedule item search filter fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateScheduleItemSearchFilter(SCHEDULE_ID, ITEM_ID, COLLECTIONS, DAYS,
+        DURATION_TIME_CODE, END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, END_TIME_CODE,
+        PREVIOUS_ITEM, RELATED_CONTENTS, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES,
+        SEARCH_FILTER_TYPE, TAGS, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating schedule item search filter`);
+
+        try
+        {
+            const UPDATE_SCHEDULE_ITEM_SEARCH_FILTER_INFO = await _updateScheduleItemSearchFilter(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ITEM_ID, COLLECTIONS, DAYS,
+                DURATION_TIME_CODE, END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, END_TIME_CODE,
+                PREVIOUS_ITEM, RELATED_CONTENTS, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES,
+                SEARCH_FILTER_TYPE, TAGS, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item search filter updated`);
+            return UPDATE_SCHEDULE_ITEM_SEARCH_FILTER_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item search filter failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateScheduleItemPlaylistSchedule
+     * @async
+     * @description Updates a schedule item playlist schedule.
+     * @param {string} SCHEDULE_ID - The id of the schedule the schedule item playlist schedule is to be
+     * updated from.
+     * @param {string} ITEM_ID - The id of the item to be updated.
+     * @param {Array<JSON> | null} DAYS - The days of the schedule item playlist schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} DURATION_TIME_CODE - The duration time between TIME_CODE and
+     * END_TIME_CODE.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} END_TIME_CODE - The end time code of the schedule item playlist schedule.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {JSON | null} PLAYLIST_SCHEDULE - The playlist schedule of the schedule item playlist
+     * schedule.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} TIME_CODE - The time code of the schedule item playlist schedule.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule item playlist schedule is updated.
+     * Returns the information of the updated schedule item playlist schedule.
+     * @throws {Error} - An error is thrown if the schedule item playlist schedule fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateScheduleItemPlaylistSchedule(SCHEDULE_ID, ITEM_ID, DAYS, DURATION_TIME_CODE,
+        END_TIME_CODE, PLAYLIST_SCHEDULE, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating schedule item playlist schedule`);
+
+        try
+        {
+            const UPDATE_SCHEDULE_ITEM_PLAYLIST_SCHEDULE_INFO = await _updateScheduleItemPlaylistSchedule(this.token, 
+                this.config.serviceApiUrl, SCHEDULE_ID, ITEM_ID, DAYS, DURATION_TIME_CODE,
+                END_TIME_CODE, PLAYLIST_SCHEDULE, TIME_CODE, this.debugMode);
+            _printDatetime(`Schedule item playlist schedule updated`);
+            return UPDATE_SCHEDULE_ITEM_PLAYLIST_SCHEDULE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule item playlist schedule failed to update`);
+            throw error;
+        }
+    } 
+
+    // user functions
+    /**
+     * @function deleteUserContentAttributeData
+     * @async
+     * @description Deletes a user content attribute data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user content attribute data is deleted.
+     * @throws {Error} - An error is thrown if the user content attribute data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserContentAttributeData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user content attribute data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserContentAttributeData(this.token, this.config.serviceApiUrl, 
+                USER_ID, this.debugMode);
+            _printDatetime(`User content attribute data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User content attribute data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserContentGroupData
+     * @async
+     * @description Deletes a user content group data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user content group data is deleted.
+     * @throws {Error} - An error is thrown if the user content group data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserContentGroupData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user content group data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserContentGroupData(this.token, this.config.serviceApiUrl, 
+                USER_ID, this.debugMode);
+            _printDatetime(`User content group data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User content group data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserContentSecurityData
+     * @async
+     * @description Deletes a user content security data.
+     * @param {string | null} CONTENT_ID - The content ID of the user content security data.
+     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID of the user 
+     * content security data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @param {string | null} EMAIL - The email of the user content security data.
+     * @param {string | null} ID - The ID of the user content security data.
+     * @param {string | null} KEY_NAME - The key name of the user content security data.
+     * @param {string | null} EXPIRATION_DATE - The expiration date of the user content 
+     * security data.
+     * @returns {Promise<void>} - A promise that resolves when the user content security data 
+     * is deleted.
+     * @throws {Error} - An error is thrown if the user content security data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserContentSecurityData(CONTENT_ID, CONTENT_DEFINITION_ID, EMAIL, USER_ID,
+        ID, KEY_NAME, EXPIRATION_DATE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user content security data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserContentSecurityData(this.token, this.config.serviceApiUrl, 
+                CONTENT_ID, CONTENT_DEFINITION_ID, USER_ID, EMAIL, ID, KEY_NAME, 
+                EXPIRATION_DATE, this.debugMode);
+            _printDatetime(`User content security data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User content security data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserData
+     * @async
+     * @description Deletes a user data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user data is deleted.
+     * @throws {Error} - An error is thrown if the user data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserData(this.token, this.config.serviceApiUrl, 
+                USER_ID, this.debugMode);
+            _printDatetime(`User data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserDislikesData
+     * @async
+     * @description Deletes a user dislikes data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user dislikes data is deleted.
+     * @throws {Error} - An error is thrown if the user dislikes data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserDislikesData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user dislikes data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserDislikesData(this.token, this.config.serviceApiUrl,
+                USER_ID, this.debugMode);
+            _printDatetime(`User dislikes data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User dislikes data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserFavoritesData
+     * @async
+     * @description Deletes a user favorites data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user favorites data is deleted.
+     * @throws {Error} - An error is thrown if the user favorites data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+
+    async deleteUserFavoritesData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user favorites data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserFavoritesData(this.token, this.config.serviceApiUrl,
+                USER_ID, this.debugMode);
+            _printDatetime(`User favorites data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User favorites data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserLikesData
+     * @async
+     * @description Deletes a user likes data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user likes data is deleted.
+     * @throws {Error} - An error is thrown if the user likes data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserLikesData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user likes data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserLikesData(this.token, this.config.serviceApiUrl,
+                USER_ID, this.debugMode);
+            _printDatetime(`User likes data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User likes data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserSavedSearchData
+     * @async
+     * @description Deletes a user saved search data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user saved search data is deleted.
+     * @throws {Error} - An error is thrown if the user saved search data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserSavedSearchData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting user saved search data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserSavedSearchData(this.token, this.config.serviceApiUrl,
+                USER_ID, this.debugMode);
+            _printDatetime(`User saved search data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User saved search data failed to delete`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function deleteUserSessionData
+     * @async
+     * @description Deletes a user session data.
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @returns {Promise<void>} - A promise that resolves when the user session data is deleted.
+     * @throws {Error} - An error is thrown if the user session data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserSessionData(USER_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Deleting user session data`);
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserSessionData(this.token, this.config.serviceApiUrl,
+                USER_ID, this.debugMode);
+            _printDatetime(`User session data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User session data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUserVideoTrackingData
+     * @async
+     * @description Deletes a user video tracking data.
+     * @param {string | null} ASSET_ID - The asset ID of the user video tracking data.
+     * @param {string | null} CONTENT_ID - The content ID of the user video tracking data.
+     * @param {string | null} VIDEO_TRACKING_ATTRIBUTE_ID - The video tracking attribute ID of the
+     * user video tracking data. Possible values: "Undefined", "Watchlist", "LiveStream".
+     * @param {string | null} USER_ID - The user ID of the user video tracking data.
+     * If set to null, the user ID of the current user is used.
+     * @param {string | null} ID - The ID of the user video tracking data.
+     * @param {boolean | null} IS_FIRST_QUARTILE - The first quartile of the user video tracking data.
+     * @param {boolean | null} IS_MIDPOINT - The midpoint of the user video tracking data.
+     * @param {boolean | null} IS_THIRD_QUARTILE - The third quartile of the user video tracking data.
+     * @param {boolean | null} IS_COMPLETE - The complete of the user video tracking data.
+     * @param {boolean | null} IS_HIDDEN - The hidden of the user video tracking data.
+     * @param {boolean | null} IS_LIVE_STREAM - The live stream of the user video tracking data.
+     * @param {double | null} MAX_SECOND - The max second of the user video tracking data.
+     * @param {double | null} LAST_SECOND - The last second of the user video tracking data.
+     * @param {double | null} TOTAL_SECONDS - The total seconds of the user video tracking data.
+     * @param {string | null} LAST_BEACON_DATE - The last beacon date of the user video tracking data.
+     * @param {string | null} KEY_NAME - The key name of the user video tracking data.
+     * @returns {Promise<void>} - A promise that resolves when the user video tracking data is deleted.
+     * @throws {Error} - An error is thrown if the user video tracking data fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUserVideoTrackingData(ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID, 
+        USER_ID, ID, IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE, IS_COMPLETE, 
+        IS_HIDDEN, IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECONDS, LAST_BEACON_DATE, 
+        KEY_NAME)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        try
+        {
+            if (USER_ID === null) USER_ID = this.id;
+
+            await _deleteUserVideoTrackingData(this.token, this.config.serviceApiUrl,
+                ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID, USER_ID, ID,
+                IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE, IS_COMPLETE, IS_HIDDEN, 
+                IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECONDS, LAST_BEACON_DATE, KEY_NAME,
+                this.debugMode);
+            _printDatetime(`User video tracking data deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User video tracking data failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteUser
+     * @async
+     * @description Deletes a user.
+     * @returns {Promise<void>} - A promise that resolves when the user is deleted.
+     * @throws {Error} - An error is thrown if the user fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteUser()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        try
+        {
+            await _deleteUser(this.token, this.config.serviceApiUrl,
+                this.id, this.debugMode);
+            _printDatetime(`User deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`User failed to delete`);
+            throw error;
+        }
+    }
+
     // user session functions
     /**
      * @function changeSessionStatus
@@ -2555,421 +4383,6 @@ class NomadSDK {
             throw error;
         }
     }
-
-    // user functions
-    /**
-     * @function deleteUserContentAttributeData
-     * @async
-     * @description Deletes a user content attribute data.
-     * @returns {Promise<void>} - A promise that resolves when the user content attribute data is deleted.
-     * @throws {Error} - An error is thrown if the user content attribute data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserContentAttributeData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user content attribute data`);
-
-        try
-        {
-            await _deleteUserContentAttributeData(this.token, this.config.serviceApiUrl, 
-                this.id, this.debugMode);
-            _printDatetime(`User content attribute data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User content attribute data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserContentGroupData
-     * @async
-     * @description Deletes a user content group data.
-     * @returns {Promise<void>} - A promise that resolves when the user content group data is deleted.
-     * @throws {Error} - An error is thrown if the user content group data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserContentGroupData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-        
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user content group data`);
-
-        try
-        {
-            await _deleteUserContentGroupData(this.token, this.config.serviceApiUrl, 
-                this.id, this.debugMode);
-            _printDatetime(`User content group data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User content group data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserContentSecurityData
-     * @async
-     * @description Deletes a user content security data.
-     * @param {string | null} CONTENT_ID - The content ID of the user content security data.
-     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID of the user 
-     * content security data.
-     * @param {string | null} EMAIL - The email of the user content security data.
-     * @param {string | null} ID - The ID of the user content security data.
-     * @param {string | null} KEY_NAME - The key name of the user content security data.
-     * @param {string | null} EXPIRATION_DATE - The expiration date of the user content 
-     * security data.
-     * @returns {Promise<void>} - A promise that resolves when the user content security data 
-     * is deleted.
-     * @throws {Error} - An error is thrown if the user content security data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserContentSecurityData(CONTENT_ID, CONTENT_DEFINITION_ID, EMAIL, ID,
-        KEY_NAME, EXPIRATION_DATE)
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-        
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user content security data`);
-
-        try
-        {
-            await _deleteUserContentSecurityData(this.token, this.config.serviceApiUrl, 
-                CONTENT_ID, CONTENT_DEFINITION_ID, this.id, EMAIL, ID, KEY_NAME, 
-                EXPIRATION_DATE, this.debugMode);
-            _printDatetime(`User content security data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User content security data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserData
-     * @async
-     * @description Deletes a user data.
-     * @returns {Promise<void>} - A promise that resolves when the user data is deleted.
-     * @throws {Error} - An error is thrown if the user data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-         
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user data`);
-
-        try
-        {
-            await _deleteUserData(this.token, this.config.serviceApiUrl, 
-                this.id, this.debugMode);
-            _printDatetime(`User data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserDislikesData
-     * @async
-     * @description Deletes a user dislikes data.
-     * @returns {Promise<void>} - A promise that resolves when the user dislikes data is deleted.
-     * @throws {Error} - An error is thrown if the user dislikes data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserDislikesData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-        
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user dislikes data`);
-
-        try
-        {
-            await _deleteUserDislikesData(this.token, this.config.serviceApiUrl,
-                this.id, this.debugMode);
-            _printDatetime(`User dislikes data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User dislikes data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserFavoritesData
-     * @async
-     * @description Deletes a user favorites data.
-     * @returns {Promise<void>} - A promise that resolves when the user favorites data is deleted.
-     * @throws {Error} - An error is thrown if the user favorites data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-
-    async deleteUserFavoritesData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-         
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user favorites data`);
-
-        try
-        {
-            await _deleteUserFavoritesData(this.token, this.config.serviceApiUrl,
-                this.id, this.debugMode);
-            _printDatetime(`User favorites data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User favorites data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserLikesData
-     * @async
-     * @description Deletes a user likes data.
-     * @returns {Promise<void>} - A promise that resolves when the user likes data is deleted.
-     * @throws {Error} - An error is thrown if the user likes data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserLikesData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-        
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user likes data`);
-
-        try
-        {
-            await _deleteUserLikesData(this.token, this.config.serviceApiUrl,
-                this.id, this.debugMode);
-            _printDatetime(`User likes data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User likes data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserSavedSearchData
-     * @async
-     * @description Deletes a user saved search data.
-     * @returns {Promise<void>} - A promise that resolves when the user saved search data is deleted.
-     * @throws {Error} - An error is thrown if the user saved search data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserSavedSearchData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-         
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        _printDatetime(`Deleting user saved search data`);
-
-        try
-        {
-            await _deleteUserSavedSearchData(this.token, this.config.serviceApiUrl,
-                this.id, this.debugMode);
-            _printDatetime(`User saved search data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User saved search data failed to delete`);
-            throw error;
-        }
-    }
-    
-    /**
-     * @function deleteUserSessionData
-     * @async
-     * @description Deletes a user session data.
-     * @returns {Promise<void>} - A promise that resolves when the user session data is deleted.
-     * @throws {Error} - An error is thrown if the user session data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserSessionData()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-        
-        _printDatetime(`Deleting user session data`);
-
-        try
-        {
-            await _deleteUserSessionData(this.token, this.config.serviceApiUrl,
-                this.id, this.debugMode);
-            _printDatetime(`User session data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User session data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUserVideoTrackingData
-     * @async
-     * @description Deletes a user video tracking data.
-     * @param {string | null} ASSET_ID - The asset ID of the user video tracking data.
-     * @param {string | null} CONTENT_ID - The content ID of the user video tracking data.
-     * @param {string | null} VIDEO_TRACKING_ATTRIBUTE_ID - The video tracking attribute ID of the
-     * user video tracking data. Possible values: "Undefined", "Watchlist", "LiveStream".
-     * @param {string | null} ID - The ID of the user video tracking data.
-     * @param {boolean | null} IS_FIRST_QUARTILE - The first quartile of the user video tracking data.
-     * @param {boolean | null} IS_MIDPOINT - The midpoint of the user video tracking data.
-     * @param {boolean | null} IS_THIRD_QUARTILE - The third quartile of the user video tracking data.
-     * @param {boolean | null} IS_COMPLETE - The complete of the user video tracking data.
-     * @param {boolean | null} IS_HIDDEN - The hidden of the user video tracking data.
-     * @param {boolean | null} IS_LIVE_STREAM - The live stream of the user video tracking data.
-     * @param {double | null} MAX_SECOND - The max second of the user video tracking data.
-     * @param {double | null} LAST_SECOND - The last second of the user video tracking data.
-     * @param {double | null} TOTAL_SECOND - The total second of the user video tracking data.
-     * @param {string | null} LAST_BEACON_DATE - The last beacon date of the user video tracking data.
-     * @param {string | null} KEY_NAME - The key name of the user video tracking data.
-     * @returns {Promise<void>} - A promise that resolves when the user video tracking data is deleted.
-     * @throws {Error} - An error is thrown if the user video tracking data fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUserVideoTrackingData(ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID, ID,
-        IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE, IS_COMPLETE, IS_HIDDEN, IS_LIVE_STREAM,
-        MAX_SECOND, LAST_SECOND, TOTAL_SECOND, LAST_BEACON_DATE, KEY_NAME)
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-         
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        try
-        {
-            await _deleteUserVideoTrackingData(this.token, this.config.serviceApiUrl,
-                ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID, this.id, ID,
-                IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE, IS_COMPLETE, IS_HIDDEN, 
-                IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECOND, LAST_BEACON_DATE, KEY_NAME,
-                this.debugMode);
-            _printDatetime(`User video tracking data deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User video tracking data failed to delete`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function deleteUser
-     * @async
-     * @description Deletes a user.
-     * @returns {Promise<void>} - A promise that resolves when the user is deleted.
-     * @throws {Error} - An error is thrown if the user fails to delete.
-     * @throws {Error} - An error is thrown if the API type is not admin.
-     */
-    async deleteUser()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-         
-        if (this.config.apiType !== "admin")
-        {
-            throw new Error("This function is only available for admin API type.");
-        }
-
-        try
-        {
-            await _deleteUser(this.token, this.config.serviceApiUrl,
-                this.id, this.debugMode);
-            _printDatetime(`User deleted`);
-        }
-        catch (error)
-        {
-            _printDatetime(`User failed to delete`);
-            throw error;
-        }
-    } 
 
     // common
     // registration functions
@@ -7391,6 +8804,1265 @@ async function _updateInputScheduleEvent(AUTH_TOKEN, URL, ID, CHANNEL_ID, INPUT,
 
 
 
+
+async function _createIntelligentPlaylist(AUTH_TOKEN, URL, COLLECTIONS, END_SEARCH_DATE,
+    END_SEARCH_DURATION_IN_MINUTES, NAME, RELATED_CONENT, SEARCH_DATE, 
+    SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, THUMBNAIL_ASSET, DEBUG_MODE) 
+{
+    const SCHEDULE_API_URL = `${URL}/admin/schedule`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const SCHEUDLE_BODY = {
+        name: NAME,
+        scheduleType: "4",
+        thumbnailAsset: THUMBNAIL_ASSET
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${SCHEDULE_API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(SCHEUDLE_BODY)}`);
+
+    let SCHEDULE_INFO = null;
+    try
+    {
+        const RESPONSE = await fetch(`${SCHEDULE_API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(SCHEUDLE_BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        SCHEDULE_INFO = await RESPONSE.json();
+    }
+    catch (error)
+    {
+        await _deleteIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_INFO.id, DEBUG_MODE);
+        _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
+    }
+
+    const ITEM_API_URL = `${SCHEDULE_API_URL}/${SCHEDULE_INFO.id}/item`;
+
+    const ITEM_BODY = {
+        collections: COLLECTIONS,
+        endSearchDate: END_SEARCH_DATE,
+        endSearchDurationInMinutes: END_SEARCH_DURATION_IN_MINUTES,
+        relatedContent: RELATED_CONENT,
+        scheduleItemType: "2",
+        searchDate: SEARCH_DATE,
+        searchDurationInMinutes: SEARCH_DURATION_IN_MINUTES,
+        searchFilterType: SEARCH_FILTER_TYPE,
+        sourceType: "2",
+        tags: TAGS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${ITEM_API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(ITEM_BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${ITEM_API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(ITEM_BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        const ITEM_INFO = await RESPONSE.json();
+
+        for (let param in SCHEDULE_INFO) {
+            ITEM_INFO[param] = SCHEDULE_INFO[param];
+        }
+
+        return ITEM_INFO;
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
+    }
+}
+
+
+
+
+async function _createIntelligentSchedule(AUTH_TOKEN, URL, DEFAULT_VIDEO_ASSET, NAME, 
+    THUMBNAIL_ASSET, TIME_ZONE_ID , DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        defaultVideoAsset: DEFAULT_VIDEO_ASSET,
+        name: NAME,
+        scheduleType: 3,
+        thumbnailAsset: THUMBNAIL_ASSET,
+        timeZoneId: TIME_ZONE_ID,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Intelligent Schedule Failed");
+    }
+}
+
+
+
+
+async function _createPlaylist(AUTH_TOKEN, URL, DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, 
+    THUMBNAIL_ASSET, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        defaultVideoAsset: DEFAULT_VIDEO_ASSET,
+        loopPlaylist: LOOP_PLAYLIST,
+        name: NAME,
+        scheduleType: "1",
+        thumbnailAsset: THUMBNAIL_ASSET
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Playlist Failed");
+    }
+}
+
+
+
+
+async function _createScheduleItemAsset(AUTH_TOKEN, URL, SCHEDULE_ID, ASSET, DAYS, 
+    DURATION_TIME_CODE, END_TIME_CODE, PREVIOUS_ITEM, TIME_CODE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        asset: ASSET,
+        days: DAYS,
+        durationTimeCode: DURATION_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        previousItem: PREVIOUS_ITEM,
+        scheduleItemType: "1",
+        sourceType: "3",
+        timeCode: TIME_CODE,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Schedule Item Failed");
+    }
+}
+
+
+
+
+async function _createScheduleItemLiveChannel(AUTH_TOKEN, URL, SCHEDULE_ID, DAYS, 
+    DURATION_TIME_CODE, END_TIME_CODE, LIVE_CHANNEL, PREVIOUS_ITEM, TIME_CODE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        days: DAYS,
+        durationTimeCode: DURATION_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        liveChannel: LIVE_CHANNEL,
+        previousItem: PREVIOUS_ITEM,
+        scheduleItemType: "1",
+        sourceType: "4",
+        timeCode: TIME_CODE,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Schedule Item Failed");
+    }
+}
+
+
+
+
+
+async function _createScheduleItemSearchFilter(AUTH_TOKEN, URL, SCHEDULE_ID, COLLECTIONS, 
+    DAYS, DURATION_TIME_CODE, END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, 
+    END_TIME_CODE, PREVIOUS_ITEM, RELATED_CONTENT, SEARCH_DATE, 
+    SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, TIME_CODE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        collections: COLLECTIONS,
+        days: DAYS,
+        durationTimeCode: DURATION_TIME_CODE,
+        endSearchDate: END_SEARCH_DATE,
+        endSearchDuratonInMinutes: END_SEARCH_DURATION_IN_MINUTES,
+        endTimeCode: END_TIME_CODE,
+        previousItem: PREVIOUS_ITEM,
+        relatedContent: RELATED_CONTENT,
+        scheduleItemType: "1",
+        searchDate: SEARCH_DATE,
+        searchDurationInMinutes: SEARCH_DURATION_IN_MINUTES,
+        searchFilterType: SEARCH_FILTER_TYPE,
+        sourceType: "2",
+        tags: TAGS,
+        timeCode: TIME_CODE,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Schedule Item Failed");
+    }
+}
+
+
+
+
+async function _createScheduleItemPlaylistSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DAYS, 
+    DURATION_TIME_CODE, END_TIME_CODE, PLAYLIST_SCHEDULE, PREVIOUS_ITEM, TIME_CODE, 
+    DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        days: DAYS,
+        durationTimeCode: DURATION_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        playlistSchedule: PLAYLIST_SCHEDULE,
+        previousItem: PREVIOUS_ITEM,
+        scheduleItemType: "2",
+        sourceType: "1",
+        timeCode: TIME_CODE,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Schedule Item Failed");
+    }
+}
+
+
+
+
+async function _deleteIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Intelligent Playlist Failed");
+    }
+}
+
+
+
+
+async function _deleteIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Intelligent Schedule Failed");
+    }
+}
+
+
+
+
+async function _deletePlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Playlist Failed");
+    }
+}
+
+
+
+
+async function _deleteScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Schedule Item Failed");
+    }
+}
+
+
+
+
+async function _generateSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/generate`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Generate Schedule Failed");
+    }
+}
+
+
+
+
+async function _getIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Intelligent Playlist Failed");
+    }
+}
+
+
+
+
+async function _getIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Schedule Failed");
+    }
+}
+
+
+
+
+async function _getPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Playlist Failed");
+    }
+}
+
+
+
+
+async function _getScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Schedule Item Failed");
+    }
+}
+
+
+
+
+async function _getScheduleItems(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/items`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Schedule Items Failed");
+    }
+}
+
+
+
+
+async function _getSchedulePreview(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/preview`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Schedule Preview Failed");
+    }
+}
+
+
+
+
+async function _moveScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, PREVIOUS_ITEM, 
+    DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}/move`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        previousItem: PREVIOUS_ITEM
+    }
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Move Schedule Items Failed");
+    }
+}
+
+
+
+
+async function _publishIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, NUMBER_OF_LOCKED_DAYS,
+    DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/publish`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        scheduleId: SCHEDULE_ID,
+        numberOfLockedDays: NUMBER_OF_LOCKED_DAYS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Publish Schedule Failed");
+    }
+}
+
+
+
+
+async function _startSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, SKIP_CLEANUP_ON_FAILURE,
+    DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/start${SKIP_CLEANUP_ON_FAILURE !== null ? `?skipCleanupOnFailure=${SKIP_CLEANUP_ON_FAILURE}` : ''}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Start Schedule Failed");
+    }
+}
+
+
+
+
+async function _stopSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, FORCE_STOP,
+    DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/stop${FORCE_STOP !== null ? `?forceStop=${FORCE_STOP}` : ''}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Stop Schedule Failed");
+    }
+}
+
+
+
+
+
+
+async function _updateIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, COLLECTIONS, 
+    END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, NAME, RELATED_CONENT, SEARCH_DATE, 
+    SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, THUMBNAIL_ASSET, DEBUG_MODE) 
+{
+    const SCHEDULE_API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const PLAYLIST_INFO = await _getIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE);
+
+    const SCHEUDLE_BODY = {
+        name: NAME || PLAYLIST_INFO.name,
+        scheduleType: "4",
+        thumbnailAsset: THUMBNAIL_ASSET || PLAYLIST_INFO.thumbnailAsset,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${SCHEDULE_API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(SCHEUDLE_BODY)}`);
+
+    let SCHEDULE_INFO = null;
+    try
+    {
+        const RESPONSE = await fetch(`${SCHEDULE_API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(SCHEUDLE_BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        SCHEDULE_INFO = await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
+    }
+
+    const ITEM_API_URL = `${SCHEDULE_API_URL}/${SCHEDULE_INFO}/item`;
+
+    const ITEM_INFO = await _getIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_INFO.id, DEBUG_MODE);
+
+    const ITEM_BODY = {
+        collections: COLLECTIONS || ITEM_INFO.collections,
+        endSearchDate: END_SEARCH_DATE || ITEM_INFO.endSearchDate,
+        endSearchDurationInMinutes: END_SEARCH_DURATION_IN_MINUTES || ITEM_INFO.endSearchDurationInMinutes,
+        relatedContent: RELATED_CONENT || ITEM_INFO.relatedContent,
+        scheduleItemType: "2",
+        searchDate: SEARCH_DATE || ITEM_INFO.searchDate,
+        searchDurationInMinutes: SEARCH_DURATION_IN_MINUTES || ITEM_INFO.searchDurationInMinutes,
+        searchFilterType: SEARCH_FILTER_TYPE || ITEM_INFO.searchFilterType,
+        sourceType: "2",
+        tags: TAGS || ITEM_INFO.tags,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${ITEM_API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(ITEM_BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${ITEM_API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(ITEM_BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        const ITEM_INFO = await RESPONSE.json();
+
+        for (let param in SCHEDULE_INFO) {
+            ITEM_INFO[param] = SCHEDULE_INFO[param];
+        }
+
+        return ITEM_INFO;
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
+    }
+}
+
+
+
+
+
+async function _updateIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEFAULT_VIDEO_ASSET, 
+    NAME, THUMBNAIL_ASSET, TIME_ZONE_ID , DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const INTELLIGENT_SCHEDULE_INFO = await _getIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE);
+
+    const BODY = {
+        defaultVideoAsset: DEFAULT_VIDEO_ASSET || INTELLIGENT_SCHEDULE_INFO.defaultVideoAsset,
+        id: SCHEDULE_ID,
+        name: NAME || INTELLIGENT_SCHEDULE_INFO.name,
+        scheduleType: 3,
+        thumbnailAsset: THUMBNAIL_ASSET || INTELLIGENT_SCHEDULE_INFO.thumbnailAsset,
+        timeZoneId: TIME_ZONE_ID || INTELLIGENT_SCHEDULE_INFO.timeZoneId
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Intelligent Schedule Failed");
+    }
+}
+
+
+
+
+
+async function _updatePlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEFAULT_VIDEO_ASSET, 
+    LOOP_PLAYLIST, NAME, THUMBNAIL_ASSET, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const PLAYLIST_INFO = await _getPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE);
+
+    const BODY = {
+        defaultVideoAsset: DEFAULT_VIDEO_ASSET || PLAYLIST_INFO.defaultVideoAsset,
+        id: SCHEDULE_ID,
+        loopPlaylist: LOOP_PLAYLIST || PLAYLIST_INFO.loopPlaylist,
+        name: NAME || PLAYLIST_INFO.name,
+        scheduleType: "1",
+        thumbnailAsset: THUMBNAIL_ASSET || PLAYLIST_INFO.thumbnailAsset
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Playlist Failed");
+    }
+}
+
+
+
+
+
+async function _updateScheduleItemAsset(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, ASSET, DAYS, 
+    DURATION_TIME_CODE, END_TIME_CODE, TIME_CODE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const ITEM_INFO = await _getScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DEBUG_MODE);
+
+    const BODY = {
+        asset: ASSET || ITEM_INFO.asset,
+        days: DAYS || ITEM_INFO.days,
+        durationTimeCode: DURATION_TIME_CODE || ITEM_INFO.durationTimeCode,
+        endTimeCode: END_TIME_CODE || ITEM_INFO.endTimeCode,
+        id: ITEM_ID,
+        scheduleItemType: "1",
+        sourceType: "3",
+        timeCode: TIME_CODE || ITEM_INFO.timeCode,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Schedule Item Failed");
+    }
+}
+
+
+
+
+
+async function _updateScheduleItemLiveChannel(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DAYS, 
+    DURATION_TIME_CODE, END_TIME_CODE, LIVE_CHANNEL, TIME_CODE, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const ITEM_INFO = await _getScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DEBUG_MODE);
+
+    const BODY = {
+        days: DAYS || ITEM_INFO.days,
+        durationTimeCode: DURATION_TIME_CODE || ITEM_INFO.durationTimeCode,
+        endTimeCode: END_TIME_CODE || ITEM_INFO.endTimeCode,
+        id: ITEM_ID,
+        liveChannel: LIVE_CHANNEL || ITEM_INFO.liveChannel,
+        scheduleItemType: "1",
+        sourceType: "4",
+        timeCode: TIME_CODE || ITEM_INFO.timeCode,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Schedule Item Failed");
+    }
+}
+
+
+
+
+
+async function _updateScheduleItemPlaylistSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, 
+    DAYS, DURATION_TIME_CODE, END_TIME_CODE, PLAYLIST_SCHEDULE, TIME_CODE, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const ITEM_INFO = await _getScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DEBUG_MODE);
+
+    const BODY = {
+        days: DAYS || ITEM_INFO.days,
+        durationTimeCode: DURATION_TIME_CODE || ITEM_INFO.durationTimeCode,
+        endTimeCode: END_TIME_CODE || ITEM_INFO.endTimeCode,
+        id: ITEM_ID,
+        playlistSchedule: PLAYLIST_SCHEDULE || ITEM_INFO.playlistSchedule,
+        scheduleItemType: "2",
+        sourceType: "1",
+        timeCode: TIME_CODE || ITEM_INFO.timeCode,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Schedule Item Failed");
+    }
+}
+
+
+
+
+
+async function _updateScheduleItemSearchFilter(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, COLLECTIONS, 
+    DAYS, DURATION_TIME_CODE, END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, END_TIME_CODE, 
+    RELATED_CONTENT, SEARCH_DATE, SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, TIME_CODE, 
+    DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${SCHEDULE_ID}/item/${ITEM_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const ITEM_INFO = await _getScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, DEBUG_MODE);
+
+    const BODY = {
+        collections: COLLECTIONS || ITEM_INFO.collections,
+        days: DAYS || ITEM_INFO.days,
+        durationTimeCode: DURATION_TIME_CODE || ITEM_INFO.durationTimeCode,
+        endSearchDate: END_SEARCH_DATE || ITEM_INFO.endSearchDate,
+        endSearchDuratonInMinutes: END_SEARCH_DURATION_IN_MINUTES || ITEM_INFO.endSearchDuratonInMinutes,
+        endTimeCode: END_TIME_CODE || ITEM_INFO.endTimeCode,
+        id: ITEM_ID,
+        relatedContent: RELATED_CONTENT || ITEM_INFO.relatedContent,
+        scheduleItemType: "1",
+        searchDate: SEARCH_DATE || ITEM_INFO.searchDate,
+        searchDurationInMinutes: SEARCH_DURATION_IN_MINUTES || ITEM_INFO.searchDurationInMinutes,
+        searchFilterType: SEARCH_FILTER_TYPE || ITEM_INFO.searchFilterType,
+        sourceType: "2",
+        tags: TAGS || ITEM_INFO.tags,
+        timeCode: TIME_CODE || ITEM_INFO.timeCode,
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Schedule Item Failed");
+    }
+}
+
+
+
+
 async function _changeSessionStatus(AUTH_TOKEN, URL, USER_SESSION_ID, USER_SESSION_STATUS,
     APPLICATION_ID, DEBUG_MODE) 
 {
@@ -7759,7 +10431,7 @@ async function _deleteUserSessionData(AUTH_TOKEN, URL, USER_ID, DEBUG_MODE)
 
 async function _deleteUserVideoTrackingData(AUTH_TOKEN, URL, ASSET_ID, CONTENT_ID,
     VIDEO_TRACKING_ATTRIBUTE, USER_ID, ID, IS_FIRST_QUARTILE, IS_MIDPOINT, IS_THIRD_QUARTILE,
-    IS_COMPLETE, IS_HIDDEN, IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECOND, 
+    IS_COMPLETE, IS_HIDDEN, IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND, TOTAL_SECONDS, 
     LAST_BEACON_DATE, KEY_NAME ,DEBUG_MODE) 
 {
     const API_URL = `${URL}/admin/user/userVideoTracking/delete`;
@@ -7783,7 +10455,7 @@ async function _deleteUserVideoTrackingData(AUTH_TOKEN, URL, ASSET_ID, CONTENT_I
         isLiveStream: IS_LIVE_STREAM,
         maxSecond: MAX_SECOND,
         lastSecond: LAST_SECOND,
-        totalSecond: TOTAL_SECOND,
+        totalSeconds: TOTAL_SECONDS,
         lastBeaconDate: LAST_BEACON_DATE,
         keyName: KEY_NAME
     };
