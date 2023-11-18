@@ -115,6 +115,7 @@ import config from "./config/config.js";
 
 
 
+
 // common
 
 
@@ -2624,19 +2625,20 @@ class NomadSDK {
     /**
      * @function createPlaylist
      * @async
-     * @description Creates a playlist.
-     * @param {JSON | null} DEFAULT_VIDEO_ASSET - The default video asset of the playlist.
-     * JSON format: {"id": "string", "description": "string"}
-     * @param {boolean} LOOP_PLAYLIST - Whether the playlist is looped.
+     * @description Creates a playlist..
      * @param {string} NAME - The name of the playlist.
      * @param {JSON | null} THUMBNAIL_ASSET - The thumbnail asset of the playlist.
      * JSON format: {"id": "string", "description": "string"}
+     * @param {boolean} LOOP_PLAYLIST - Whether the playlist is looped
+     * @param {JSON | null} DEFAULT_VIDEO_ASSET - The default video asset of the playlist.
+     * JSON format: {"id": "string"}
+     * Only needed if LOOP_PLAYLIST is false.
      * @returns {Promise<JSON>} - A promise that resolves when the playlist is created.
      * Returns the information of the created playlist.
      * @throws {Error} - An error is thrown if the playlist fails to create.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */
-    async createPlaylist(DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, THUMBNAIL_ASSET)
+    async createPlaylist(NAME, THUMBNAIL_ASSET, LOOP_PLAYLIST, DEFAULT_VIDEO_ASSET)
     {
         if (this.token === null)
         {
@@ -2653,8 +2655,8 @@ class NomadSDK {
         try
         {
             const CREATE_PLAYLIST_INFO = await _createPlaylist(this.token, 
-                this.config.serviceApiUrl, DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, THUMBNAIL_ASSET,
-                this.debugMode);
+                this.config.serviceApiUrl, NAME, THUMBNAIL_ASSET, LOOP_PLAYLIST, 
+                DEFAULT_VIDEO_ASSET, this.debugMode);
             _printDatetime(`Playlist created`);
             return CREATE_PLAYLIST_INFO;
         }
@@ -2666,14 +2668,55 @@ class NomadSDK {
     }
 
     /**
+     * @function createPlaylistVideo
+     * @async
+     * @description Creates a playlist video.
+     * @param {string} PLAYLIST_ID - The ID of the playlist.
+     * @param {JSON} VIDEO_ASSET - The video asset of the playlist video.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} PREVIOUS_ITEM - The previous item of the playlist video.
+     * @returns {Promise<JSON>} - A promise that resolves when the playlist video is created.
+     * Returns the information of the created playlist video.
+     * @throws {Error} - An error is thrown if the playlist video fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createPlaylistVideo(PLAYLIST_ID, VIDEO_ASSET, PREVIOUS_ITEM)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Creating playlist video`);
+
+        try
+        {
+            const CREATE_PLAYLIST_VIDEO_INFO = await _createPlaylistVideo(this.token, 
+                this.config.serviceApiUrl, PLAYLIST_ID, VIDEO_ASSET, PREVIOUS_ITEM, this.debugMode);
+            _printDatetime(`Playlist video created`);
+            return CREATE_PLAYLIST_VIDEO_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Playlist video failed to create`);
+            throw error;
+        }
+    }
+
+    /**
      * @function createScheduleItemAsset
      * @async
      * @description Creates a schedule item asset.
      * @param {string} SCHEDULE_ID - The id of the schedule the asset item is to be added to.
      * @param {JSON} ASSET - The asset of the schedule item asset.
-     * JSON format: {"id": "string", "description": "string"}
+     * JSON format: {"id": "string"}
      * @param {Array<JSON>} DAYS - The days of the schedule item asset.
-     * JSON format: {"id": "string", "description": "string"}
+     * JSON format: {"id": "string"}
      * @param {string} DURATION_TIME_CODE - The duration time between TIME_CODE and
      * END_TIME_CODE.
      * Please use the following format: hh:mm:ss;ff.
@@ -2732,6 +2775,7 @@ class NomadSDK {
      * Please use the following format: hh:mm:ss;ff.
      * @param {JSON} LIVE_CHANNEL - The live channel of the schedule item live channel.
      * JSON format: {"id": "string", "description": "string"}
+     * Note: The live channel must be non-secure output.
      * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item live channel.
      * @param {string} TIME_CODE - The time code of the schedule item live channel.
      * @returns {Promise<JSON>} - A promise that resolves when the schedule item live channel
@@ -2776,14 +2820,14 @@ class NomadSDK {
      * @description Creates a schedule item search filter.
      * @param {string} SCHEDULE_ID - The id of the schedule the search filter item is to
      * be added to.
-     * @param {Array<JSON>} COLLECTIONS - The collections of the schedule item search filter.
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the schedule item search filter.
      * JSON format: {"id": "string", "description": "string"}
      * @param {Array<JSON>} DAYS - The days of the schedule item search filter.
      * JSON format: {"id": "string", "description": "string"}
      * @param {string} DURATION_TIME_CODE - The duration time between TIME_CODE and
      * END_TIME_CODE.
      * Please use the following format: hh:mm:ss;ff.
-     * @param {string} END_SEARCH_DATE - The end search date of the schedule item search filter.
+     * @param {string | null} END_SEARCH_DATE - The end search date of the schedule item search filter.
      * Only use when SEARCH_FILTER_TYPE = 2.
      * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
      * @param {integer} END_SEARCH_DURATION_IN_MINUTES - The end search duration in minutes of the
@@ -2791,8 +2835,8 @@ class NomadSDK {
      * @param {string} END_TIME_CODE - The end time code of the schedule item search filter.
      * Please use the following format: hh:mm:ss;ff.
      * @param {string | null} PREVIOUS_ITEM - The previous item of the schedule item search filter.
-     * @param {Array<JSON>} RELATED_CONTENTS - The related contents of the schedule item search filter.
-     * @param {string} SEARCH_DATE - The search date of the schedule item search filter.
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related contents of the schedule item search filter.
+     * @param {string | null} SEARCH_DATE - The search date of the schedule item search filter.
      * Only use when SEARCH_FILTER_TYPE = 2.
      * Please use the following format: yyyy-MM-dd.THH:MM:SS.FFFZ.
      * @param {string} SEARCH_DURATION_IN_MINUTES - The search duration in minutes of the
@@ -8841,7 +8885,6 @@ async function _createIntelligentPlaylist(AUTH_TOKEN, URL, COLLECTIONS, END_SEAR
     }
     catch (error)
     {
-        await _deleteIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_INFO.id, DEBUG_MODE);
         _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
     }
 
@@ -8884,6 +8927,7 @@ async function _createIntelligentPlaylist(AUTH_TOKEN, URL, COLLECTIONS, END_SEAR
     }
     catch (error)
     {
+        await _deleteIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_INFO.id, DEBUG_MODE);
         _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
     }
 }
@@ -8934,8 +8978,48 @@ async function _createIntelligentSchedule(AUTH_TOKEN, URL, DEFAULT_VIDEO_ASSET, 
 
 
 
-async function _createPlaylist(AUTH_TOKEN, URL, DEFAULT_VIDEO_ASSET, LOOP_PLAYLIST, NAME, 
-    THUMBNAIL_ASSET, DEBUG_MODE) 
+async function _createPlaylistVideo(AUTH_TOKEN, URL, PLAYLIST_ID, ASSET,
+    PREVIOUS_ITEM, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/admin/schedule/${PLAYLIST_ID}/item`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        asset: ASSET,
+        previousItem: PREVIOUS_ITEM
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Schedule Item Failed");
+    }
+}
+
+
+
+
+async function _createPlaylist(AUTH_TOKEN, URL, NAME, THUMBNAIL_ASSET, LOOP_PLAYLIST,
+    DEFAULT_VIDEO_ASSET, DEBUG_MODE) 
 {
     const API_URL = `${URL}/admin/schedule`;
 
@@ -9538,6 +9622,7 @@ async function _moveScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, PREVIOUS
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     const BODY = {
+        id: ITEM_ID,
         previousItem: PREVIOUS_ITEM
     }
 
@@ -9547,7 +9632,8 @@ async function _moveScheduleItem(AUTH_TOKEN, URL, SCHEDULE_ID, ITEM_ID, PREVIOUS
     {
         const RESPONSE = await fetch(`${API_URL}`, {
             method: "POST",
-            headers: HEADERS
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
         });
 
         if (!RESPONSE.ok) {
@@ -9576,7 +9662,6 @@ async function _publishIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, NUMBER_
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     const BODY = {
-        scheduleId: SCHEDULE_ID,
         numberOfLockedDays: NUMBER_OF_LOCKED_DAYS
     };
 
@@ -9675,6 +9760,7 @@ async function _stopSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, FORCE_STOP,
 
 
 
+
 async function _updateIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, COLLECTIONS, 
     END_SEARCH_DATE, END_SEARCH_DURATION_IN_MINUTES, NAME, RELATED_CONENT, SEARCH_DATE, 
     SEARCH_DURATION_IN_MINUTES, SEARCH_FILTER_TYPE, TAGS, THUMBNAIL_ASSET, DEBUG_MODE) 
@@ -9686,12 +9772,14 @@ async function _updateIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, COLLECTI
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
-    const PLAYLIST_INFO = await _getIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE);
+    const PLAYLIST_INFO = await _getIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE);
 
     const SCHEUDLE_BODY = {
         name: NAME || PLAYLIST_INFO.name,
         scheduleType: "4",
         thumbnailAsset: THUMBNAIL_ASSET || PLAYLIST_INFO.thumbnailAsset,
+        scheduleStatus: PLAYLIST_INFO.scheduleStatus,
+        status: PLAYLIST_INFO.status
     };
 
     if (DEBUG_MODE) console.log(`URL: ${SCHEDULE_API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(SCHEUDLE_BODY)}`);
@@ -9713,24 +9801,26 @@ async function _updateIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, COLLECTI
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
+        _apiExceptionHandler(error, "Update Intelligent Playlist Failed");
     }
 
-    const ITEM_API_URL = `${SCHEDULE_API_URL}/${SCHEDULE_INFO}/item`;
+    const ITEM_INFO = await _getScheduleItems(AUTH_TOKEN, URL, SCHEDULE_ID, DEBUG_MODE);
+    const ITEM = ITEM_INFO[0];
 
-    const ITEM_INFO = await _getIntelligentSchedule(AUTH_TOKEN, URL, SCHEDULE_INFO.id, DEBUG_MODE);
+    const ITEM_API_URL = `${SCHEDULE_API_URL}/item/${ITEM.id}`;
 
     const ITEM_BODY = {
-        collections: COLLECTIONS || ITEM_INFO.collections,
-        endSearchDate: END_SEARCH_DATE || ITEM_INFO.endSearchDate,
-        endSearchDurationInMinutes: END_SEARCH_DURATION_IN_MINUTES || ITEM_INFO.endSearchDurationInMinutes,
-        relatedContent: RELATED_CONENT || ITEM_INFO.relatedContent,
+        id: ITEM.id,
+        collections: (COLLECTIONS.length === 0) ? ITEM.collections : COLLECTIONS,
+        endSearchDate: END_SEARCH_DATE || ITEM.endSearchDate,
+        endSearchDurationInMinutes: END_SEARCH_DURATION_IN_MINUTES || ITEM.endSearchDurationInMinutes,
+        relatedContent: (RELATED_CONENT === 0) ? ITEM.relatedContent : RELATED_CONENT,
         scheduleItemType: "2",
-        searchDate: SEARCH_DATE || ITEM_INFO.searchDate,
-        searchDurationInMinutes: SEARCH_DURATION_IN_MINUTES || ITEM_INFO.searchDurationInMinutes,
-        searchFilterType: SEARCH_FILTER_TYPE || ITEM_INFO.searchFilterType,
+        searchDate: SEARCH_DATE || ITEM.searchDate,
+        searchDurationInMinutes: SEARCH_DURATION_IN_MINUTES || ITEM.searchDurationInMinutes,
+        searchFilterType: SEARCH_FILTER_TYPE || ITEM.searchFilterType,
         sourceType: "2",
-        tags: TAGS || ITEM_INFO.tags,
+        tags: (TAGS.length === 0) ? ITEM.tags : TAGS
     };
 
     if (DEBUG_MODE) console.log(`URL: ${ITEM_API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(ITEM_BODY)}`);
@@ -9757,7 +9847,7 @@ async function _updateIntelligentPlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, COLLECTI
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Create Intelligent Playlist Failed");
+        _apiExceptionHandler(error, "Update Intelligent Playlist Failed");
     }
 }
 
@@ -9827,7 +9917,7 @@ async function _updatePlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEFAULT_VIDEO_ASSET
     const BODY = {
         defaultVideoAsset: DEFAULT_VIDEO_ASSET || PLAYLIST_INFO.defaultVideoAsset,
         id: SCHEDULE_ID,
-        loopPlaylist: LOOP_PLAYLIST || PLAYLIST_INFO.loopPlaylist,
+        loopPlaylist: (LOOP_PLAYLIST === null) ? PLAYLIST_INFO.loopPlaylist : LOOP_PLAYLIST,
         name: NAME || PLAYLIST_INFO.name,
         scheduleType: "1",
         thumbnailAsset: THUMBNAIL_ASSET || PLAYLIST_INFO.thumbnailAsset
@@ -9838,7 +9928,7 @@ async function _updatePlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEFAULT_VIDEO_ASSET
     try
     {
         const RESPONSE = await fetch(`${API_URL}`, {
-            method: "POST",
+            method: "PUT",
             headers: HEADERS,
             body: JSON.stringify(BODY)
         });
@@ -9851,7 +9941,7 @@ async function _updatePlaylist(AUTH_TOKEN, URL, SCHEDULE_ID, DEFAULT_VIDEO_ASSET
     }
     catch (error)
     {
-        _apiExceptionHandler(error, "Create Playlist Failed");
+        _apiExceptionHandler(error, "Update Playlist Failed");
     }
 }
 

@@ -187,8 +187,8 @@ app.post('/create-intelligent-playlist', upload.none(), async (req, res) =>
 
         const INTELLIGENT_PLAYLIST = await NomadSDK.createIntelligentPlaylist(
             collections, req.body.endSearchDate, req.body.endSearchDurationInMinutes, 
-            req.body.name, relatedContents, req.body.searchDate, req.body.searchDurationInMinutes, 
-            JSON.parse(req.body.createIntelligentPlaylistRelatedContentsContentDefinitionsSelect),
+            req.body.name, relatedContents, req.body.searchDate, req.body.searchDurationInMinutes,
+            req.body.createIntelligentPlaylistSearchFilterTypeSelect.id,
             tags, THUMBNAIL_ASSET);
 
         res.status(200).json(INTELLIGENT_PLAYLIST);
@@ -213,8 +213,8 @@ app.post('/create-intelligent-schedule', upload.none(), async (req, res) =>
             : null;
 
         const INTELLIGENT_SCHEDULE = await NomadSDK.createIntelligentSchedule(
-            DEFAULT_VIDEO_ASSET, re.body.name, THUMBNAIL_ASSET, 
-            req.body.createIntelligentScheduleTimeZoneSelect);
+            DEFAULT_VIDEO_ASSET, req.body.name, THUMBNAIL_ASSET, 
+            req.body.createIntelligentScheduleTimeZoneSelect.id);
 
         res.status(200).json(INTELLIGENT_SCHEDULE);
     }
@@ -229,7 +229,7 @@ app.post('/create-playlist', upload.none(), async (req, res) =>
 {
     try
     {
-        const DEFAULT_VIDEO_ASSET = (req.body.defaultVideoAssetId) 
+        const DEFAULT_VIDEO_ASSET = (req.body.defaultVideoAssetId && req.body.createPlaylistLoopPlaylistSelect === "False") 
             ? { "id": req.body.defaultVideoAssetId }
             : null;
         
@@ -237,10 +237,27 @@ app.post('/create-playlist', upload.none(), async (req, res) =>
             ? { "id": req.body.thumbnailAssetId }
             : null;
 
-        const PLAYLIST = await NomadSDK.createPlaylist(DEFAULT_VIDEO_ASSET, 
-            req.body.loopPlaylist === "True", req.body.name, THUMBNAIL_ASSET)
+        const PLAYLIST = await NomadSDK.createPlaylist(req.body.name,
+            THUMBNAIL_ASSET, req.body.createPlaylistLoopPlaylistSelect === "True", 
+            DEFAULT_VIDEO_ASSET)
 
         res.status(200).json(PLAYLIST);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.post('/create-playlist-video', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const VIDEO = await NomadSDK.createPlaylistVideo(req.body.playlistId, 
+            {id: req.body.assetId}, req.body.previousItem);
+
+        res.status(200).json(VIDEO);
     }
     catch (error)
     {
@@ -261,7 +278,7 @@ app.post('/create-schedule-item-asset', upload.none(), async (req, res) =>
         }
 
         const ASSETS = await NomadSDK.createScheduleItemAsset(req.body.scheduleId, 
-            {id: req.body.assetId}, DAYS, req.body.durationTimeCode, req.body.endTimeCode, 
+            {id: req.body.assetId}, days, req.body.durationTimeCode, req.body.endTimeCode, 
             req.body.previousItem, req.body.timeCode);
 
         res.status(200).json(ASSETS);
@@ -394,7 +411,7 @@ app.post('/delete-intelligent-schedule', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.deleteIngelligentSchedule(req.body.scheduleId);
+        await NomadSDK.deleteIntelligentSchedule(req.body.scheduleId);
 
         res.status(200).json();
     }
@@ -428,21 +445,6 @@ app.post('/delete-schedule-item', upload.none(), async (req, res) =>
             req.body.itemId);
 
         res.status(200).json();
-    }
-    catch (error)
-    {
-        console.error(error);
-        res.status(500).send(error);
-    }
-});
-
-app.post('/generate-schedule', upload.none(), async (req, res) =>
-{
-    try
-    {
-        const SCHEDULE = await NomadSDK.generateSchedule(req.body.scheduleId);
-
-        res.status(200).json(SCHEDULE);
     }
     catch (error)
     {
@@ -546,10 +548,10 @@ app.post('/move-schedule-item', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.moveScheduleItem(req.body.scheduleId, req.body.itemId,
+        const MOVE_INFO = await NomadSDK.moveScheduleItem(req.body.scheduleId, req.body.itemId,
             req.body.previousItem);
 
-        res.status(200).json();
+        res.status(200).json(MOVE_INFO);
     }
     catch (error)
     {
@@ -562,9 +564,10 @@ app.post('/publish-intelligent-schedule', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.publishIntelligentSchedule(req.body.scheduleId);
+        const PUBLISH_INFO = await NomadSDK.publishIntelligentSchedule(req.body.scheduleId, 
+            req.body.numberOfLockedDays);
 
-        res.status(200).json();
+        res.status(200).json(PUBLISH_INFO);
     }
     catch (error)
     {
@@ -577,10 +580,10 @@ app.post('/start-schedule', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.startSchedule(req.body.scheduleId, 
+        const START_INFO = await NomadSDK.startSchedule(req.body.scheduleId, 
             req.body.skipCleanupOnFailure === "True");
 
-        res.status(200).json();
+        res.status(200).json(START_INFO);
     }
     catch (error)
     {
@@ -593,9 +596,9 @@ app.post('/stop-schedule', upload.none(), async (req, res) =>
 {
     try
     {
-        await NomadSDK.stopSchedule(req.body.scheduleId. req.body.forceStop === "True");
+        const STOP_INFO = await NomadSDK.stopSchedule(req.body.scheduleId, req.body.forceStop === "True");
 
-        res.status(200).json();
+        res.status(200).json(STOP_INFO);
     }
     catch (error)
     {
@@ -608,16 +611,40 @@ app.post('/update-intelligent-playlist', upload.none(), async (req, res) =>
 {
     try
     {
+        console.log(req.body);
+        let collections = null;
+        if (req.body.updateIntelligentPlaylistCollectionsSelect)
+        {
+            const PARSED_COLLECTIONS = JSON.parse(req.body.updateIntelligentPlaylistCollectionsSelect);
+            collections = Array.isArray(PARSED_COLLECTIONS) ? PARSED_COLLECTIONS : [PARSED_COLLECTIONS];
+        }
+
+        let relatedContents = null;
+        if (req.body.updateIntelligentPlaylistRelatedContentsSelect)
+        {
+            const PARSED_RELATED_CONTENTS = JSON.parse(req.body.updateIntelligentPlaylistRelatedContentsSelect);
+            relatedContents = Array.isArray(PARSED_RELATED_CONTENTS) ? PARSED_RELATED_CONTENTS : [PARSED_RELATED_CONTENTS];
+            relatedContents.forEach(item => {
+                item["type"] = req.body.updateIntelligentPlaylistRelatedContentsContentDefinitionsSelect.description;
+            });
+        }
+
+        let tags = null;
+        if (req.body.updateIntelligentPlaylistTagsSelect)
+        {
+            const PARSED_TAGS = JSON.parse(req.body.updateIntelligentPlaylistTagsSelect);
+            tags = Array.isArray(PARSED_TAGS) ? PARSED_TAGS : [PARSED_TAGS];
+        }
+
         const THUMBNAIL_ASSET = (req.body.thumbnailAssetId) 
             ? { "id": req.body.thumbnailAssetId }
             : null;
 
         const INTELLIGENT_PLAYLIST = await NomadSDK.updateIntelligentPlaylist(
-            req.body.scheduleId, req.body.endSearchDate,
-            req.body.endSearchDurationInMinutes, req.body.name, 
-            req.body.relatedContents, req.body.searchDate,
-            req.body.searchDurationInMinutes, req.body.searchFilterType,
-            req.body.tags, THUMBNAIL_ASSET);
+            req.body.scheduleId, collections, req.body.endSearchDate,
+            req.body.endSearchDurationInMinutes, req.body.name, relatedContents,
+            req.body.searchDate, req.body.searchDurationInMinutes, req.body.searchFilterType, 
+            tags, THUMBNAIL_ASSET);
 
         res.status(200).json(INTELLIGENT_PLAYLIST);
     }
@@ -641,8 +668,8 @@ app.post('/update-intelligent-schedule', upload.none(), async (req, res) =>
             : null;
 
         const INTELLIGENT_SCHEDULE = await NomadSDK.updateIntelligentSchedule(
-            req.body.intelligentScheduleId, DEFAULT_VIDEO_ASSET, req.body.name, 
-            THUMBNAIL_ASSET, req.body.timeZone);
+            req.body.scheduleId, DEFAULT_VIDEO_ASSET, req.body.name, 
+            THUMBNAIL_ASSET, req.body.updateIntelligentScheduleTimeZoneSelect.id);
 
         res.status(200).json(INTELLIGENT_SCHEDULE);
     }
@@ -657,7 +684,7 @@ app.post('/update-playlist', upload.none(), async (req, res) =>
 {
     try
     {
-        const DEFAULT_VIDEO_ASSET = (req.body.defaultVideoAssetId) 
+        const DEFAULT_VIDEO_ASSET = (req.body.defaultVideoAssetId && req.body.updatePlaylistLoopPlaylistSelect === "False")
             ? { "id": req.body.defaultVideoAssetId }
             : null;
 
@@ -666,7 +693,8 @@ app.post('/update-playlist', upload.none(), async (req, res) =>
             : null;
 
         const PLAYLIST = await NomadSDK.updatePlaylist(
-            req.body.playlistId, DEFAULT_VIDEO_ASSET, req.body.loopPlaylist === "True", 
+            req.body.scheduleId, DEFAULT_VIDEO_ASSET, 
+            req.body.updatePlaylistLoopPlaylistSelect === "True", 
             req.body.name, THUMBNAIL_ASSET);
 
         res.status(200).json(PLAYLIST);

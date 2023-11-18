@@ -1,6 +1,7 @@
 const CREATE_INTELLIGENT_PLAYLIST_FORM = document.getElementById("createIntelligentPlaylistForm");
 const CREATE_INTELLIGENT_SCHEDULE_FORM = document.getElementById("createIntelligentScheduleForm");
 const CREATE_PLAYLIST_FORM = document.getElementById("createPlaylistForm");
+const CREATE_PLAYLIST_VIDEO_FORM = document.getElementById("createPlaylistVideoForm");
 const CREATE_SCHEDULE_ITEM_ASSET_FORM = document.getElementById("createScheduleItemAssetForm");
 const CREATE_SCHEDULE_ITEM_LIVE_CHANNEL_FORM = document.getElementById("createScheduleItemLiveChannelForm");
 const CREATE_SCHEDULE_ITEM_SEARCH_FILTER_FORM = document.getElementById("createScheduleItemSearchFilterForm");
@@ -9,7 +10,6 @@ const DELETE_INTELLIGENT_PLAYLIST_FORM = document.getElementById("deleteIntellig
 const DELETE_INTELLIGENT_SCHEDULE_FORM = document.getElementById("deleteIntelligentScheduleForm");
 const DELETE_PLAYLIST_FORM = document.getElementById("deletePlaylistForm");
 const DELETE_SCHEDULE_ITEM_FORM = document.getElementById("deleteScheduleItemForm");
-const GENERATE_SCHEDULE_FORM = document.getElementById("generateScheduleForm");
 const GET_INTELLIGENT_PLAYLIST_FORM = document.getElementById("getIntelligentPlaylistForm");
 const GET_INTELLIGENT_SCHEDULE_FORM = document.getElementById("getIntelligentScheduleForm");
 const GET_PLAYLIST_FORM = document.getElementById("getPlaylistForm");
@@ -34,6 +34,7 @@ const CREATE_INTELLIGENT_PLAYLIST_RELATED_CONTENTS_SELECT = document.getElementB
 const CREATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_SELECT = document.getElementById("createIntelligentPlaylistSearchFilterTypeSelect");
 const CREATE_INTELLIGENT_PLAYLIST_TAGS_SELECT = document.getElementById("createIntelligentPlaylistTagsSelect");
 const CREATE_INTELLIGENT_SCHEDULE_TIME_ZONE_SELECT = document.getElementById("createIntelligentScheduleTimeZoneSelect");
+const CREATE_PLAYLIST_LOOP_PLAYLIST_SELECT = document.getElementById("createPlaylistLoopPlaylistSelect");
 const CREATE_SCHEDULE_ITEM_ASSET_DAYS = document.getElementById("createScheduleItemAssetDays");
 const CREATE_SCHEDULE_ITEM_LIVE_CHANNEL_DAYS = document.getElementById("createScheduleItemLiveChannelDays");
 const CREATE_SCHEDULE_ITEM_LIVE_CHANNELS_SELECT = document.getElementById("createScheduleItemLiveChannelsSelect");
@@ -51,6 +52,7 @@ const UPDATE_INTELLIGENT_PLAYLIST_RELATED_CONTENTS_SELECT = document.getElementB
 const UPDATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_SELECT = document.getElementById("updateIntelligentPlaylistSearchFilterTypeSelect");
 const UPDATE_INTELLIGENT_PLAYLIST_TAGS_SELECT = document.getElementById("updateIntelligentPlaylistTagsSelect");
 const UPDATE_INTELLIGENT_SCHEDULE_TIME_ZONE_SELECT = document.getElementById("updateIntelligentScheduleTimeZoneSelect");
+const UPDATE_PLAYLIST_LOOP_PLAYLIST_SELECT = document.getElementById("updatePlaylistLoopPlaylistSelect");
 const UPDATE_SCHEDULE_ITEM_ASSET_DAYS = document.getElementById("updateScheduleItemAssetDays");
 const UPDATE_SCHEDULE_ITEM_LIVE_CHANNEL_DAYS = document.getElementById("updateScheduleItemLiveChannelDays");
 const UPDATE_SCHEDULE_ITEM_LIVE_CHANNELS_SELECT = document.getElementById("updateScheduleItemLiveChannelsSelect");
@@ -64,8 +66,10 @@ const UPDATE_SCHEDULE_ITEM_PLAYLIST_SCHEDULE_DAYS = document.getElementById("upd
 const UPDATE_SCHEDULE_ITEM_PLAYLIST_SCHEDULES_SELECT = document.getElementById("updateScheduleItemPlaylistSchedulesSelect");
 
 const CREATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_DIV = document.getElementById("createIntelligentPlaylistSearchFilterTypeDiv");
+const CREATE_PLAYLIST_DEFAULT_VIDEO_ASSET_ID_DIV = document.getElementById("createPlaylistDefaultVideoAssetIdDiv");
 const CREATE_SCHEDULE_ITEM_SEARCH_FILTER_SEARCH_FILTER_TYPE_DIV = document.getElementById("createScheduleItemSearchFilterSearchFilterTypeDiv");
 const UPDATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_DIV = document.getElementById("updateIntelligentPlaylistSearchFilterTypeDiv");
+const UPDATE_PLAYLIST_DEFAULT_VIDEO_ASSET_ID_DIV = document.getElementById("updatePlaylistDefaultVideoAssetIdDiv");
 const UPDATE_SCHEDULE_ITEM_SEARCH_FILTER_SEARCH_FILTER_TYPE_DIV = document.getElementById("updateScheduleItemSearchFilterSearchFilterTypeDiv");
 
 
@@ -73,9 +77,14 @@ CREATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_SELECT.addEventListener("change",
 {
     event.preventDefault();
 
-    CREATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_DIV.hidden = false;
-
     CREATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_DIV.hidden = (CREATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_SELECT.value !== "2")
+});
+
+CREATE_PLAYLIST_LOOP_PLAYLIST_SELECT.addEventListener("change", async function (event)
+{
+    event.preventDefault();
+
+    CREATE_PLAYLIST_DEFAULT_VIDEO_ASSET_ID_DIV.hidden = (CREATE_PLAYLIST_LOOP_PLAYLIST_SELECT.value === "True")
 });
 
 CREATE_SCHEDULE_ITEM_SEARCH_FILTER_TYPE_SELECT.addEventListener("change", async function (event)
@@ -94,6 +103,13 @@ UPDATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_SELECT.addEventListener("change",
     UPDATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_DIV.hidden = false;
 
     UPDATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_DIV.hidden = (UPDATE_INTELLIGENT_PLAYLIST_SEARCH_FILTER_TYPE_SELECT.value !== "2")
+});
+
+UPDATE_PLAYLIST_LOOP_PLAYLIST_SELECT.addEventListener("change", async function (event)
+{
+    event.preventDefault();
+
+    UPDATE_PLAYLIST_DEFAULT_VIDEO_ASSET_ID_DIV.hidden = (UPDATE_PLAYLIST_LOOP_PLAYLIST_SELECT.value === "True")
 });
 
 UPDATE_SCHEDULE_ITEM_SEARCH_FILTER_TYPE_SELECT.addEventListener("change", async function (event)
@@ -393,6 +409,15 @@ CREATE_PLAYLIST_FORM.addEventListener("submit", async function (event)
     console.log(await sendRequest("/create-playlist", "POST", FORM_DATA));
 });
 
+CREATE_PLAYLIST_VIDEO_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(CREATE_PLAYLIST_VIDEO_FORM);
+
+    console.log(await sendRequest("/create-playlist-video", "POST", FORM_DATA));
+});
+
 CREATE_SCHEDULE_ITEM_ASSET_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
@@ -474,13 +499,13 @@ GET_PLAYLIST_FORM.addEventListener("submit", async function (event)
     console.log(await sendRequest("/get-playlist", "POST", FORM_DATA));
 });
 
-GENERATE_SCHEDULE_FORM.addEventListener("submit", async function (event)
+GET_INTELLIGENT_PLAYLIST_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
 
-    const FORM_DATA = getElements(GENERATE_SCHEDULE_FORM);
+    const FORM_DATA = getElements(GET_INTELLIGENT_PLAYLIST_FORM);
 
-    console.log(await sendRequest("/generate-schedule", "POST", FORM_DATA));
+    console.log(await sendRequest("/get-intelligent-playlist", "POST", FORM_DATA));
 });
 
 GET_INTELLIGENT_SCHEDULE_FORM.addEventListener("submit", async function (event)
@@ -670,7 +695,6 @@ async function sendRequest(PATH, METHOD, BODY)
         if (RESPONSE.ok)
         {
             const DATA = await RESPONSE.json();
-            console.log(DATA);
             if (DATA) return DATA;
         }
         else

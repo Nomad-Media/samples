@@ -104,20 +104,37 @@
 
     <h3>Create Playlist</h3>
     <form id="createPlaylistForm">
-        <label for="defaultVideoAssetId">Default Video Asset Id:</label>
-        <input type="text" id="defaultVideoAssetId" required>
-
-        <label for="loopPlaylist">Loop Playlist:</label>
-        <select id="loopPlaylist" required>
-            <option value="True">True</option>
-            <option value="False" selected>False</option>
-        </select>
-
         <label for="name">Name:</label>
         <input type="text" id="name" required>
 
         <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
         <input type="text" id="thumbnailAssetId">
+
+        <label for="loopPlaylist">Loop Playlist:</label>
+        <select id="createPlaylistLoopPlaylistSelect" required>
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <div id="createPlaylistDefaultVideoAssetIdDiv" hidden>
+            <label for="defaultVideoAssetId">Default Video Asset Id:</label>
+            <input type="text" id="defaultVideoAssetId">
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Playlist Video</h3>
+    <form id="createPlaylistVideoForm">
+        <label for="playlistId">Playlist Id:</label>
+        <input type="text" id="playlistId" required>
+
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId" required>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem">
 
         <br><br>
         <button type="submit">Submit</button>
@@ -296,15 +313,6 @@
 
         <label for="itemId">Item Id:</label>
         <input type="text" id="itemId" required>
-
-        <br><br>
-        <button type="submit">Submit</button>
-    </form>
-
-    <h3>Generate Schedule</h3>
-    <form id="generateScheduleForm">
-        <label for="scheduleId">Schedule Id:</label>
-        <input type="text" id="scheduleId" required>
 
         <br><br>
         <button type="submit">Submit</button>
@@ -499,20 +507,22 @@
         <label for="scheduleId">Schedule Id:</label>
         <input type="text" id="scheduleId" required>
 
-        <label for="defaultVideoAssetId">Default Video Asset Id:</label>
-        <input type="text" id="defaultVideoAssetId">
-
-        <label for="loopPlaylist">Loop Playlist:</label>
-        <select id="loopPlaylist" required>
-            <option value="True">True</option>
-            <option value="False" selected>False</option>
-        </select>
-
         <label for="name">Name:</label>
         <input type="text" id="name">
 
         <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
         <input type="text" id="thumbnailAssetId">
+
+        <label for="loopPlaylist">Loop Playlist:</label>
+        <select id="updatePlaylistLoopPlaylistSelect" required>
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <div id="updatePlaylistDefaultVideoAssetIdDiv" hidden>
+            <label for="defaultVideoAssetId">Default Video Asset Id:</label>
+            <input type="text" id="defaultVideoAssetId">
+        </div>
 
         <br><br>
         <button type="submit">Submit</button>
