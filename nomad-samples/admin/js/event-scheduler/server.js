@@ -13,6 +13,7 @@ const LIVE_CHANNEL_CONTENT_DEFINITION_ID = "bf8ac754-5b8b-4330-b1aa-76f15fb7f673
 const EVENT_CONTENT_DEFINITION_ID = "412a30e3-73ee-4eae-b739-e1fc87601c7d";
 const INPUT_CONTENT_DEFINITION_ID = "5ce6e254-01e9-44b8-9f20-4691140db3ce";
 const EXTERNAL_OUTPUT_PROFILES_PATH = "lookup/33?lookupKey=99e8767a-00ba-4758-b9c2-e07b52c47021";
+const DAYS_CONTENT_DEFINITION_ID = "fc8042c1-1ade-400d-b0aa-02937e658ae6"
 
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -20,7 +21,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk-debug.js";
+import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk-debug.js";
 
 import express from 'express';
 import multer from 'multer';
@@ -36,7 +37,7 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/event-scheduler.html');
 });
 
-app.post('/get-series-list', upload.none(), async (req, res) =>
+app.get('/get-series-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -51,7 +52,7 @@ app.post('/get-series-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-performer-list', upload.none(), async (req, res) =>
+app.get('/get-performer-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -66,7 +67,7 @@ app.post('/get-performer-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-venue-list', upload.none(), async (req, res) =>
+app.get('/get-venue-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -81,7 +82,7 @@ app.post('/get-venue-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-genre-list', upload.none(), async (req, res) =>
+app.get('/get-genre-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -96,7 +97,7 @@ app.post('/get-genre-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-media-attributes-list', upload.none(), async (req, res) =>
+app.get('/get-media-attributes-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -111,7 +112,7 @@ app.post('/get-media-attributes-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-language-list', upload.none(), async (req, res) =>
+app.get('/get-language-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -126,7 +127,7 @@ app.post('/get-language-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-product-list', upload.none(), async (req, res) =>
+app.get('/get-product-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -141,7 +142,7 @@ app.post('/get-product-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-featured-groups-list', upload.none(), async (req, res) =>
+app.get('/get-featured-groups-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -156,7 +157,7 @@ app.post('/get-featured-groups-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-related-media-items-list', upload.none(), async (req, res) =>
+app.get('/get-related-media-items-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -171,7 +172,7 @@ app.post('/get-related-media-items-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-recommendation-similar-items-list', upload.none(), async (req, res) =>
+app.get('/get-recommendation-similar-items-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -186,7 +187,7 @@ app.post('/get-recommendation-similar-items-list', upload.none(), async (req, re
     }
 });
 
-app.post('/get-rating-list', upload.none(), async (req, res) =>
+app.get('/get-rating-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -201,7 +202,22 @@ app.post('/get-rating-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-live-channel-list', upload.none(), async (req, res) =>
+app.get('/get-days-list', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const DAYS_LIST = await getGroups(DAYS_CONTENT_DEFINITION_ID);
+
+        res.status(200).json(DAYS_LIST);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.get('/get-live-channel-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -288,7 +304,7 @@ app.post('/create-event', upload.none(), async (req, res) => {
     }
 });
 
-app.post('/get-livestream-input-list', upload.none(), async (req, res) =>
+app.get('/get-livestream-input-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -303,7 +319,7 @@ app.post('/get-livestream-input-list', upload.none(), async (req, res) =>
     }
 });
 
-app.post('/get-external-output-profiles-list', upload.none(), async (req, res) =>
+app.get('/get-external-output-profiles-list', upload.none(), async (req, res) =>
 {
     try
     {
@@ -358,11 +374,9 @@ app.post('/extend-event', upload.none(), async (req, res) =>
 {
     try
     {
-        const END_TIME = new Date(req.body.endDatetime)
-        const END_TIME_GMT = END_TIME.toISOString();
-
-        await NomadSDK.extendLiveSchedule(req.body.extendEventId, req.body.daysOfTheWeek, 
-            req.body.recurringWeeks, END_TIME_GMT);
+        await NomadSDK.extendLiveSchedule(req.body.extendEventId, 
+            JSON.parse(req.body.daysOfTheWeekSelect), 
+            req.body.recurringWeeks, req.body.endDatetime, req.body.timeZoneOffsetSeconds);
 
         res.status(200);
     }

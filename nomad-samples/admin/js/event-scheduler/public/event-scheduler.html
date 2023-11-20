@@ -254,21 +254,8 @@
         <label for="extendEventId">Event Id:</label>
         <input type="text" id="extendEventId" required>
 
-        <label for="daysOfTheWeek">Days Of The Week:</label>
-        <select id="daysOfTheWeek" required multiple>
-            <option value="Sunday">Sunday</option>
-            <option value="Monday">Monday</option>
-            <option value="Tuesday">Tuesday</option>
-            <option value="Wednesday">Wednesday</option>
-            <option value="Thursday">Thursday</option>
-            <option value="Friday">Friday</option>
-            <option value="Saturday">Saturday</option>
-        </select>
-        <script>
-            $(document).ready(function() {
-                $('#daysOfTheWeek').select2();
-            });
-        </script>
+        <label for="daysOfTheWeekSelect">Days Of The Week:</label>
+        <select id="daysOfTheWeekSelect" required multiple></select>
 
         <label for="recurringWeeks">Recurring Weeks:</label>
         <input type="text" id="recurringWeeks" required>
@@ -276,9 +263,12 @@
         <label for="endDatetime">End Datetime:</label>
         <input type="datetime-local" id="endDatetime">
 
+        <label for="timeZoneOffsetSeconds">Time Zone Offset Seconds:</label>
+        <input type="text" id="timeZoneOffsetSeconds">
+
         <br><br>
         <button type="submit">Submit</button>
-    </form>'
+    </form>
 
     <h3>Get Live Schedule</h3>
     <form id="getForm">

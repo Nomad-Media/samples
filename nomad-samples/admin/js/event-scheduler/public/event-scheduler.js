@@ -26,6 +26,7 @@ const LIVE_CHANNEL_SELECT = document.getElementById("liveChannelSelect");
 const PRIMARY_LIVESTREAM_INPUT_SELECT = document.getElementById("primaryLivestreamInputSelect");
 const BACKUP_LIVESTREAM_INPUT_SELECT = document.getElementById("backupLivestreamInputSelect");
 const EXTERNAL_OUTPUT_PROFILES_SELECT = document.getElementById("externalOutputProfilesSelect");
+const DAYS_OF_THE_WEEK_SELECT = document.getElementById("daysOfTheWeekSelect");
 
 CREATE_OR_UPDATE_EVENT.addEventListener("change", async function (event)
 {
@@ -40,7 +41,7 @@ await getSeriesList();
 
 async function getSeriesList()
 {
-    const SERIES_LIST = await sendRequest("/get-series-list", "POST");
+    const SERIES_LIST = await sendRequest("/get-series-list", "GET");
 
     for(let seriesIdx = 0; seriesIdx < SERIES_LIST.length; ++seriesIdx)
     {
@@ -57,7 +58,7 @@ await getPerformerList();
 
 async function getPerformerList()
 {
-    const PERFORMER_LIST = await sendRequest("/get-performer-list", "POST");
+    const PERFORMER_LIST = await sendRequest("/get-performer-list", "GET");
 
     for(let performerIdx = 0; performerIdx < PERFORMER_LIST.length; ++performerIdx)
     {
@@ -80,7 +81,7 @@ await getVenueList();
 
 async function getVenueList()
 {
-    const VENUE_LIST = await sendRequest("/get-venue-list", "POST");
+    const VENUE_LIST = await sendRequest("/get-venue-list", "GET");
 
     for(let venueIdx = 0; venueIdx < VENUE_LIST.length; ++venueIdx)
     {
@@ -97,7 +98,7 @@ await getGenresList();
 
 async function getGenresList()
 {
-    const GENRE_LIST = await sendRequest("/get-genre-list", "POST");
+    const GENRE_LIST = await sendRequest("/get-genre-list", "GET");
 
     for(let genreIdx = 0; genreIdx < GENRE_LIST.length; ++genreIdx)
     {
@@ -114,7 +115,7 @@ await getMediaAttributesList();
 
 async function getMediaAttributesList()
 {
-    const MEDIA_ATTRIBUTES_LIST = await sendRequest("/get-media-attributes-list", "POST");
+    const MEDIA_ATTRIBUTES_LIST = await sendRequest("/get-media-attributes-list", "GET");
 
     for(let mediaAttributesIdx = 0; mediaAttributesIdx < MEDIA_ATTRIBUTES_LIST.length; ++mediaAttributesIdx)
     {
@@ -131,7 +132,7 @@ await getLanguageList();
 
 async function getLanguageList()
 {
-    const LANGUAGE_LIST = await sendRequest("/get-language-list", "POST");
+    const LANGUAGE_LIST = await sendRequest("/get-language-list", "GET");
 
     for(let languageIdx = 0; languageIdx < LANGUAGE_LIST.length; ++languageIdx)
     {
@@ -148,7 +149,7 @@ await getProductsList();
 
 async function getProductsList()
 {
-    const PRODUCTS_LIST = await sendRequest("/get-product-list", "POST");
+    const PRODUCTS_LIST = await sendRequest("/get-product-list", "GET");
 
     for(let productsIdx = 0; productsIdx < PRODUCTS_LIST.length; ++productsIdx)
     {
@@ -165,7 +166,7 @@ await getFeaturedGroupsList();
 
 async function getFeaturedGroupsList()
 {
-    const FEATURED_GROUPS_LIST = await sendRequest("/get-featured-groups-list", "POST");
+    const FEATURED_GROUPS_LIST = await sendRequest("/get-featured-groups-list", "GET");
 
     for(let featuredGroupsIdx = 0; featuredGroupsIdx < FEATURED_GROUPS_LIST.length; ++featuredGroupsIdx)
     {
@@ -182,7 +183,7 @@ await getRelatedMediaItemsList();
 
 async function getRelatedMediaItemsList()
 {
-    const RELATED_MEDIA_ITEMS_LIST = await sendRequest("/get-related-media-items-list", "POST");
+    const RELATED_MEDIA_ITEMS_LIST = await sendRequest("/get-related-media-items-list", "GET");
 
     for(let relatedMediaItemsIdx = 0; relatedMediaItemsIdx < RELATED_MEDIA_ITEMS_LIST.length; ++relatedMediaItemsIdx)
     {
@@ -199,7 +200,7 @@ await getRecommendationSimilarItemsList();
 
 async function getRecommendationSimilarItemsList()
 {
-    const RECOMMENDATION_SIMILAR_ITEMS_LIST = await sendRequest("/get-recommendation-similar-items-list", "POST");
+    const RECOMMENDATION_SIMILAR_ITEMS_LIST = await sendRequest("/get-recommendation-similar-items-list", "GET");
 
     for(let recommendationSimilarItemsIdx = 0; recommendationSimilarItemsIdx < RECOMMENDATION_SIMILAR_ITEMS_LIST.length; ++recommendationSimilarItemsIdx)
     {
@@ -216,7 +217,7 @@ await getRatingList();
 
 async function getRatingList()
 {
-    const RATING_LIST = await sendRequest("/get-rating-list", "POST");
+    const RATING_LIST = await sendRequest("/get-rating-list", "GET");
 
     for(let ratingIdx = 0; ratingIdx < RATING_LIST.length; ++ratingIdx)
     {
@@ -229,11 +230,32 @@ async function getRatingList()
     $(RATING_SELECT).select2();
 }
 
+await getDaysOfTheWeekList();
+
+async function getDaysOfTheWeekList()
+{
+    const DAYS = await sendRequest("/get-days-list", "GET");
+
+    const ORDERED_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    DAYS.sort((a, b) => ORDERED_DAYS.indexOf(a.title) - ORDERED_DAYS.indexOf(b.title));
+
+    for(let daysOfTheWeekIdx = 0; daysOfTheWeekIdx < DAYS.length; ++daysOfTheWeekIdx)
+    {
+        let option = document.createElement("option");
+        option.value = DAYS[daysOfTheWeekIdx].id;
+        option.text = DAYS[daysOfTheWeekIdx].title;
+        DAYS_OF_THE_WEEK_SELECT.appendChild(option);
+    }
+
+    $(DAYS_OF_THE_WEEK_SELECT).select2();
+}
+
 await getLiveChannelList();
 
 async function getLiveChannelList()
 {
-    const LIVE_CHANNEL_LIST = await sendRequest("/get-live-channel-list", "POST");
+    const LIVE_CHANNEL_LIST = await sendRequest("/get-live-channel-list", "GET");
 
     for(let liveChannelIdx = 0; liveChannelIdx < LIVE_CHANNEL_LIST.length; ++liveChannelIdx)
     {
@@ -259,7 +281,7 @@ await primaryLiveInputList();
 
 async function primaryLiveInputList()
 {
-    const PRIMARY_LIVESTREAM_INPUT_LIST = await sendRequest("/get-livestream-input-list", "POST");
+    const PRIMARY_LIVESTREAM_INPUT_LIST = await sendRequest("/get-livestream-input-list", "GET");
 
     for(let primaryLiveInputIdx = 0; primaryLiveInputIdx < PRIMARY_LIVESTREAM_INPUT_LIST.length; ++primaryLiveInputIdx)
     {
@@ -282,7 +304,7 @@ await externalOutputProfilesList();
 
 async function externalOutputProfilesList()
 {
-    const EXTERNAL_OUTPUT_PROFILES_LIST = await sendRequest("/get-external-output-profiles-list", "POST");
+    const EXTERNAL_OUTPUT_PROFILES_LIST = await sendRequest("/get-external-output-profiles-list", "GET");
 
     for(let externalOutputProfilesIdx = 0; externalOutputProfilesIdx < EXTERNAL_OUTPUT_PROFILES_LIST.length; ++externalOutputProfilesIdx)
     {
