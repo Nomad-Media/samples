@@ -119,7 +119,6 @@ import config from "./config/config.js";
 
 
 
-
 // common
 
 
@@ -1183,14 +1182,17 @@ class NomadSDK {
      * @async
      * @description Extends the live schedule of an event.
      * @param {string} EVENT_ID - The ID of the event to extend the live schedule of.
-     * @param {Array<string>} DAYS_OF_WEEK - The days of the week to extend the live schedule of.
+     * @param {Array<JSON>} RECURRING_DAYS - The days of the week to extend the live schedule of.
+     * JSON format: [{ id: string, description: string },]
      * @param {integer} RECURRING_WEEKS - The number of weeks to extend the live schedule of.
      * @param {string | null} END_DATE - The end date to extend the live schedule of.
+     * @param {string | null} TIME_ZONE_OFFSET_SECONDS - The time zone offset seconds to extend the
+     * live schedule of.
      * @returns {Promise<null>} - A promise that resolves when the live schedule is extended.
      * @throws {Error} - An error is thrown if the live schedule fails to extend.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */
-    async extendLiveSchedule(EVENT_ID, DAYS_OF_WEEK, RECURRING_WEEKS, END_DATE)
+    async extendLiveSchedule(EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS, END_DATE, TIME_ZONE_OFFSET_SECONDS)
     {
         if (this.token === null)
         {
@@ -1206,13 +1208,9 @@ class NomadSDK {
 
         try
         {
-            const EVENT_INFO = await this.getContent(EVENT_ID, "412a30e3-73ee-4eae-b739-e1fc87601c7d")
-            const START_DATETIME = EVENT_INFO.properties.startDatetime;
-            const RECURRING_DAYS = _processDates(DAYS_OF_WEEK, START_DATETIME);
-
             await _extendLiveSchedule(this.token, 
                 this.config.serviceApiUrl, EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS, END_DATE,
-                this.debugMode);
+                TIME_ZONE_OFFSET_SECONDS, this.debugMode);
             _printDatetime(`Live Schedule extended of Event: ${EVENT_ID}`);
         }
         catch (error)
@@ -7133,82 +7131,6 @@ async function _getLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE)
 	{
   	  	_apiExceptionHandler(error, "Get Live Schedule Failed");
   	}
-}
-
-
-const Lookup = (key, value) => ({
-    key: key,
-    value: value,
-});
-
-const DAY_OF_WEEK = {
-    Sunday: Lookup("7", '3fc3b5ec-88be-41c9-be8f-5199735f3603'),
-    Monday: Lookup("1", '16bebfa8-65cc-451e-9744-d09d6c761e4a'),
-    Tuesday: Lookup("2", '02782764-f644-43fa-89cb-40cd3a3c3ece'),
-    Wednesday: Lookup("3", '1ca7cf91-5460-479f-84e5-e02cd51ca3f9'),
-    Thursday: Lookup("4", '2691d391-e1b1-43b6-97e2-5fc6b39479ef'),
-    Friday: Lookup("5", 'b1897795-37a3-4a6e-a702-93643fe2ecab'),
-    Saturday: Lookup("6", 'cf4c7688-417f-48d4-8b9d-fc6e6132d34e'),
-};
-
-function _processDates(DATE_CHECKBOX, START_DATETIME)
-{
-// goes through checkbox elements and 
-    const DATE_LIST = [];
-
-    for(let dateIdx = 0; dateIdx < DATE_CHECKBOX.length; ++dateIdx)
-    {
-        const DATE = DATE_CHECKBOX[dateIdx];
-        let dateMap = {
-            description: DATE,
-            id: DAY_OF_WEEK[DATE].value,
-            properties: {
-                abbreviation: DATE.substr(0, 3),
-                name: DATE,
-                sortOrder: DAY_OF_WEEK[DATE].key
-            }
-        };
-        DATE_LIST.push(dateMap);
-    }
-
-    /*  calculates the first day instance is going to be set to based of of first day of week
-        choosen by user
-    */ 
-    const DATE = new Date();
-    
-    let startIdx = 1;
-    let minimum = DAY_OF_WEEK[DATE_CHECKBOX[0]].key - DATE.getDay();
-    
-    while (minimum < 0)
-    {
-        let diff = DAY_OF_WEEK[DATE_CHECKBOX[startIdx]].key - DATE.getDay();
-        if (diff > 0 || ((new Date(START_DATETIME).getTime() - DATE.getTime()) / (1000 * 60 * 60) >= 1))
-        {
-            minimum = diff;
-        }
-
-        ++startIdx;
-    }
-
-    for(let dateIdx = startIdx; dateIdx < DATE_CHECKBOX.length; ++dateIdx)
-    {
-        let diff = DAY_OF_WEEK[DATE_CHECKBOX[dateIdx]].key - DATE.getDay();
-        if (diff < minimum)
-        {
-            if ((new Date(START_DATETIME).getTime() - DATE.getTime()) / (1000 * 60 * 60) < 1)
-            {
-                continue;
-            }
-            else
-            {
-                minimum = diff;
-            }
-        }
-    }
-
-    DATE.setDate(DATE.getDate() + minimum);
-
-    return DATE_LIST
 }
 
 
