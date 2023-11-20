@@ -70,21 +70,6 @@ app.post('/register', upload.none(), async (req, res) =>
     }
 });
 
-app.get('/ping', upload.none(), async (req, res) =>
-{
-    try
-    {
-        const PING = await NomadSDK.ping()
-
-        res.status(200).json(PING);
-    }
-    catch (error)
-    {
-        console.error(error);
-        res.status(500).send(error);
-    }
-});
-
 app.get('/ppq', upload.none(), async (req, res) =>
 {
     try
