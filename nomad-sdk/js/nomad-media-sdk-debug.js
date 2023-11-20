@@ -125,8 +125,10 @@ import config from "./config/config.js";
 
 
 
-// portal
 
+
+
+// portal
 
 
 
@@ -4512,6 +4514,67 @@ class NomadSDK {
         }
     }
 
+    // ping functions
+    /**
+     * @function ping
+     * @async
+     * @description Pings the user.
+     * @returns {Promise<JSON>} - A promise that resolves when the user is pinged.
+     * Returns the ping status of the user.
+     * @throws {Error} - An error is thrown if the user fails to ping.
+     */
+    async ping()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Pinging user`);
+
+        try
+        {
+            const PING = await _ping(this.token, this.config.serviceApiUrl, null, this.userSessionId, this.debugMode);
+            _printDatetime(`User pinged`);
+            return PING;
+        }
+        catch (error)
+        {
+            _printDatetime(`User failed to ping`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function ping_auth
+     * @async
+     * @description Pings the user.
+     * @returns {Promise<JSON>} - A promise that resolves when the user is pinged.
+     * Returns the ping status of the user.
+     * @throws {Error} - An error is thrown if the user fails to ping.
+     */
+    async pingAuth()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Pinging user`);
+
+        try
+        {
+            const PING = await _pingAuth(this.token, this.config.serviceApiUrl, null, this.userSessionId, this.debugMode);
+            _printDatetime(`User pinged`);
+            return PING;
+        }
+        catch (error)
+        {
+            _printDatetime(`User failed to ping`);
+            throw error;
+        }
+    }
+
     // search functions
     /**
      * @function search
@@ -5686,36 +5749,6 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Participant panel failed to query`);
-            throw error;
-        }
-    }
-
-    /**
-     * @function ping
-     * @async
-     * @description Pings the user.
-     * @returns {Promise<JSON>} - A promise that resolves when the user is pinged.
-     * Returns the ping status of the user.
-     * @throws {Error} - An error is thrown if the user fails to ping.
-     */
-    async ping()
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-        _printDatetime(`Pinging user`);
-
-        try
-        {
-            const PING = await _ping(this.token, this.config.serviceApiUrl, this.userSessionId, this.debugMode);
-            _printDatetime(`User pinged`);
-            return PING;
-        }
-        catch (error)
-        {
-            _printDatetime(`User failed to ping`);
             throw error;
         }
     }
@@ -10952,6 +10985,86 @@ async function _getAssetDetails(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, DEBUG_MODE)
 
 
 
+async function _ping(AUTH_TOKEN, URL, APPLICATION_ID, USER_SESSION_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/account/ping`;
+    
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+  
+    const BODY = {
+        userId: USER_SESSION_ID
+    }
+
+    if (APPLICATION_ID) BODY.applicationId = APPLICATION_ID;
+    
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        // Check for success
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error,"Ping user failed");
+    }
+}
+
+
+
+
+async function _pingAuth(AUTH_TOKEN, URL, APPLICATION_ID, USER_SESSION_ID, DEBUG_MODE) 
+{
+    const API_URL = `${URL}/account/ping/auth`;
+    
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+  
+    const BODY = {
+        userId: USER_SESSION_ID
+    }
+
+    if (APPLICATION_ID) BODY.applicationId = APPLICATION_ID;
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        // Check for success
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error,"Ping user failed");
+    }
+}
+
+
+
+
 async function _search(AUTH_TOKEN, URL, QUERY, OFFSET, SIZE , FILTERS, SORT_FIELDS, SEARCH_RESULT_FIELDS, 
     SIMILAR_ASSET_ID, MIN_SCORE, EXCLUDE_TOTAL_RECORD_COUNT, FILTER_BINDER, API_TYPE, DEBUG_MODE)
 {
@@ -11793,44 +11906,6 @@ async function _participantPanelQuery(AUTH_TOKEN, URL, API_TYPE, ID, DEBUG_MODE)
     catch (error)
     {
         _apiExceptionHandler(error,"Participant panel query failed");
-    }
-}
-
-
-
-
-async function _ping(AUTH_TOKEN, URL, APPLICATION_ID, USER_SESSION_ID) 
-{
-    const API_URL = `${URL}/account/ping`;
-    
-    const HEADERS = new Headers();
-    HEADERS.append("Content-Type", "application/json");
-    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
-  
-    const BODY = {
-        userId: USER_SESSION_ID
-    }
-
-    if (APPLICATION_ID) BODY.applicationId = APPLICATION_ID;
-
-    try
-    {
-        const RESPONSE = await fetch(API_URL, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify(BODY)
-        });
-
-        // Check for success
-        if (!RESPONSE.ok) {
-            throw await RESPONSE.json();
-        }
-
-        return await RESPONSE.json();
-    }
-    catch (error)
-    {
-        _apiExceptionHandler(error,"Ping user failed");
     }
 }
 
