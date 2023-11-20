@@ -111,6 +111,67 @@ app.post('/deleteLiveChannel', upload.none(), async (req, res) =>
     }
 });
 
+app.get('/refreshLiveChannels', async (req, res) =>
+{
+    try
+    {
+        const LIVE_CHANNEL = await NomadSDK.liveChannelRefresh();
+        res.status(200).json(LIVE_CHANNEL);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/nextEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.nextEvent(req.body.channelId);
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/startOutputTracking', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.startOutputTracking(req.body.channelId);
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/moveScheduleEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.moveScheduleEvent(req.body.channelId,
+            req.body.scheduleEventId, req.body.previousScheduleEventId);
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/getLiveInputs', async (req, res) => 
 {
     try

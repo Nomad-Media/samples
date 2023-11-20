@@ -116,6 +116,10 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
 // common
 
 
@@ -1487,6 +1491,77 @@ class NomadSDK {
     }
 
     /**
+     * @function liveChannelRefresh
+     * @async
+     * @description Refreshes live channels.
+     * @returns {Promise<void>} - A promise that resolves when the live channels are refreshed.
+     * @throws {Error} - An error is thrown if the live channels fail to refresh.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async liveChannelRefresh()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error ("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Refreshing Live Channels`);
+
+        try
+        {
+            await _liveChannelRefresh(this.token, this.config.serviceApiUrl, this.debugMode);
+            _printDatetime(`Live Channels refreshed`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Channels failed to refresh`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function nextEvent
+     * @async
+     * @description Gets the next event of a live channel.
+     * @param {string} LIVE_CHANNEL_ID - The ID of the live channel to get the next event of.
+     * @returns {Promise<void>} - A promise that resolves when the next event is gotten.
+     * @throws {Error} - An error is thrown if the next event fails to get.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async nextEvent(LIVE_CHANNEL_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin") 
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting Next Event of Live Channel: ${LIVE_CHANNEL_ID}`);
+
+        try
+        {
+            const NEXT_EVENT_INFO = await _nextEvent(this.token, this.config.serviceApiUrl, 
+                LIVE_CHANNEL_ID, this.debugMode);
+            _printDatetime(`Next Event gotten of Live Channel: ${LIVE_CHANNEL_ID}`);
+            return NEXT_EVENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Next Event failed to get of Live Channel: ${LIVE_CHANNEL_ID}`);
+            throw error;
+        }
+    }
+
+    /**
      * @function startLiveChannel
      * @async
      * @description Starts a live channel.
@@ -1518,6 +1593,42 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Live Channel failed to start: ${LIVE_CHANNEL_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function startOutputTracking
+     * @async
+     * @description Starts output tracking for a live channel.
+     * @param {string} LIVE_CHANNEL_ID - The ID of the live channel to start output tracking for.
+     * @returns {Promise<null>} - A promise that resolves when the output tracking is started.
+     * @throws {Error} - An error is thrown if the output tracking fails to start.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async startOutputTracking(LIVE_CHANNEL_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Starting Output Tracking for Live Channel: ${LIVE_CHANNEL_ID}`);
+
+        try
+        {
+            await _startOutputTracking(this.token, this.config.serviceApiUrl, LIVE_CHANNEL_ID, 
+                this.debugMode);
+            _printDatetime(`Output Tracking started for Live Channel: ${LIVE_CHANNEL_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Output Tracking failed to start for Live Channel: ${LIVE_CHANNEL_ID}`);
             throw error;
         }
     }
@@ -2342,6 +2453,47 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Input schedule event failed to get: ${CHANNEL_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function moveScheduleEvent
+     * @async
+     * @description Moves a schedule event.
+     * @param {string} CHANNEL_ID - The channel ID of the schedule event.
+     * @param {string} SCHEDULE_EVENT_ID - The schedule event ID of the schedule event.
+     * @param {string} PREVIOUS_SCHEDULE_EVENT_ID - The previous schedule event ID of the schedule event.
+     * @returns {Promise<JSON>} - A promise that resolves when the schedule event is moved.
+     * Returns the information of the moved schedule event.
+     * @throws {Error} - An error is thrown if the schedule event fails to move.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async moveScheduleEvent(CHANNEL_ID, SCHEDULE_EVENT_ID, PREVIOUS_SCHEDULE_EVENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Moving schedule event: ${CHANNEL_ID}`);
+        
+        try
+        {
+            const MOVE_SCHEDULE_EVENT_INFO = await _moveScheduleEvent(this.token, 
+                this.config.serviceApiUrl, CHANNEL_ID, SCHEDULE_EVENT_ID, 
+                PREVIOUS_SCHEDULE_EVENT_ID, this.debugMode);
+            _printDatetime(`Schedule event moved: ${CHANNEL_ID}`);
+            return MOVE_SCHEDULE_EVENT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Schedule event failed to move: ${CHANNEL_ID}`);
             throw error;
         }
     }
@@ -7497,6 +7649,37 @@ async function _getSecurityGroups(AUTH_TOKEN, URL, DEBUG_MODE)
 }
 
 
+
+
+async function _liveChannelRefresh(AUTH_TOKEN, URL, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/refresh`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Refresh Live Channel Failed");
+    }
+}
+
+
 const _SECURITY_GROUPS = {
     "Content Manager": "e81e25ba-b6ab-4676-980c-f51385008eb3",
     "Everyone": "740ea96a-9c15-4c2e-ba1a-050ea893514b",
@@ -7534,6 +7717,37 @@ const _LIVE_CHANNEL_TYPES = {
 
 
 
+async function _nextEvent(AUTH_TOKEN, URL, CHANNEL_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/${CHANNEL_ID}/nextEvent`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Start Output Tracking Failed");
+    }
+}
+
+
+
+
 
 
 async function _startLiveChannel(AUTH_TOKEN, URL, CHANNEL_ID, DEBUG_MODE) 
@@ -7566,6 +7780,37 @@ async function _startLiveChannel(AUTH_TOKEN, URL, CHANNEL_ID, DEBUG_MODE)
         _apiExceptionHandler(error, "Start Live Channel Failed");
     }
 
+}
+
+
+
+
+async function _startOutputTracking(AUTH_TOKEN, URL, CHANNEL_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/${CHANNEL_ID}/startOutputTracking`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    try
+    {
+        const RESPONSE = await fetch(`${API_URL}`, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Start Output Tracking Failed");
+    }
 }
 
 
@@ -8702,6 +8947,47 @@ async function _getInputScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, SCHEDULE_EVEN
     catch (error)
     {
         _apiExceptionHandler(error, "Get Asset Schedule Event Failed");
+    }
+}
+
+
+
+
+async function _moveScheduleEvent(AUTH_TOKEN, URL, CHANNEL_ID, SCHEDULE_EVENT_ID,
+    PREVIOUS_SCHEDULE_EVENT_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/${CHANNEL_ID}/liveScheduleEvent/${SCHEDULE_EVENT_ID}/move`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        previousScheduleEventId: PREVIOUS_SCHEDULE_EVENT_ID
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        // Check for success
+        if (!RESPONSE.ok) 
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Move Live Schedule Event Failed");
     }
 }
 
