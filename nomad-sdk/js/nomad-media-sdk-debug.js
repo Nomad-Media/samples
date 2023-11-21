@@ -119,6 +119,10 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
 // common
 
 
@@ -500,6 +504,117 @@ class NomadSDK {
                     this.debugMode);
             }
             _printDatetime("Upload failed");
+            throw error;
+        }
+    }
+
+    // config functions
+    /**
+     * @function clearServerCache
+     * @async
+     * @description Clears the server cache.
+     * @returns {Promise<void>}
+     * Clears the server cache.
+     * @throws {Error} - An error is thrown if the server cache fails to clear.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async clearServerCache()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Clearing server cache`);
+
+        try
+        {
+            await _clearServerCache(this.token, this.config.serviceApiUrl, this.debugMode);
+            _printDatetime(`Server cache cleared`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Server cache failed to clear`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getConfig
+     * @async
+     * @description Gets the specified config.
+     * @param {string} CONFIG_TYPE - The type of config to get.
+     * @returns {Promise<JSON>} - A promise that resolves when the config is retrieved.
+     * Returns the config information.
+     * @throws {Error} - An error is thrown if the config fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getConfig(CONFIG_TYPE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting config`);
+
+        try
+        {
+            const CONFIG_INFO = await _getConfig(this.token, this.config.serviceApiUrl, CONFIG_TYPE, 
+                this.debugMode);
+            _printDatetime(`Config retrieved`);
+            return CONFIG_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Config failed to retrieve`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getServerTime
+     * @async
+     * @description Gets the server time.
+     * @returns {Promise<JSON>} - A promise that resolves when the server time is retrieved.
+     * Returns the server time information.
+     * @throws {Error} - An error is thrown if the server time fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getServerTime()
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting server time`);
+
+        try
+        {
+            const SERVER_TIME_INFO = await _getServerTime(this.token, this.config.serviceApiUrl,
+                this.debugMode);
+            _printDatetime(`Server time retrieved`);
+            return SERVER_TIME_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Server time failed to retrieve`);
             throw error;
         }
     }
@@ -6323,6 +6438,110 @@ async function _uploadPart(FILE, PART, DEBUG_MODE, maxRetries = 3) {
     }
 }
 
+
+
+
+
+async function _clearServerCache(AUTH_TOKEN, URL, DEBUG_MODE)
+{
+    const API_URL = `${URL}/config/clearServerCache`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Clear Server Cache Failed");
+    }
+}
+
+
+
+
+async function _getConfig(AUTH_TOKEN, URL, CONFIG_TYPE, DEBUG_MODE)
+{
+    const API_URL = `${URL}/config?configType=${CONFIG_TYPE}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Config Failed");
+    }
+}
+
+
+
+
+
+async function _getServerTime(AUTH_TOKEN, URL, DEBUG_MODE)
+{
+    const API_URL = `${URL}/config/serverTime`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Server Time Failed");
+    }
+}
 
 
 
