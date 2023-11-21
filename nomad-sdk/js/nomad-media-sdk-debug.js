@@ -123,6 +123,11 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
+
 // common
 
 
@@ -508,6 +513,45 @@ class NomadSDK {
         }
     }
 
+    // audit functions
+    /**
+     * @function getAudit
+     * @async
+     * @description Gets the audit information for the specified content ID.
+     * @param {string} CONTENT_ID - The ID of the content to get the audit information for.
+     * @returns {Promise<JSON>} - A promise that resolves when the audit information is retrieved.
+     * Returns the audit information.
+     * @throws {Error} - An error is thrown if the audit information fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAudit(CONTENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Getting audit for ${CONTENT_ID}`);
+
+        try
+        {
+            const AUDIT_INFO = await _getAudit(this.token, this.config.serviceApiUrl, CONTENT_ID, 
+                this.debugMode);
+            _printDatetime(`Audit retrieved for ${CONTENT_ID}`);
+            return AUDIT_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Audit failed to retrieve for ${CONTENT_ID}`);
+            throw error;
+        }
+    } 
+
     // config functions
     /**
      * @function clearServerCache
@@ -661,6 +705,46 @@ class NomadSDK {
     }
 
     /**
+     * @function deactivateContentUserTrack
+     * @async
+     * @description Deactivates the specified user track.
+     * @param {string} SESSION_ID - The session ID of the user track to deactivate.
+     * @param {string} CONTENT_ID - The content ID of the user track to deactivate.
+     * @param {string} CONTENT_DEFINITION_ID - The content definition ID of the user track to deactivate.
+     * @param {boolean} DEACTIVATE - Whether to deactivate the user track.
+     * @returns {Promise<void>}
+     * Deactivates the specified user track.
+     * @throws {Error} - An error is thrown if the user track fails to deactivate.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deactivateContentUserTrack(SESSION_ID, CONTENT_ID, CONTENT_DEFINITION_ID, DEACTIVATE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deactivating content user track: ${SESSION_ID}`);
+
+        try
+        {
+            await _deactivateContentUserTrack(this.token, this.config.serviceApiUrl, SESSION_ID, 
+                CONTENT_ID, CONTENT_DEFINITION_ID, DEACTIVATE, this.debugMode);
+            _printDatetime(`Content user track deactivated: ${SESSION_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Content user track failed to deactivate: ${SESSION_ID}`);
+            throw error;
+        }
+    }
+
+    /**
      * @function deleteContent
      * @async
      * @description Deletes the specified content.
@@ -693,6 +777,94 @@ class NomadSDK {
         catch (error)
         {
             _printDatetime(`Content failed to delete: ${CONTENT_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getContentUserTrack
+     * @async
+     * @description Gets the specified content user track.
+     * @param {string} CONTENT_ID - The ID of the content to get the user track for.
+     * @param {string} CONTENT_DEFINITION_ID - The ID of the content definition to use.
+     * @param {string} SORT_COLUMN - The column to sort by.
+     * @param {boolean} IS_DESC - Whether to sort descending.
+     * @param {number | null} PAGE_INDEX - The page index to get.
+     * @param {number | null} PAGE_SIZE - The page size to get.
+     * @returns {Promise<JSON>} - A promise that resolves when the content user track is retrieved.
+     * Returns the content user track information.
+     * @throws {Error} - An error is thrown if the content user track fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getContentUserTrack(CONTENT_ID, CONTENT_DEFINITION_ID, SORT_COLUMN, IS_DESC, PAGE_INDEX, 
+        PAGE_SIZE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting content user track: ${CONTENT_ID}`);
+
+        if (!PAGE_INDEX) PAGE_INDEX = 0;
+
+        if (!PAGE_SIZE) PAGE_SIZE = 100;
+
+        try
+        {
+            const CONTENT_USER_TRACK_INFO = await _getContentUserTrack(this.token, 
+                this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, SORT_COLUMN, IS_DESC, 
+                PAGE_INDEX, PAGE_SIZE, this.debugMode);
+            _printDatetime(`Content user track retrieved: ${CONTENT_ID}`);
+            return CONTENT_USER_TRACK_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Content user track failed to retrieve: ${CONTENT_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getContentUserTrackTouch
+     * @async
+     * @description Gets the specified content user track touch.
+     * @param {string} CONTENT_ID - The ID of the content to get the user track touch for.
+     * @param {string} CONTENT_DEFINITION_ID - The ID of the content definition to use.
+     * @returns {Promise<JSON>} - A promise that resolves when the content user track touch is retrieved.
+     * Returns the content user track touch information.
+     * @throws {Error} - An error is thrown if the content user track touch fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getContentUserTrackTouch(CONTENT_ID, CONTENT_DEFINITION_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+         _printDatetime(`Getting content user track touch: ${CONTENT_ID}`);
+
+        try
+        {
+            const CONTENT_USER_TRACK_TOUCH_INFO = await _getContentUserTrackTouch(this.token, 
+                this.config.serviceApiUrl, CONTENT_ID, CONTENT_DEFINITION_ID, this.debugMode);
+            _printDatetime(`Content user track touch retrieved: ${CONTENT_ID}`);
+            return CONTENT_USER_TRACK_TOUCH_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Content user track touch failed to retrieve: ${CONTENT_ID}`);
             throw error;
         }
     }
@@ -6442,6 +6614,41 @@ async function _uploadPart(FILE, PART, DEBUG_MODE, maxRetries = 3) {
 
 
 
+async function _getAudit(AUTH_TOKEN, URL, CONTENT_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/audit/${CONTENT_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Audit Failed");
+    }
+}
+
+
+
+
 async function _clearServerCache(AUTH_TOKEN, URL, DEBUG_MODE)
 {
     const API_URL = `${URL}/config/clearServerCache`;
@@ -6931,6 +7138,40 @@ async function _createContent(AUTH_TOKEN, URL, CONTENT_DEFINITION_ID, LANGUAGE_I
 
 
 
+async function _deactivateContentUserTrack(AUTH_TOKEN, URL, SESSION_ID, CONTENT_ID, 
+    CONTENT_DEFINITION_ID, DEACTIVATE, DEBUG_MODE)
+{
+    const API_URL = `${URL}/content/${CONTENT_DEFINITION_ID}/user-track/${CONTENT_ID}/${SESSION_ID}/${DEACTIVATE}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Deactivate User Track Failed");
+    }
+}
+
+
+
+
 async function _deleteContent(AUTH_TOKEN, URL, CONTENT_ID, 
     CONTENT_DEFINITION_ID, DEBUG_MODE)
 {
@@ -6957,6 +7198,89 @@ async function _deleteContent(AUTH_TOKEN, URL, CONTENT_ID,
     catch (error)
     {
         _apiExceptionHandler(error, "Delete Content Failed");
+    }
+}
+
+
+
+
+async function _getContentUserTrackTouch(AUTH_TOKEN, URL, CONTENT_ID,
+    CONTENT_DEFINITION_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/content/${CONTENT_DEFINITION_ID}/user-track/${CONTENT_ID}/touch`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Content User Track Touch Failed");
+    }
+}
+
+
+
+
+async function _getContentUserTrack(AUTH_TOKEN, URLL, CONTENT_ID,
+    CONTENT_DEFINITION_ID, SORT_COLUMN, IS_DESC, PAGE_INDEX, SIZE_INDEX, DEBUG_MODE)
+{
+    const API_URL = new URL(`${URLL}/content/${CONTENT_DEFINITION_ID}/user-track/${CONTENT_ID}`);
+
+    const queryParams = new URLSearchParams();
+
+    queryParams.append("sortColumn", SORT_COLUMN);
+    queryParams.append("isDesc", IS_DESC);
+    queryParams.append("pageIndex", PAGE_INDEX);
+    queryParams.append("sizeIndex", SIZE_INDEX);
+
+    API_URL.search = queryParams.toString();
+
+    
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Content User Track Failed");
     }
 }
 
