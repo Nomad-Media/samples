@@ -140,6 +140,47 @@ import config from "./config/config.js";
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // portal
 
 
@@ -401,40 +442,6 @@ class NomadSDK {
     }
 
     // admin
-    // asset functions
-    /**
-     * @function getAssetDetails
-     * @async
-     * @description Gets the asset details for the specified asset ID.
-     * @param {string} ASSET_ID - The ID of the asset to get the details for.
-     * @returns {Promise<JSON>} - A promise that resolves when the asset details are retrieved.
-     * Returns the asset details.
-     * @throws {Error} - An error is thrown if the asset details fail to retrieve.
-     */
-    
-    async getAssetDetails(ASSET_ID)
-    {
-        if (this.token === null)
-        {
-            await this._init();
-        }
-
-        _printDatetime(`Getting asset details for ${ASSET_ID}`);
-
-        try
-        {
-            const ASSET_DETAILS = await _getAssetDetails(this.token, this.config.serviceApiUrl, 
-                ASSET_ID, this.config.apiType, this.debugMode);
-            _printDatetime(`Asset details retrieved for ${ASSET_ID}`);
-            return ASSET_DETAILS;
-        }
-        catch (error)
-        {
-            _printDatetime(`Asset details failed to retrieve for ${ASSET_ID}`);
-            throw error;
-        }
-    }
-
     // asset upload functions
     /**
      * @function uploadAsset
@@ -4951,7 +4958,1769 @@ class NomadSDK {
         }
     }
 
-    // ping functions
+    // asset functions
+    /**
+     * @function archiveAsset
+     * @async
+     * @description Archives an asset.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is archived.
+     * Returns the information of the archived asset.
+     * @throws {Error} - An error is thrown if the asset fails to archive.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async archiveAsset(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Archiving asset: ${ASSET_ID}`);
+
+        try
+        {
+            const ARCHIVE_INFO = await _archiveAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Asset archived: ${ASSET_ID}`);
+            return ARCHIVE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to archive: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function batchAction
+     * @async
+     * @description Performs batch actions.
+     * @param {string} ACTION_NAME - The action to perform.
+     * @param {JSON | null} BATCH_ACTION - The action to be performed.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID of the batch action.
+     * @param {string | null} SCHEMA_NAME - The schema name of the batch action.
+     * @param {Array<string> | null} TARGET_IDS - The target IDs of the batch action.
+     * @param {JSON} ACTION_ARGUMENTS - The action arguments of the batch action.
+     * Note that we convert all incoming keys to lower first char to help with serialization for JSON later
+     * JSON format: {"key": "string", "value": "string"}
+     * @param {boolean | null} RESOLVER_EXCEMPT - The resolver excempt of the batch action.
+     * @returns {Promise<JSON>} - A promise that resolves when the batch actions are performed.
+     * Returns the information of the performed batch actions.
+     * @throws {Error} - An error is thrown if the batch actions fail to perform.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async batchAction(ACTION_NAME, BATCH_ACTION, CONTENT_DEFINITION_ID, SCHEMA_NAME, TARGET_IDS,
+        ACTION_ARGUMENTS, RESOLVER_EXCEMPT)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Performing batch action`);
+
+        try
+        {
+            const BATCH_ACTION_INFO = await _batchAction(this.token, 
+                this.config.serviceApiUrl, ACTION_NAME, BATCH_ACTION, CONTENT_DEFINITION_ID, 
+                SCHEMA_NAME, TARGET_IDS, this.id, ACTION_ARGUMENTS, RESOLVER_EXCEMPT, 
+                this.debugMode);
+            _printDatetime(`Batch action performed`);
+            return BATCH_ACTION_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Batch action failed to perform`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function buildMedia
+     * @async
+     * @description Builds a media.
+     * @param {Array<JSON>} SOURCES - The sources of the media.
+     * JSON format: {"sourceAssetId": "string", "startTimeCode": "string", 
+     * "endTimeCode": "string"}
+     * @param {string | null} TITLE - The title of the media.
+     * @param {Array<JSON> | null} TAGS - The tags of the media.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the media.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related contents of the media.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string} DESTINATION_FOLDER_ID - The destination folder ID of the media.
+     * @param {integer | null} VIDEO_BITRATE - The video bitrate of the media.
+     * @param {Array<JSON> | null} AUDIO_TRACKS - The audio tracks of the media.
+     * JSON format: { "id": "string", "bitRate": "integer", "sampleRate": "integer", 
+     * "numChannels": "integer", "format": "string", "frameRate": "integer",
+     * "bitDepth": "integer", "bitRateMode": "string", "durationSeconds": "integer"
+     * @returns {Promise<void>} - A promise that resolves when the media is built.
+     * @throws {Error} - An error is thrown if the media fails to build.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async buildMedia(SOURCES, TITLE, TAGS, COLLECTIONS, RELATED_CONTENTS, DESTINATION_FOLDER_ID,
+        VIDEO_BITRATE, AUDIO_TRACKS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Building media`);
+
+        try
+        {
+            await _buildMedia(this.token, this.config.serviceApiUrl, SOURCES, TITLE, TAGS, COLLECTIONS,
+                RELATED_CONTENTS, DESTINATION_FOLDER_ID, VIDEO_BITRATE, AUDIO_TRACKS, this.debugMode);
+            _printDatetime(`Media built`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Media failed to build`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function clipAsset
+     * @async
+     * @description Clips an asset.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @param {string} START_TIME_CODE - The start time code of the asset.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} END_TIME_CODE - The end time code of the asset.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} TITLE - The title of the asset.
+     * @param {string | null} OUTPUT_FOLDER_ID - The output folder ID of the asset.
+     * @param {Array<JSON> | null} TAGS - The tags of the asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related contents of the asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {integer | null} VIDEO_BITRATE - The video bitrate of the asset.
+     * @param {Array<JSON> | null} AUDIO_TRACKS - The audio tracks of the asset.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is clipped.
+     * Returns the information of the clipped asset.
+     * @throws {Error} - An error is thrown if the asset fails to clip.
+     */
+    async clipAsset(ASSET_ID, START_TIME_CODE, END_TIME_CODE, TITLE, OUTPUT_FOLDER_ID, TAGS,
+        COLLECTIONS, RELATED_CONTENTS, VIDEO_BITRATE, AUDIO_TRACKS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        _printDatetime(`Clipping asset: ${ASSET_ID}`);
+
+        try
+        {
+            const CLIP_INFO = await _clipAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.config.apiType, START_TIME_CODE, END_TIME_CODE, TITLE, 
+                OUTPUT_FOLDER_ID, TAGS, COLLECTIONS, RELATED_CONTENTS, VIDEO_BITRATE, 
+                AUDIO_TRACKS, this.debugMode);
+            _printDatetime(`Asset clipped: ${ASSET_ID}`);
+            return CLIP_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to clip: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function copyAsset
+     * @async
+     * @description Copys an asset.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @param {JSON} ACTION_ARGUMENTS - The action arguments of the asset.
+     * @param {Array<string>} TARGET_IDS - The target IDs of the asset.
+     * @param {JSON | null} BATCH_ACTION - The actions to be performed.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID of the asset.
+     * @param {string | null} SCHEMA_NAME - The schema name of the asset.
+     * Note that we convert all incoming keys to lower first char to help with serialization for JSON later
+     * JSON format: {"key": "string", "value": "string"}
+     * @param {boolean | null} RESOLVER_EXCEMPT - The resolver excempt of the asset.
+     * @returns {Promise<JSON>} - A promise that resolves when the assets are performed.
+     * Returns the information of the performed assets.
+     * @throws {Error} - An error is thrown if the assets fail to perform.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async copyAsset(ASSET_ID, ACTION_ARGUMENTS, TARGET_IDS, BATCH_ACTION, 
+        CONTENT_DEFINITION_ID, SCHEMA_NAME, RESOLVER_EXCEMPT)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Copying asset: ${ASSET_ID}`);
+
+        try
+        {
+            const COPY_INFO = await _copyAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, BATCH_ACTION, CONTENT_DEFINITION_ID, SCHEMA_NAME, TARGET_IDS, 
+                this.id, ACTION_ARGUMENTS, RESOLVER_EXCEMPT, this.debugMode);
+            _printDatetime(`Asset copied: ${ASSET_ID}`);
+            return COPY_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to copy: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createAnnotation
+     * @async
+     * @description Creates an annotation.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @param {string} START_TIME_CODE - The start time code of the annotation.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string | null} END_TIME_CODE - The end time code of the annotation.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} FIRST_KEYWORD - The first keyword of the annotation.
+     * @param {string} SECOND_KEYWORD - The second keyword of the annotation.
+     * @param {string} DESCRIPTION: The description of the annotation.
+     * @param {JSON} COUNTRY - The country of the annotation.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} CONTENT_ID - The content ID of the annotation.
+     * @param {string | null} IMAGE_URL - The image URL of the annotation.
+     * @returns {Promise<JSON>} - A promise that resolves when the annotation is created.
+     * Returns the information of the created annotation.
+     * @throws {Error} - An error is thrown if the annotation fails to create.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async createAnnotation(ASSET_ID, START_TIME_CODE, END_TIME_CODE, FIRST_KEYWORD, 
+        SECOND_KEYWORD, DESCRIPTION, COUNTRY, CONTENT_ID, IMAGE_URL)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Creating annotation`);
+
+        try
+        {
+            const PROPERTIES = {
+                "firstKeyword": FIRST_KEYWORD,
+                "secondKeyword": SECOND_KEYWORD,
+                "description": DESCRIPTION,
+                "country": COUNTRY
+            };
+
+            const CREATE_INFO = await _createAnnotation(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, START_TIME_CODE, END_TIME_CODE, PROPERTIES, CONTENT_ID, IMAGE_URL, 
+                this.debugMode);
+            _printDatetime(`Annotation created`);
+            return CREATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Annotation failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createAssetAdBreak
+     * @async
+     * @description Creates an asset ad break.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @param {string | null} TIME_CODE - The time code of the asset ad break.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {Array<JSON> | null} TAGS - The tags of the asset ad break.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} LABELS - The labels of the asset ad break.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the asset ad break is created.
+     * Returns the information of the created asset ad break.
+     * @throws {Error} - An error is thrown if the asset ad break fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createAssetAdBreak(ASSET_ID, TIME_CODE, TAGS, LABELS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+         
+        _printDatetime(`Creating asset ad break`);
+
+        try
+        {
+            const CREATE_INFO = await _createAssetAdBreak(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, TIME_CODE, TAGS, LABELS, this.debugMode);
+            _printDatetime(`Asset ad break created`);
+            return CREATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset ad break failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createFolderAsset
+     * @async
+     * @description Creates a folder asset.
+     * @param {string} PARENT_ID - The parent asset id for the parent folder.
+     * @param {string} DISPLAY_NAME - The visual name of the new folder. 
+     * It can contain spaces and other characters.
+     * @returns {Promise<JSON>} - A promise that resolves when the folder asset is created.
+     * Returns the information of the created folder asset.
+     * @throws {Error} - An error is thrown if the folder asset fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createFolderAsset(PARENT_ID, DISPLAY_NAME)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+         
+        _printDatetime(`Creating folder asset`);
+
+        try
+        {
+            const CREATE_INFO = await _createFolderAsset(this.token, this.config.serviceApiUrl, 
+                PARENT_ID, DISPLAY_NAME, this.debugMode);
+            _printDatetime(`Folder asset created`);
+            return CREATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Folder asset failed to create`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function createPlaceholderAsset
+     * @async
+     * @description Creates a placeholder asset.
+     * @param {string} PARENT_ID - The parent asset id for the placeholder asset.
+     * @param {string} ASSET_NAME - The visual name of the new placeholder.
+     * It can contain spaces and other characters, must contain file extension.
+     * @returns {Promise<JSON>} - A promise that resolves when the placeholder asset is created.
+     * Returns the information of the created placeholder asset.
+     * @throws {Error} - An error is thrown if the placeholder asset fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createPlaceholderAsset(PARENT_ID, ASSET_NAME)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+         
+        _printDatetime(`Creating placeholder asset`);
+
+        try
+        {
+            const CREATE_INFO = await _createPlaceholderAsset(this.token, this.config.serviceApiUrl, 
+                PARENT_ID, ASSET_NAME, this.debugMode);
+            _printDatetime(`Placeholder asset created`);
+            return CREATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Placeholder asset failed to create`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function createScreenshotAtTimecode
+     * @async
+     * @description Creates a screenshot at a timecode.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @param {string | null} TIME_CODE - The time code of the screenshot.
+     * Please use the following format: hh:mm:ss;ff.
+     * @returns {Promise<JSON>} - A promise that resolves when the screenshot is created.
+     * Returns the information of the created screenshot.
+     * @throws {Error} - An error is thrown if the screenshot fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async createScreenshotAtTimecode(ASSET_ID, TIME_CODE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+         
+        _printDatetime(`Creating screenshot at timecode`);
+
+        try
+        {
+            const CREATE_INFO = await _createScreenshotAtTimecode(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, TIME_CODE, this.debugMode);
+            _printDatetime(`Screenshot created at timecode`);
+            return CREATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Screenshot failed to create at timecode`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function deleteAnnotation
+     * @async
+     * @description Deletes an annotation.
+     * @param {string} ASSET_ID - The id of the asset of the annotation.
+     * @param {string} ANNOTATION_ID - The id of the annotation.
+     * @returns {Promise<JSON>} - A promise that resolves when the annotation is deleted.
+     * Returns the information of the deleted annotation.
+     * @throws {Error} - An error is thrown if the annotation fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async deleteAnnotation(ASSET_ID, ANNOTATION_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Deleting annotation`);
+
+        try
+        {
+            await _deleteAnnotation(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, ANNOTATION_ID, this.debugMode);
+            _printDatetime(`Annotation deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Annotation failed to delete`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function deleteAsset
+     * @async
+     * @description Deletes an asset.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is deleted.
+     * Returns the information of the deleted asset.
+     * @throws {Error} - An error is thrown if the asset fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteAsset(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+         
+        _printDatetime(`Deleting asset: ${ASSET_ID}`);
+
+        try
+        {
+            await _deleteAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Asset deleted: ${ASSET_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to delete: ${ASSET_ID}`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function deleteAssetAdBreak
+     * @async
+     * @description Deletes an asset ad break.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @param {string} AD_BREAK_ID - The id of the ad break.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset ad break is deleted.
+     * Returns the information of the deleted asset ad break.
+     * @throws {Error} - An error is thrown if the asset ad break fails to delete.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async deleteAssetAdBreak(ASSET_ID, AD_BREAK_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+         
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Deleting asset ad break`);
+
+        try
+        {
+            await _deleteAssetAdBreak(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, AD_BREAK_ID, this.debugMode);
+            _printDatetime(`Asset ad break deleted`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset ad break failed to delete`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function downloadArchiveAsset
+     * @async
+     * @description Downloads an archive asset.
+     * @param {Array<string>} ASSET_IDS - The ids of the assets.
+     * @param {string | null} FILE_NAME - The file name of the archive asset.
+     * Only use if apiType is admin
+     * @param {boolean | null} DOWNLOAD_PROXY - The download proxy of the archive asset.
+     * Only use if apiType is admin
+     * @returns {Promise<JSON>} - A promise that resolves when the archive asset is downloaded.
+     * Returns the information of the downloaded archive asset.
+     * @throws {Error} - An error is thrown if the archive asset fails to download.
+     */
+    async downloadArchiveAsset(ASSET_IDS, FILE_NAME, DOWNLOAD_PROXY)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Downloading archive asset`);
+
+        try
+        {
+            await _downloadArchiveAsset(this.token, this.config.serviceApiUrl, 
+                this.config.apiType, ASSET_IDS, FILE_NAME, DOWNLOAD_PROXY, this.debugMode);
+            _printDatetime(`Archive asset downloaded`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Archive asset failed to download`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function duplicateAsset
+     * @async
+     * @description Duplicates an asset.
+     * @param {string} ASSET_ID - The id of the asset.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is duplicated.
+     * Returns the information of the duplicated asset.
+     * @throws {Error} - An error is thrown if the asset fails to duplicate.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async duplicateAsset(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Duplicating asset: ${ASSET_ID}`);
+
+        try
+        {
+            const DUPLICATE_INFO = await _duplicateAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Asset duplicated: ${ASSET_ID}`);
+            return DUPLICATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to duplicate: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAnnotations
+     * @async
+     * @description Gets the annotations for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the annotations for.
+     * @returns {Promise<JSON>} - A promise that resolves when the annotations are retrieved.
+     * Returns the annotations.
+     * @throws {Error} - An error is thrown if the annotations fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async getAnnotations(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Getting annotations for ${ASSET_ID}`);
+
+        try
+        {
+            const ANNOTATIONS = await _getAnnotations(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Annotations retrieved for ${ASSET_ID}`);
+            return ANNOTATIONS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Annotations failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAsset
+     * @async
+     * @description Gets the asset for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the asset for.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is retrieved.
+     * Returns the asset.
+     * @throws {Error} - An error is thrown if the asset fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAsset(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET = await _getAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Asset retrieved for ${ASSET_ID}`);
+            return ASSET;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetAdBreaks
+     * @async
+     * @description Gets the asset ad breaks for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the asset ad breaks for.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset ad breaks are retrieved.
+     * Returns the asset ad breaks.
+     * @throws {Error} - An error is thrown if the asset ad breaks fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetAdBreaks(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset ad breaks for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_AD_BREAKS = await _getAssetAdBreaks(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Asset ad breaks retrieved for ${ASSET_ID}`);
+            return ASSET_AD_BREAKS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset ad breaks failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetChildNodes
+     * @async
+     * @description Gets the asset child nodes for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the asset child nodes for.
+     * @param {string} FOLDER_ID - The ID of the folder the asset is in.
+     * @param {string} SORT_COLUMN - The column to sort by.
+     * @param {string} IS_DESC - Whether the sort is descending or not.
+     * @param {int} PAGE_INDEX - The page index of the asset child nodes.
+     * @param {int} PAGE_SIZE - The page size of the asset child nodes.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset child nodes are retrieved.
+     * Returns the asset child nodes.
+     * @throws {Error} - An error is thrown if the asset child nodes fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetChildNodes(ASSET_ID, FOLDER_ID, SORT_COLUMN, IS_DESC, PAGE_INDEX, PAGE_SIZE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset child nodes for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_CHILD_NODES = await _getAssetChildNodes(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, FOLDER_ID, SORT_COLUMN, IS_DESC, PAGE_INDEX, PAGE_SIZE, this.debugMode);
+            _printDatetime(`Asset child nodes retrieved for ${ASSET_ID}`);
+            return ASSET_CHILD_NODES;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset child nodes failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetDetails
+     * @async
+     * @description Gets the asset details for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the details for.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset details are retrieved.
+     * Returns the asset details.
+     * @throws {Error} - An error is thrown if the asset details fail to retrieve.
+     */
+    
+    async getAssetDetails(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting asset details for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_DETAILS = await _getAssetDetails(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.config.apiType, this.debugMode);
+            _printDatetime(`Asset details retrieved for ${ASSET_ID}`);
+            return ASSET_DETAILS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset details failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetManifestWithCookies
+     * @async
+     * @description Gets the asset manifest with cookies for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the manifest with cookies for.
+     * @param {sting} COOKIE_ID - The ID of the cookie.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset manifest with cookies are retrieved.
+     * Returns the asset manifest with cookies.
+     * @throws {Error} - An error is thrown if the asset manifest with cookies fail to retrieve.
+     */
+    async getAssetManifestWithCookies(ASSET_ID, COOKIE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        _printDatetime(`Getting asset manifest with cookies for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_MANIFEST_WITH_COOKIES = await _getAssetManifestWithCookies(this.token, 
+                this.config.serviceApiUrl, ASSET_ID, COOKIE_ID, this.config.apiType, 
+                this.debugMode);
+            _printDatetime(`Asset manifest with cookies retrieved for ${ASSET_ID}`);
+            return ASSET_MANIFEST_WITH_COOKIES;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset manifest with cookies failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetMetadataSummary
+     * @async
+     * @description Gets the asset metadata summary for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the metadata summary for.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset metadata summary is retrieved.
+     * Returns the asset metadata summary.
+     * @throws {Error} - An error is thrown if the asset metadata summary fails to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetMetadataSummary(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset metadata summary for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_METADATA_SUMMARY = await _getAssetMetadataSummary(this.token, 
+                this.config.serviceApiUrl, ASSET_ID, this.debugMode);
+            _printDatetime(`Asset metadata summary retrieved for ${ASSET_ID}`);
+            return ASSET_METADATA_SUMMARY;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset metadata summary failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetParentFolders
+     * @async
+     * @description Gets the list of all parent folders for this item. 
+     * It does not include the item itself or any files in any folder. 
+     * The folders will be returned in hierarchical sequence, starting from the top node and 
+     * each identifiers object will have a new children attribute that is the next sub-folder 
+     * in the hierarchy.
+     * @param {string} ASSET_ID - The assetId of the current item to get the parents for. 
+     * This can be either a folder or a file.
+     * @param {integer} PAGE_SIZE - The size of the page of folders to retrieve. 
+     * Note this is for each level of the tree.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset parent folders are retrieved.
+     * Returns the asset parent folders.
+     * @throws {Error} - An error is thrown if the asset parent folders fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetParentFolders(ASSET_ID, PAGE_SIZE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset parent folders for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_PARENT_FOLDERS = await _getAssetParentFolders(this.token, 
+                this.config.serviceApiUrl, ASSET_ID, PAGE_SIZE, this.debugMode);
+            _printDatetime(`Asset parent folders retrieved for ${ASSET_ID}`);
+            return ASSET_PARENT_FOLDERS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset parent folders failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    } 
+
+    /**
+     * @function getAssetScreenshotDetails
+     * @async
+     * @description Gets the asset screenshot details for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the screenshot details for.
+     * @param {string} SEGMENT_ID - The ID of the segment.
+     * @param {string} SCREENSHOT_ID - The ID of the screenshot.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset screenshot details are retrieved.
+     * Returns the asset screenshot details.
+     * @throws {Error} - An error is thrown if the asset screenshot details fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetScreenshotDetails(ASSET_ID, SEGMENT_ID, SCREENSHOT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset screenshot details for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_SCREENSHOT_DETAILS = await _getAssetScreenshotDetails(this.token, 
+                this.config.serviceApiUrl, ASSET_ID, SEGMENT_ID, SCREENSHOT_ID, this.debugMode);
+            _printDatetime(`Asset screenshot details retrieved for ${ASSET_ID}`);
+            return ASSET_SCREENSHOT_DETAILS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset screenshot details failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getAssetSegmentDetails
+     * @async
+     * @description Gets the asset segment details for the specified asset ID.
+     * @param {string} ASSET_ID - The ID of the asset to get the segment details for.
+     * @param {string} SEGMENT_ID - The ID of the segment.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset segment details are retrieved.
+     * Returns the asset segment details.
+     * @throws {Error} - An error is thrown if the asset segment details fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getAssetSegmentDetails(ASSET_ID, SEGMENT_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting asset segment details for ${ASSET_ID}`);
+
+        try
+        {
+            const ASSET_SEGMENT_DETAILS = await _getAssetSegmentDetails(this.token, 
+                this.config.serviceApiUrl, ASSET_ID, SEGMENT_ID, this.debugMode);
+            _printDatetime(`Asset segment details retrieved for ${ASSET_ID}`);
+            return ASSET_SEGMENT_DETAILS;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset segment details failed to retrieve for ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getUserUploadParts
+     * @async
+     * @description Gets the user upload parts for the specified asset ID.
+     * @param {string} UPLOAD_ID - The ID of the upload to get the user upload parts for.
+     * @returns {Promise<JSON>} - A promise that resolves when the user upload parts are retrieved.
+     * Returns the user upload parts.
+     * @throws {Error} - An error is thrown if the user upload parts fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getUserUploadParts(UPLOAD_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting user upload parts for ${UPLOAD_ID}`);
+
+        try
+        {
+            const USER_UPLOAD_PARTS = await _getUserUploadParts(this.token, 
+                this.config.serviceApiUrl, UPLOAD_ID, this.debugMode);
+            _printDatetime(`User upload parts retrieved for ${UPLOAD_ID}`);
+            return USER_UPLOAD_PARTS;
+        }
+        catch (error)
+        {
+            _printDatetime(`User upload parts failed to retrieve for ${UPLOAD_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function getUserUploads
+     * @async
+     * @description Gets the upload uploads for the specified asset ID.
+     * @param {boolean} INCLUDE_COMPLETED_UPLOADS - Whether to include completed uploads or not.
+     * @returns {Promise<JSON>} - A promise that resolves when the upload uploads are retrieved.
+     * Returns the upload uploads.
+     * @throws {Error} - An error is thrown if the upload uploads fail to retrieve.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async getUserUploads(INCLUDE_COMPLETED_UPLOADS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Getting user uploads`);
+
+        try
+        {
+            const UPLOAD_UPLOADS = await _getUserUploads(this.token, 
+                this.config.serviceApiUrl, INCLUDE_COMPLETED_UPLOADS, this.debugMode);
+            _printDatetime(`User uploads retrieved`);
+            return UPLOAD_UPLOADS;
+        }
+        catch (error)
+        {
+            _printDatetime(`User uploads failed to retrieve`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function importAnnotations
+     * @async
+     * @description Imports annotations.
+     * @param {string} ASSET_ID - The ID of the asset to import the annotations for.
+     * @param {Array<JSON>} ANNOTATIONS - The annotations to import.
+     * JSON format: {"startTimeCode": "string", "endTimeCode": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the annotations are imported.
+     * Returns the information of the imported annotations.
+     * @throws {Error} - An error is thrown if the annotations fail to import.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async importAnnotations(ASSET_ID, ANNOTATIONS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Importing annotations`);
+
+        try
+        {
+            await _importAnnotations(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, ANNOTATIONS, this.debugMode);
+            _printDatetime(`Annotations imported`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Annotations failed to import`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function indexAsset
+     * @async
+     * @description Indexes an asset.
+     * @param {string} ASSET_ID - The ID of the asset to index.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is indexed.
+     * Returns the information of the indexed asset.
+     * @throws {Error} - An error is thrown if the asset fails to index.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async indexAsset(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Indexing asset: ${ASSET_ID}`);
+
+        try
+        {
+            await _indexAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.debugMode);
+            _printDatetime(`Asset indexed: ${ASSET_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to index: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+    
+    /**
+     * @function localRestoreAsset
+     * @async
+     * @description Local restores an asset.
+     * @param {string} ASSET_ID - The ID of the asset to local restore.
+     * @param {string | null} PROFILE - The profile of the local restore.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is local restored.
+     * Returns the information of the local restored asset.
+     * @throws {Error} - An error is thrown if the asset fails to local restore.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async localRestoreAsset(ASSET_ID, PROFILE)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Local restoring asset: ${ASSET_ID}`);
+
+        try
+        {
+            const LOCAL_RESTORE_INFO = await _localRestoreAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, PROFILE, this.debugMode);
+            _printDatetime(`Asset local restored: ${ASSET_ID}`);
+            return LOCAL_RESTORE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to local restore: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function moveAsset
+     * @async
+     * @description Moves an asset.
+     * @param {string} ASSET_ID - The ID of the asset to move.
+     * @param {JSON} ACTION_ARGUMENTS - The action arguments of the move.
+     * @param {Array<string>} TARGET_IDS - The target IDs of the move.
+     * @param {JSON | null} BATCH_ACTION - The batch action of the move.
+     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID of the move.
+     * @param {string | null} SCHEMA_NAME - The schema name of the move.
+     * @param {boolean | null} RESOLVER_EXCEMPT - The resolver excempt of the move.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is moved.
+     * Returns the information of the moved asset.
+     * @throws {Error} - An error is thrown if the asset fails to move.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async moveAsset(ASSET_ID, ACTION_ARGUMENTS, TARGET_IDS, BATCH_ACTION, 
+        CONTENT_DEFINITION_ID, SCHEMA_NAME, RESOLVER_EXCEMPT)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Moving asset: ${ASSET_ID}`);
+
+        try
+        {
+            const MOVE_INFO = await _moveAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, ACTION_ARGUMENTS, TARGET_IDS, BATCH_ACTION, CONTENT_DEFINITION_ID, 
+                SCHEMA_NAME, this.id, RESOLVER_EXCEMPT, this.debugMode);
+            _printDatetime(`Asset moved: ${ASSET_ID}`);
+            return MOVE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to move: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function recordsAssetTrackingBeacon
+     * @async
+     * @description Records an asset tracking beacon for the asset (either an ad or a normal asset).
+     * @param {string} ASSET_ID - The ID of the asset to record the asset tracking beacon for.
+     * @param {string} TRACKING_EVENT - The tracking event of the asset tracking beacon.
+     * enum: "Progress", "FirstQuartile", "Midpoint", "ThirdQuartile", "Complete", "Hide",
+     * "LiveStream"
+     * @param {string} LIVE_CHANNEL_ID - The live channel ID of the asset tracking beacon.
+     * @param {string | null} CONTENT_ID - Optional content Id to track along with required asset id.
+     * @param {integer} SECOND - Second mark into the video/ad.
+     * @returns {Promise<void>} - A promise that resolves when the asset tracking beacon is recorded.
+     * @throws {Error} - An error is thrown if the asset tracking beacon fails to record.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async recordsAssetTrackingBeacon(ASSET_ID, TRACKING_EVENT, LIVE_CHANNEL_ID, CONTENT_ID, SECOND)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Recording asset tracking beacon`);
+
+        try
+        {
+            await _recordsAssetTrackingBeacon(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, TRACKING_EVENT, LIVE_CHANNEL_ID, CONTENT_ID, SECOND, this.debugMode);
+            _printDatetime(`Asset tracking beacon recorded`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset tracking beacon failed to record`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function registerAsset
+     * @async
+     * @description Registers an asset.
+     * @param {string} ASSET_ID - The ID of the asset to register.
+     * @param {string} PARENT_ID - The ID of the parent.
+     * @param {string | null} DISPLAY_OBJECT_KEY - The display object key of the register.
+     * @param {string} BUCKET_NAME - The bucket name of the register.
+     * @param {string} OBJECT_KEY - The object key of the register.
+     * @param {string | null} E_TAG - The eTag of the register.
+     * @param {Array<string> | null} TAGS - The tags of the register.
+     * @param {Array<string> | null} COLLECTIONS - The collections of the register.
+     * @param {Array<string> | null} RELATED_CONTENTS - The related contents of the register.
+     * @param {string | null} SEQUENCER - The sequencer of the register.
+     * @param {string | null} ASSET_STATUS - The asset status of the register.
+     * enum: "Available", "Renaming", "Copying", "Restoring", "registering", "Uploading",
+     * "Archiving", "Archived", "PendingArchive", "PendingRestore", "Restored", "Deleting",
+     * "Moving", "SlugReplaced", "Updating", "Error", "Assembling", "Clipping", "Placeholder"
+     * @param {string | null} STORAGE_CLASS - The storage class of the register.
+     * enum: "Standard", "ReducedRedundancy", "Glacier", "StandardInfrequentAccess", 
+     * "OneZoneInfrequentAccess", "IntelligentTiering", "DeepArchive", "GlacierInstanctRetrival", 
+     * "Outposts"
+     * @param {string | null} ASSET_TYPE - The asset type of the register.
+     * enum: "Folder", "File", "Bucket"
+     * @param {integer | null} CONTENT_LENGTH - The content length of the register.
+     * @param {string | null} STORAGE_EVENT_NAME - The storage event name of the register.
+     * @param {string | null} CREATED_DATE - The created date of the register.
+     * @param {string | null} STORAGE_SOURCE_IP_ADDRESS - The storage source IP address of the register.
+     * @param {boolean} START_MEDIA_PROCESSOR - The start media processor of the register.
+     * @param {boolean} DELETE_MISSING_ASSET - The delete missing asset of the register.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is registered.
+     * Returns the information of the registered asset.
+     * @throws {Error} - An error is thrown if the asset fails to register.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async registerAsset(ASSET_ID, PARENT_ID, DISPLAY_OBJECT_KEY, BUCKET_NAME, OBJECT_KEY, E_TAG, TAGS,
+        COLLECTIONS, RELATED_CONTENTS, SEQUENCER, ASSET_STATUS, STORAGE_CLASS, ASSET_TYPE,
+        CONTENT_LENGTH, STORAGE_EVENT_NAME, CREATED_DATE, STORAGE_SOURCE_IP_ADDRESS, 
+        START_MEDIA_PROCESSOR, DELETE_MISSING_ASSET)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Registering asset: ${ASSET_ID}`);
+
+        try
+        {
+            const REGISTER_INFO = await _registerAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, PARENT_ID, DISPLAY_OBJECT_KEY, BUCKET_NAME, OBJECT_KEY, E_TAG, TAGS,
+                COLLECTIONS, RELATED_CONTENTS, SEQUENCER, ASSET_STATUS, STORAGE_CLASS, ASSET_TYPE,
+                CONTENT_LENGTH, STORAGE_EVENT_NAME, CREATED_DATE, STORAGE_SOURCE_IP_ADDRESS, 
+                START_MEDIA_PROCESSOR, DELETE_MISSING_ASSET, this.debugMode);
+            _printDatetime(`Asset registered: ${ASSET_ID}`);
+            return REGISTER_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to register: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function reprocessAsset
+     * @async
+     * @description Reprocesses an asset.
+     * @param {Array<string>} TARGET_IDS - The target IDs of the reprocess.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is reprocessed.
+     * Returns the information of the reprocessed asset.
+     * @throws {Error} - An error is thrown if the asset fails to reprocess.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async reprocessAsset(TARGET_IDS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Reprocessing asset`);
+
+        try
+        {
+            const REPROCESS_INFO = await _reprocessAsset(this.token, this.config.serviceApiUrl, 
+                TARGET_IDS, this.debugMode);
+            _printDatetime(`Asset reprocessed`);
+            return REPROCESS_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to reprocess`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function restoreAsset
+     * @async
+     * @description Restores an asset.
+     * @param {string} ASSET_ID - The ID of the asset to restore.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is restored.
+     * Returns the information of the restored asset.
+     * @throws {Error} - An error is thrown if the asset fails to restore.
+     */
+    async restoreAsset(ASSET_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        _printDatetime(`Restoring asset: ${ASSET_ID}`);
+
+        try
+        {
+            await _restoreAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, this.config.apiType, this.debugMode);
+            _printDatetime(`Asset restored: ${ASSET_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to restore: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function shareAsset
+     * @async
+     * @description Shares an asset.
+     * @param {string} ASSET_ID - The ID of the asset to share.
+     * @param {Array<JSON> | null} NOMAD_USERS - The nomad users of the share.
+     * JSON format: { id: string }
+     * @param {Array<JSON> | null} EXTERNAL_USERS - The external users of the share.
+     * JSON format: { id: string }
+     * @param {integer | null} SHARE_DURATION_IN_HOURS - The share duration in hours of the share.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is shared.
+     * Returns the information of the shared asset.
+     * @throws {Error} - An error is thrown if the asset fails to share.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async shareAsset(ASSET_ID, NOMAD_USERS, EXTERNAL_USERS, SHARE_DURATION_IN_HOURS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Sharing asset: ${ASSET_ID}`);
+
+        try
+        {
+            const SHARE_INFO = await _shareAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, NOMAD_USERS, EXTERNAL_USERS, SHARE_DURATION_IN_HOURS, this.debugMode);
+            _printDatetime(`Asset shared: ${ASSET_ID}`);
+            return SHARE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to share: ${ASSET_ID}`);
+            throw error;
+        }
+    }  
+
+    /**
+     * @function startWorkflow
+     * @async
+     * @description Starts a workflow.
+     * @param {JSON} ACTION_ARGUMENTS - The action arguments of the start.
+     * JSON format: { "workflowName": {WORKFLOW_NAME} }
+     * @param {Array<string>} TARGET_IDS - The target IDs of the start.
+     * @returns {Promise<JSON>} - A promise that resolves when the workflow is started.
+     * Returns the information of the started workflow.
+     * @throws {Error} - An error is thrown if the workflow fails to start.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async startWorkflow(ACTION_ARGUMENTS, TARGET_IDS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Starting workflow`);
+
+        try
+        {
+            const START_INFO = await _startWorkflow(this.token, this.config.serviceApiUrl, 
+                ACTION_ARGUMENTS, TARGET_IDS, this.debugMode);
+            _printDatetime(`Workflow started`);
+            return START_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Workflow failed to start`);
+            throw error;
+        }
+    }  
+
+    /**
+     * @function transcribeAsset
+     * @async
+     * @description Transcribes an asset.
+     * @param {string} ASSET_ID - The ID of the asset to transcribe.
+     * @param {string} TRANSCRIPT_ID - The ID of the transcript.
+     * @param {Array<JSON> | null} TRANSCRIPT - The transcript of the transcribe.
+     * JSON format: { "startTimeCode": {START_TIME_CODE}, "content": {CONTENT} }
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is transcribed.
+     * @throws {Error} - An error is thrown if the asset fails to transcribe.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async transcribeAsset(ASSET_ID, TRANSCRIPT_ID, TRANSCRIPT)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Transcribing asset: ${ASSET_ID}`);
+
+        try
+        {
+            await _transcribeAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, TRANSCRIPT_ID, TRANSCRIPT, this.debugMode);
+            _printDatetime(`Asset transcribed: ${ASSET_ID}`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to transcribe: ${ASSET_ID}`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateAnnotation
+     * @async
+     * @description Updates an annotation.
+     * @param {string} ASSET_ID - The ID of the asset to update the annotation for.
+     * @param {string} ANNOTATION_ID - The ID of the annotation.
+     * @param {stromg} START_TIME_CODE - The start time code of the annotation.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} END_TIME_CODE - The end time code of the annotation.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {string} FIRST_KEYWORD - The first keyword of the annotation.
+     * @param {string} SECOND_KEYWORD - The second keyword of the annotation.
+     * @param {string} DESCRIPTION: The description of the annotation.
+     * @param {JSON} COUNTRY - The country of the annotation.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {string | null} CONTENT_ID - The content ID of the annotation.
+     * @param {string | null} IMAGE_URL - The image URL of the annotation.
+     * @returns {Promise<JSON>} - A promise that resolves when the annotation is updated.
+     * Returns the information of the updated annotation.
+     * @throws {Error} - An error is thrown if the annotation fails to create.
+     * @throws {Error} - An error is thrown if the API type is not portal.
+     */
+    async updateAnnotation(ASSET_ID, ANNOTATION_ID, START_TIME_CODE, END_TIME_CODE, 
+        FIRST_KEYWORD, SECOND_KEYWORD, DESCRIPTION, COUNTRY, CONTENT_ID, IMAGE_URL)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "portal")
+        {
+            throw new Error("This function is only available for portal API type.");
+        }
+
+        _printDatetime(`Updating annotation`);
+
+        try
+        {
+            const PROPERTIES = {
+                "firstKeyword": FIRST_KEYWORD,
+                "secondKeyword": SECOND_KEYWORD,
+                "description": DESCRIPTION,
+                "country": COUNTRY
+            };
+
+            const UPDATE_INFO = await _updateAnnotation(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, ANNOTATION_ID, START_TIME_CODE, END_TIME_CODE, PROPERTIES,
+                CONTENT_ID, IMAGE_URL, this.debugMode);
+            _printDatetime(`Annotation updated`);
+            return UPDATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Annotation failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateAsset
+     * @async
+     * @description Updates specific properties of the asset. 
+     * Other API calls can be used to alter other more involved properties.
+     * @param {string} ASSET_ID - The ID of the asset to update.
+     * @param {string | null} DISPLAY_NAME - The display name of the asset.
+     * @param {string | null} DISPLAY_DATE - The display date of the asset.
+     * @param {string | null} AVAILABLE_START_DATE - The available start date of the asset.
+     * @param {string | null} AVAILABLE_END_DATE - The available end date of the asset.
+     * @param {JSON | null} CUSTOM_PROPERTIES - The custom properties of the asset.
+     * JSON format: {"key": "string", "value": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the asset is updated.
+     * Returns the information of the updated asset.
+     * @throws {Error} - An error is thrown if the asset fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateAsset(ASSET_ID, DISPLAY_NAME, DISPLAY_DATE, AVAILABLE_START_DATE, AVAILABLE_END_DATE,
+        CUSTOM_PROPERTIES)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating asset`);
+
+        try
+        {
+            await _updateAsset(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, DISPLAY_NAME, DISPLAY_DATE, AVAILABLE_START_DATE, AVAILABLE_END_DATE,
+                CUSTOM_PROPERTIES, this.debugMode);
+            _printDatetime(`Asset updated`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateAssetAdBreak
+     * @async
+     * @description Updates an asset ad break.
+     * @param {string} ASSET_ID - The ID of the asset to update the ad break for.
+     * @param {string} AD_BREAK_ID - The ID of the ad break.
+     * @param {string | null} TIME_CODE - The time code of the asset ad break.
+     * Please use the following format: hh:mm:ss;ff.
+     * @param {Array<JSON> | null} TAGS - The tags of the asset ad break.
+     * JSON format: {"id": "string", "description": "string"}
+     * @param {Array<JSON> | null} LABELS - The labels of the asset ad break.
+     * JSON format: {"id": "string", "description": "string"}
+     * @returns {Promise<JSON>} - A promise that resolves when the asset ad break is created.
+     * Returns the information of the created asset ad break.
+     * @throws {Error} - An error is thrown if the asset ad break fails to create.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateAssetAdBreak(ASSET_ID, AD_BREAK_ID, TIME_CODE, TAGS, LABELS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating asset ad break`);
+
+        try
+        {
+            const UPDATE_INFO = await _updateAssetAdBreak(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, AD_BREAK_ID, TIME_CODE, TAGS, LABELS, this.debugMode);
+            _printDatetime(`Asset ad break updated`);
+            return UPDATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset ad break failed to update`);
+            throw error;
+        }
+    }
+
+    /**
+     * @function updateAssetLanguage
+     * @async
+     * @description Updates language of the asset. This will cause a re-process of the AI data.
+     * @param {string} ASSET_ID - The ID of the asset to update the language for.
+     * @param {string} LANGUAGE_ID - The ID of the language.
+     * @returns {Promise<JSON>} - A promise that resolves when the asset language is updated.
+     * Returns the information of the updated asset language.
+     * @throws {Error} - An error is thrown if the asset language fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async updateAssetLanguage(ASSET_ID, LANGUAGE_ID)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Updating asset language`);
+
+        try
+        {
+            const UPDATE_INFO = await _updateAssetLanguage(this.token, this.config.serviceApiUrl, 
+                ASSET_ID, LANGUAGE_ID, this.debugMode);
+            _printDatetime(`Asset language updated`);
+            return UPDATE_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Asset language failed to update`);
+            throw error;
+        }
+    } 
+
+     // ping functions
     /**
      * @function ping
      * @async
@@ -11701,6 +13470,744 @@ async function _resetPassword(URL, USERNAME, TOKEN, NEW_PASSWORD, DEBUG_MODE)
 
 
 
+async function _archiveAsset(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/archive`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Archive Asset Failed");
+    }
+}
+
+
+
+
+async function _batchAction(AUTH_TOKEN, URL, ACTION_NAME, BATCH_ACTION, CONTENT_DEFINITION_ID, 
+    SCHEMA_NAME, TARGET_IDS, USER_ID, ACTION_ARGUMENTS, RESOLVER_EXCEMPT, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ACTION_NAME}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        batchAction: BATCH_ACTION,
+        contentDefinitionId: CONTENT_DEFINITION_ID,
+        schemaName: SCHEMA_NAME,
+        targetIds: TARGET_IDS,
+        userId: USER_ID,
+        actionArguments: ACTION_ARGUMENTS,
+        resolverExempt: RESOLVER_EXCEMPT
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Batch Action Failed");
+    }
+}
+
+
+
+
+async function _buildMedia(AUTH_TOKEN, URL, SOURCES, TITLE, TAGS, COLLECTIONS, RELATED_CONTENTS,
+    DESTINATION_FOLDER_ID, VIDEO_BITRATE, AUDIO_TRACKS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/asset/build-media`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        sources: SOURCES,
+        title: TITLE,
+        tags: TAGS,
+        collections: COLLECTIONS,
+        relatedContent: RELATED_CONTENTS,
+        destinationFolderId: DESTINATION_FOLDER_ID,
+        videoBitrate: VIDEO_BITRATE,
+        audioTracks: AUDIO_TRACKS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Build Media Failed");
+    }
+}
+
+
+
+
+async function _clipAsset(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, START_TIME_CODE, END_TIME_CODE,
+    TITLE, OUTPUT_FOLDER_ID, TAGS, COLLECTIONS, RELATED_CONTENTS, VIDEO_BITRATE, AUDIO_TRACKS,
+    DEBUG_MODE)
+{
+    const API_URL = API_TYPE === "admin" ? 
+        `${URL}/admin/asset/${ASSET_ID}/clip` :
+        `${URL}/asset/${ASSET_ID}/clip`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        startTimeCode: START_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        title: TITLE,
+        output_folder_id: OUTPUT_FOLDER_ID,
+        tags: TAGS,
+        collections: COLLECTIONS,
+        relatedContent: RELATED_CONTENTS,
+        videoBitrate: VIDEO_BITRATE,
+        audioTracks: AUDIO_TRACKS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Clip Asset Failed");
+    }
+}
+
+
+
+
+async function _copyAsset(AUTH_TOKEN, URL, ASSET_ID, BATCH_ACTION, CONTENT_DEFINITION_ID,
+    SCHEMA_NAME, TARGET_IDS, USER_ID, ACTION_ARGUMENTS, RESOLVER_EXCEMPT, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/copy`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        batchAction: BATCH_ACTION,
+        contentDefinitionId: CONTENT_DEFINITION_ID,
+        schemaName: SCHEMA_NAME,
+        targetIds: TARGET_IDS,
+        userId: USER_ID,
+        actionArguments: ACTION_ARGUMENTS,
+        resolverExempt: RESOLVER_EXCEMPT
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Copy Asset Failed");
+    }
+}
+
+
+
+
+async function _createAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START_TIME_CODE,
+    END_TIME_CODE, PROPERTIES, CONTENT_ID, IMAGE_URL, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/annotation/${ANNOTATION_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Create body for the request
+    const BODY = {
+        id: ANNOTATION_ID,
+        startTimeCode: START_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        properties: PROPERTIES,
+        contentId: CONTENT_ID,
+        imageUrl: IMAGE_URL
+    };
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Annotation Failed");
+    }
+}
+
+
+
+
+async function _createAssetAdBreak(AUTH_TOKEN, URL, ASSET_ID, TIME_CODE, TAGS,
+    LABELS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreaks`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        id: ASSET_ID,
+        timeCode: TIME_CODE,
+        tags: TAGS,
+        labels: LABELS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Asset Ad Break Failed");
+    }
+}
+
+
+
+
+async function _createFolderAsset(AUTH_TOKEN, URL, PARENT_ID, DISPLAY_NAME, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${PARENT_ID}/create-folder`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        displayName: DISPLAY_NAME
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Folder Asset Failed");
+    }
+}
+
+
+
+
+async function _createPlaceholderAsset(AUTH_TOKEN, URL, PARENT_ID, ASSET_NAME, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${PARENT_ID}/create-placeholder`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        assetName: ASSET_NAME
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Placeholder Asset Failed");
+    }
+}
+
+
+
+
+async function _createScreenshotAtTimecode(AUTH_TOKEN, URL, ASSET_ID, TIMECODE, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/screenshot`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        timecode: TIMECODE
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Create Screenshot At Timecode Failed");
+    }
+}
+
+
+
+
+async function _deleteAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/asset/${ASSET_ID}/annotation/${ANNOTATION_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Annotation Failed");
+    }
+}
+
+
+
+
+async function _deleteAssetAdBreak(AUTH_TOKEN, URL, ASSET_ID, AD_BREAK_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/content/${ASSET_ID}/adbreak/${AD_BREAK_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Ad Break Failed");
+    }
+}
+
+
+
+
+async function _deleteAsset(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: DELETE`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "DELETE",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Delete Asset Failed");
+    }
+}
+
+
+
+
+async function _downloadArchiveAsset(AUTH_TOKEN, URL, API_TYPE, ASSET_IDS, FILE_NAME, DOWNLOAD_PROXY, 
+    DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/download-archive`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        assetIds: ASSET_IDS,
+        fileName: FILE_NAME
+    };
+
+    if (API_TYPE === "admin") BODY.downloadProxy = DOWNLOAD_PROXY;
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Asset Download Archive Failed");
+    }
+}
+
+
+
+
+async function _duplicateAsset(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/duplicate`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Duplicate Asset Failed");
+    }
+}
+
+
+
+
+async function _getAnnotations(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/asset/${ASSET_ID}/annotation`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Annotations Failed");
+    }
+}
+
+
+
+
+async function _getAssetAdBreaks(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreaks`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Ad Break Failed");
+    }
+}
+
+
+
+
+async function _getAssetChildNodes(AUTH_TOKEN, URLL, ID, FOLDER_ID, SORT_COLUMN, IS_DESC, 
+    PAGE_INDEX, PAGE_SIZE, DEBUG_MODE)
+{
+    const API_URL = new URL(`${URLL}/asset/admin/asset/${ID}/getAssetChildNodes`);
+
+    // Create query params
+    const QUERY_PARAMS = new URLSearchParams();
+    QUERY_PARAMS.append("folderId", FOLDER_ID);
+    QUERY_PARAMS.append("sortColumn", SORT_COLUMN);
+    QUERY_PARAMS.append("isDesc", IS_DESC);
+    QUERY_PARAMS.append("pageIndex", PAGE_INDEX);
+    QUERY_PARAMS.append("pageSize", PAGE_SIZE);
+
+    API_URL.search = QUERY_PARAMS.toString();
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Child Node Failed");
+    }
+}
+
+
+
+
 async function _getAssetDetails(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, DEBUG_MODE)
 {
     const API_URL = API_TYPE === "admin" ? `${URL}/admin/asset/${ASSET_ID}/detail` : `${URL}/asset/${ASSET_ID}/detail`;
@@ -11730,6 +14237,926 @@ async function _getAssetDetails(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, DEBUG_MODE)
     catch (error)
     {
         _apiExceptionHandler(error, "Get Asset Details Failed");
+    }
+}
+
+
+
+
+async function _getAssetManifestWithCookies(AUTH_TOKEN, URL, ASSET_ID, COOKIE_ID, API_TYPE, 
+    DEBUG_MODE)
+{
+    const API_URL = API_TYPE === "admin" ? 
+        `${URL}/admin/asset/${ASSET_ID}/set-cookie/${COOKIE_ID}` : 
+        `${URL}/asset/${ASSET_ID}/set-cookie/${COOKIE_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Manifest Failed");
+    }
+}
+
+
+
+
+async function _getAssetMetadataSummary(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/metadata-summary`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Metadata Summary Failed");
+    }
+}
+
+
+
+
+async function _getAssetParentFolders(AUTH_TOKEN, URL, ASSET_ID, PAGE_SIZE, DEBUG_MODE)
+
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/parent-folders?pageSize=${PAGE_SIZE}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json()
+        }
+
+        return await RESPONSE.json();
+
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Parent Folders Failed");
+    }
+}
+
+
+
+
+async function _getAssetScreenshotDetails(AUTH_TOKEN, URL, ASSET_ID, SEGMENT_ID, 
+    SCREENSHOT_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/${SEGMENT_ID}/${SCREENSHOT_ID}/detail`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Screenshot Details Failed");
+    }
+}
+
+
+
+
+async function _getAssetSegmentDetails(AUTH_TOKEN, URL, ASSET_ID, SEGMENT_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/${SEGMENT_ID}/detail`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Segment Details Failed");
+    }
+}
+
+
+
+
+async function _getAsset(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get Asset Failed");
+    }
+}
+
+
+
+
+async function _getUserUploadParts(AUTH_TOKEN, URL, UPLOAD_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/upload/${UPLOAD_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get User Upload Parts Failed");
+    }
+}
+
+
+
+
+async function _getUserUploads(AUTH_TOKEN, URL, INCLUDE_COMPLETED_UPLOADS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/upload?includeCompletedUploads=${INCLUDE_COMPLETED_UPLOADS}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Get User Uploads Failed");
+    }
+}
+
+
+
+
+async function _importAnnotations(AUTH_TOKEN, URL, ASSET_ID, ANNOTATIONS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/asset/${ASSET_ID}/annotation/import`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(ANNOTATIONS)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(ANNOTATIONS)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Import Annotations Failed");
+    }
+}
+
+
+
+
+async function _indexAsset(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/index`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Index Asset Failed");
+    }
+}
+
+
+
+
+async function _localRestoreAsset(AUTH_TOKEN, URL, ASSET_ID, PROFILE, DEBUG_MODE)
+{
+    const API_URL = `${URL}/asset/${ASSET_ID}/localRestore`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        profile: PROFILE
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Local Restore Asset Failed");
+    }
+}
+
+
+
+
+async function _moveAsset(AUTH_TOKEN, URL, ASSET_ID, ACTION_ARGUMENTS, TARGET_IDS,
+    BATCH_ACTION, CONTENT_DEFINITION_ID, SCHEMA_NAME, USER_ID, RESOLVER_EXCEMPT, 
+    DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/move`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        batchAction: BATCH_ACTION,
+        contentDefinitionId: CONTENT_DEFINITION_ID,
+        schemaName: SCHEMA_NAME,
+        targetIds: TARGET_IDS,
+        userId: USER_ID,
+        actionArguments: ACTION_ARGUMENTS,
+        resolverExempt: RESOLVER_EXCEMPT
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Move Asset Failed");
+    }
+}
+
+
+
+
+async function _recordsAssetTrackingBeacon(AUTH_TOKEN, URLL, ASSET_ID, TRACKING_EVENT, 
+    LIVE_CHANNEL_ID, CONTENT_ID, SECOND, DEBUG_MODE)
+{
+    const API_URL = new URL`${URLL}/asset/tracking`;
+
+    // Create query string for the request
+    const QUERY_STRING = API_URL.searchParams;
+    QUERY_STRING.append("trackingEvent", TRACKING_EVENT);
+    QUERY_STRING.append("assetId", ASSET_ID);
+    QUERY_STRING.append("liveChannelId", LIVE_CHANNEL_ID);
+    QUERY_STRING.append("contentId", CONTENT_ID);
+    QUERY_STRING.append("second", SECOND);
+
+    API_URL.search = QUERY_STRING.toString();
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: GET`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "GET",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Records Asset Tracking Beacon Failed");
+    }
+}
+
+
+
+
+async function _registerAsset(AUTH_TOKEN, URL, ASSET_ID, PARENT_ID, DISPLAY_OBJECT_KEY, BUCKET_NAME,
+    OBJECT_KEY, ETAG, TAGS, COLLECTIONS, RELATED_CONTENTS, SEQUENCER, ASSET_STATUS, 
+    STORAGE_CLASS, ASSET_TYPE, CONTENT_LENGTH, STORAGE_EVENT_NAME, CREATED_DATE, 
+    STORAGE_SOURCE_IP_ADDRESS, START_MEDIA_PROCESSOR, DELETE_MISSING_ASSET, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/register`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);  
+
+    const BODY = {
+        id: ASSET_ID,
+        parentId: PARENT_ID,
+        displayObjectKey: DISPLAY_OBJECT_KEY,
+        bucketName: BUCKET_NAME,
+        objectKey: OBJECT_KEY,
+        eTag: ETAG,
+        tags: TAGS,
+        collections: COLLECTIONS,
+        relatedContent: RELATED_CONTENTS,
+        sequencer: SEQUENCER,
+        assetStatus: ASSET_STATUS,
+        storageClass: STORAGE_CLASS,
+        assetType: ASSET_TYPE,
+        contentLength: CONTENT_LENGTH,
+        storageEventName: STORAGE_EVENT_NAME,
+        createdDate: CREATED_DATE,
+        storageSourceIpAddress: STORAGE_SOURCE_IP_ADDRESS,
+        startMediaProcessor: START_MEDIA_PROCESSOR,
+        deleteMissingAsset: DELETE_MISSING_ASSET
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Register Asset Failed");
+    }
+}
+
+
+
+
+
+async function _reprocessAsset(AUTH_TOKEN, URL, TARGET_IDS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/reprocess`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        targetIds: TARGET_IDS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Reprocess Asset Failed");
+    }
+}
+
+
+
+
+async function _restoreAsset(AUTH_TOKEN, URL, ASSET_ID, API_TYPE, DEBUG_MODE)
+{
+    const API_URL = API_TYPE === "admin" ?
+        `${URL}/admin/asset/${ASSET_ID}/restore`:
+        `${URL}/asset/${ASSET_ID}/restore`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Restore Asset Failed");
+    }
+}
+
+
+
+
+async function _shareAsset(AUTH_TOKEN, URL, ASSET_ID, NOMAD_USERS, EXTERNAL_USERS, 
+    SHARE_DURATION_IN_HOURS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/asset/${ASSET_ID}/share`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
+
+    // Create body for the request
+    const BODY = {
+        assetId: ASSET_ID,
+        nomadUsers: NOMAD_USERS,
+        externalUsers: EXTERNAL_USERS,
+        shareDurationInHours: SHARE_DURATION_IN_HOURS
+    };
+
+    if (DEBUG_MODE) console.log(`BODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Share Asset Failed");
+    }
+}
+
+
+
+
+async function _startWorkflow(AUTH_TOKEN, URL, ACTION_ARGUMENTS, TARGET_IDS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/startWorkflow`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        actionArguments: ACTION_ARGUMENTS,
+        targetIds: TARGET_IDS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Start Workflow Failed");
+    }
+}
+
+
+
+
+async function _transcribeAsset(AUTH_TOKEN, URL, ASSET_ID, TRANSCRIPT_ID, TRANSCRIPT, 
+    DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/transcript/${TRANSCRIPT_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(TRANSCRIPT)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(TRANSCRIPT)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Transcribe Asset Failed");
+    }
+}
+
+
+
+
+async function _updateAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START_TIME_CODE, 
+    END_TIME_CODE, PROPERTIES, CONTENT_ID, IMAGE_URL, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/annotation/${ANNOTATION_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        id: ANNOTATION_ID,
+        startTimeCode: START_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        properties: PROPERTIES,
+        contentId: CONTENT_ID,
+        imageUrl: IMAGE_URL
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Annotations Failed");
+    }
+}
+
+
+
+
+async function _updateAssetAdBreak(AUTH_TOKEN, URL, ASSET_ID, AD_BREAK_ID, TIME_CODE, TAGS,
+    LABELS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreaks/${AD_BREAK_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        id: AD_BREAK_ID,
+        timeCode: TIME_CODE,
+        tags: TAGS,
+        labels: LABELS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "PUT",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+
+        return await RESPONSE.json();
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Asset Ad Break Failed");
+    }
+}
+
+
+
+
+async function _updateAssetLanguage(AUTH_TOKEN, URL, ASSET_ID, LANGUAGE_ID, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/language`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Create body for the request
+    const BODY = {
+        languageId: LANGUAGE_ID
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Asset Language Failed");
+    }
+}
+
+
+
+
+async function _updateAsset(AUTH_TOKEN, URL, ASSET_ID, DISPLAY_NAME, DISPLAY_DATE, 
+    AVAILABLE_START_DATE, AVAILABLE_END_DATE, CUSTOM_PROPERTIES, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        displayName: DISPLAY_NAME,
+        displayDate: DISPLAY_DATE,
+        availableStartDate: AVAILABLE_START_DATE,
+        availableEndDate: AVAILABLE_END_DATE,
+        customProperties: CUSTOM_PROPERTIES
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PATCH\nBODY: ${JSON.stringify(BODY)}`);
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "PATCH",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Update Asset Failed");
     }
 }
 
