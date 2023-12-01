@@ -23,7 +23,13 @@ app.get('/', (req, res) => {
 app.post('/get-config', upload.none(), async (req, res) => {
     try
     {
-        const CONFIG = await NomadSDK.getConfig(req.body.configType);
+        const CONFIG_MAP = {
+            "Admin": 1,
+            "Lambda": 2,
+            "Groundtruth": 3,
+        }
+
+        const CONFIG = await NomadSDK.getConfig(CONFIG_MAP[req.body.configType]);
         res.status(200).json(CONFIG);
     } 
     catch (error)
