@@ -5155,6 +5155,7 @@ class NomadSDK {
      * @description Copys an asset.
      * @param {string} ASSET_ID - The id of the asset.
      * @param {JSON} ACTION_ARGUMENTS - The action arguments of the asset.
+     * JSON format: {"key": "value"}
      * @param {Array<string>} TARGET_IDS - The target IDs of the asset.
      * @param {JSON | null} BATCH_ACTION - The actions to be performed.
      * JSON format: {"id": "string", "description": "string"}
@@ -5557,9 +5558,11 @@ class NomadSDK {
 
         try
         {
-            await _downloadArchiveAsset(this.token, this.config.serviceApiUrl, 
-                this.config.apiType, ASSET_IDS, FILE_NAME, DOWNLOAD_PROXY, this.debugMode);
+            const DOWNLOAD_INFO = await _downloadArchiveAsset(this.token, 
+                this.config.serviceApiUrl, this.config.apiType, ASSET_IDS, FILE_NAME, 
+                DOWNLOAD_PROXY, this.debugMode);
             _printDatetime(`Archive asset downloaded`);
+            return DOWNLOAD_INFO;
         }
         catch (error)
         {
@@ -6708,10 +6711,9 @@ class NomadSDK {
 
         try
         {
-            const UPDATE_INFO = await _updateAssetLanguage(this.token, this.config.serviceApiUrl, 
+            await _updateAssetLanguage(this.token, this.config.serviceApiUrl, 
                 ASSET_ID, LANGUAGE_ID, this.debugMode);
             _printDatetime(`Asset language updated`);
-            return UPDATE_INFO;
         }
         catch (error)
         {
@@ -8112,7 +8114,7 @@ class NomadSDK {
             if (NOT_API_PATH) {
                 API_URL = API_URL.replace('/api', '');
                 API_URL = API_URL.replace('app-api.', '');
-                API_URL = API_URL.replace('admin-app', '');
+                API_URL = API_URL.replace('admin-app.', '');
             }
 
             const HEADERS = new Headers();
@@ -13700,10 +13702,10 @@ async function _copyAsset(AUTH_TOKEN, URL, ASSET_ID, BATCH_ACTION, CONTENT_DEFIN
 
 
 
-async function _createAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START_TIME_CODE,
+async function _createAnnotation(AUTH_TOKEN, URL, ASSET_ID, START_TIME_CODE,
     END_TIME_CODE, PROPERTIES, CONTENT_ID, IMAGE_URL, DEBUG_MODE)
 {
-    const API_URL = `${URL}/admin/asset/${ASSET_ID}/annotation/${ANNOTATION_ID}`;
+    const API_URL = `${URL}/asset/${ASSET_ID}/annotation`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -13714,7 +13716,7 @@ async function _createAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START
 
     // Create body for the request
     const BODY = {
-        id: ANNOTATION_ID,
+        id: ASSET_ID,
         startTimeCode: START_TIME_CODE,
         endTimeCode: END_TIME_CODE,
         properties: PROPERTIES,
@@ -13750,7 +13752,7 @@ async function _createAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START
 async function _createAssetAdBreak(AUTH_TOKEN, URL, ASSET_ID, TIME_CODE, TAGS,
     LABELS, DEBUG_MODE)
 {
-    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreaks`;
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreak`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -13948,7 +13950,7 @@ async function _deleteAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, DEBUG
 
 async function _deleteAssetAdBreak(AUTH_TOKEN, URL, ASSET_ID, AD_BREAK_ID, DEBUG_MODE)
 {
-    const API_URL = `${URL}/content/${ASSET_ID}/adbreak/${AD_BREAK_ID}`;
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreak/${AD_BREAK_ID}`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -14017,7 +14019,9 @@ async function _deleteAsset(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
 async function _downloadArchiveAsset(AUTH_TOKEN, URL, API_TYPE, ASSET_IDS, FILE_NAME, DOWNLOAD_PROXY, 
     DEBUG_MODE)
 {
-    const API_URL = `${URL}/admin/asset/download-archive`;
+    const API_URL = (API_TYPE === "admin")
+        ? `${URL}/admin/asset/download-archive`
+        : `${URL}/asset/download-archive`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -14026,10 +14030,10 @@ async function _downloadArchiveAsset(AUTH_TOKEN, URL, API_TYPE, ASSET_IDS, FILE_
 
     // Create body for the request
     const BODY = {
-        assetIds: ASSET_IDS,
-        fileName: FILE_NAME
+        assetIds: ASSET_IDS
     };
 
+    if (API_TYPE === "admin") BODY.fileName = FILE_NAME;
     if (API_TYPE === "admin") BODY.downloadProxy = DOWNLOAD_PROXY;
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
@@ -14047,6 +14051,8 @@ async function _downloadArchiveAsset(AUTH_TOKEN, URL, API_TYPE, ASSET_IDS, FILE_
         {
             throw await RESPONSE.json();
         }
+
+        return await RESPONSE.json();
     }
     catch (error)
     {
@@ -14129,7 +14135,7 @@ async function _getAnnotations(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
 
 async function _getAssetAdBreaks(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE)
 {
-    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreaks`;
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreak`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -14247,8 +14253,8 @@ async function _getAssetManifestWithCookies(AUTH_TOKEN, URL, ASSET_ID, COOKIE_ID
     DEBUG_MODE)
 {
     const API_URL = API_TYPE === "admin" ? 
-        `${URL}/admin/asset/${ASSET_ID}/set-cookie/${COOKIE_ID}` : 
-        `${URL}/asset/${ASSET_ID}/set-cookie/${COOKIE_ID}`;
+        `${URL}/admin/asset/${ASSET_ID}/set-cookies/${COOKIE_ID}` : 
+        `${URL}/asset/${ASSET_ID}/set-cookies/${COOKIE_ID}`;
 
     // Create header for the request
     const HEADERS = new Headers();
@@ -14923,7 +14929,7 @@ async function _startWorkflow(AUTH_TOKEN, URL, ACTION_ARGUMENTS, TARGET_IDS, DEB
         targetIds: TARGET_IDS
     };
 
-    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);    
 
     // Send the request
     try 
@@ -14987,24 +14993,29 @@ async function _transcribeAsset(AUTH_TOKEN, URL, ASSET_ID, TRANSCRIPT_ID, TRANSC
 
 
 
+
 async function _updateAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START_TIME_CODE, 
     END_TIME_CODE, PROPERTIES, CONTENT_ID, IMAGE_URL, DEBUG_MODE)
 {
-    const API_URL = `${URL}/admin/asset/${ASSET_ID}/annotation/${ANNOTATION_ID}`;
+    const API_URL = `${URL}/asset/${ASSET_ID}/annotation/${ANNOTATION_ID}`;
 
     // Create header for the request
     const HEADERS = new Headers();
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
+    const ANNOTATIONS_INFO = await _getAnnotations(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE);
+    const ANNOTATION_INFO = ANNOTATIONS_INFO.find(ANNOTATION => ANNOTATION.id === ANNOTATION_ID);
+
+
     // Create body for the request
     const BODY = {
-        id: ANNOTATION_ID,
-        startTimeCode: START_TIME_CODE,
-        endTimeCode: END_TIME_CODE,
-        properties: PROPERTIES,
-        contentId: CONTENT_ID,
-        imageUrl: IMAGE_URL
+        id: ANNOTATION_ID || ANNOTATION_INFO.id,
+        startTimeCode: START_TIME_CODE || ANNOTATION_INFO.startTimeCode,
+        endTimeCode: END_TIME_CODE || ANNOTATION_INFO.endTimeCode,
+        properties: PROPERTIES || ANNOTATION_INFO.properties,
+        contentId: CONTENT_ID || ANNOTATION_INFO.contentId,
+        imageUrl: IMAGE_URL || ANNOTATION_INFO.imageUrl
     };
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);
@@ -15037,7 +15048,7 @@ async function _updateAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START
 async function _updateAssetAdBreak(AUTH_TOKEN, URL, ASSET_ID, AD_BREAK_ID, TIME_CODE, TAGS,
     LABELS, DEBUG_MODE)
 {
-    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreaks/${AD_BREAK_ID}`;
+    const API_URL = `${URL}/admin/asset/${ASSET_ID}/adbreak/${AD_BREAK_ID}`;
 
     // Create header for the request
     const HEADERS = new Headers();
