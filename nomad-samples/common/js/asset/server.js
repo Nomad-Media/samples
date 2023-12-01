@@ -9,7 +9,6 @@ import { fileURLToPath } from 'url';
 import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk-debug.js";
 import express from 'express';
 import multer from 'multer';
-import { get } from 'http';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -73,16 +72,9 @@ app.get('/get-country-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
-        {
-            res.status(200).json(null)
-        }
-        else
-        {
-            const COUNTRIES = await getGroups(COUNTRY_CONTENT_DEFINITION_ID);
+        const COUNTRIES = await NomadSDK.miscFunctions("config/ea1d7060-6291-46b8-9468-135e7b94021b/lookups.json", "GET", null, true);
 
-            res.status(200).json(COUNTRIES);
-        }
+        res.status(200).json(COUNTRIES[5].children)
     }
     catch (error)
     {
@@ -939,8 +931,16 @@ app.post('/share-asset', upload.none(), async (req, res) => {
 app.post('/start-workflow', upload.none(), async (req, res) => {
     try 
     {
+        const ACTION_ARGUMENTS = {};
+        if (typeof req.body.argumentKey !== 'undefined') 
+        {
+            for (let argumentActionIdx = 0; argumentActionIdx < req.body.argumentKey.length; ++argumentActionIdx) {
+                ACTION_ARGUMENTS[req.body.argumentKey[argumentActionIdx]] = req.body.argumentValue[argumentActionIdx];
+            }
+        }
+
         const START_WORKFLOW_INFO = await NomadSDK.startWorkflow(
-            { workflowName: req.body.actionArgument }, req.body.targetIds.split(","));
+            ACTION_ARGUMENTS, req.body.targetIds.split(","));
 
         res.status(200).json(START_WORKFLOW_INFO);
     }
@@ -983,16 +983,11 @@ app.post('/transcribe-asset', upload.none(), async (req, res) => {
 app.put('/update-annotation', upload.none(), async (req, res) => {
     try 
     {
-        const PROPERTIES = {
-            country: req.body.updateAnnotationCountrySelect,
-            description: req.body.description,
-            firstKeyword: req.body.firstKeyword,
-            secondKeyword: req.body.secondKeyword
-        };
-
         const UPDATE_ANNOTATION_INFO = await NomadSDK.updateAnnotation(req.body.assetId,
-            req.body.annotationId, req.body.startTimeCode, req.body.endTimeCode, PROPERTIES,
-            req.body.contentId, req.body.imageUrl);
+            req.body.annotationId, req.body.startTimeCode, req.body.endTimeCode, 
+            req.body.firstKeyword, req.body.secondKeyword, req.body.description,
+            JSON.parse(req.body.updateAnnotationCountrySelect), req.body.contentId, 
+            req.body.imageUrl);
 
         res.status(200).json(UPDATE_ANNOTATION_INFO);
     }

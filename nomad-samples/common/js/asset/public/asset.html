@@ -211,7 +211,7 @@
         <input type="text" id="secondKeyword" required>
 
         <label for="contentId">Content Id</label>
-        <input type="text" id="contentId" required>
+        <input type="text" id="contentId">
 
         <label for="imageUrl">Image Url</label>
         <input type="text" id="imageUrl">
@@ -721,8 +721,10 @@
 
     <h3>Start Workflow</h3>
     <form id="startWorkflowForm">
-        <label for="actionArgument">Action Argument</label>
-        <input type="text" id="actionArgument" required>
+        <label for="actionArgument">Action Arguments</label>
+        <div id="startWorkflowActionArgumentsDiv"></div>
+        <br>
+        <button type="button" id="startWorkflowAddActionArgumentButton">Add Action Argument</button>
 
         <label for="targetIds">Target Ids (separated by comma)</label>
         <input type="text" id="targetIds" required>
@@ -766,16 +768,16 @@
         <select id="updateAnnotationCountrySelect"></select>
 
         <label for="description">Description</label>
-        <input type="text" id="description" required>
+        <input type="text" id="description">
 
         <label for="firstKeyword">First Keyword</label>
-        <input type="text" id="firstKeyWord" required>
+        <input type="text" id="firstKeyword">
 
         <label for="secondKeyword">Second Keyword</label>
-        <input type="text" id="secondKeyword" required>
+        <input type="text" id="secondKeyword">
 
         <label for="contentId">Content Id</label>
-        <input type="text" id="contentId" required>
+        <input type="text" id="contentId">
 
         <label for="imageUrl">Image Url</label>
         <input type="text" id="imageUrl">

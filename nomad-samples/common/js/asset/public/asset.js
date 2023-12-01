@@ -47,6 +47,7 @@ const COPY_ASSET_ACTION_ARGUMENTS_DIV = document.getElementById("copyAssetAction
 const CREATE_ANNOTATION_PROPERTIES_DIV = document.getElementById("createAnnotationPropertiesDiv");
 const IMPORT_ANNOTATIONS_DIV = document.getElementById("importAnnotationsDiv");
 const MOVE_ASSET_ACTION_ARGUMENTS_DIV = document.getElementById("moveAssetActionArgumentsDiv");
+const START_WORKFLOW_ACTION_ARGUMENTS_DIV = document.getElementById("startWorkflowActionArgumentsDiv");
 const TRANSCRIBE_ASSET_DIV = document.getElementById("transcribeAssetDiv");
 const UPDATE_ANNOTATION_PROPERTIES_DIV = document.getElementById("updateAnnotationPropertiesDiv");
 const UPDATE_ASSET_CUSTOM_PROPERTIES_DIV = document.getElementById("updateAssetCustomPropertiesDiv");
@@ -56,6 +57,7 @@ const BUILD_MEDIA_ADD_SOURCE_BUTTON = document.getElementById("buildMediaAddSour
 const COPY_ASSET_ADD_ACTION_ARGUMENT_BUTTON = document.getElementById("copyAssetAddActionArgumentButton");
 const IMPORT_ANNOTATIONS_ADD_ANNOTATION_BUTTON = document.getElementById("importAnnotationsAddAnnotationButton");
 const MOVE_ASSET_ADD_ACTION_ARGUMENT_BUTTON = document.getElementById("moveAssetAddActionArgumentButton");
+const START_WORKFLOW_ADD_ACTION_ARGUMENT_BUTTON = document.getElementById("startWorkflowAddActionArgumentButton");
 const TRANSCRIBE_ASSET_ADD_TRANSCRIPT_BUTTON = document.getElementById("transcribeAssetAddTranscriptButton");
 const UPDATE_ASSET_ADD_CUSTOM_PROPERTY_BUTTON = document.getElementById("updateAssetAddCustomPropertyButton");
 
@@ -140,7 +142,7 @@ async function getCountryList()
         {
             let option = document.createElement("option");
             option.value = COUNTRY_LIST[countryIdx].id;
-            option.text = COUNTRY_LIST[countryIdx].title;
+            option.text = COUNTRY_LIST[countryIdx].label;
             CREATE_ANNOTATION_COUNTRY_SELECT.appendChild(option);
             UPDATE_ANNOTATION_COUNTRY_SELECT.appendChild(option.cloneNode(true));
         }
@@ -607,6 +609,12 @@ SHARE_ASSET_FORM.addEventListener("submit", async (event) =>
     const FORM_DATA = getElements(SHARE_ASSET_FORM);
 
     console.log(await sendRequest("/share-asset", "POST", FORM_DATA));
+});
+
+START_WORKFLOW_ADD_ACTION_ARGUMENT_BUTTON.addEventListener('click', function()
+{
+    createAddButtonElements(["Argument Key", "Argument Value"], 
+        ["argumentKey", "argumentValue"], START_WORKFLOW_ACTION_ARGUMENTS_DIV);
 });
 
 START_WORKFLOW_FORM.addEventListener("submit", async (event) =>
