@@ -1,6 +1,9 @@
 const GET_CONTENT_FORM = document.getElementById("getContentForm");
 const CREATE_FORM = document.getElementById("createForm");
 const UPDATE_FORM = document.getElementById("updateForm");
+const DEACTIVATE_FORM = document.getElementById("deactivateForm");
+const GET_CONTENT_USER_TRACK_FORM = document.getElementById("getContentUserTrackForm");
+const GET_CONTENT_USER_TRACK_TOUCH_FORM = document.getElementById("getContentUserTrackTouchForm");
 const DELETE_FORM = document.getElementById("deleteForm");
 
 GET_CONTENT_FORM.addEventListener("submit", async function (event)
@@ -28,6 +31,33 @@ UPDATE_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(UPDATE_FORM);
 
     await sendRequest("/update-content", "POST", FORM_DATA);
+});
+
+DEACTIVATE_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(DEACTIVATE_FORM);
+
+    await sendRequest("/deactivate-content", "POST", FORM_DATA);
+});
+
+GET_CONTENT_USER_TRACK_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_CONTENT_USER_TRACK_FORM);
+
+    await sendRequest("/get-content-user-track", "POST", FORM_DATA);
+});
+
+GET_CONTENT_USER_TRACK_TOUCH_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_CONTENT_USER_TRACK_TOUCH_FORM);
+
+    await sendRequest("/get-content-user-track-touch", "POST", FORM_DATA);
 });
 
 DELETE_FORM.addEventListener("submit", async function (event)

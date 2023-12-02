@@ -316,7 +316,7 @@ class NomadSDK {
 
         try
         {
-            await _logout(this.token, this.userSessionId, this.config.serviceApiUrl, this.debugMode);
+            await _logout(this.token, this.config.serviceApiUrl, this.debugMode);
             this.token = null;
             this.refreshTokenVal = null;
             this.expirationSeconds = null;
@@ -599,7 +599,8 @@ class NomadSDK {
      * @function getConfig
      * @async
      * @description Gets the specified config.
-     * @param {string} CONFIG_TYPE - The type of config to get.
+     * @param {integer} CONFIG_TYPE - The type of config to get.
+     * 1 - Admin, 2 - Lambda, 3 - Groundtruth
      * @returns {Promise<JSON>} - A promise that resolves when the config is retrieved.
      * Returns the config information.
      * @throws {Error} - An error is thrown if the config fails to retrieve.
@@ -5366,6 +5367,11 @@ class NomadSDK {
         }
          
         _printDatetime(`Creating placeholder asset`);
+
+        if (!ASSET_NAME.includes("."))
+        {
+            throw new Error("The asset name must contain file extension.");
+        }
 
         try
         {
@@ -13353,7 +13359,7 @@ async function _login(USERNAME, PASSWORD, URL, DEBUG_MODE)
 
 
 
-async function _logout(AUTH_TOKEN, USER_SESSION_ID, URL, DEBUG_MODE)
+async function _logout(AUTH_TOKEN, URL, DEBUG_MODE)
 {
     const API_URL = `${URL}/account/logout`;
 
@@ -13363,18 +13369,14 @@ async function _logout(AUTH_TOKEN, USER_SESSION_ID, URL, DEBUG_MODE)
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
     // Build the POST payload body
-    const BODY = {
-       "userSessionId": USER_SESSION_ID
-    };
 
-    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);
 
     try
     {
         const RESPONSE = await fetch(API_URL, {
             method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify(BODY)
+            headers: HEADERS
         });
 
         if (!RESPONSE.ok) {
@@ -14993,7 +14995,6 @@ async function _transcribeAsset(AUTH_TOKEN, URL, ASSET_ID, TRANSCRIPT_ID, TRANSC
 
 
 
-
 async function _updateAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START_TIME_CODE, 
     END_TIME_CODE, PROPERTIES, CONTENT_ID, IMAGE_URL, DEBUG_MODE)
 {
@@ -15004,18 +15005,14 @@ async function _updateAnnotation(AUTH_TOKEN, URL, ASSET_ID, ANNOTATION_ID, START
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
-    const ANNOTATIONS_INFO = await _getAnnotations(AUTH_TOKEN, URL, ASSET_ID, DEBUG_MODE);
-    const ANNOTATION_INFO = ANNOTATIONS_INFO.find(ANNOTATION => ANNOTATION.id === ANNOTATION_ID);
-
-
     // Create body for the request
     const BODY = {
-        id: ANNOTATION_ID || ANNOTATION_INFO.id,
-        startTimeCode: START_TIME_CODE || ANNOTATION_INFO.startTimeCode,
-        endTimeCode: END_TIME_CODE || ANNOTATION_INFO.endTimeCode,
-        properties: PROPERTIES || ANNOTATION_INFO.properties,
-        contentId: CONTENT_ID || ANNOTATION_INFO.contentId,
-        imageUrl: IMAGE_URL || ANNOTATION_INFO.imageUrl
+        id: ANNOTATION_ID,
+        startTimeCode: START_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        properties: PROPERTIES,
+        contentId: CONTENT_ID,
+        imageUrl: IMAGE_URL
     };
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: PUT\nBODY: ${JSON.stringify(BODY)}`);

@@ -63,6 +63,50 @@ app.post('/update-content', upload.none(), async (req, res) => {
     }
 });
 
+app.post('/deactivate-content', upload.none(), async (req, res) => {
+    try
+    {
+        const CONTENT = await NomadSDK.deactivateContentUserTrack(req.body.sessionId,
+            req.body.contentId, req.body.contentDefinitionId, 
+            req.body.deactivate === "True");
+        res.status(200).json(CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/get-content-user-track', upload.none(), async (req, res) => {
+    try
+    {
+        const CONTENT = await NomadSDK.getContentUserTrack(req.body.contentId,
+            req.body.contentDefinitionId, req.body.sortColumn, 
+            req.body.isDescending === "True", req.body.pageIndex, req.body.pageSize);
+        res.status(200).json(CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/get-content-user-track-touch', upload.none(), async (req, res) => {
+    try
+    {
+        const CONTENT = await NomadSDK.getContentUserTrackTouch(req.body.contentId,
+            req.body.contentDefinitionId);
+        res.status(200).json(CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
 app.post('/delete-content', upload.none(), async (req, res) => {
     try
     {
