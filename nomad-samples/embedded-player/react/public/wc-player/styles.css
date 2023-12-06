@@ -3709,7 +3709,7 @@ readers do not read off random characters that represent icons */.fa-500px:befor
 }.pb-4 {
   padding-bottom: 1.5rem !important;
 }.d-flex {
-  display: flex;
+  display: flex !important;
 }.flex-column {
   flex-direction: column;
 }.align-items-center {
@@ -3741,6 +3741,15 @@ readers do not read off random characters that represent icons */.fa-500px:befor
 }.share-copy-form .custom-text-field-input {
   border: none;
   padding: 0px;
+}.clickable {
+  cursor: pointer !important;
+}.no-clickable {
+  cursor: auto !important;
+}[disabled]:not(.clickable),
+[readonly]:not(.clickable),
+.disabled:not(.clickable) {
+  cursor: not-allowed !important;
+  pointer-events: unset !important;
 }.inline {
   display: flex;
   justify-content: space-between;

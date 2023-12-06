@@ -5,35 +5,87 @@ class App extends Component {
 
   defaultVepConfig = {
     "application": "Embedded",
-    "customer": "Test Customer",
-    "siteName": "Test Site",
-    "hideSidebar": true,
-    "supportSharing": false,
+    "customer": "dev-05",
+    "siteName": "Dev-05",
+    "hideSidebar": false,
+    "supportSharing": true,
     "bottomShareIcon": true,
-    "googleTagManager": "GTM-0000000",
+    "shareUrl": "https://app-api.dev-05.demos.media/api/embedded/share-media",
+    "googleTagManager": "GTM-5K22WWM",
     "players": [
-      {
-        "format": "hls",
-        "player": "bitmovin"
-      },
       {
         "format": "progressive",
         "player": "bitmovin"
       }
     ],
-    "bitmovinLicenseKey": "000000000000000000000000000000000000000",
+    "applicationId": "fc53821f-43a4-4758-9a31-87e3c66883ef",
+    "bitmovinLicenseKey": "f507de7a-720a-4b61-9698-94dc4a014479",
     "liveMode": false,
     "vepModules": [
       {
         "moduleType": "streams",
         "isEnabled": true,
-        "showTileMode": false,
+        "showTileMode": true,
         "streams": [
           {
             "id": "1",
             "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
             "title": "Test Video 1",
             "autoplay": true
+          },
+          {
+            "id": "2",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 \n            Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 \n            Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2 Test Video 2!!!",
+            "autoplay": false
+          },
+          {
+            "id": "3",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 3",
+            "autoplay": true
+          },
+          {
+            "id": "4",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 4",
+            "autoplay": false
+          },
+          {
+            "id": "5",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 5",
+            "autoplay": true
+          },
+          {
+            "id": "6",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 6",
+            "autoplay": false
+          },
+          {
+            "id": "7",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 7",
+            "autoplay": true
+          },
+          {
+            "id": "8",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 8",
+            "autoplay": false
+          },
+          {
+            "id": "9",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-joker.mp4",
+            "title": "Test Video 9",
+            "autoplay": true
+          },
+          {
+            "id": "10",
+            "streamUrl": "https://content.dev-05.demos.media/Content/Public/the-batman.mp4",
+            "title": "Test Video 10",
+            "autoplay": false
           }
         ]
       }
