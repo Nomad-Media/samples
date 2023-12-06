@@ -1,7 +1,6 @@
 const INVITE_FORM = document.getElementById("inviteForm");
 const REMOVE_INVITE_FORM = document.getElementById("removeInviteForm");
 const REGISTER_FORM = document.getElementById("registerForm");
-const PING_FORM = document.getElementById("pingForm");
 const PPQ_FORM = document.getElementById("ppqForm");
 
 INVITE_FORM.addEventListener("submit", async function (event) 
@@ -29,13 +28,6 @@ REGISTER_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(REGISTER_FORM);
 
     console.log(await sendRequest("/register", "POST", FORM_DATA));
-});
-
-PING_FORM.addEventListener("submit", async function (event) 
-{
-    event.preventDefault();
-
-    console.log(await sendRequest("/ping", "GET",));
 });
 
 PPQ_FORM.addEventListener("submit", async function (event) 

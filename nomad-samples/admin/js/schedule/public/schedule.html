@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Schedule</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="schedule.css">
+
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- JS -->
+    <script type="module" src="schedule.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Schedule</h1>
+    <h3>Create Intelligent Playlist</h3>
+    <form id="createIntelligentPlaylistForm">
+        <label for="createIntelligentPlaylistCollectionsSelect">Collections:</label>
+        <select id="createIntelligentPlaylistCollectionsSelect" multiple></select>
+
+        <label for="endSearchDurationInMinutes">End Search Duration (in minutes):</label>
+        <input type="number" id="endSearchDurationInMinutes" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="createIntelligentPlaylistRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="createIntelligentPlaylistRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="createIntelligentPlaylistRelatedContentsSelect">Related Contents:</label>
+        <select id="createIntelligentPlaylistRelatedContentsSelect" multiple></select>
+
+        <label for="searchDurationInMinutes">Search Duration (in minutes):</label>
+        <input type="number" id="searchDurationInMinutes" required>
+
+        <label for="createIntelligentPlaylistSearchFilterTypeSelect">Search Filter Type:</label>
+        <select id="createIntelligentPlaylistSearchFilterTypeSelect" required>
+            <option value="1">Random</option>
+            <option value="2">Random within a Date Range</option>
+            <option value="3">Newest</option>
+            <option value="4">Newest Not Played</option>
+        </select>
+
+        <div id="createIntelligentPlaylistSearchFilterTypeDiv">
+            <label for="searchDate">Search Date:</label>
+            <input type="date" id="searchDate">
+
+            <label for="endSearchDate">End Search Date:</label>
+            <input type="date" id="endSearchDate">
+        </div>
+
+        <label for="createIntelligentPlaylistTagsSelect">Tags:</label>
+        <select id="createIntelligentPlaylistTagsSelect" multiple></select>
+        <br><br>
+
+        <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
+        <input type="text" id="thumbnailAssetId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Intelligent Schedule</h3>
+    <form id="createIntelligentScheduleForm">
+        <label for="defaultVideoAssetId">Default Video Asset Id:</label>
+        <input type="text" id="defaultVideoAssetId" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
+        <input type="text" id="thumbnailAssetId">
+
+        <label for="createIntelligentScheduleTimeZoneSelect">Time Zone:</label>
+        <select id="createIntelligentScheduleTimeZoneSelect" required></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Playlist</h3>
+    <form id="createPlaylistForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
+        <input type="text" id="thumbnailAssetId">
+
+        <label for="loopPlaylist">Loop Playlist:</label>
+        <select id="createPlaylistLoopPlaylistSelect" required>
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <div id="createPlaylistDefaultVideoAssetIdDiv" hidden>
+            <label for="defaultVideoAssetId">Default Video Asset Id:</label>
+            <input type="text" id="defaultVideoAssetId">
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Playlist Video</h3>
+    <form id="createPlaylistVideoForm">
+        <label for="playlistId">Playlist Id:</label>
+        <input type="text" id="playlistId" required>
+
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId" required>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Schedule Item Asset</h3>
+    <form id="createScheduleItemAssetForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId" required>
+
+        <label for="createScheduleItemAssetDays">Days:</label>
+        <select id="createScheduleItemAssetDays" multiple required></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode" required>
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode" required>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem">
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode" required></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Schedule Item Live Channel</h3>
+    <form id="createScheduleItemLiveChannelForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="createScheduleItemLiveChannelDays">Days:</label>
+        <select id="createScheduleItemLiveChannelDays" multiple required></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode" required>
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode" required>
+
+        <label for="createScheduleItemLiveChannelsSelect">Live Channels:</label>
+        <select id="createScheduleItemLiveChannelsSelect" required></select>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem">
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Schedule Item Search Filter</h3>
+    <form id="createScheduleItemSearchFilterForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="createScheduleItemSearchFilterCollectionsSelect">Collections:</label>
+        <select id="createScheduleItemSearchFilterCollectionsSelect" multiple></select>
+
+        <label for="createScheduleItemSearchFilterDays">Days:</label>
+        <select id="createScheduleItemSearchFilterDays" multiple required></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode" required>
+
+        <label for="endSearchDurationInMinutes">End Search Duration (in minutes):</label>
+        <input type="number" id="endSearchDurationInMinutes" required>
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode" required>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem">
+
+        <label for="createScheduleItemSearchFilterRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="createScheduleItemSearchFilterRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="createScheduleItemSearchFilterRelatedContentsSelect">Related Contents:</label>
+        <select id="createScheduleItemSearchFilterRelatedContentsSelect" multiple></select>
+
+        <label for="searchDurationInMinutes">Search Duration (in minutes):</label>
+        <input type="number" id="searchDurationInMinutes">
+
+        <label for="createScheduleItemSearchFilterTypeSelect">Search Filter Type:</label>
+        <select id="createScheduleItemSearchFilterTypeSelect" required>
+            <option value="1">Random</option>
+            <option value="2">Random within a Date Range</option>
+            <option value="3">Newest</option>
+            <option value="4">Newest Not Played</option>
+        </select>
+
+        <div id="createScheduleItemSearchFilterSearchFilterTypeDiv" hidden>
+            <label for="searchDate">Search Date:</label>
+            <input type="date" id="searchDate">
+
+            <label for="endSearchDate">End Search Date:</label>
+            <input type="date" id="endSearchDate">
+        </div>
+
+        <label for="createScheduleItemSearchFilterTagsSelect">Tags:</label>
+        <select id="createScheduleItemSearchFilterTagsSelect" multiple></select>
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode" required></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Schedule Item Playlist Schedule</h3>
+    <form id="createScheduleItemPlaylistScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="createScheduleItemPlaylistScheduleDays">Days:</label>
+        <select id="createScheduleItemPlaylistScheduleDays" multiple required></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode" required>
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode" required>
+
+        <label for="createScheduleItemPlaylistSchedulesSelect">Playlist Schedule:</label>
+        <select id="createScheduleItemPlaylistSchedulesSelect" required></select>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem">
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode" required></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Intelligent Playlist</h3>
+    <form id="deleteIntelligentPlaylistForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Intelligent Schedule</h3>
+    <form id="deleteIntelligentScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Playlist</h3>
+    <form id="deletePlaylistForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Schedule Item</h3>
+    <form id="deleteScheduleItemForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Intelligent Playlist</h3>
+    <form id="getIntelligentPlaylistForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Intelligent Schedule</h3>
+    <form id="getIntelligentScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Playlist</h3>
+    <form id="getPlaylistForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Schedule Item</h3>
+    <form id="getScheduleItemForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Schedule Items</h3>
+    <form id="getScheduleItemsForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Schedule Preview</h3>
+    <form id="getSchedulePreviewForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Move Schedule Item</h3>
+    <form id="moveScheduleItemForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <label for="previousItem">Previous Item:</label>
+        <input type="text" id="previousItem" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Publish Intelligent Schedule</h3>
+    <form id="publishIntelligentScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="numberOfLockedDays">Number of Locked Days:</label>
+        <input type="number" id="numberOfLockedDays" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Schedule</h3>
+    <form id="startScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="skipCleanupOnFailure">Skip Cleanup On Failure:</label>
+        <select id="skipCleanupOnFailure">
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Stop Schedule</h3>
+    <form id="stopScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="froceStop">Force Stop:</label>
+        <select id="forceStop">
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Intelligent Playlist</h3>
+    <form id="updateIntelligentPlaylistForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="updateIntelligentPlaylistCollectionsSelect">Collections:</label>
+        <select id="updateIntelligentPlaylistCollectionsSelect" multiple></select>
+
+        <label for="endSearchDurationInMinutes">End Search Duration (in minutes):</label>
+        <input type="number" id="endSearchDurationInMinutes">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+
+        <label for="updateIntelligentPlaylistRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="updateIntelligentPlaylistRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="updateIntelligentPlaylistRelatedContentsSelect">Related Contents:</label>
+        <select id="updateIntelligentPlaylistRelatedContentsSelect" multiple></select>
+
+        <label for="searchDurationInMinutes">Search Duration (in minutes):</label>
+        <input type="number" id="searchDurationInMinutes">
+
+        <label for="updateIntelligentPlaylistSearchFilterTypeSelect">Search Filter Type:</label>
+        <select id="updateIntelligentPlaylistSearchFilterTypeSelect" required>
+            <option value="1">Random</option>
+            <option value="2">Random within a Date Range</option>
+            <option value="3">Newest</option>
+            <option value="4">Newest Not Played</option>
+        </select>
+
+        <div id="updateIntelligentPlaylistSearchFilterTypeDiv">
+            <label for="searchDate">Search Date:</label>
+            <input type="date" id="searchDate">
+
+            <label for="endSearchDate">End Search Date:</label>
+            <input type="date" id="endSearchDate">
+        </div>
+
+        <label for="updateIntelligentPlaylistTagsSelect">Tags:</label>
+        <select id="updateIntelligentPlaylistTagsSelect" multiple></select>
+
+        <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
+        <input type="text" id="thumbnailAssetId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Intelligent Schedule</h3>
+    <form id="updateIntelligentScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="defaultVideoAssetId">Default Video Asset Id:</label>
+        <input type="text" id="defaultVideoAssetId">
+
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+
+        <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
+        <input type="text" id="thumbnailAssetId">
+
+        <label for="updateIntelligentScheduleTimeZoneSelect">Time Zone:</label>
+        <select id="updateIntelligentScheduleTimeZoneSelect"></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Playlist</h3>
+    <form id="updatePlaylistForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name">
+
+        <label for="thumbnailAssetId">Thumbnail Asset Id:</label>
+        <input type="text" id="thumbnailAssetId">
+
+        <label for="loopPlaylist">Loop Playlist:</label>
+        <select id="updatePlaylistLoopPlaylistSelect" required>
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <div id="updatePlaylistDefaultVideoAssetIdDiv" hidden>
+            <label for="defaultVideoAssetId">Default Video Asset Id:</label>
+            <input type="text" id="defaultVideoAssetId">
+        </div>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Schedule Item Asset</h3>
+    <form id="updateScheduleItemAssetForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId">
+
+        <label for="updateScheduleItemAssetDays">Days:</label>
+        <select id="updateScheduleItemAssetDays" multiple></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode">
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Schedule Item Live Channel</h3>
+    <form id="updateScheduleItemLiveChannelForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <label for="updateScheduleItemLiveChannelDays">Days:</label>
+        <select id="updateScheduleItemLiveChannelDays" multiple></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode">
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="updateScheduleItemLiveChannelsSelect">Live Channels:</label>
+        <select id="updateScheduleItemLiveChannelsSelect"></select>
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Schedule Item Search Filter</h3>
+    <form id="updateScheduleItemSearchFilterForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <label for="updateScheduleItemSearchFilterCollectionsSelect">Collections:</label>
+        <select id="updateScheduleItemSearchFilterCollectionsSelect" multiple></select>
+
+        <label for="updateScheduleItemSearchFilterDays">Days:</label>
+        <select id="updateScheduleItemSearchFilterDays" multiple></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode">
+
+        <label for="endSearchDurationInMinutes">End Search Duration (in minutes):</label>
+        <input type="number" id="endSearchDurationInMinutes">
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="updateScheduleItemSearchFilterRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="updateScheduleItemSearchFilterRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="updateScheduleItemSearchFilterRelatedContentsSelect">Related Contents:</label>
+        <select id="updateScheduleItemSearchFilterRelatedContentsSelect" multiple></select>
+
+        <label for="searchDurationInMinutes">Search Duration (in minutes):</label>
+        <input type="number" id="searchDurationInMinutes">
+
+        <label for="updateScheduleItemSearchFilterTypeSelect">Search Filter Type:</label>
+        <select id="updateScheduleItemSearchFilterTypeSelect" required>
+            <option value="1">Random</option>
+            <option value="2">Random within a Date Range</option>
+            <option value="3">Newest</option>
+            <option value="4">Newest Not Played</option>
+        </select>
+
+        <div id="updateScheduleItemSearchFilterSearchFilterTypeDiv">
+            <label for="searchDate">Search Date:</label>
+            <input type="date" id="searchDate">
+
+            <label for="endSearchDate">End Search Date:</label>
+            <input type="date" id="endSearchDate">
+        </div>
+
+        <label for="updateScheduleItemSearchFilterTagsSelect">Tags:</label>
+        <select id="updateScheduleItemSearchFilterTagsSelect" multiple></select>
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Schedule Item Playlist Schedule</h3>
+    <form id="updateScheduleItemPlaylistScheduleForm">
+        <label for="scheduleId">Schedule Id:</label>
+        <input type="text" id="scheduleId" required>
+
+        <label for="itemId">Item Id:</label>
+        <input type="text" id="itemId" required>
+
+        <label for="updateScheduleItemPlaylistScheduleDays">Days:</label>
+        <select id="updateScheduleItemPlaylistScheduleDays" multiple></select>
+
+        <label for="durationTimeCode">Duration Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="durationTimeCode">
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="updateScheduleItemPlaylistSchedulesSelect">Playlist Schedules</label>
+        <select id="updateScheduleItemPlaylistSchedulesSelect"></select>
+
+        <label for="timeCode">Time Code (hh:mm:ss;fr):</label>
+        <input type="text" id="timeCode">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

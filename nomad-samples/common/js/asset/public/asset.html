@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Asset</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+     <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="asset.css">
+
+    <!-- JS -->
+    <script type="module" src="asset.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Asset</h1>
+    <h3>Archive Asset</h3>
+    <form id="archiveAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Batch Action</h3>
+    <form id="batchActionForm">
+        <label for="actionName">Action Name</label>
+        <input type="text" id="actionName" required>
+
+        <label for="batchActionId">Batch Action Id</label>
+        <input type="text" id="batchActionId">
+
+        <label for="batchActionName">Batch Action Name</label>
+        <input type="text" id="batchActionName">
+
+        <label for="contentDefinitionId">Content Definition Id</label>
+        <input type="text" id="contentDefinitionId">
+
+        <label for="schemaName">Schema Name</label>
+        <input type="text" id="schemaName">
+
+        <label for="targetIds">Target Ids (separated by comma)</label>
+        <input type="text" id="targetIds">
+
+        <label for="actionArguments">Action Arguments</label>
+        <div id="batchActionActionArgumentsDiv"></div>
+        <br>
+        <button type="button" id="batchActionAddActionArgumentButton">Add Action Argument</button>
+
+        <label for="resolverExcempt">Resolver Excempt</label>
+        <select id="resolverExcempt">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Build Media</h3>
+    <form id="buildMediaForm">
+        <label for="sources">Sources</label>
+        <div id="buildMediaSourcesDiv"></div>
+        <br>
+        <button type="button" id="buildMediaAddSourceButton">Add Source</button>
+
+        <label for="title">Title</label>
+        <input type="text" id="title">
+
+        <label for="tags">Tags</label>
+        <select id="buildMediaTagsSelect" multiple></select>
+
+        <label for="collections">Collections</label>
+        <select id="buildMediaCollectionsSelect" multiple></select>
+
+        <label for="buildMediaRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="buildMediaRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="buildMediaRelatedContentsSelect">Related Contents:</label>
+        <select id="buildMediaRelatedContentsSelect" multiple></select>
+
+        <label for="destinationFolderId">Destination Folder Id</label>
+        <input type="text" id="destinationFolderId" required>
+
+        <label for="videoBitrate">Video Bitrate</label>
+        <input type="text" id="videoBitrate">
+
+        <label for="audioTracks">Audio Tracks</label>
+        <input type="text" id="audioTracks">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Clip Asset</h3>
+    <form id="clipAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="startTimeCode">Start Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="startTimeCode" required>
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="endTimeCode" required>
+
+        <label for="title">Title</label>
+        <input type="text" id="title" required>
+
+        <label for="outputFolderId">Output Folder Id</label>
+        <input type="text" id="outputFolderId">
+
+        <label for="tags">Tags</label>
+        <select id="clipAssetTagsSelect" multiple></select>
+
+        <label for="collections">Collections</label>
+        <select id="clipAssetCollectionsSelect" multiple></select>
+
+        <label for="clipAssetRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="clipAssetRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="clipAssetRelatedContentsSelect">Related Contents:</label>
+        <select id="clipAssetRelatedContentsSelect" multiple></select>
+
+        <label for="videoBitrate">Video Bitrate</label>
+        <input type="text" id="videoBitrate">
+
+        <label for="audioTracks">Audio Tracks</label>
+        <input type="text" id="audioTracks">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Copy Asset</h3>
+    <form id="copyAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="batchActionId">Batch Action Id</label>
+        <input type="text" id="batchActionId">
+
+        <label for="batchActionName">Batch Action Name</label>
+        <input type="text" id="batchActionName">
+
+        <label for="contentDefinitionId">Content Definition Id</label>
+        <input type="text" id="contentDefinitionId">
+
+        <label for="schemaName">Schema Name</label>
+        <input type="text" id="schemaName">
+
+        <label for="targetIds">Target Ids (separated by comma)</label>
+        <input type="text" id="targetIds">
+
+        <label for="actionArguments">Action Arguments</label>
+        <div id="copyAssetActionArgumentsDiv"></div>
+        <br>
+        <button type="button" id="copyAssetAddActionArgumentButton">Add Action Argument</button>
+
+        <label for="resolverExcempt">Resolver Excempt</label>
+        <select id="resolverExcempt">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+    </form>
+
+    <h3>Create Annotation</h3>
+    <form id="createAnnotationForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="startTimeCode">Start Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="startTimeCode">
+
+        <label for="endTimeCode">End Time Code</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="createAnnotationCountrySelect">Country</label>
+        <select id="createAnnotationCountrySelect"></select>
+
+        <label for="description">Description</label>
+        <input type="text" id="description" required>
+
+        <label for="firstKeyword">First Keyword</label>
+        <input type="text" id="firstKeyword" required>
+
+        <label for="secondKeyword">Second Keyword</label>
+        <input type="text" id="secondKeyword" required>
+
+        <label for="contentId">Content Id</label>
+        <input type="text" id="contentId">
+
+        <label for="imageUrl">Image Url</label>
+        <input type="text" id="imageUrl">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Asset Ad Break</h3>
+    <form id=createAssetAdBreakForm>
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="timeCode">Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="timeCode">
+        
+        <label for="tags">Tags</label>
+        <select id="createAssetAdBreakTagsSelect" multiple></select>
+
+        <label for="labels">Labels</label>
+        <select id="createAssetAdBreakLabelsSelect" multiple></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Folder Asset</h3>
+    <form id="createFolderAssetForm">
+        <label for="parentId">Parent Id</label>
+        <input type="text" id="parentId" required>
+
+        <label for="displayName">Display Name</label>
+        <input type="text" id="displayName" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Placeholder Asset</h3>
+    <form id="createPlaceholderAssetForm">
+        <label for="parentId">Parent Id</label>
+        <input type="text" id="parentId" required>
+
+        <label for="assetName">Asset Name</label>
+        <input type="text" id="assetName" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Create Screenshot At Timecode</h3>
+    <form id="createScreenshotAtTimecodeForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="timeCode">Time Code  (hh:mm:ss;ff)</label>
+        <input type="text" id="timeCode">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Annotation</h3>
+    <form id="deleteAnnotationForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="annotationId">Annotation Id</label>
+        <input type="text" id="annotationId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Asset</h3>
+    <form id="deleteAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Delete Asset Ad Break</h3>
+    <form id="deleteAssetAdBreakForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="adBreakId">Ad Break Id</label>
+        <input type="text" id="adBreakId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Download Archive Asset</h3>
+    <form id="downloadArchiveAssetForm">
+        <label for="assetIds">Asset Ids (separate by comma)</label>
+        <input type="text" id="assetId" required>
+
+        <label for="fileName">File Name</label>
+        <input type="text" id="fileName">
+
+        <label for="downloadProxy">Download Proxy</label>
+        <select id="downloadProxy">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Duplicate Asset</h3>
+    <form id="duplicateAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Annotations</h3>
+    <form id="getAnnotationsForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset</h3>
+    <form id="getAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Ad Breaks</h3>
+    <form id="getAssetAdBreaksForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Child Nodes</h3>
+    <form id="getAssetChildNodesForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="folderId">Folder Id</label>
+        <input type="text" id="folderId" required>
+
+        <label for="sortColumn">Sort Column</label>
+        <input type="text" id="sortColumn" required>
+
+        <label for="isDesc">Is Descending</label>
+        <select id="isDesc">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+        
+        <label for="pageIndex">Page Index</label>
+        <input type="text" id="pageIndex" required>
+
+        <label for="pageSize">Page Size</label>
+        <input type="text" id="pageSize" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Details</h3>
+    <form id="getAssetDetailsForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Manifest With Cookies</h3>
+    <form id="getAssetManifestWithCookiesForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="cookieId">Cookie Id</label>
+        <input type="text" id="cookieId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Metadata Summary</h3>
+    <form id="getAssetMetadataSummaryForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Parent Folders</h3>
+    <form id="getAssetParentFoldersForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="pageSize">Page Size</label>
+        <input type="text" id="pageSize" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Screenshot Details</h3>
+    <form id="getAssetScreenshotDetailsForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+        
+        <label for="segmentId">Segment Id</label>
+        <input type="text" id="segmentId" required>
+
+        <label for="screenshotId">Screenshot Id</label>
+        <input type="text" id="screenshotId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Asset Segment Details</h3>
+    <form id="getAssetSegmentDetailsForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+        
+        <label for="segmentId">Segment Id</label>
+        <input type="text" id="segmentId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get User Upload Parts</h3>
+    <form id="getUserUploadPartsForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get User Uploads</h3>
+    <form id="getUserUploadsForm">
+        <label for="includeCompletedUploads">Include Completed Uploads</label>
+        <select id="includeCompletedUploads">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Import Annotations</h3>
+    <form id="importAnnotationsForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="annotations">Annotations</label>
+        <div id="importAnnotationsDiv"></div>
+        <br>
+        <button type="button" id="importAnnotationsAddAnnotationButton">Add Annotation</button>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Index Asset</h3>
+    <form id="indexAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Local Restore Asset</h3>
+    <form id="localRestoreAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="profile">Profile</label>
+        <input type="text" id="profile">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Move Asset</h3>
+    <form id="moveAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="batchActionId">Batch Action Id</label>
+        <input type="text" id="batchActionId">
+
+        <label for="batchActionName">Batch Action Name</label>
+        <input type="text" id="batchActionName">
+
+        <label for="contentDefinitionId">Content Definition Id</label>
+        <input type="text" id="contentDefinitionId">
+
+        <label for="schemaName">Schema Name</label>
+        <input type="text" id="schemaName">
+
+        <label for="targetIds">Target Ids (separated by comma)</label>
+        <input type="text" id="targetIds">
+
+        <label for="actionArguments">Action Arguments</label>
+        <div id="moveAssetActionArgumentsDiv"></div>
+        <br>
+        <button type="button" id="moveAssetAddActionArgumentButton">Add Action Argument</button>
+
+        <label for="resolverExcempt">Resolver Excempt</label>
+        <select id="resolverExcempt">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Record Asset Tracking Beacon</h3>
+    <form id="recordsAssetTrackingBeaconForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="trackingEvent">Tracking Event</label>
+        <select id="trackingEvent">
+            <option value="Progress">Progress</option>
+            <option value="FirstQuarter">FirstQuarter</option>
+            <option value="Midpoint">Midpoint</option>
+            <option value="ThirdQuarter">ThirdQuarter</option>
+            <option value="Complete">Complete</option>
+            <option value="Hide">Hide</option>
+            <option value="LiveStream">LiveStream</option>
+        </select>
+
+        <label for="recordsAssetTrackingBeaconLiveChannelSelect">Live Channel Id</label>
+        <select id="recordsAssetTrackingBeaconLiveChannelSelect"></select>
+
+        <label for="contentId">Content Id</label>
+        <input type="text" id="contentId">
+
+        <label for="second">Second</label>
+        <input type="number" id="second">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Register Asset</h3>
+    <form id="registerAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="parentId">Parent Id</label>
+        <input type="text" id="parentId" required>
+
+        <label for="displayObjectKey">Display Object Key</label>
+        <input type="text" id="displayObjectKey">
+
+        <label for="bucketName">Bucket Name</label>
+        <input type="text" id="bucketName" required>
+
+        <label for="objectKey">Object Key</label>
+        <input type="text" id="objectKey" required>
+
+        <label for="eTag">ETag</label>
+        <input type="text" id="eTag">
+
+        <label for="tags">Tags</label>
+        <select id="registerAssetTagsSelect" multiple></select>
+
+        <label for="Collections">Collections</label>
+        <select id="registerAssetCollectionsSelect" multiple></select>
+
+        <label for="registerAssetRelatedContentsContentDefinitionsSelect">Related Contents Content Definitions:</label>
+        <select id="registerAssetRelatedContentsContentDefinitionsSelect"></select>
+
+        <label for="registerAssetRelatedContentsSelect">Related Contents:</label>
+        <select id="registerAssetRelatedContentsSelect" multiple></select>
+
+        <label for="sequencer">Sequencer</label>
+        <input type="text" id="sequencer">
+
+        <label for="assetStatus">Asset Status</label>
+        <select id="assetStatus">
+            <option value="Available">Available</option>
+            <option value="Renaming">Renaming</option>
+            <option value="Copying">Copying</option>
+            <option value="Restoring">Restoring</option>
+            <option value="Registering">Registering</option>
+            <option value="Uploading">Uploading</option>
+            <option value="Archiving">Archiving</option>
+            <option value="Archived">Archived</option>
+            <option value="PendingArchive">PendingArchive</option>
+            <option value="PendingRestore">PendingRestore</option>
+            <option value="Restored">Restored</option>
+            <option value="Deleting">Deleting</option>
+            <option value="Moving">Moving</option>
+            <option value="SlugReplaced">SlugReplaced</option>
+            <option value="Updating">Updating</option>
+            <option value="Error">Error</option>
+            <option value="Assembling">Assembling</option>
+            <option value="Clipping">Clipping</option>
+            <option value="Placeholder">Placeholder</option>
+        </select>
+
+        <label for="storageClass">Storage Class</label>
+        <select id="storageClass">
+            <option value="Standard">Standard</option>
+            <option value="ReducedRedundancy">ReducedRedundancy</option>
+            <option value="Glacier">Glacier</option>
+            <option value="StandardInfrequentAccess">StandardInfrequentAccess</option>
+            <option value="OneZoneInfrequentAccess">OneZoneInfrequentAccess</option>
+            <option value="IntelligentTiering">IntelligentTiering</option>
+            <option value="DeepArchive">DeepArchive</option>
+            <option value="GlacierInstantRetrieval">GlacierInstantRetrieval</option>
+            <option value="Outposts">Outposts</option>
+        </select>
+
+        <label for="assetType">Asset Type</label>
+        <select id="assetType">
+            <option value="Folder">Folder</option>
+            <option value="File">File</option>
+            <option value="Bucket">Bucket</option>
+        </select>
+        
+        <label for="contentLength">Content Length</label>
+        <input type="number" id="contentLength">
+
+        <label for="storageEventName">Storage Event Name</label>
+        <input type="text" id="storageEventName">
+
+        <label for="cratedDate">Created Date</label>
+        <input type="datetime-local" id="cratedDate">
+
+        <label for="storageSourceIpAddress">Storage Source Ip Address</label>
+        <input type="text" id="storageSourceIpAddress">
+
+        <label for="startMediaProcessor">Start Media Processor</label>
+        <select id="startMediaProcessor">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+
+        <label for="deleteMissingAssets">Delete Missing Assets</label>
+        <select id="deleteMissingAssets">
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Reprocess Asset</h3>
+    <form id="reprocessAssetForm">
+        <label for="targetIds">Target Ids (separated by comma)</label>
+        <input type="text" id="targetIds" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Restore Asset</h3>
+    <form id="restoreAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Share Asset</h3>
+    <form id="shareAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="nomadUsers">Nomad Users (separate by comma)</label>
+        <input type="text" id="nomadUsers">
+
+        <label for="externalUsers">External Users (separate by comma)</label>
+        <input type="text" id="externalUsers">
+
+        <label for="shareDurationInHours">Share Duration In Hours</label>
+        <input type="number" id="shareDurationInHours">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Workflow</h3>
+    <form id="startWorkflowForm">
+        <label for="actionArgument">Action Arguments</label>
+        <div id="startWorkflowActionArgumentsDiv"></div>
+        <br>
+        <button type="button" id="startWorkflowAddActionArgumentButton">Add Action Argument</button>
+
+        <label for="targetIds">Target Ids (separated by comma)</label>
+        <input type="text" id="targetIds" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Transcribe Asset</h3>
+    <form id="transcribeAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="transcriptionId">Transcription Id</label>
+        <input type="text" id="transcriptionId" required>
+
+        <label for="transcript">Transcript</label>
+        <div id="transcriptAssetDiv"></div>
+        <br>
+        <button type="button" id="transcribeAssetAddTranscriptButton">Add Transcript</button>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Annotation</h3>
+    <form id="updateAnnotationForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="annotationId">Annotation Id</label>
+        <input type="text" id="annotationId" required>
+
+        <label for="startTimeCode">Start Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="startTimeCode">
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="updateAnnotationCountrySelect">Country</label>
+        <select id="updateAnnotationCountrySelect"></select>
+
+        <label for="description">Description</label>
+        <input type="text" id="description">
+
+        <label for="firstKeyword">First Keyword</label>
+        <input type="text" id="firstKeyword">
+
+        <label for="secondKeyword">Second Keyword</label>
+        <input type="text" id="secondKeyword">
+
+        <label for="contentId">Content Id</label>
+        <input type="text" id="contentId">
+
+        <label for="imageUrl">Image Url</label>
+        <input type="text" id="imageUrl">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Asset</h3>
+    <form id="updateAssetForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="displayName">Display Name</label>
+        <input type="text" id="displayName">
+
+        <label for="displayDate">Display Date</label>
+        <input type="datetime-local" id="displayDate">
+
+        <label for="availableStartDate">Available Start Date</label>
+        <input type="datetime-local" id="availableStartDate">
+
+        <label for="availableEndDate">Available End Date</label>
+        <input type="datetime-local" id="availableEndDate">
+
+        <label for="customProperties">Custom Properties</label>
+        <div id="updateAssetCustomPropertiesDiv"></div>
+        <br>
+        <button type="button" id="updateAssetAddCustomPropertyButton">Add Custom Property</button>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Asset Ad Break</h3>
+    <form id="updateAssetAdBreakForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="adBreakId">Ad Break Id</label>
+        <input type="text" id="adBreakId" required>
+
+        <label for="timeCode">Time Code (hh:mm:ss;ff)</label>
+        <input type="text" id="timeCode">
+
+        <label for="tags">Tags</label>
+        <select id="updateAssetAdBreakTagsSelect" multiple></select>
+
+        <label for="labels">Labels</label>
+        <select id="updateAssetAdBreakLabelsSelect" multiple></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Asset Language</h3>
+    <form id="updateAssetLanguageForm">
+        <label for="assetId">Asset Id</label>
+        <input type="text" id="assetId" required>
+
+        <label for="language">Language</label>
+        <select id="updateAssetLanguageSelect"></select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

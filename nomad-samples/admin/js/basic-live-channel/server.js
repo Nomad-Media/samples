@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
+import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk.min.js";
 
 import express from 'express';
 import multer from 'multer';
@@ -111,6 +111,67 @@ app.post('/deleteLiveChannel', upload.none(), async (req, res) =>
     }
 });
 
+app.get('/refreshLiveChannels', async (req, res) =>
+{
+    try
+    {
+        const LIVE_CHANNEL = await NomadSDK.liveChannelRefresh();
+        res.status(200).json(LIVE_CHANNEL);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/nextEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.nextEvent(req.body.channelId);
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/startOutputTracking', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.startOutputTracking(req.body.channelId);
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/moveScheduleEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.moveScheduleEvent(req.body.channelId,
+            req.body.scheduleEventId, req.body.previousScheduleEventId);
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/getLiveInputs', async (req, res) => 
 {
     try
@@ -119,7 +180,7 @@ app.get('/getLiveInputs', async (req, res) =>
 
         res.status(200).json(LIVE_INPUTS);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -134,7 +195,7 @@ app.post('/getLiveInput', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_INPUT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -152,7 +213,7 @@ app.post('/createInput', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_INPUT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -170,7 +231,7 @@ app.post('/updateInput', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_INPUT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -185,7 +246,7 @@ app.post('/deleteInput', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_INPUT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -197,8 +258,11 @@ app.post('/addAssetScheduleEvent', upload.none(), async (req, res) =>
     try
     {
         const SCHEDULE_EVENT = await NomadSDK.addAssetScheduleEvent(
-            req.body.addAssetScheduleEventChannelId, req.body.addAssetScheduleEventAssetId,
-            req.body.addAssetScheduleEventAssetName, 
+            req.body.addAssetScheduleEventChannelId, 
+            { 
+                id: req.body.addAssetScheduleEventAssetId,
+                name: req.body.addAssetScheduleEventAssetName 
+            }, 
             req.body.addAssetScheduleEventIsLoop === "true", 
             req.body.addAssetScheduleEventDurationTimeCode, 
             req.body.addAssetScheduleEventPreviousId);
@@ -206,27 +270,111 @@ app.post('/addAssetScheduleEvent', upload.none(), async (req, res) =>
 
         res.status(200).json(SCHEDULE_EVENT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
     }
 });
 
-app.post('/addLiveInputScheduleEvent', upload.none(), async (req, res) =>
+app.post('/addInputScheduleEvent', upload.none(), async (req, res) =>
 {
     try
     {
-        const SCHEDULE_EVENT = await NomadSDK.addLiveInputScheduleEvent(
-            req.body.addInputScheduleEventChannelId, req.body.addInputScheduleEventInputId,
-            req.body.addInputScheduleEventInputName, req.body.addInputScheduleEventBackupInputId,
-            req.body.addInputScheduleEventBackupInputName, 
+        let backupInput = null;
+        if (req.body.addInputScheduleEventBackupInputId === null)
+        {
+            backupInput = "";
+        }
+        else
+        {
+            backupInput = {
+                id: req.body.addInputScheduleEventBackupInputId,
+                name: req.body.addInputScheduleEventBackupInputName
+            };
+        }
+        const SCHEDULE_EVENT = await NomadSDK.addInputScheduleEvent(
+            req.body.addInputScheduleEventChannelId, 
+            {
+                id: req.body.addInputScheduleEventInputId,
+                name: req.body.addInputScheduleEventInputName
+            }, backupInput,
             req.body.addInputScheduleEventFixedOnAirTimeUTC, 
             req.body.addInputScheduleEventPreviousId);
 
         res.status(200).json(SCHEDULE_EVENT);
     }
-    catch
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/getAssetScheduleEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.getAssetScheduleEvent(req.body.channelId, 
+            req.body.scheduleEventId);
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/getInputScheduleEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.getInputScheduleEvent(req.body.channelId, 
+            req.body.scheduleEventId);
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/updateAssetScheduleEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SCHEDULE_EVENT = await NomadSDK.updateAssetScheduleEvent(
+            req.body.scheduleEventId, req.body.channelId, req.body.assetId, req.body.assetName, 
+            req.body.IsLoop === "true", req.body.DurationTimeCode, req.body.previousId);
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/updateInputScheduleEvent', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const INPUT = req.body.inputId === '' ? null : { id: req.body.inputId, name: req.body.inputName};
+        const BACKUP_INPUT = req.body.backupInputId === '' ? null : { id: req.body.backupInputId, name: req.body.backupInputName};
+        const FIXED_ON_AIR_TIME_UTC = req.body.fixedOnAirTimeUTC === '' ? null : req.body.fixedOnAirTimeUTC;
+
+        const SCHEDULE_EVENT = await NomadSDK.updateInputScheduleEvent(
+            req.body.scheduleEventId, req.body.channelId, INPUT, BACKUP_INPUT,
+            FIXED_ON_AIR_TIME_UTC, );
+
+        res.status(200).json(SCHEDULE_EVENT);
+    }
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -241,7 +389,7 @@ app.post('/removeAssetScheduleEvent', upload.none(), async (req, res) =>
 
         res.status(200).json(SCHEDULE_EVENT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -256,7 +404,7 @@ app.post('/removeLiveInputScheduleEvent', upload.none(), async (req, res) =>
 
         res.status(200).json(SCHEDULE_EVENT);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -271,7 +419,7 @@ app.post('/startLiveChannel', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_CHANNEL);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -286,7 +434,7 @@ app.post('/stopLiveChannel', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_CHANNEL);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -301,7 +449,7 @@ app.get('/getLiveOperators', async (req, res) =>
 
         res.status(200).json(LIVE_OPERATORS);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -316,7 +464,7 @@ app.post('/getLiveOperator', upload.none(), async (req, res) =>
 
         res.status(200).json(LIVE_OPERATOR);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -334,7 +482,7 @@ app.post('/startBroadcast', upload.none(), async (req, res) =>
 
         res.status(200).json(BROADCAST);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -349,7 +497,7 @@ app.post('/cancelBroadcast', upload.none(), async (req, res) =>
 
         res.status(200).json(BROADCAST);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -364,7 +512,7 @@ app.post('/stopBroadcast', upload.none(), async (req, res) =>
 
         res.status(200).json(BROADCAST);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -379,7 +527,7 @@ app.post('/getCompletedSegments', async (req, res) =>
 
         res.status(200).json(COMPLETED_SEGMENTS);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -394,7 +542,7 @@ app.post('/startSegment', upload.none(), async (req, res) =>
 
         res.status(200).json(SEGMENTS);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -409,7 +557,7 @@ app.post('/cancelSegment', upload.none(), async (req, res) =>
 
         res.status(200).json(SEGMENTS);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });
@@ -426,7 +574,7 @@ app.post('/completeSegment', upload.none(), async (req, res) =>
 
         res.status(200).json(SEGMENTS);
     }
-    catch
+    catch (error)
     {
         console.error(error);
         res.status(500).json({ error: error.message });

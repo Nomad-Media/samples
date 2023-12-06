@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
+import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk.min.js";
 
 import express from 'express';
 import multer from 'multer';
@@ -54,6 +54,50 @@ app.post('/update-content', upload.none(), async (req, res) => {
         const CONTENT = await NomadSDK.updateContent(req.body.updateContentContentId, 
             req.body.updateContentContentDefinitionId, req.body.updateContentProperties,
             req.body.updateContentLanguageId);
+        res.status(200).json(CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/deactivate-content', upload.none(), async (req, res) => {
+    try
+    {
+        const CONTENT = await NomadSDK.deactivateContentUserTrack(req.body.sessionId,
+            req.body.contentId, req.body.contentDefinitionId, 
+            req.body.deactivate === "True");
+        res.status(200).json(CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/get-content-user-track', upload.none(), async (req, res) => {
+    try
+    {
+        const CONTENT = await NomadSDK.getContentUserTrack(req.body.contentId,
+            req.body.contentDefinitionId, req.body.sortColumn, 
+            req.body.isDescending === "True", req.body.pageIndex, req.body.pageSize);
+        res.status(200).json(CONTENT);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/get-content-user-track-touch', upload.none(), async (req, res) => {
+    try
+    {
+        const CONTENT = await NomadSDK.getContentUserTrackTouch(req.body.contentId,
+            req.body.contentDefinitionId);
         res.status(200).json(CONTENT);
     }
     catch (error)

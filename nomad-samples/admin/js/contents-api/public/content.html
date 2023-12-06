@@ -79,6 +79,66 @@
         <button type="submit">Submit</button>
     </form>
 
+    <h3>Deactivate Content User Tracking</h3>
+    <form id="deactivateForm">
+        <label for="sessionId">Session Id:</label>
+        <input type="text" id="sessionId" required>
+
+        <label for="contentId">Content Id:</label>
+        <input type="text" id="contentId" required>
+        
+        <label for="contentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId" required>
+
+        <label for="deactivate">Deactivate:</label>
+        <select id="deactivate">
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Content User Track</h3>
+    <form id="getContentUserTrackForm">
+        <label for="contentId">Content Id:</label>
+        <input type="text" id="contentId" required>
+        
+        <label for="contentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId" required>
+
+        <label for="sortColumn">Sort Column:</label>
+        <input type="text" id="sortColumn" required>
+
+        <label for="isDescending">Is Descending:</label>
+        <select id="isDescending">
+            <option value="True">True</option>
+            <option value="False" selected>False</option>
+        </select>
+
+        <label for="pageIndex">Page Index:</label>
+        <input type="text" id="pageIndex">
+
+        <label for="pageSize">Page Size:</label>
+        <input type="text" id="pageSize">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Content User Track Touch</h3>
+    <form id="getContentUserTrackTouchForm">
+        <label for="contentId">Content Id:</label>
+        <input type="text" id="contentId" required>
+        
+        <label for="contentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
     <h3>Delete Content</h3>
     <form id="deleteForm">
         <label for="deleteContentDefinitionId">Content Definition Id:</label>

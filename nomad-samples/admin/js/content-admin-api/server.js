@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from "../../../../nomad-sdk/js/sdk.min.js";
+import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk.min.js";
 
 import express from 'express';
 import multer from 'multer';
@@ -20,12 +20,40 @@ app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/content-admin-api.html');
 });
 
+app.post('/create-tag-or-collection', upload.none(), async (req, res) => {
+    try
+    {
+        const TAG_OR_COLLECTION = await NomadSDK.createTagOrCollection(req.body.createTagOrCollection,
+            req.body.createTagName);
+        res.status(200).json(TAG_OR_COLLECTION);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
 app.post('/add-tag-or-collection', upload.none(), async (req, res) => {
     try
     {
         const TAG_OR_COLLECTION = await NomadSDK.addTagOrCollection(req.body.addTagOrCollection,
             req.body.addTagContentId, req.body.addTagContentDefinition, req.body.addTagName,
             req.body.addTagId, req.body.createNew);
+        res.status(200).json(TAG_OR_COLLECTION);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({error: error.message});
+    }
+});
+
+app.post('/get-tag-or-collection', upload.none(), async (req, res) => {
+    try
+    {
+        const TAG_OR_COLLECTION = await NomadSDK.getTagOrCollection(req.body.getTagOrCollection,
+            req.body.getTagId);
         res.status(200).json(TAG_OR_COLLECTION);
     }
     catch (error)

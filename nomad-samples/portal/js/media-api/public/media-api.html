@@ -31,8 +31,8 @@
 <body>
 
     <h1>Media API</h1>
+
     <h3>Media Search</h3>
-    
     <form id="mediaSearchForm">
         <label for="searchQuery">Search Query:</label>
         <input type="text" id="searchQuery">
@@ -56,11 +56,96 @@
         <button type="submit">Submit</button>
     </form>
 
-    <h3>Form</h3>
+    <h3>Get Dynamic Contents</h3>
+    <form id="getDynamicContentsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Dynamic Content</h3>
+    <form id="getDynamicContentForm">
+        <label for="dynamicContentId">Dynamic Content Id:</label>
+        <input type="text" id="dynamicContentId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Media Group</h3>
+    <form id="getMediaGroupForm">
+        <label for="mediaGroupId">Media Group Id:</label>
+        <input type="text" id="mediaGroupId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Media Item</h3>
+    <form id="getMediaItemForm">
+        <label for="mediaItemId">Media Item Id:</label>
+        <input type="text" id="mediaItemId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Default Site Config</h3>
+    <form id="getDefaultSiteConfigForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Site Config</h3>
+    <form id="getSiteConfigForm">
+        <label for="siteConfigId">Site Config Id:</label>
+        <input type="text" id="siteConfigId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
     
+    <h3>Get My Content</h3>
+    <form id="getMyContentForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get My Group</h3>
+    <form id="getMyGroupForm">
+        <label for="myGroupId">My Group Id:</label>
+        <input type="text" id="myGroupId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Clear Watchlist</h3>
+    <form id="clearWatchlistForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Clear Continue Watching</h3>
+    <form id="clearContinueWatchingForm">
+        <label for="userId">User Id:</label>
+        <input type="text" id="userId">
+
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Content Cookies</h3>
+    <form id="getContentCookiesForm">
+        <label for="contentId">Content Id:</label>
+        <input type="text" id="contentId" required>
+        
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Form</h3>
     <form id="formForm">
-        <label for="id">Id:</label>
-        <input type="text" id="id" required>
+        <label for="contentDefinitionId">Content Definition Id:</label>
+        <input type="text" id="contentDefinitionId" required>
 
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" required>

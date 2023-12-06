@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>User Session</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="user-session.css">
+
+    <!-- JS -->
+    <script type="module" src="user-session.js" defer></script>
+</head>
+
+<body>
+
+    <h1>User Session</h1>
+    <h3>Get User Session</h3>
+    <form id="getUserSessionForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Change Session Status</h3>
+    <form id="changeSessionStatusForm">
+        <label for="changeSessionStatus">Session Status:</label>
+        <select id="changeSessionStatus" required>
+            <option value="Normal">Normal</option>
+            <option value="ChatDisabled">Chat Disabled</option>
+            <option value="SessionReplaced">Session Replaced</option>
+            <option value="Deactive">Deactive</option>
+            <option value="SharedAccess">Shared Access</option>
+            <option value="PendingInvite">Pending Invite</option>
+            <option value="Expired">Expired</option>
+            <option value="DeletedInvite">Deleted Invite</option>
+        </select>
+
+        <label for="applicationId">Application Id:</label>
+        <input type="text" id="applicationId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

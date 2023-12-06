@@ -21,6 +21,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
 
+    <!-- Libraries -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+     
     <!-- Styles -->
     <link rel="stylesheet" href="basic-live-channel.css" />
 
@@ -93,21 +99,19 @@
             <input type="text" id="createChannelUrl">
         </div>
 
-        <div class="checkbox-dropdown">
-            <label>Security Groups:</label>
-            <label>
-                <input type="checkbox" name="createSecurityGroups" value="Content Manager">
-                Content Manager
-            </label>
-            <label>
-                <input type="checkbox" name="createSecurityGroups" value="Everyone">
-                Everyone
-            </label>
-            <label>
-                <input type="checkbox" name="createSecurityGroups" value="Guests">
-                Guests
-            </label>
-        </div>
+        
+        <label for="createSecurityGroups">Security Groups:</label>
+        <select id="createSecurityGroups" multiple>
+            <option value="Content Manager">Content Manager</option>
+            <option value="Everyone">Everyone</option>
+            <option value="Guests">Guests</option>
+        </select>
+
+        <script>
+            $(document).ready(function() {
+                $('#createSecurityGroups').select2();
+            });
+        </script>
 
         <br><br>
         <button type="submit">Submit</button>
@@ -164,21 +168,56 @@
             <input type="text" id="updateChannelUrl">
         </div>
 
-        <div class="checkbox-dropdown">
-            <label>Security Groups:</label>
-            <label>
-                <input type="checkbox" name="updateSecurityGroups" value="Content Manager">
-                Content Manager
-            </label>
-            <label>
-                <input type="checkbox" name="updateSecurityGroups" value="Everyone">
-                Everyone
-            </label>
-            <label>
-                <input type="checkbox" name="updateSecurityGroups" value="Guests">
-                Guests
-            </label>
-        </div>
+        <label for="updateSecurityGroups">Security Groups:</label>
+        <select id="updateSecurityGroups" multiple>
+            <option value="Content Manager">Content Manager</option>
+            <option value="Everyone">Everyone</option>
+            <option value="Guests">Guests</option>
+        </select>
+
+        <script>
+            $(document).ready(function() {
+                $('#updateSecurityGroups').select2();
+            });
+        </script>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Refresh Live Channels</h3>
+    <form id="refreshChannelsForm">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Next Event</h3>
+    <form id="nextEventForm">
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Start Output Tracking</h3>
+    <form id="startOutputTrackingForm">
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Move Schedule Event</h3>
+    <form id="moveScheduleEventForm">
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <label for="scheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="scheduleEventId" required>
+
+        <label for="previousScheduleEventId">Previous Schedule Event Id:</label>
+        <input type="text" id="previousScheduleEventId">
 
         <br><br>
         <button type="submit">Submit</button>
@@ -210,6 +249,49 @@
         <br><br>
         <button type="submit">Submit</button>
     </form>
+
+    <h3>Get Asset Schedule Event</h3>
+    <form id="getAssetScheduleEventForm">
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <label for="scheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="scheduleEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Asset Schedule Event to Channel</h3>
+    <form id="updateAssetScheduleEventForm">
+        <label for="scheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="scheduleEventId" required>
+
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <label for="assetId">Asset Id:</label>
+        <input type="text" id="assetId">
+
+        <label for="assetName">Asset Name:</label>
+        <input type="text" id="assetName">
+
+        <label for="isLoop">Is Loop:</label>
+        <select id="isLoop">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+
+        <label for="durationTimeCode">Duration Time Code:</label>
+        <input type="text" id="durationTimeCode">
+
+        <label for="previousId">Previous Id:</label>
+        <input type="text" id="previousId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
 
     <h3>Remove Asset Schedule Event from Channel</h3>
     <form id="removeAssetScheduleEventForm">
@@ -337,6 +419,48 @@
 
         <label for="addInputScheduleEventPreviousId">Previous Id:</label>
         <input type="text" id="addInputScheduleEventPreviousId">
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Get Live Input Schedule Event</h3>
+    <form id="getInputScheduleEventForm">
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <label for="scheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="scheduleEventId" required>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Update Live Input Schedule Event to Channel</h3>
+    <form id="updateInputScheduleEventForm">
+        <label for="scheduleEventId">Schedule Event Id:</label>
+        <input type="text" id="scheduleEventId" required>
+
+        <label for="channelId">Channel Id:</label>
+        <input type="text" id="channelId" required>
+
+        <label for="inputId">Input Id:</label>
+        <input type="text" id="inputId">
+
+        <label for="inputName">Input Name:</label>
+        <input type="text" id="inputName">
+
+        <label for="backupInputId">Backup Input Id:</label>
+        <input type="text" id="backupInputId">
+
+        <label for="backupInputName">Backup Input Name:</label>
+        <input type="text" id="backupInputName">
+
+        <label for="fixedOnAirTimeUTC">Fixed On Air Time UTC:</label>
+        <input type="text" id="fixedOnAirTimeUTC">
+
+        <label for="previousId">Previous Id:</label>
+        <input type="text" id="previousId">
 
         <br><br>
         <button type="submit">Submit</button>

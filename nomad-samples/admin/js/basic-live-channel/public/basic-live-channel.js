@@ -2,13 +2,21 @@ const GET_CHANNELS_FORM = document.getElementById("getChannelsForm");
 const GET_CHANNEL_FORM = document.getElementById("getChannelForm");
 const CREATE_CHANNEL_FORM = document.getElementById("createChannelForm");
 const UPDATE_CHANNEL_FORM = document.getElementById("updateChannelForm");
+const REFRESH_CHANNELS_FORM = document.getElementById("refreshChannelsForm");
+const NEXT_EVENT_FORM = document.getElementById("nextEventForm");
+const START_OUTPUT_TRACKING_FORM = document.getElementById("startOutputTrackingForm");
+const MOVE_SCHEDULE_EVENT_FORM = document.getElementById("moveScheduleEventForm");
 const ADD_ASSET_SCHEDULE_EVENT_FORM = document.getElementById("addAssetScheduleEventForm");
+const GET_ASSET_SCHEDULE_EVENT_FORM = document.getElementById("getAssetScheduleEventForm");
+const UPDATE_ASSET_SCHEDULE_EVENT_FORM = document.getElementById("updateAssetScheduleEventForm");
 const REMOVE_ASSET_SCHEDULE_EVENT_FORM = document.getElementById("removeAssetScheduleEventForm");
 const GET_INPUTS_FORM = document.getElementById("getInputsForm");
 const GET_INPUT_FORM = document.getElementById("getInputForm");
 const CREATE_INPUT_FORM = document.getElementById("createInputForm");
 const UPDATE_INPUT_FORM = document.getElementById("updateInputForm");
 const ADD_INPUT_SCHEDULE_EVENT_FORM = document.getElementById("addInputScheduleEventForm");
+const GET_INPUT_SCHEDULE_EVENT_FORM = document.getElementById("getInputScheduleEventForm");
+const UPDATE_INPUT_SCHEDULE_EVENT_FORM = document.getElementById("updateInputScheduleEventForm");
 const REMOVE_INPUT_SCHEDULE_EVENT_FORM = document.getElementById("removeInputScheduleEventForm");
 const START_CHANNEL_FORM = document.getElementById("startChannelForm");
 const STOP_CHANNEL_FORM = document.getElementById("stopChannelForm");
@@ -92,6 +100,40 @@ UPDATE_CHANNEL_FORM.addEventListener("submit", async function (event)
 
     console.log(await sendRequest("/updateLiveChannel", "POST", FORM_DATA));
 
+});
+
+REFRESH_CHANNELS_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    console.log(await sendRequest("/refreshLiveChannels", "GET"));
+});
+
+NEXT_EVENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(NEXT_EVENT_FORM);
+
+    console.log(await sendRequest("/nextEvent", "POST", FORM_DATA));
+});
+
+START_OUTPUT_TRACKING_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(START_OUTPUT_TRACKING_FORM);
+
+    console.log(await sendRequest("/startOutputTracking", "POST", FORM_DATA));
+});
+
+MOVE_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(MOVE_SCHEDULE_EVENT_FORM);
+
+    console.log(await sendRequest("/moveScheduleEvent", "POST", FORM_DATA));
 });
 
 GET_INPUTS_FORM.addEventListener("submit", async function (event)
@@ -212,6 +254,24 @@ ADD_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
     console.log(await sendRequest("/addAssetScheduleEvent", "POST", FORM_DATA));
 });
 
+GET_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_ASSET_SCHEDULE_EVENT_FORM);
+
+    console.log(await sendRequest("/getAssetScheduleEvent", "POST", FORM_DATA));
+});
+
+UPDATE_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(UPDATE_ASSET_SCHEDULE_EVENT_FORM);
+
+    console.log(await sendRequest("/updateAssetScheduleEvent", "POST", FORM_DATA));
+});
+
 REMOVE_ASSET_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
 {
     event.preventDefault();
@@ -228,6 +288,24 @@ ADD_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
     const FORM_DATA = getElements(ADD_INPUT_SCHEDULE_EVENT_FORM);
 
     console.log(await sendRequest("/addInputScheduleEvent", "POST", FORM_DATA));
+});
+
+GET_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(GET_INPUT_SCHEDULE_EVENT_FORM);
+
+    console.log(await sendRequest("/getInputScheduleEvent", "POST", FORM_DATA));
+});
+
+UPDATE_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(UPDATE_INPUT_SCHEDULE_EVENT_FORM);
+
+    console.log(await sendRequest("/updateInputScheduleEvent", "POST", FORM_DATA));
 });
 
 REMOVE_INPUT_SCHEDULE_EVENT_FORM.addEventListener("submit", async function (event)
