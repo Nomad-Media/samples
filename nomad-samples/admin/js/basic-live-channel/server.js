@@ -1,3 +1,6 @@
+const COLLECTION_CONTENT_DEFINITION_ID = "20352932-05d2-4a7a-8821-06fcf4438ced";
+const TAG_CONTENT_DEFINITION_ID = "c806783c-f127-48ae-90c9-32175f4e1fff";
+
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -18,6 +21,116 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
 	res.sendFile(__dirname + '/public/basic-live-channel.html');
+});
+
+app.get('/get-collection-list', upload.none(), async (req, res) =>
+{
+    try
+    {
+        if (NomadSDK.config.apiType === "portal")
+        {
+            res.status(200).json(null)
+        }
+        else
+        {
+            const COLLECTIONS = await getGroups(COLLECTION_CONTENT_DEFINITION_ID);
+
+            res.status(200).json(COLLECTIONS);
+        }
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.get('/get-content-definition-list', upload.none(), async (req, res) =>
+{
+    try
+    {
+        if (NomadSDK.config.apiType === "portal")
+        {
+            res.status(200).json(null)
+        }
+        else
+        {
+            const CONTENT_DEFINITIONS = await NomadSDK.miscFunctions("contentDefinition", "GET");
+
+            res.status(200).json(CONTENT_DEFINITIONS.items);
+        }
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.get('/get-live-channel-list', upload.none(), async (req, res) =>
+{
+    try
+    {
+        if (NomadSDK.config.apiType === "portal")
+        {
+            res.status(200).json(null)
+        }
+        else
+        {
+            const LIVE_CHANNELS = await NomadSDK.getLiveChannels();
+
+            res.status(200).json(LIVE_CHANNELS);
+        }
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.post('/get-related-content-list', upload.none(), async (req, res) =>
+{
+    try
+    {
+        if (NomadSDK.config.apiType === "portal")
+        {
+            res.status(200).json(null)
+        }
+        else
+        {
+            const RELATED_CONTENT = await getGroups(req.body.contentDefinitionId);
+
+            res.status(200).json(RELATED_CONTENT);
+        }
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+app.get('/get-tag-list', upload.none(), async (req, res) =>
+{
+    try
+    {
+        if (NomadSDK.config.apiType === "portal")
+        {
+            res.status(200).json(null)
+        }
+        else
+        {
+            const TAGS = await getGroups(TAG_CONTENT_DEFINITION_ID);
+
+            res.status(200).json(TAGS);
+        }
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).send(error);
+    }
 });
 
 app.get('/getLiveChannels', async (req, res) => 
@@ -74,11 +187,11 @@ app.post('/updateLiveChannel', upload.none(), async (req, res) =>
 {
     try 
     {
-        console.log(JSON.stringify(req.body, null, 4));
+        const CHANNEL = JSON.parse(req.body.updateChannelSelect);
 
         const SECURITY_GROUPS = req.body.updateSecurityGroups === null ? "" : req.body.updateSecurityGroups.split(',');
 
-        const LIVE_CHANNEL = await NomadSDK.updateLiveChannel(req.body.updateChannelId,
+        const LIVE_CHANNEL = await NomadSDK.updateLiveChannel(CHANNEL.id,
             req.body.updateChannelName, req.body.updateChannelThumbnailImage, 
             req.body.updateChannelArchiveFolderAssetId,
             req.body.updateChannelEnableHighAvailability === "true", 
@@ -103,6 +216,47 @@ app.post('/deleteLiveChannel', upload.none(), async (req, res) =>
         const LIVE_CHANNEL = await NomadSDK.deleteLiveChannel(req.body.deleteChannelId,
             req.body.deleteLiveInputs === "true");
         res.status(200).json(LIVE_CHANNEL);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/clipLiveChannel', upload.none(), async (req, res) =>
+{
+    try
+    {
+        console.log(JSON.stringify(req.body, null, 4));
+        const LIVE_CHANNEL = JSON.parse(req.body.clipLiveChannelSelect);
+
+        let collections = null;
+        if (req.body.clipLiveChannelCollectionsSelect)
+        {
+            const PARSED_COLLECTIONS = JSON.parse(req.body.clipLiveChannelCollectionsSelect);
+            collections = Array.isArray(PARSED_COLLECTIONS) ? PARSED_COLLECTIONS : [PARSED_COLLECTIONS];
+        }
+
+        let relatedContent = null;
+        if (req.body.clipLiveChannelRelatedContentSelect)
+        {
+            const PARSED_RELATED_CONTENT = JSON.parse(req.body.clipLiveChannelRelatedContentSelect);
+            relatedContent = Array.isArray(PARSED_RELATED_CONTENT) ? PARSED_RELATED_CONTENT : [PARSED_RELATED_CONTENT];
+        }
+
+        let tags = null;
+        if (req.body.clipLiveChannelTagsSelect)
+        {
+            const PARSED_TAGS = JSON.parse(req.body.clipLiveChannelTagsSelect);
+            tags = Array.isArray(PARSED_TAGS) ? PARSED_TAGS : [PARSED_TAGS];
+        }
+
+        const CLIP = await NomadSDK.clipLiveChannel(LIVE_CHANNEL.id, 
+            req.body.startTimeCode, req.body.endTimeCode, req.body.title,
+            req.body.outputFolderAssetId, tags, collections, relatedContent, 
+            req.body.videoBitrate, req.body.audioTracks);
+        res.status(200).json(CLIP);
     }
     catch (error)
     {
@@ -584,3 +738,33 @@ app.post('/completeSegment', upload.none(), async (req, res) =>
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+async function getGroups(GROUP_CONTENT_DEFINITION_ID)
+{
+    const GROUP_LIST = [];
+    let offset = 0;
+    while (true)
+    {
+        const SEARCH_INFO = await NomadSDK.search(null, offset, null, 
+            [
+                {
+                    fieldName: "contentDefinitionId",
+                    operator: "Equals",
+                    values: GROUP_CONTENT_DEFINITION_ID,
+                },
+                {
+                    fieldName: "languageId",
+                    operator: "Equals",
+                    values: "c66131cd-27fc-4f83-9b89-b57575ac0ed8"
+                }
+            ], null, null, null, null, true, null);
+
+        if (!SEARCH_INFO) return [];
+        GROUP_LIST.push(...SEARCH_INFO.items);
+
+        ++offset;
+
+        if (SEARCH_INFO.items.length < 100) break;
+    }
+    return GROUP_LIST;
+}

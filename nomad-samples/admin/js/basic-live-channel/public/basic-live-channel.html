@@ -119,8 +119,8 @@
 
     <h3>Update Live Channel</h3>
     <form id="updateChannelForm">
-        <label for="updateChannelId">Channel Id:</label>
-        <input type="text" id="updateChannelId" required>
+        <label for="updateChannelSelect">Channel:</label>
+        <select id="updateChannelSelect" required></select>
 
         <label for="updateChannelName">Channel Name:</label>
         <input type="text" id="updateChannelName">
@@ -180,6 +180,46 @@
                 $('#updateSecurityGroups').select2();
             });
         </script>
+
+        <br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <h3>Clip Live Channel</h3>
+    <form id="clipLiveChannelForm">
+        <label for="clipLiveChannelSelect">Channel:</label>
+        <select id="clipLiveChannelSelect" required></select>
+
+        <label for="startTimeCode">Start Time Code (hh:mm:ss;ff):</label>
+        <input type="text" id="startTimeCode" required>
+
+        <label for="endTimeCode">End Time Code (hh:mm:ss;ff):</label>
+        <input type="text" id="endTimeCode">
+
+        <label for="title">Title:</label>
+        <input type="text" id="title">
+
+        <label for="outputFolderAssetId">Output Folder Asset Id:</label>
+        <input type="text" id="outputFolderAssetId" required>
+
+        <label for="clipLiveChannelTagsSelect">Tags:</label>
+        <select id="clipLiveChannelTagsSelect" multiple></select>
+        
+        <label for="clipLiveChannelCollectionsSelect">Collections:</label>
+        <select id="clipLiveChannelCollectionsSelect" multiple></select>
+
+        <label for="clipLiveChannelContentDefinitionsSelect">Content Definitions:</label>
+        <select id="clipLiveChannelContentDefinitionsSelect"></select>
+
+        <label for="clipLiveChannelRelatedContentsSelect">Related Contents:</label>
+        <select id="clipLiveChannelRelatedContentsSelect" multiple></select>
+
+        <label for="videoBitrate">Video Bitrate:</label>
+        <input type="number" id="videoBitrate">
+
+        <label for="audioTracks">Audio Tracks:</label>
+        <select id="audioTracks" multiple></select>
+        <script>$(document).ready(function() {$('#audioTracks').select2();});</script>
 
         <br><br>
         <button type="submit">Submit</button>
