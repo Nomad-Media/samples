@@ -128,6 +128,9 @@ import config from "./config/config.js";
 
 
 
+
+
+
 // common
 
 
@@ -673,6 +676,53 @@ class NomadSDK {
 
     // content functions
     /**
+     * @function contentBatchActions
+     * @async
+     * @description Performs the specified batch action on the specified content IDs.
+     * @param {string} NAME - The action to perform.
+     * @param {Array<string>} TARGET_IDS - The IDs of the content to perform the action on.
+     * @param {JSON | null} BATCH_ACTION - The batch action to perform.
+     * @param {string | null} CONTENT_DEFINITION_ID - The content definition ID to use.
+     * @param {string | null} SCHEMA_NAME - The schema name to use.
+     * @param {JSON | null} ACTION_ARGUMENTS - The action arguments to use.
+     * @param {boolean | null} RESOLVER_EXCEMPT - Whether to exempt the resolver.
+     * @returns {Promise<JSON>} - A promise that resolves when the batch action is performed.
+     * Returns the batch action information.
+     * @throws {Error} - An error is thrown if the batch action fails to perform.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async contentBatchActions(NAME, TARGET_IDS, BATCH_ACTION, CONTENT_DEFINITION_ID, 
+        SCHEMA_NAME, ACTION_ARGUMENTS, RESOLVER_EXCEMPT)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+        
+        _printDatetime(`Performing batch action ${NAME}`);
+
+        try
+        {
+            const BATCH_ACTION_INFO = await _contentBatchActions(this.token, 
+                this.config.serviceApiUrl, this.id, NAME, TARGET_IDS, BATCH_ACTION, 
+                CONTENT_DEFINITION_ID, SCHEMA_NAME, ACTION_ARGUMENTS, 
+                RESOLVER_EXCEMPT, this.debugMode);
+            _printDatetime(`Batch action performed ${NAME}`);
+            return BATCH_ACTION_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Batch action failed to perform ${NAME}`);
+            throw error;
+        }
+    }
+
+    /**
      * @function createContent
      * @async
      * @description Creates content using the specified content definition.
@@ -1092,6 +1142,47 @@ class NomadSDK {
     }
 
     /**
+     * @function bulkUpdateMetadata
+     * @async
+     * @description Updates the metadata for the specified content.
+     * @param {Array<string>} CONTENT_IDS - The IDs of the content to update the metadata for.
+     * @param {Array<string>} COLLECTION_IDS - The IDs of the collections to update the metadata for.
+     * @param {Array<string>} RELATED_CONTENT_IDS - The IDs of the related content to update the
+     * @param {Array<string>} TAG_IDS - The IDs of the tags to update the metadata for.
+     * @param {string} SCHEMA_NAME - The name of the schema to use.
+     * @returns {Promise<void>} - A promise that resolves when the metadata is updated.
+     * @throws {Error} - An error is thrown if the metadata fails to update.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async bulkUpdateMetadata(CONTENT_IDS, COLLECTION_IDS, RELATED_CONTENT_IDS, TAG_IDS, 
+        SCHEMA_NAME)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+         _printDatetime(`Updating metadata`);
+
+        try
+        {
+            await _bulkUpdateMetadata(this.token, this.config.serviceApiUrl, CONTENT_IDS, 
+                COLLECTION_IDS, RELATED_CONTENT_IDS, TAG_IDS, SCHEMA_NAME, this.debugMode);
+            _printDatetime(`Metadata updated`);
+        }
+        catch (error)
+        {
+            _printDatetime(`Metadata failed to update`);
+            throw error;
+        }
+    }
+
+    /**
      * @function createTagOrCollection
      * @async
      * @description Creates a tag or collection.
@@ -1272,7 +1363,7 @@ class NomadSDK {
                 this.config.serviceApiUrl, TYPE, CONTENT_ID, CONTENT_DEFINITION, TAG_ID,
                 this.debugMode);
             _printDatetime(`${TYPE} removed from content: ${CONTENT_ID}`);
-            return REMOVE_TAG_OR_COLLECTION_INFO.items[0];
+            return REMOVE_TAG_OR_COLLECTION_INFO;
         }
         catch (error)
         {
@@ -1423,7 +1514,7 @@ class NomadSDK {
      * JSON format: {"id": string, "description": string }
      * @param {JSON | null} PREROLL_VIDEO - The preroll video of the event. 
      * JSON format: {"id": string, "description": string }
-     * @param {JSON | null} POSTROLL_VIDEO_ID - The postroll video of the event. 
+     * @param {JSON | null} POSTROLL_VIDEO - The postroll video of the event. 
      * JSON format: {"id": string, "description": string }
      * @param {boolean | null} IS_SECURE_OUTPUT - Whether the event is secure output. 
      * JSON format: { id: string, description: string }
@@ -1481,13 +1572,11 @@ class NomadSDK {
      * JSON format: [{ id: string, description: string },]
      * @param {integer} RECURRING_WEEKS - The number of weeks to extend the live schedule of.
      * @param {string | null} END_DATE - The end date to extend the live schedule of.
-     * @param {string | null} TIME_ZONE_OFFSET_SECONDS - The time zone offset seconds to extend the
-     * live schedule of.
      * @returns {Promise<null>} - A promise that resolves when the live schedule is extended.
      * @throws {Error} - An error is thrown if the live schedule fails to extend.
      * @throws {Error} - An error is thrown if the API type is not admin.
      */
-    async extendLiveSchedule(EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS, END_DATE, TIME_ZONE_OFFSET_SECONDS)
+    async extendLiveSchedule(EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS, END_DATE)
     {
         if (this.token === null)
         {
@@ -1503,9 +1592,8 @@ class NomadSDK {
 
         try
         {
-            await _extendLiveSchedule(this.token, 
-                this.config.serviceApiUrl, EVENT_ID, RECURRING_DAYS, RECURRING_WEEKS, END_DATE,
-                TIME_ZONE_OFFSET_SECONDS, this.debugMode);
+            await _extendLiveSchedule(this.token, this.config.serviceApiUrl, EVENT_ID, 
+                RECURRING_DAYS, RECURRING_WEEKS, END_DATE, this.debugMode);
             _printDatetime(`Live Schedule extended of Event: ${EVENT_ID}`);
         }
         catch (error)
@@ -1614,6 +1702,59 @@ class NomadSDK {
 
 
     // live channel functions
+    /**
+     * @function clipLiveChannel
+     * @async
+     * @description Clips a live channel.
+     * @param {string} LIVE_CHANNEL_ID - The ID of the live channel to clip.
+     * @param {string | null} START_TIME_CODE - The start time code of the live channel to clip.
+     * @param {string | null} END_TIME_CODE - The end time code of the live channel to clip.
+     * @param {string | null} TITLE - The title of the live channel to clip.
+     * @param {string | null} OUTPUT_FOLDER_ID - The output folder ID of the live channel to clip.
+     * @param {Array<JSON> | null} TAGS - The tags of the live channel to clip.
+     * JSON format: [{ id: string, description: string },]
+     * @param {Array<JSON> | null} COLLECTIONS - The collections of the live channel to clip.
+     * JSON format: [{ id: string, description: string },]
+     * @param {Array<JSON> | null} RELATED_CONTENTS - The related contents of the live channel to clip.
+     * JSON format: [{ id: string, description: string },]
+     * @param {integer | null} VIDEO_BITRATE - The video bitrate of the live channel to clip.
+     * @param {Array<JSON> | null} AUDIO_TRACKS - The audio tracks of the live channel to clip.
+     * @returns {Promise<JSON>} - A promise that resolves when the live channel is clipped.
+     * Returns the information of the clipped live channel.
+     * @throws {Error} - An error is thrown if the live channel fails to clip.
+     * @throws {Error} - An error is thrown if the API type is not admin.
+     */
+    async clipLiveChannel(LIVE_CHANNEL_ID, START_TIME_CODE, END_TIME_CODE, TITLE, OUTPUT_FOLDER_ID,
+        TAGS, COLLECTIONS, RELATED_CONTENTS, VIDEO_BITRATE, AUDIO_TRACKS)
+    {
+        if (this.token === null)
+        {
+            await this._init();
+        }
+        
+        if (this.config.apiType !== "admin")
+        {
+            throw new Error("This function is only available for admin API type.");
+        }
+
+        _printDatetime(`Clipping Live Channel: ${LIVE_CHANNEL_ID}`);
+
+        try
+        {
+            const CLIP_LIVE_CHANNEL_INFO = await _clipLiveChannel(this.token, 
+                this.config.serviceApiUrl, LIVE_CHANNEL_ID, START_TIME_CODE, END_TIME_CODE, TITLE, 
+                OUTPUT_FOLDER_ID, TAGS, COLLECTIONS, RELATED_CONTENTS, VIDEO_BITRATE, AUDIO_TRACKS, 
+                this.debugMode);
+            _printDatetime(`Live Channel clipped: ${LIVE_CHANNEL_ID}`);
+            return CLIP_LIVE_CHANNEL_INFO;
+        }
+        catch (error)
+        {
+            _printDatetime(`Live Channel failed to clip: ${LIVE_CHANNEL_ID}`);
+            throw error;
+        }
+    }
+
     /**
      * @function createLiveChannel
      * @async
@@ -8643,10 +8784,7 @@ async function _addTagOrCollection(AUTH_TOKEN, URL, TYPE, CONTENT_ID, CONTENT_DE
         ]
     };
 
-    if (TAG_ID != null)
-    {
-        BODY.items[0][`${TYPE}Id`] = TAG_ID;
-    }
+    BODY.items[0][`${TYPE}Id`] = TAG_ID;
 
     if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
 
@@ -8669,6 +8807,50 @@ async function _addTagOrCollection(AUTH_TOKEN, URL, TYPE, CONTENT_ID, CONTENT_DE
     catch (error)
     {
         _apiExceptionHandler(error, "Adding Tag or Collection Failed");
+    }
+}
+
+
+
+
+async function _bulkUpdateMetadata(AUTH_TOKEN, URL, CONTENT_IDS, COLLECTION_IDS, 
+    RELATED_CONTENT_IDS, TAG_IDS, SCHEMA_NAME, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/content/bulk-metadata-update`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        collections: COLLECTION_IDS,
+        contents: CONTENT_IDS,
+        relatedContents: RELATED_CONTENT_IDS,
+        tags: TAG_IDS,
+        schemaName: SCHEMA_NAME
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Bulk Update Metadata Failed");
     }
 }
 
@@ -8873,6 +9055,52 @@ async function _removeTagOrCollection(AUTH_TOKEN, URL, TYPE, CONTENT_ID,
     catch (error)
     {
         _apiExceptionHandler(error, "Removing Tag or Collection Failed");
+    }
+}
+
+
+
+
+async function _contentBatchActions(AUTH_TOKEN, URL, USER_ID, NAME, TARGET_IDS, BATCH_ACTION,
+    CONTENT_DEFINITION_ID, SCHEMA_NAME, ACTION_ARGUMENTS, RESOLVER_EXCEMPT, DEBUG_MODE)
+{
+    const API_URL = `${URL}/admin/content/${NAME}`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    // Create body for the request
+    const BODY = {
+        userId: USER_ID,
+        targetIds: TARGET_IDS,
+        batchAction: BATCH_ACTION,
+        contentDefinitionId: CONTENT_DEFINITION_ID,
+        schemaName: SCHEMA_NAME,
+        actionArguments: ACTION_ARGUMENTS,
+        resolverExempt: RESOLVER_EXCEMPT
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST`);    
+
+    // Send the request
+    try 
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok)
+        {
+            throw await RESPONSE.json();
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Content Batch Actions Failed");
     }
 }
 
@@ -9257,7 +9485,7 @@ async function _createAndUpdateEvent(AUTH_TOKEN, URL, CONTENT_ID,
     HEADERS.append("Content-Type", "application/json");
     HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
 
-    if (CONTENT_ID === null)
+    if (!CONTENT_ID)
     {
         const GET_API_URL = `${URL}/content/new?contentDefinitionId=${CONTENT_DEFINITION_ID}`;
 
@@ -9394,7 +9622,7 @@ async function _extendLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, RECURRING_DAYS, RE
         
     };
 
-    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4 )}`);
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY, null, 4)}`);
 
     try
     {
@@ -9511,6 +9739,52 @@ async function _stopLiveSchedule(AUTH_TOKEN, URL, EVENT_ID, DEBUG_MODE)
     {
   	  	_apiExceptionHandler(error, "Stop Live Schedule Failed");
   	}
+}
+
+
+
+
+async function _clipLiveChannel(AUTH_TOKEN, URL, CHANNEL_ID, START_TIME_CODE, END_TIME_CODE,
+    TITLE, OUTPUT_FOLDER_ID, TAGS, COLLECTIONS, RELATED_CONTENTS, VIDEO_BITRATE, 
+    AUDIO_TRACKS, DEBUG_MODE)
+{
+    const API_URL = `${URL}/liveChannel/${CHANNEL_ID}/clip`;
+
+    // Create header for the request
+    const HEADERS = new Headers();
+    HEADERS.append("Content-Type", "application/json");
+    HEADERS.append("Authorization", `Bearer ${AUTH_TOKEN}`);
+
+    const BODY = {
+        startTimeCode: START_TIME_CODE,
+        endTimeCode: END_TIME_CODE,
+        title: TITLE,
+        outputFolderId: OUTPUT_FOLDER_ID,
+        tags: TAGS,
+        collections: COLLECTIONS,
+        relatedContent: RELATED_CONTENTS,
+        videoBitrate: VIDEO_BITRATE,
+        audioTracks: AUDIO_TRACKS
+    };
+
+    if (DEBUG_MODE) console.log(`URL: ${API_URL}\nMETHOD: POST\nBODY: ${JSON.stringify(BODY)}`);
+
+    try
+    {
+        const RESPONSE = await fetch(API_URL, {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify(BODY)
+        });
+
+        if (!RESPONSE.ok) {
+            throw await RESPONSE.json()
+        }
+    }
+    catch (error)
+    {
+        _apiExceptionHandler(error, "Clip Live Channel Failed");
+    }
 }
 
 
