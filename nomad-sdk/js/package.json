@@ -1,7 +1,0 @@
-{
-	"type": "module",
-
-	"dependencies": {
-		"deep-equal": "^2.2.2"
-	}
-}
