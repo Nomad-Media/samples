@@ -1,12 +1,14 @@
 const COLLECTION_CONTENT_DEFINITION_ID = "20352932-05d2-4a7a-8821-06fcf4438ced";
-const COUNTRY_CONTENT_DEFINITION_ID = "ed1edc64-21a5-413e-8cf6-a21285d51e7f";
 const LABEL_CONTENT_DEFINITION_ID = "fc710473-d014-4b2a-b812-c98255e32046";
 const LANGUAGE_CONTENT_DEFINITION_ID = "e4b10c04-1878-4830-a115-e42d52705059";
 const TAG_CONTENT_DEFINITION_ID = "c806783c-f127-48ae-90c9-32175f4e1fff";
 
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk-debug.js";
+import NomadMediaSDK from "nomad-media-sdk";
+import config from "../../../config.mjs";
+const NomadSDK = new NomadMediaSDK(config);
+
 import express from 'express';
 import multer from 'multer';
 
@@ -28,7 +30,7 @@ app.get('/get-collection-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -50,7 +52,7 @@ app.get('/get-content-definition-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -87,7 +89,7 @@ app.get('/get-label-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -109,7 +111,7 @@ app.get('/get-language-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -131,7 +133,7 @@ app.get('/get-live-channel-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -153,7 +155,7 @@ app.post('/get-related-content-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -175,7 +177,7 @@ app.get('/get-tag-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }

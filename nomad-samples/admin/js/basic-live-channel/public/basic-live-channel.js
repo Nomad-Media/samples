@@ -2,6 +2,7 @@ const GET_CHANNELS_FORM = document.getElementById("getChannelsForm");
 const GET_CHANNEL_FORM = document.getElementById("getChannelForm");
 const CREATE_CHANNEL_FORM = document.getElementById("createChannelForm");
 const UPDATE_CHANNEL_FORM = document.getElementById("updateChannelForm");
+const CLIP_LIVE_CHANNEL_FORM = document.getElementById("clipLiveChannelForm");
 const REFRESH_CHANNELS_FORM = document.getElementById("refreshChannelsForm");
 const NEXT_EVENT_FORM = document.getElementById("nextEventForm");
 const START_OUTPUT_TRACKING_FORM = document.getElementById("startOutputTrackingForm");
@@ -48,7 +49,99 @@ const UPDATE_INPUT_SOURCE_URL_LABEL = document.getElementById("updateSourceUrlLa
 
 const CREATE_INPUT_ADD_SOURCES_BUTTON = document.getElementById("createInputAddSourcesButton");
 
-sessionStorage.clear();
+const CLIP_LIVE_CHANNEL_COLLECTIONS_SELECT = document.getElementById("clipLiveChannelCollectionsSelect");
+const CLIP_LIVE_CHANNEL_CONTENT_DEFINITIONS_SELECT = document.getElementById("clipLiveChannelContentDefinitionsSelect");
+const CLIP_LIVE_CHANNEL_RELATED_CONTENTS_SELECT = document.getElementById("clipLiveChannelRelatedContentsSelect");
+const CLIP_LIVE_CHANNEL_SELECT = document.getElementById("clipLiveChannelSelect");
+const CLIP_LIVE_CHANNEL_TAGS_SELECT = document.getElementById("clipLiveChannelTagsSelect");
+const UPDATE_CHANNEL_SELECT = document.getElementById("updateChannelSelect");
+
+await getContentDefinitions();
+
+await getCollectionList();
+
+async function getCollectionList()
+{
+    const COLLECTION_LIST = await sendRequest("/get-collection-list", "GET");
+
+    if (COLLECTION_LIST)
+    {
+        for(let collectionIdx = 0; collectionIdx < COLLECTION_LIST.length; ++collectionIdx)
+        {
+            let option = document.createElement("option");
+            option.value = COLLECTION_LIST[collectionIdx].id;
+            option.text = COLLECTION_LIST[collectionIdx].title;
+            CLIP_LIVE_CHANNEL_COLLECTIONS_SELECT.appendChild(option);
+        }
+
+        $(CLIP_LIVE_CHANNEL_COLLECTIONS_SELECT).select2();
+    }
+}
+
+async function getContentDefinitions()
+{
+    const CONTENT_DEFINITIONS = await sendRequest("/get-content-definition-list", "GET");
+
+    if (CONTENT_DEFINITIONS)
+    {
+        for (let contentDefinition of CONTENT_DEFINITIONS)
+        {
+            const OPTION = document.createElement("option");
+            OPTION.value = contentDefinition.contentDefinitionId;
+            OPTION.textContent = contentDefinition.properties.title;
+            CLIP_LIVE_CHANNEL_CONTENT_DEFINITIONS_SELECT.appendChild(OPTION);
+        }
+
+        $(CLIP_LIVE_CHANNEL_CONTENT_DEFINITIONS_SELECT).select2();
+    }
+}
+
+await getLiveChannels();
+
+async function getLiveChannels()
+{
+    const LIVE_CHANNELS = await sendRequest("/get-live-channel-list", "GET");
+
+    if (LIVE_CHANNELS)
+    {
+        for (let liveChannel of LIVE_CHANNELS)
+        {
+            const OPTION = document.createElement("option");
+            OPTION.value = liveChannel.id;
+            OPTION.textContent = liveChannel.name;
+            CLIP_LIVE_CHANNEL_SELECT.appendChild(OPTION);
+            UPDATE_CHANNEL_SELECT.appendChild(OPTION.cloneNode(true));
+        }
+
+        $(CLIP_LIVE_CHANNEL_SELECT).select2();
+        $(UPDATE_CHANNEL_SELECT).select2();
+    }
+}
+
+await getTagList();
+
+async function getTagList()
+{
+    const TAG_LIST = await sendRequest("/get-tag-list", "GET");
+
+    if (TAG_LIST)
+    {
+        for(let tagIdx = 0; tagIdx < TAG_LIST.length; ++tagIdx)
+        {
+            let option = document.createElement("option");
+            option.value = TAG_LIST[tagIdx].id;
+            option.text = TAG_LIST[tagIdx].title;
+            CLIP_LIVE_CHANNEL_TAGS_SELECT.appendChild(option);
+        }
+
+        $(CLIP_LIVE_CHANNEL_TAGS_SELECT).select2();
+    }
+}
+
+$("#clipLiveChannelContentDefinitionsSelect").on("select2:select", async function (event)
+{
+    await populateRelatedContentSelect(event.params.data.id, CLIP_LIVE_CHANNEL_RELATED_CONTENTS_SELECT);
+});
 
 GET_CHANNELS_FORM.addEventListener("submit", async function (event)
 {
@@ -100,6 +193,15 @@ UPDATE_CHANNEL_FORM.addEventListener("submit", async function (event)
 
     console.log(await sendRequest("/updateLiveChannel", "POST", FORM_DATA));
 
+});
+
+CLIP_LIVE_CHANNEL_FORM.addEventListener("submit", async function (event)
+{
+    event.preventDefault();
+
+    const FORM_DATA = getElements(CLIP_LIVE_CHANNEL_FORM);
+
+    console.log(await sendRequest("/clipLiveChannel", "POST", FORM_DATA));
 });
 
 REFRESH_CHANNELS_FORM.addEventListener("submit", async function (event)
@@ -437,11 +539,36 @@ function getElements(FORM)
     const FORM_DATA = new FormData();
     for (let input of FORM)
     {
-        if (input.tagName === "INPUT" || input.tagName === "SELECT")
-        {
-            if (input.type !== "checkbox" || input.type === "checkbox" && input.checked)
+        if (input.tagName === "SELECT") {
+            const SELECTED_OPTIONS = []
+            for (let element of input) {
+                if (element.selected) {
+                    if (element.value.trim().toLowerCase() === element.label.trim().toLowerCase()) {
+                        if (input.id) {
+                            FORM_DATA.append(input.id, element.value);
+                        } else {
+                            FORM_DATA.append(input.name, element.value);
+                        }
+                    } else {
+                        SELECTED_OPTIONS.push({ id: element.value, description: element.label });
+                    }
+                }
+            }
+            if (SELECTED_OPTIONS.length > 1)
             {
-                input.id ? FORM_DATA.append(input.id, input.value) : FORM_DATA.append(input.name, input.value);
+                FORM_DATA.append(input.id, JSON.stringify(SELECTED_OPTIONS));
+            }
+            else if (SELECTED_OPTIONS.length === 1)
+            {
+                FORM_DATA.append(input.id, JSON.stringify(SELECTED_OPTIONS[0]));
+            }
+        }
+        else if (input.tagName === "INPUT")
+        {
+            if (input.id) {
+                FORM_DATA.append(input.id, input.value);
+            } else {
+                FORM_DATA.append(input.name, input.value);
             }
         }
     }
@@ -472,4 +599,23 @@ async function sendRequest(PATH, METHOD, BODY)
     {
         console.error(error);
     }
+}
+
+async function populateRelatedContentSelect(CONTENT_DEFINITION_ID, RELATED_CONTENTS_SELECT)
+{
+    const FORM_DATA = new FormData();
+    FORM_DATA.append("contentDefinitionId", CONTENT_DEFINITION_ID);
+    const RELATED_CONTENT_LIST = await sendRequest("/get-related-content-list", "POST", FORM_DATA);
+
+    RELATED_CONTENTS_SELECT.innerHTML = "";
+
+    for(let relatedContentIdx = 0; relatedContentIdx < RELATED_CONTENT_LIST.length; ++relatedContentIdx)
+    {
+        let option = document.createElement("option");
+        option.value = RELATED_CONTENT_LIST[relatedContentIdx].id;
+        option.text = RELATED_CONTENT_LIST[relatedContentIdx].title;
+        RELATED_CONTENTS_SELECT.appendChild(option);
+    }
+
+    $(RELATED_CONTENTS_SELECT).select2();
 }

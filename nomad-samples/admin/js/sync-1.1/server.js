@@ -10,7 +10,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadSDK from import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk.min.js";
+import NomadMediaSDK from "nomad-media-sdk";
+import config from "../../../config.mjs";
+const NomadSDK = new NomadMediaSDK(config);
 
 import express from 'express';
 import multer from 'multer';
