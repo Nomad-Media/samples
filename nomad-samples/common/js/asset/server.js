@@ -5,7 +5,10 @@ const TAG_CONTENT_DEFINITION_ID = "c806783c-f127-48ae-90c9-32175f4e1fff";
 
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import NomadSDK from "../../../../nomad-sdk/js/nomad-media-sdk-debug.js";
+import NomadMediaSDK from "nomad-media-sdk";
+import config from "../../../config.mjs";
+const NomadSDK = new NomadMediaSDK(config);
+
 import express from 'express';
 import multer from 'multer';
 
@@ -27,7 +30,7 @@ app.get('/get-collection-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -49,7 +52,7 @@ app.get('/get-content-definition-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -86,7 +89,7 @@ app.get('/get-label-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -108,7 +111,7 @@ app.get('/get-language-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -130,7 +133,7 @@ app.get('/get-live-channel-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -152,7 +155,7 @@ app.post('/get-related-content-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
@@ -174,7 +177,7 @@ app.get('/get-tag-list', upload.none(), async (req, res) =>
 {
     try
     {
-        if (NomadSDK.config.apiType === "portal")
+        if (config.apiType === "portal")
         {
             res.status(200).json(null)
         }
