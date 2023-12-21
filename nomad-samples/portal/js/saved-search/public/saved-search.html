@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Saved Search API</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Fav Icon -->
+    <link rel="shortcut icon" href="favicon.ico">
+
+     <!-- Google Fonts -->
+     <link rel="preconnect" href="https://fonts.googleapis.com">
+     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+ 
+     <!-- Sweet Alert 2 -->
+     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="saved-search-api.css">
+
+    <!-- JS -->
+    <script type="module" src="saved-search-api.js" defer></script>
+</head>
+
+<body>
+
+    <h1>Saved Search API</h1>
+
+    <h3>Add Saved Search</h3>
+    <div id="addSavedSearchForm">
+        <label for="name">Name</label>
+        <input type="text" id="name">
+
+        <label for="featured">Featured</label>
+        <select id="featured">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="bookmarked">Bookmarked</label>
+        <select id="bookmarked">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="public">Public</label>
+        <select id="public">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="sequence">Sequence</label>
+        <input type="text" id="sequence">
+
+        <label for="type">Type</label>
+        <select id="type">
+            <option value=0>List</option>
+            <option value=1>Preview Image</option>
+            <option value=2>Header</option>
+        </select>
+
+        <label for="query">Query</label>
+        <input type="text" id="query">
+
+        <label for="offset">Offset</label>
+        <input type="text" id="offset">
+
+        <label for="size">Size</label>
+        <input type="text" id="size">
+
+        <label for="filters">Filters</label>
+        <div id="addFiltersDiv"></div>
+        <br><br>
+        <button type="button" id="addAddFilterButton">Add Filter</button>
+
+        <label for="sortFields">Sort Fields</label>
+        <div id="addSortFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="addAddSortFieldsButton">Add Sort Field</button>
+
+        <label for="searchResultFields">Search Result Fields</label>
+        <div id="addSearchResultFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="addAddSearchResultFieldsButton">Add Search Result Field</button>
+
+        <label for="similarAssetId">Similar Asset Id</label>
+        <input type="text" id="similarAssetId">
+
+        <label for="minScore">Min Score</label>
+        <input type="text" id="minScore">
+
+        <label for="excludeTotalRecordCount">Exclude Total Record Count</label>
+        <select id="excludeTotalRecordCount">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="filterBinder">Filter Binder</label>
+        <input type="text" id="filterBinder">
+
+        <br><br>
+        <button type="submit">Add Saved Search</button>
+    </div>
+
+    <h3>Delete Saved Search</h3>
+    <div id="deleteSavedSearchForm">
+        <label for="id">Id</label>
+        <input type="text" id="id">
+
+        <button type="submit">Delete Saved Search</button>
+    </div>
+
+    <h3>Get Saved Search</h3>
+    <div id="getSavedSearchForm">
+        <label for="id">Id</label>
+        <input type="text" id="id">
+
+        <br><br>
+        <button type="submit">Get Saved Search</button>
+    </div>
+
+    <h3>Get Saved Searches</h3>
+    <div id="getSavedSearchesForm">
+        <button type="submit">Get Saved Searches</button>
+    </div>
+
+    <h3>Patch Saved Search</h3>
+    <div id="patchSavedSearchForm">
+        <label for="id">Id</label>
+        <input type="text" id="id">
+
+        <label for="name">Name</label>
+        <input type="text" id="name">
+
+        <label for="featured">Featured</label>
+        <select id="featured">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="bookmarked">Bookmarked</label>
+        <select id="bookmarked">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="public">Public</label>
+        <select id="public">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="sequence">Sequence</label>
+        <input type="text" id="sequence">
+
+        <br><br>
+        <button type="submit">Patch Saved Search</button>
+    </div>
+
+    <h3>Update Saved Search</h3>
+    <div id="updateSavedSearchFrom">
+        <label for="id">Id</label>
+        <input type="text" id="id">
+
+        <label for="name">Name</label>
+        <input type="text" id="name">
+
+        <label for="featured">Featured</label>
+        <select id="featured">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="bookmarked">Bookmarked</label>
+        <select id="bookmarked">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="public">Public</label>
+        <select id="public">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="sequence">Sequence</label>
+        <input type="text" id="sequence">
+
+        <label for="type">Type</label>
+        <select id="type">
+            <option value=0>List</option>
+            <option value=1>Preview Image</option>
+            <option value=2>Header</option>
+        </select>
+
+        <label for="query">Query</label>
+        <input type="text" id="query">
+
+        <label for="offset">Offset</label>
+        <input type="text" id="offset">
+
+        <label for="size">Size</label>
+        <input type="text" id="size">
+
+        <label for="filters">Filters</label>
+        <div id="updateFiltersDiv"></div>
+        <br><br>
+        <button type="button" id="updateAddFilterButton">Add Filter</button>
+
+        <label for="sortFields">Sort Fields</label>
+        <div id="updateSortFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="updateAddSortFieldsButton">Add Sort Field</button>
+
+        <label for="searchResultFields">Search Result Fields</label>
+        <div id="updateSearchResultFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="updateAddSearchResultFieldsButton">Add Search Result Field</button>
+
+        <label for="similarAssetId">Similar Asset Id</label>
+        <input type="text" id="similarAssetId">
+
+        <label for="minScore">Min Score</label>
+        <input type="text" id="minScore">
+
+        <label for="excludeTotalRecordCount">Exclude Total Record Count</label>
+        <select id="excludeTotalRecordCount">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="filterBinder">Filter Binder</label>
+        <input type="text" id="filterBinder">
+
+        <br><br>
+        <button type="submit">Update Saved Search</button>
+    </div>
+
+    <h3>Get Search Saved</h3>
+    <div id="getSearchSavedForm">
+        <label for="query">Query</label>
+        <input type="text" id="query">
+
+        <label for="offset">Offset</label>
+        <input type="text" id="offset">
+
+        <label for="size">Size</label>
+        <input type="text" id="size">
+
+        <label for="filters">Filters</label>
+        <div id="getFiltersDiv"></div>
+        <br><br>
+        <button type="button" id="getAddFilterButton">Add Filter</button>
+
+        <label for="sortFields">Sort Fields</label>
+        <div id="getSortFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="getAddSortFieldsButton">Add Sort Field</button>
+
+        <label for="searchResultFields">Search Result Fields</label>
+        <div id="getSearchResultFieldsDiv"></div>
+        <br><br>
+        <button type="button" id="getAddSearchResultFieldsButton">Add Search Result Field</button>
+
+        <label for="similarAssetId">Similar Asset Id</label>
+        <input type="text" id="similarAssetId">
+
+        <label for="minScore">Min Score</label>
+        <input type="text" id="minScore">
+
+        <label for="excludeTotalRecordCount">Exclude Total Record Count</label>
+        <select id="excludeTotalRecordCount">
+            <option value="true">True</option>
+            <option value="false" selected>False</option>
+        </select>
+
+        <label for="filterBinder">Filter Binder</label>
+        <input type="text" id="filterBinder">
+
+        <br><br>
+        <button type="submit">Get Search Saved</button>
+    </div>
+
+    <h3>Get Search Saved By Id</h3>
+    <div id="getSearchSavedByIdForm">
+        <label for="id">Id</label>
+        <input type="text" id="id">
+
+        <br><br>
+        <button type="submit">Get Search Saved By Id</button>
+    </div>
+
+</body>
+</html>
