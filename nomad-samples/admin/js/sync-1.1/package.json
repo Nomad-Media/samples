@@ -6,7 +6,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "nomad-media-sdk": "^1.0.0"
+    "nomad-media-npm": "^1.0.0"
   },
   "devDependencies": {
     "deep-equal": "^2.2.2",

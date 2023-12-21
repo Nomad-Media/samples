@@ -5,7 +5,7 @@ const TAG_CONTENT_DEFINITION_ID = "c806783c-f127-48ae-90c9-32175f4e1fff";
 
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import NomadMediaSDK from "nomad-media-sdk";
+import NomadMediaSDK from "nomad-media-npm";
 import config from "../../../config.mjs";
 const NomadSDK = new NomadMediaSDK(config);
 

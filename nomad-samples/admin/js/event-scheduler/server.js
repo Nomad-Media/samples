@@ -21,7 +21,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-import NomadMediaSDK from "nomad-media-sdk";
+import NomadMediaSDK from "nomad-media-npm";
 import config from "../../../config.mjs";
 const NomadSDK = new NomadMediaSDK(config);
 
