@@ -26,6 +26,7 @@ app.post('/add-saved-search', upload.none(), async (req, res) =>
 {
     try
     {
+        console.log(JSON.stringify(req.body, null, 4));
         const FILTERS = [];
 
         if (req.body.fieldName)
@@ -45,7 +46,7 @@ app.post('/add-saved-search', upload.none(), async (req, res) =>
                     FILTERS.push({
                         fieldName: req.body.fieldName[idx],
                         operator: req.body.operator[idx],
-                        values: req.body.value[idx],
+                        values: req.body.value[idx].split(',')
                     });
                 }
             }
@@ -73,26 +74,8 @@ app.post('/add-saved-search', upload.none(), async (req, res) =>
             }
         }
 
-        const SEARCH_RESULT_FILEDS = [];
-
-        if (req.body.searchResultFieldName)
-        {
-            if (typeof req.body.searchResultFieldName === 'string') 
-            {
-                SEARCH_RESULT_FILEDS.push({
-                    name: req.body.searchResultFieldName,
-                });
-            } 
-            else 
-            {
-                for (let idx = 0; idx < req.body.searchResultFieldName.length; ++idx)
-                {
-                    SEARCH_RESULT_FILEDS.push({
-                        name: req.body.searchResultFieldName[idx],
-                    });
-                }
-            }
-        }
+        const SEARCH_RESULT_FILEDS = JSON.parse(req.body.searchResultFields);
+        
         const SEARCH_INFO = await NomadSDK.addSavedSearch(req.body.name,
             req.body.featured === 'true', req.body.bookmarked === 'true',
             req.body.public === 'true', req.body.sequence, req.body.type, req.body.query,
@@ -154,6 +137,25 @@ app.get('/get-saved-searches', async (req, res) =>
     }
 });
 
+app.post('/patch-saved-search', upload.none(), async (req, res) =>
+{
+    try
+    {
+        const SEARCH_INFO = await NomadSDK.patchSavedSearch(req.body.id, req.body.name,
+            req.body.featured === 'true', req.body.bookmarked === 'true',
+            req.body.public === 'true', req.body.sequence, req.body.type, req.body.query,
+            req.body.offset, req.body.size, req.body.similarAssetId, req.body.minScore, 
+            req.body.excludeTotalRecordCount === 'true', req.body.filterBinder);
+
+        res.status(200).json(SEARCH_INFO);
+    }
+    catch (error)
+    {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.post('/update-saved-search', upload.none(), async (req, res) =>
 {
     try
@@ -177,7 +179,7 @@ app.post('/update-saved-search', upload.none(), async (req, res) =>
                     FILTERS.push({
                         fieldName: req.body.fieldName[idx],
                         operator: req.body.operator[idx],
-                        values: req.body.value[idx],
+                        values: req.body.value[idx].split(',')
                     });
                 }
             }
@@ -205,26 +207,7 @@ app.post('/update-saved-search', upload.none(), async (req, res) =>
             }
         }
 
-        const SEARCH_RESULT_FILEDS = [];
-
-        if (req.body.searchResultFieldName)
-        {
-            if (typeof req.body.searchResultFieldName === 'string') 
-            {
-                SEARCH_RESULT_FILEDS.push({
-                    name: req.body.searchResultFieldName,
-                });
-            } 
-            else 
-            {
-                for (let idx = 0; idx < req.body.searchResultFieldName.length; ++idx)
-                {
-                    SEARCH_RESULT_FILEDS.push({
-                        name: req.body.searchResultFieldName[idx],
-                    });
-                }
-            }
-        }
+        const SEARCH_RESULT_FILEDS = req.body.searchResultFields;
 
         const SEARCH_INFO = await NomadSDK.updateSavedSearch(req.body.id, req.body.name,
             req.body.featured === 'true', req.body.bookmarked === 'true',
@@ -265,7 +248,7 @@ app.post('/get-search-saved', upload.none(), async (req, res) =>
                     FILTERS.push({
                         fieldName: req.body.fieldName[idx],
                         operator: req.body.operator[idx],
-                        values: req.body.value[idx],
+                        values: req.body.value[idx].split(',')
                     });
                 }
             }
@@ -293,26 +276,7 @@ app.post('/get-search-saved', upload.none(), async (req, res) =>
             }
         }
 
-        const SEARCH_RESULT_FILEDS = [];
-
-        if (req.body.searchResultFieldName)
-        {
-            if (typeof req.body.searchResultFieldName === 'string') 
-            {
-                SEARCH_RESULT_FILEDS.push({
-                    name: req.body.searchResultFieldName,
-                });
-            } 
-            else 
-            {
-                for (let idx = 0; idx < req.body.searchResultFieldName.length; ++idx)
-                {
-                    SEARCH_RESULT_FILEDS.push({
-                        name: req.body.searchResultFieldName[idx],
-                    });
-                }
-            }
-        }
+        const SEARCH_RESULT_FILEDS = req.body.searchResultFields;
         const SEARCH_INFO = await NomadSDK.getSearchSaved(req.body.query,
             req.body.offset, req.body.size, FILTERS, SORT_FIELDS, SEARCH_RESULT_FILEDS,
             req.body.similarAssetId, req.body.minScore, 

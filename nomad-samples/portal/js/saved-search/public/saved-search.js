@@ -1,4 +1,4 @@
-const ADD_SAVED_SEARCH_FORM = document.getElementById("addSavedSearchFrom");
+const ADD_SAVED_SEARCH_FORM = document.getElementById("addSavedSearchForm");
 const DELETE_SAVED_SEARCH_FORM = document.getElementById("deleteSavedSearchForm");
 const GET_SAVED_SEARCH_FORM = document.getElementById("getSavedSearchForm");
 const GET_SAVED_SEARCHES_FORM = document.getElementById("getSavedSearchesForm");
@@ -19,13 +19,13 @@ const GET_SEARCH_RESULT_FIELDS_DIV = document.getElementById("getSearchResultFie
 
 const ADD_ADD_FILTER_BUTTON = document.getElementById("addAddFilterButton");
 const ADD_ADD_SORT_FIELD_BUTTON = document.getElementById("addAddSortFieldButton");
-const ADD_ADD_SEARCH_RESULT_FIELDS_BUTTON = document.getElementById("addAddSearchResultFieldsButton");
+const ADD_ADD_SEARCH_RESULT_FIELD_BUTTON = document.getElementById("addAddSearchResultFieldButton");
 const UPDATE_ADD_FILTER_BUTTON = document.getElementById("updateAddFilterButton");
 const UPDATE_ADD_SORT_FIELD_BUTTON = document.getElementById("updateAddSortFieldButton");
-const UPDATE_ADD_SEARCH_RESULT_FIELDS_BUTTON = document.getElementById("updateAddSearchResultFieldsButton");
+const UPDATE_ADD_SEARCH_RESULT_FIELD_BUTTON = document.getElementById("updateAddSearchResultFieldButton");
 const GET_ADD_FILTER_BUTTON = document.getElementById("getAddFilterButton");
 const GET_ADD_SORT_FIELD_BUTTON = document.getElementById("getAddSortFieldButton");
-const GET_ADD_SEARCH_RESULT_FIELDS_BUTTON = document.getElementById("getAddSearchResultFieldsButton");
+const GET_ADD_SEARCH_RESULT_FIELD_BUTTON = document.getElementById("getAddSearchResultFieldButton");
 
 ADD_ADD_FILTER_BUTTON.addEventListener('click', function(event)
 {
@@ -179,63 +179,64 @@ function addSortFields(DIV)
     DIV.appendChild(removeButton);
 }
 
-ADD_ADD_SEARCH_RESULT_FIELDS_BUTTON.addEventListener('click', function(event) {
+ADD_ADD_SEARCH_RESULT_FIELD_BUTTON.addEventListener('click', function(event) {
     event.preventDefault();
     addSearchResultFields(ADD_SEARCH_RESULT_FIELDS_DIV);
 });
 
-UPDATE_ADD_SEARCH_RESULT_FIELDS_BUTTON.addEventListener('click', function(event) {
+UPDATE_ADD_SEARCH_RESULT_FIELD_BUTTON.addEventListener('click', function(event) {
     event.preventDefault();
     addSearchResultFields(UPDATE_SEARCH_RESULT_FIELDS_DIV);
 });
 
-GET_ADD_SEARCH_RESULT_FIELDS_BUTTON.addEventListener('click', function(event) {
+GET_ADD_SEARCH_RESULT_FIELD_BUTTON.addEventListener('click', function(event) {
     event.preventDefault();
     addSearchResultFields(GET_SEARCH_RESULT_FIELDS_DIV);
 });
 
-function addSearchResultFields() 
-{
+function addSearchResultFields(DIV) {
+    let fieldDiv = document.createElement("div");
+
     let fieldNameLabel = document.createElement('label');
     fieldNameLabel.setAttribute("for", "fieldName");
     fieldNameLabel.textContent = "Field Name:";
 
     let fieldName = document.createElement("input");
     fieldName.setAttribute("type", "text");
-    fieldName.setAttribute("name", "searchResultFieldName");
+    fieldName.setAttribute("name", "subSearchResultFieldName");
 
     let br1 = document.createElement("br");
     let br2 = document.createElement("br");
 
     let addButton = document.createElement("button");
-    addButton.textContent = "Add Search Result Field";
+    addButton.textContent = "Add Sub Search Result Field";
+
+    addButton.addEventListener("click", function(event) {
+        event.preventDefault();
+        addSearchResultFields(fieldDiv);
+    });
+
+    let br3 = document.createElement("br");
+    let br4 = document.createElement("br");
 
     let removeButton = document.createElement("button");
     removeButton.textContent = "Remove Search Result Field";
 
     removeButton.addEventListener("click", function(event) {
         event.preventDefault();
-        DIV.removeChild(br1);
-        DIV.removeChild(br2);
-        DIV.removeChild(fieldNameLabel);
-        DIV.removeChild(fieldName);
-        DIV.removeChild(removeButton);
-        DIV.removeChild(addButton);
+        DIV.removeChild(fieldDiv);
     });
 
-    addButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        addSearchResultFields(DIV);
-    });
+    fieldDiv.appendChild(fieldNameLabel);
+    fieldDiv.appendChild(fieldName);
+    fieldDiv.appendChild(br1);
+    fieldDiv.appendChild(br2);
+    fieldDiv.appendChild(addButton);
+    fieldDiv.appendChild(br3);
+    fieldDiv.appendChild(br4);
+    fieldDiv.appendChild(removeButton);
 
-    DIV.appendChild(fieldNameLabel);
-    DIV.appendChild(fieldName);
-
-    DIV.appendChild(br1);
-    DIV.appendChild(br2);
-
-    DIV.appendChild(addButton);
-    DIV.appendChild(removeButton);
+    DIV.appendChild(fieldDiv);
 }
 
 ADD_SAVED_SEARCH_FORM.addEventListener('submit', async function(event)
@@ -243,6 +244,10 @@ ADD_SAVED_SEARCH_FORM.addEventListener('submit', async function(event)
     event.preventDefault();
 
     const FORM_DATA = getElements(ADD_SAVED_SEARCH_FORM);
+
+    let searchResultFields = getSearchResultFieldsData(ADD_SEARCH_RESULT_FIELDS_DIV);
+
+    FORM_DATA.append('searchResultFields', JSON.stringify(searchResultFields));
 
     console.log(await sendRequest("/add-saved-search", "POST", FORM_DATA));
 });
@@ -287,6 +292,10 @@ UPDATE_SAVED_SEARCH_FORM.addEventListener('submit', async function(event)
 
     const FORM_DATA = getElements(UPDATE_SAVED_SEARCH_FORM);
 
+    let searchResultFields = getSearchResultFieldsData(UPDATE_SEARCH_RESULT_FIELDS_DIV);
+
+    FORM_DATA.append('searchResultFields', JSON.stringify(searchResultFields));
+
     console.log(await sendRequest("/update-saved-search", "POST", FORM_DATA));
 });
 
@@ -295,6 +304,10 @@ GET_SEARCH_SAVED_FORM.addEventListener('submit', async function(event)
     event.preventDefault();
 
     const FORM_DATA = getElements(GET_SEARCH_SAVED_FORM);
+
+    let searchResultFields = getSearchResultFieldsData(GET_SEARCH_RESULT_FIELDS_DIV);
+
+    FORM_DATA.append('searchResultFields', JSON.stringify(searchResultFields));
 
     console.log(await sendRequest("/get-search-saved", "POST", FORM_DATA));
 });
@@ -373,4 +386,24 @@ async function sendRequest(PATH, METHOD, BODY)
     {
         console.error(error);
     }
+}
+
+function getSearchResultFieldsData(div) {
+    let fieldDivs = Array.from(div.children).filter(child => child.tagName === 'DIV');
+
+    let searchResultFields = fieldDivs.map(fieldDiv => 
+        {
+        let nameInput = fieldDiv.querySelector('input[name="subSearchResultFieldName"]');
+
+        let name = nameInput.value;
+
+        let nestedSearchResultFields = getSearchResultFieldsData(fieldDiv);
+
+        return {
+            name: name,
+            searchResultFields: nestedSearchResultFields
+        };
+    });
+
+    return searchResultFields;
 }

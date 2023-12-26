@@ -22,10 +22,10 @@
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui@5.0.4/material-ui.min.css">
 
     <!-- Styles -->
-    <link rel="stylesheet" type="text/css" href="saved-search-api.css">
+    <link rel="stylesheet" type="text/css" href="saved-search.css">
 
     <!-- JS -->
-    <script type="module" src="saved-search-api.js" defer></script>
+    <script type="module" src="saved-search.js" defer></script>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
     <h1>Saved Search API</h1>
 
     <h3>Add Saved Search</h3>
-    <div id="addSavedSearchForm">
+    <form id="addSavedSearchForm">
         <label for="name">Name</label>
         <input type="text" id="name">
 
@@ -82,12 +82,12 @@
         <label for="sortFields">Sort Fields</label>
         <div id="addSortFieldsDiv"></div>
         <br><br>
-        <button type="button" id="addAddSortFieldsButton">Add Sort Field</button>
+        <button type="button" id="addAddSortFieldButton">Add Sort Field</button>
 
         <label for="searchResultFields">Search Result Fields</label>
         <div id="addSearchResultFieldsDiv"></div>
         <br><br>
-        <button type="button" id="addAddSearchResultFieldsButton">Add Search Result Field</button>
+        <button type="button" id="addAddSearchResultFieldButton">Add Search Result Field</button>
 
         <label for="similarAssetId">Similar Asset Id</label>
         <input type="text" id="similarAssetId">
@@ -106,32 +106,33 @@
 
         <br><br>
         <button type="submit">Add Saved Search</button>
-    </div>
+    </form>
 
     <h3>Delete Saved Search</h3>
-    <div id="deleteSavedSearchForm">
+    <form id="deleteSavedSearchForm">
         <label for="id">Id</label>
         <input type="text" id="id">
 
+        <br><br>
         <button type="submit">Delete Saved Search</button>
-    </div>
+    </form>
 
     <h3>Get Saved Search</h3>
-    <div id="getSavedSearchForm">
+    <form id="getSavedSearchForm">
         <label for="id">Id</label>
         <input type="text" id="id">
 
         <br><br>
         <button type="submit">Get Saved Search</button>
-    </div>
+    </form>
 
     <h3>Get Saved Searches</h3>
-    <div id="getSavedSearchesForm">
+    <form id="getSavedSearchesForm">
         <button type="submit">Get Saved Searches</button>
-    </div>
+    </form>
 
     <h3>Patch Saved Search</h3>
-    <div id="patchSavedSearchForm">
+    <form id="patchSavedSearchForm">
         <label for="id">Id</label>
         <input type="text" id="id">
 
@@ -161,10 +162,10 @@
 
         <br><br>
         <button type="submit">Patch Saved Search</button>
-    </div>
+    </form>
 
     <h3>Update Saved Search</h3>
-    <div id="updateSavedSearchFrom">
+    <form id="updateSavedSearchForm">
         <label for="id">Id</label>
         <input type="text" id="id">
 
@@ -216,12 +217,12 @@
         <label for="sortFields">Sort Fields</label>
         <div id="updateSortFieldsDiv"></div>
         <br><br>
-        <button type="button" id="updateAddSortFieldsButton">Add Sort Field</button>
+        <button type="button" id="updateAddSortFieldButton">Add Sort Field</button>
 
         <label for="searchResultFields">Search Result Fields</label>
         <div id="updateSearchResultFieldsDiv"></div>
         <br><br>
-        <button type="button" id="updateAddSearchResultFieldsButton">Add Search Result Field</button>
+        <button type="button" id="updateAddSearchResultFieldButton">Add Search Result Field</button>
 
         <label for="similarAssetId">Similar Asset Id</label>
         <input type="text" id="similarAssetId">
@@ -240,10 +241,10 @@
 
         <br><br>
         <button type="submit">Update Saved Search</button>
-    </div>
+    </form>
 
     <h3>Get Search Saved</h3>
-    <div id="getSearchSavedForm">
+    <form id="getSearchSavedForm">
         <label for="query">Query</label>
         <input type="text" id="query">
 
@@ -261,12 +262,12 @@
         <label for="sortFields">Sort Fields</label>
         <div id="getSortFieldsDiv"></div>
         <br><br>
-        <button type="button" id="getAddSortFieldsButton">Add Sort Field</button>
+        <button type="button" id="getAddSortFieldButton">Add Sort Field</button>
 
         <label for="searchResultFields">Search Result Fields</label>
         <div id="getSearchResultFieldsDiv"></div>
         <br><br>
-        <button type="button" id="getAddSearchResultFieldsButton">Add Search Result Field</button>
+        <button type="button" id="getAddSearchResultFieldButton">Add Search Result Field</button>
 
         <label for="similarAssetId">Similar Asset Id</label>
         <input type="text" id="similarAssetId">
@@ -285,16 +286,16 @@
 
         <br><br>
         <button type="submit">Get Search Saved</button>
-    </div>
+    </form>
 
     <h3>Get Search Saved By Id</h3>
-    <div id="getSearchSavedByIdForm">
+    <form id="getSearchSavedByIdForm">
         <label for="id">Id</label>
         <input type="text" id="id">
 
         <br><br>
         <button type="submit">Get Search Saved By Id</button>
-    </div>
+    </form>
 
 </body>
 </html>
