@@ -1,29 +1,22 @@
-from assets.multi_thread_upload import *
-from assets.single_thread_upload import *
-from assets.start_asset_upload import *
-from assets.upload_asset_part_complete import *
-from assets.upload_complete_asset import *
+import sys, os
+sys.path.append(os.path.realpath('...'))
 
-import asyncio, json
+from nomad_media_pip.nomad_sdk import Nomad_SDK
+from config import config
 
-async def uploadFile(AUTH_TOKEN, NAME, UPLOAD_OVERWRITE_OPTION, FILE, RELATED_CONTENT_ID, MULTI_THREAD):
-    print("Start upload")
-    RESPONSE = await start_upload(AUTH_TOKEN, NAME, UPLOAD_OVERWRITE_OPTION, FILE, RELATED_CONTENT_ID)
-    print(json.dumps(RESPONSE, indent=4))
+nomad_sdk = Nomad_SDK(config)
 
-    if (MULTI_THREAD == "y"):
-        await multi_thread_upload(AUTH_TOKEN, FILE, RESPONSE)
-    else:
-        await single_thread_upload(AUTH_TOKEN, FILE, RESPONSE)
+import json
 
-    INFO = await upload_complete_asset(AUTH_TOKEN, RESPONSE["id"])
-    print(json.dumps(INFO, indent=4))
-    
+def upload_asset():
+    NAME = input("Enter asset name (press enter if you want name of file to be name): ")
 
+    EXISTING_ASSET_ID = input("Enter existing asset id: ") if input("Do you want to add an existing asset id (y/n): ") == "y" else ""
+    RELATED_ASSET_ID = input("Enter related asset id: ") if input("Do you want to add a related asset id (y/n): ") == "y" else ""
+    CREATE_TRANSCRIBE_RELATED_ASSET = True if input("Do you want to create a transcribe related asset (y/n): ") == "y" else False
+    LANGUAGE_ID = input("Enter language id: ") if input("Do you want to add a language id (y/n): ") == "y" else ""
+    PARENT_ID = input("Enter parent id: ") if input("Do you want to add a parent id (y/n): ") == "y" else ""
 
-if __name__ == "__main__":
-    AUTH_TOKEN = input("Enter authentication token: ")
-    NAME = input("Enter asset name (press enter to skip): ")
     while True:
         UPLOAD_OVERWRITE_OPTION = input("Enter upload overwrite option (replace, continue, cancel): ")
         if UPLOAD_OVERWRITE_OPTION == "replace" or UPLOAD_OVERWRITE_OPTION == "continue" \
@@ -32,6 +25,13 @@ if __name__ == "__main__":
         print("Invalid input")
     FILE = input("Enter file path: ")
     RELATED_CONTENT_ID = input("Enter related content id (press enter to skip): ")
-    MULTI_THREAD = input("Do you want to use multithread (y/n)?: ")
 
-    asyncio.run(uploadFile(AUTH_TOKEN, NAME, UPLOAD_OVERWRITE_OPTION, FILE, RELATED_CONTENT_ID, MULTI_THREAD))
+    ASSET_INFO = nomad_sdk.upload_asset(NAME, EXISTING_ASSET_ID, RELATED_ASSET_ID,
+                                        CREATE_TRANSCRIBE_RELATED_ASSET, RELATED_CONTENT_ID,
+                                        LANGUAGE_ID, UPLOAD_OVERWRITE_OPTION, FILE,
+                                        PARENT_ID)
+
+    print(json.dumps(ASSET_INFO, indent=4))
+
+if __name__ == "__main__":
+    upload_asset()
