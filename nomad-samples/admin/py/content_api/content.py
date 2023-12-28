@@ -1,58 +1,38 @@
-from contents.get_content import *
-from contents.get_contents import *
-from contents.create_content import *
-from contents.update_content import *
-from contents.delete_content import *
+import sys, os
+sys.path.append(os.path.realpath('...'))
+
+from nomad_media_pip.nomad_sdk import Nomad_SDK
+from config import config
+
+nomad_sdk = Nomad_SDK(config)
 
 import json
 
-def get_contents_main(AUTH_TOKEN):
-    try:
-        CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
-        if input("Do you want to sort the results (y/n): ") == "y":
-            SORT_COLUMN = input("Enter the parameter name you want to sort by: ")
-            IS_DESC_STR = input("Enter if you want to display the sorted parameter "\
-                                "in ascending or descending order (asc, desc): ")
-            IS_DESC = True if IS_DESC_STR == "desc" else False
-            PAGE_INDEX = input("Enter the index you want to start the sort on: ")
-            PAGE_SIZE = input("Enter the amount of results you want to display: ")
-            LANGUAGE_ID = input("Enter the language id you want to sort by: ")
-        else:
-            SORT_COLUMN = IS_DESC = PAGE_INDEX = PAGE_SIZE = LANGUAGE_ID = ""
-        
-
-        print("Getting content")
-        INFO = get_contents(AUTH_TOKEN, CONTENT_DEFINITION_ID, SORT_COLUMN, IS_DESC, 
-                           PAGE_INDEX, PAGE_SIZE, LANGUAGE_ID)
-        print(json.dumps(INFO, indent=4))
-    except:
-        raise Exception()
-    
-def get_content_main(AUTH_TOKEN):
+def get_content_main():
     try:
         ID = input("Enter id: ")
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
         IS_REVISION = input("Enter if you want the content to be a revision (y/n): ") == "y"
 
         print("Getting content")
-        INFO = get_content(AUTH_TOKEN, ID, CONTENT_DEFINITION_ID, IS_REVISION)
+        INFO = nomad_sdk.get_content(ID, CONTENT_DEFINITION_ID, IS_REVISION)
         print(json.dumps(INFO, indent=4))
 
     except:
         raise Exception()
     
-def create_content_main(AUTH_TOKEN):
+def create_content_main():
     try:
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
         
         print("Creating content")
-        ID = create_content(AUTH_TOKEN, CONTENT_DEFINITION_ID)
+        ID = nomad_sdk.create_content(CONTENT_DEFINITION_ID)
         print(json.dumps(ID, indent=4))
 
     except:
         raise Exception()
 
-def update_content_main(AUTH_TOKEN):
+def update_content_main():
     try:
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
         ID = input("Enter the id: ")
@@ -60,43 +40,91 @@ def update_content_main(AUTH_TOKEN):
         PROPERTIES = json.loads(input("Enter the property json: \n"))
 
         print("Updating content")
-        INFO = update_content(AUTH_TOKEN, ID, CONTENT_DEFINITION_ID, PROPERTIES)
+        INFO = nomad_sdk.update_content(ID, CONTENT_DEFINITION_ID, PROPERTIES)
         print(json.dumps(INFO, indent=4))
 
     except:
         raise Exception()
 
-def delete_content_main(AUTH_TOKEN):
+def delete_content_main():
     try:
         ID = input("Enter id: ")
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
 
         print("Deleting content")
-        delete_content(AUTH_TOKEN, ID, CONTENT_DEFINITION_ID)
+        nomad_sdk.delete_content(ID, CONTENT_DEFINITION_ID)
         print("Content Deleted")
     except:
         raise Exception()
+    
+def deactivate_content_user_tracking_main():
+    try:
+        SESSION_ID = input("Enter session id: ")
+        CONTENT_ID = input("Enter content id: ")
+        CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
+        DEACTIVATE = input("Enter if you want to deactivate content user tracking (y/n): ") == "y"
 
+        print("Deactivating content user tracking")
+        nomad_sdk.deactivate_content_user_track(SESSION_ID, CONTENT_ID, 
+                                                CONTENT_DEFINITION_ID, DEACTIVATE)
+        print("Content user tracking deactivated")
+    except:
+        raise Exception()
+    
+def get_content_user_tracking_main():
+    try:
+        CONTENT_ID = input("Enter content id: ")
+        CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
+        SORT_COLUMN = input("Enter sort column: ")
+        IS_DESC = input("Enter if you want the sort to be descending (y/n): ") == "y"
+        PAGE_INDEX = input("Enter page index: ") if input("Do you want to add a page index (y/n): ") == "y" else ""
+        PAGE_SIZE = input("Enter page size: ") if input("Do you want to add a page size (y/n): ") == "y" else ""
+
+        print("Getting content user tracking")
+        INFO = nomad_sdk.get_content_user_track(CONTENT_ID, CONTENT_DEFINITION_ID, SORT_COLUMN,
+                                                IS_DESC, PAGE_INDEX, PAGE_SIZE)
+        print(json.dumps(INFO, indent=4))
+    except:
+        raise Exception()
+    
+def get_content_user_tracking_touch_main():
+    try:
+        CONTENT_ID = input("Enter content id: ")
+        CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
+
+        print("Getting content user tracking touches")
+        INFO = nomad_sdk.get_content_user_track_touch(CONTENT_ID, CONTENT_DEFINITION_ID)
+        print(json.dumps(INFO, indent=4))
+    except:
+        raise Exception()
 if __name__ == "__main__":
-    AUTH_TOKEN = "eyJraWQiOiJkSkpRa3ZxdWxDekpqZEFmWTR0UGwrSytyWldVTE5OTkR1YitYVnljaFNRPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJjdXN0b206Y29udGFjdF9pZCI6ImU5YWIxNDFmLWMxMjgtNDE5Yi04YTQ3LWIzNTg1MTQwMzZkNyIsImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy13ZXN0LTIuYW1hem9uYXdzLmNvbVwvdXMtd2VzdC0yX1ZHRXhveTY0aSIsImNvZ25pdG86dXNlcm5hbWUiOiJlYjc1MzI5OC0wODAzLTQyYWEtOTFkMi01NjE3OGE0OTI4NWQiLCJnaXZlbl9uYW1lIjoiU2NvdHQiLCJvcmlnaW5fanRpIjoiOTM1NjI5YzYtMjg5OC00ZjY2LTg2ODktMjExMjNhNDYwNmY5IiwiYXVkIjoiNWUybm92MXAzYTZxNHM1MHZjamo1ZXNqYjciLCJldmVudF9pZCI6ImFhOWQxNmZhLWQ4MzctNGYxNi1iNzQ0LTczYzk4NGM5MDEwYyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNjkwOTQ5MTE4LCJleHAiOjE2OTA5NTI3MTgsImlhdCI6MTY5MDk0OTExOCwiZmFtaWx5X25hbWUiOiJGYWx1ZGkiLCJqdGkiOiJiZmZhNjcxOS04OGIxLTRlMzUtODExZC0zMjQ3YmY5NTM4MTMiLCJlbWFpbCI6InNmYWx1ZGlAbm9tYWQtY21zLmNvbSJ9.caZU6KOjzv5PdK5sttEtv0NxGTlLcQY8x0CH92iB9tNA2SBYaiw3Qivf89QBV2bfaQI9CkRoVTJ1G0abBumaiFqJsnGiKdM3iZIMpuKw8ag9UOYgKPqoRIR9oBS7RCZAYoNf5txhRWxgPcVCfAmMceuL9PXpnG8Swk6n2S_dxnSvS51bpRNAEX-H0YGRKBoZibnhEHHH7gzRTyD5D-UbJ2EzEZzb4yumh_oXclFRrACI_Thu3V_VcLVcu-CNm14gSpa5_wRHgDxwfeADMeFz1Yk1GJa1ZCkMhBRck9-kMU2vMsOVETbJogMI6ncbOQDIXLlKaVz5KGDCBx3xZcKo_Q"
-    print(f"Enter authentication token: {AUTH_TOKEN}")
-
     while True:
         print("Do you want to get content by id, create a content, update a content, "\
-              "delete a content, or exit")
-        USER_INPUT = input("Enter get contents, get content, create, update, delete, or exit for each option above respectivly: ")
+              "delete a content, deactivate content user tracking, get user tracking,"\
+              "get user tracking touch, or exit")
+        USER_INPUT = input("get, create, update, delete, get, deactivate, tracking"\
+                           "tracking, tracking touch ,or exit for each option above respectivly: ")
 
-        if USER_INPUT == "get contents":
-            get_contents_main(AUTH_TOKEN)
-
-        elif USER_INPUT == "create":
-            create_content_main(AUTH_TOKEN)
+        if USER_INPUT == "create":
+            create_content_main()
 
         elif USER_INPUT == "update":
-            update_content_main(AUTH_TOKEN)
+            update_content_main()
 
         elif USER_INPUT == "delete":
-            delete_content_main(AUTH_TOKEN)
+            delete_content_main()
+
+        elif USER_INPUT == "get":
+            get_content_main()
+
+        elif USER_INPUT == "deactivate":
+            deactivate_content_user_tracking_main()
+
+        elif USER_INPUT == "tracking":
+            get_content_user_tracking_main()
+
+        elif USER_INPUT == "tracking touch":
+            get_content_user_tracking_touch_main()
 
         elif USER_INPUT == "exit":
             break
