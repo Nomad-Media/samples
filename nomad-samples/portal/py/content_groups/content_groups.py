@@ -1,80 +1,78 @@
-from content_group.add_content_to_content_group import *
-from content_group.create_content_group import *
-from content_group.delete_content_group import*
-from content_group.get_content_group import *
-from content_group.get_content_groups import *
-from content_group.get_portal_groups import *
-from content_group.remove_content_from_content_group import *
-from content_group.rename_content_group import *
-from content_group.share_content_group_with_user import *
-from content_group.stop_sharing_content_group_with_user import *
+import sys, os
+sys.path.append(os.path.realpath('...'))
 
+from nomad_media_pip.nomad_sdk import Nomad_SDK
+from config import config
 
-def get_content_group_main(AUTH_TOKEN):
+nomad_sdk = Nomad_SDK(config)
+
+import json
+
+def get_content_group_main():
     try:
-        CONTENT_GROUP_ID = input("Input an content group id: ")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
 
         print("Getting content groups")
-        INFO = get_content_group(AUTH_TOKEN, CONTENT_GROUP_ID)
+        INFO = nomad_sdk.get_content_group(CONTENT_GROUP_ID)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
     
 
-def get_content_groups_main(AUTH_TOKEN):
+def get_content_groups_main():
     try:
         print("Getting content groups")
-        INFO = get_content_groups(AUTH_TOKEN)
+        INFO = nomad_sdk.get_content_groups()
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
-def create_content_groups_main(AUTH_TOKEN):
+def create_content_groups_main():
     try:
-        CONTENT_GROUP_NAME = input("Input an content group name (press enter to skip): ")
+        CONTENT_GROUP_NAME = input("Input a content group name (press enter to skip): ")
 
         print("Creating a new content group") 
-        INFO = create_content_group(AUTH_TOKEN, CONTENT_GROUP_NAME)
+        INFO = nomad_sdk.create_content_group(CONTENT_GROUP_NAME)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
-def add_content_to_content_group_main(AUTH_TOKEN):
+def add_contents_to_content_group_main():
     try:
-        CONTENT_GROUP_ID = input("Input an content group id: ")
-        CONTENTS = input("Enter content ids you wish to add to an content group (separate by comma): ").replace(" ","")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
+        CONTENTS = input("Enter content ids you wish to add to a content group (separate by comma): ").replace(" ","")
 
         print("Adding content to content group")
-        INFO = add_content_to_content_group(AUTH_TOKEN, CONTENT_GROUP_ID, CONTENTS.split(","))
+        INFO = nomad_sdk.add_contents_to_content_group(CONTENT_GROUP_ID, CONTENTS.split(","))
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception() 
 
-def remove_content_from_content_group_main(AUTH_TOKEN):
+def remove_contents_from_content_group_main():
     try:
-        CONTENT_GROUP_ID = input("Input an content group id: ")
-        CONTENTS = input("Enter content ids you wish to remove from an content group (separate by comma): ").replace(" ","")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
+        CONTENTS = input("Enter content ids you wish to remove from a content group (separate by comma): ").replace(" ","")
 
         print("Removing content from content group")
-        INFO = remove_content_to_content_group(AUTH_TOKEN, CONTENT_GROUP_ID, CONTENTS.split(","))
+        INFO = nomad_sdk.remove_contents_from_content_group(CONTENT_GROUP_ID, CONTENTS.split(","))
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
-def rename_content_group_main(AUTH_TOKEN):
+def rename_content_group_main():
     try: 
-        CONTENT_GROUP_ID = input("Input an content group id: ")
-        CONTENT_GROUP_NEW_NAME = input("Input a new name for an content group: ")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
+        CONTENT_GROUP_NEW_NAME = input("Input a new name for a content group: ")
 
         print("Renaming content group")
-        INFO = rename_content_group(AUTH_TOKEN, CONTENT_GROUP_ID, CONTENT_GROUP_NEW_NAME)
+        INFO = nomad_sdk.rename_content_group(CONTENT_GROUP_ID, CONTENT_GROUP_NEW_NAME)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
-def share_content_with_user_main(AUTH_TOKEN):
+def share_content_with_user_main():
     try:
-        CONTENT_GROUP_ID = input("Input an content group id: ")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
         USER_ID_ARR = []
         while True:
             USER_ID = input("Enter the user id of the user you wish to share the content with: ")
@@ -85,14 +83,14 @@ def share_content_with_user_main(AUTH_TOKEN):
                 break 
 
         print("Sharing content with user")
-        INFO = share_content_group_with_user(AUTH_TOKEN, CONTENT_GROUP_ID, USER_ID_ARR)
+        INFO = nomad_sdk.share_content_group_with_user(CONTENT_GROUP_ID, USER_ID_ARR)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
-def stop_sharing_content_with_user_main(AUTH_TOKEN):
+def stop_sharing_content_with_user_main():
     try:
-        CONTENT_GROUP_ID = input("Input an content group id: ")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
         USER_ID_ARR = []
         while True:
             USER_ID = input("Enter the user id of the user you wish to stop sharing the content with: ")
@@ -103,29 +101,29 @@ def stop_sharing_content_with_user_main(AUTH_TOKEN):
                 break 
 
         print("Sharing content with user")
-        INFO = stop_sharing_content_group_with_user(AUTH_TOKEN, CONTENT_GROUP_ID, USER_ID_ARR)
+        INFO = nomad_sdk.stop_sharing_content_group_with_user(CONTENT_GROUP_ID, USER_ID_ARR)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
 
-def get_portal_groups_main(AUTH_TOKEN):
+def get_portal_groups_main():
     try:
         RETURNED_GROUP_NAMES = input("Enter the group names you want returned (separated by comma): ").split(",")
 
         print("Getting portal groups")
-        INFO = get_portal_groups(AUTH_TOKEN, RETURNED_GROUP_NAMES)
+        INFO = nomad_sdk.get_portal_groups(RETURNED_GROUP_NAMES)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
 
-def delete_content_group_main(AUTH_TOKEN):
+def delete_content_group_main():
     try:
-        CONTENT_GROUP_ID = input("Input an content group id: ")
+        CONTENT_GROUP_ID = input("Input a content group id: ")
 
         print("Deleting content group")
-        INFO = delete_content_group(AUTH_TOKEN, CONTENT_GROUP_ID)
+        INFO = nomad_sdk.delete_content_group(CONTENT_GROUP_ID)
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
@@ -133,8 +131,6 @@ def delete_content_group_main(AUTH_TOKEN):
 
 
 if __name__ == "__main__":
-    AUTH_TOKEN = input("Enter your authentication token: ")
-    
     while True:
         print("Do you want to get a specific content group, get your content group, create an "\
               "content group, add content to a content group, remove content from a content group, "\
@@ -145,25 +141,25 @@ if __name__ == "__main__":
                            "above respectively: ")
 
         if USER_INPUT == "get group":
-            get_content_group_main(AUTH_TOKEN)
+            get_content_group_main()
         elif USER_INPUT == "get groups":
-            get_content_groups_main(AUTH_TOKEN)
+            get_content_groups_main()
         elif USER_INPUT == "create":
-            create_content_groups_main(AUTH_TOKEN)
+            create_content_groups_main()
         elif USER_INPUT == "add":
-            add_content_to_content_group_main(AUTH_TOKEN)
+            add_contents_to_content_group_main()
         elif USER_INPUT == "remove":
-            remove_content_from_content_group_main(AUTH_TOKEN)
+            remove_contents_from_content_group_main()
         elif USER_INPUT == "rename":
-            rename_content_group_main(AUTH_TOKEN)
+            rename_content_group_main()
         elif USER_INPUT == "start sharing":
-            share_content_with_user_main(AUTH_TOKEN)
+            share_content_with_user_main()
         elif USER_INPUT == "stop sharing":
-            stop_sharing_content_with_user_main(AUTH_TOKEN)
+            stop_sharing_content_with_user_main()
         elif USER_INPUT == "get portal":
-            get_portal_groups_main(AUTH_TOKEN)
+            get_portal_groups_main()
         elif USER_INPUT == "delete":
-            delete_content_group_main(AUTH_TOKEN)
+            delete_content_group_main()
         elif USER_INPUT == "exit":
             break
         else:
