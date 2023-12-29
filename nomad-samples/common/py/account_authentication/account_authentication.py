@@ -1,43 +1,32 @@
-from account.login import *
-from account.refresh_token import *
-from account.forgot_password import *
-from account.reset_password import *
-from account.logout import *
-from constants.project_constants import*
-from exceptions.api_exception_handler import *
+import sys, os
+sys.path.append(os.path.realpath('...'))
+
+from nomad_media_pip.nomad_sdk import Nomad_SDK
+from config import config
+
+nomad_sdk = Nomad_SDK(config)
 
 import json
 
-def login_main():
+def login():
     try:
         while True:
-            USERNAME = input("Enter your username: ")
-            PASSWORD = input("Enter your password: ")
-            APPLICATION_ID = input("Enter your application id (optional): ")
-            print("Logging in")
-            LOGIN_INFO = login(USERNAME, PASSWORD, APPLICATION_ID)  
+            LOGIN_INFO = nomad_sdk.login()  
             if LOGIN_INFO != "Login info incorrect":
                 break
             print("Login credentials are incorrect.")
-        
-        print(f"Token: {LOGIN_INFO['token']}")
-        LOGIN_INFO["username"] = USERNAME
-        return LOGIN_INFO, APPLICATION_ID
     except:
         raise Exception()
     
-def refresh_token_main(REFRESH_TOKEN):
+def refresh_token():
     try:
-        print("Refreshing token")
-        REFRESH_INFO = refresh_token(REFRESH_TOKEN)
-        print(f"Token: {REFRESH_INFO['token']}")
-        token = REFRESH_INFO["token"]
+        nomad_sdk.refresh_token()
     except:
         raise Exception
 
-def reset_password_main(AUTH_TOKEN, USERNAME):
+def reset_password():
     try:
-        forgot_password(USERNAME, AUTH_TOKEN)
+        nomad_sdk.forgot_password()
 
         print("An email has been sent to you with a 6 digit code")
         while True:
@@ -54,7 +43,7 @@ def reset_password_main(AUTH_TOKEN, USERNAME):
                         try:
                             print("Resetting password")
                             NEW_PASSWORD = input("Enter new password: ")
-                            reset_password(USERNAME, CODE, NEW_PASSWORD)
+                            nomad_sdk.reset_password(CODE, NEW_PASSWORD)
                             print("Password Reset")
                             break
                         except:
@@ -64,25 +53,38 @@ def reset_password_main(AUTH_TOKEN, USERNAME):
                 break
             else:
                 print("Resending 6 digit code")
-                forgot_password(USERNAME, AUTH_TOKEN)
+                nomad_sdk.forgot_password()
                 print("An email has been sent to you with a 6 digit code")
     except:
         raise Exception()
+    
+def logout():
+    try:
+        nomad_sdk.logout()
+    except:
+        raise Exception()
+    
+def exit():
+    sys.exit()
 
-if __name__ == "__main__":
-    LOGIN_INFO, APPLICATION_ID = login_main()
+functions = {
+    "1": login,
+    "2": refresh_token,
+    "3": reset_password,
+    "4": logout,
+    "5": exit
+}
+
+if __name__ == "___":
+    print("Which function do you want to run?")
+    for key, value in functions.items():
+        print(f"{key}: {value.__name__}")
+
     while True:
-        print("Do you want to refresh your token, reset your password, or logout?")
-        USER_INPUT = input("Enter refresh to refresh token, reset to reset your password or logout: ")
-        auth_token = LOGIN_INFO["token"]
-        if USER_INPUT == "refresh":
-            auth_token = refresh_token_main(LOGIN_INFO["refreshToken"])
-        elif USER_INPUT == "reset":
-            reset_password_main(auth_token, LOGIN_INFO["username"])
-        elif USER_INPUT == "logout":
-            logout(auth_token, LOGIN_INFO["userSessionId"], APPLICATION_ID)
-            print("Logged out successfully")
+        USER_INPUT = input("Enter the number of the function you want to run: ")
+        if USER_INPUT in functions:
+            functions[USER_INPUT]()
             break
         else:
-            print("The input is incorrect")
+            print("Invalid input")
 
