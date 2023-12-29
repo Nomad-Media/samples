@@ -1,6 +1,10 @@
-from account.register import *
-from account.verify import *
-from account.resend_code import *
+import sys, os
+sys.path.append(os.path.realpath('...'))
+
+from nomad_media_pip.nomad_sdk import Nomad_SDK
+from config import config
+
+nomad_sdk = Nomad_SDK(config)
 
 import json
 
@@ -13,7 +17,7 @@ def register_user():
         EMAIL = input("Enter email: ")
         PASSWORD = input("Enter password: ")
 
-        REGISTER_INFO = register(FIRST_NAME, LAST_NAME, EMAIL, PASSWORD)
+        REGISTER_INFO = nomad_sdk.register(EMAIL, FIRST_NAME, LAST_NAME, PASSWORD)
         print(json.dumps(REGISTER_INFO, indent=4))
 
         print("An email has been sent to you with a 6 digit code")
@@ -29,7 +33,7 @@ def register_user():
                         IS_INT = False
                     if len(CODE) == 6 and IS_INT:
                         try:
-                            verify(EMAIL, CODE)
+                            nomad_sdk.verify(EMAIL, CODE)
                             print("Account now verified")
                             break
                         except:
@@ -39,7 +43,7 @@ def register_user():
                 break
             else:
                 print("Resending 6 digit code")
-                resend_code(EMAIL)
+                nomad_sdk.resend_code(EMAIL)
                 print("An email has been sent to you with a 6 digit code")
 
     except:
