@@ -91,10 +91,10 @@ def create_intelligent_playlist():
 def create_intelligent_schedule():
     try:
         prompts = {
-            "defaultVideoAsset": ("default video asset", "dict", ["id", "description"], True),
-            "name": ("name", "input", True),
-            "thumbnailAsset": ("thumbnail asset", "dict", ["id", "description"], False),
-            "timeZoneId": ("time zone id", "input", True),
+            "DEFAULT_VIDEO_ASSET": ("default video asset", "dict", ["id", "description"], True),
+            "NAME": ("name", "input", True),
+            "THUMBNAIL_ASSET": ("thumbnail asset", "dict", ["id", "description"], False),
+            "TIME_ZONE_ID": ("time zone id", "input", True),
         }
 
         data = get_data(prompts)
@@ -107,10 +107,10 @@ def create_intelligent_schedule():
 def create_playlist():
     try:
         prompts = {
-            "name": ("name", "input", True),
-            "thumbnailAsset": ("thumbnail asset", "dict", ["id", "description"], False),
-            "loopPlaylist": ("loop playlist", "bool", False),
-            "defaultVideoAsset": ("default video asset", "dict", ["id", "description"], True),
+            "NAME": ("name", "input", True),
+            "THUMBNAIL_ASSET": ("thumbnail asset", "dict", ["id", "description"], False),
+            "LOOP_PLAYLIST": ("loop playlist", "bool", False),
+            "DEFAULT_VIDEO_ASSET": ("default video asset", "dict", ["id", "description"], True),
         }
 
         data = get_data(prompts)
@@ -123,9 +123,9 @@ def create_playlist():
 def create_playlist_video():
     try:
         prompts = {
-            "playlistId": ("playlist id", "input", True),
-            "asset": ("asset", "dict", ["id", "description"], True),
-            "previousItem:": ("previous item", "dict", ["id", "description"], False)
+            "PLAYLIST_ID": ("playlist id", "input", True),
+            "ASSET": ("asset", "dict", ["id", "description"], True),
+            "PREVIOUS_ITEM:": ("previous item", "dict", ["id", "description"], False)
         }
 
         data = get_data(prompts)
@@ -138,13 +138,13 @@ def create_playlist_video():
 def create_schedule_item_asset():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),
-            "asset": ("asset", "dict", ["id", "description"], True),
-            "days": ("days", "input", True),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", True),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", True),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", True),
+            "SCHEDULE_ID": ("schedule id", "input", True),
+            "ASSET": ("asset", "dict", ["id", "description"], True),
+            "DAYS": ("days", "input", True),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", True),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", True),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", True),
         }
 
         data = get_data(prompts)
@@ -159,13 +159,13 @@ def create_schedule_item_asset():
 def create_schedule_item_live_channel():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),
-            "days": ("days", "input", True),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", True),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", True),
-            "liveChannel": ("live channel", "dict", ["id", "description"], True),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", True),
+            "SCHEDULE_ID": ("schedule id", "input", True),
+            "DAYS": ("days", "input", True),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", True),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", True),
+            "LIVE_CHANNEL": ("live channel", "dict", ["id", "description"], True),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", True),
         }
 
         data = get_data(prompts)
@@ -180,13 +180,13 @@ def create_schedule_item_live_channel():
 def create_schedule_item_playlist_schedule():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),
-            "days": ("days", "input", True),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", True),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", True),
-            "playlistSchedule": ("playlistSchedule", "dict", ["id", "description"], True),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", True),
+            "SCHEDULE_ID": ("schedule id", "input", True),
+            "DAYS": ("days", "input", True),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", True),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", True),
+            "PLAYLIST_SCHEDULE": ("playlistSchedule", "dict", ["id", "description"], True),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", True),
         }
 
         data = get_data(prompts)
@@ -201,20 +201,20 @@ def create_schedule_item_playlist_schedule():
 def create_schedule_item_search_filter():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),\
-            "collections": ("collection", "list", ["id", "description"], False),
-            "days": ("days", "input", True),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", True),
-            "endSearchDate": ("end search date (YYYY-MM-DD)", "input", False),
-            "endSearchDurationInMinutes": ("end search duration (in minutes)", "input", True),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", True),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "relatedContents": ("related content", "list", ["id", "description"], False),
-            "searchDate": ("search date (YYYY-MM-DD)", "input", False),
-            "searchDurationInMinutes": ("search duration (in minutes)", "input", True),
-            "searchFilter": ("search filter: The types are 1 (Random), 2 (Random within a Date Range), 3 (Newest), and 4 (Newest Not Played)", "dict", ["id", "description"], True),
-            "tags": ("tag", "list", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", True),
+            "SCHEDULE_ID": ("schedule id", "input", True),\
+            "COLLECTIONS": ("collection", "list", ["id", "description"], False),
+            "DAYS": ("days", "input", True),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", True),
+            "END_SEARCH_DATE": ("end search date (YYYY-MM-DD)", "input", False),
+            "END_SEARCH_DURATION_IN_MINUTES": ("end search duration (in minutes)", "input", True),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", True),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "RELATED_CONTENTS": ("related content", "list", ["id", "description"], False),
+            "SEARCH_DATE": ("search date (YYYY-MM-DD)", "input", False),
+            "SEARCH_DURATION_IN_MINUTES": ("search duration (in minutes)", "input", True),
+            "SEARCH_FILTER": ("search filter: The types are 1 (Random), 2 (Random within a Date Range), 3 (Newest), and 4 (Newest Not Played)", "dict", ["id", "description"], True),
+            "TAGS": ("tag", "list", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", True),
         }
 
         data = get_data(prompts)
@@ -354,17 +354,17 @@ def stop_schedule():
 def update_intelligent_playlist():
     try:
         prompts = {
-            "id": ("id", "input", True),
-            "collections": ("collection", "list", ["id", "description"], False),
-            "endSearchDate": ("end search date (YYYY-MM-DD)", "input", False),
-            "endSearchDurationInMinutes": ("end search duration (in minutes)", "input", False),
-            "name": ("name", "input", False),
-            "relatedContnets": ("related content", "list", ["id", "description"], False),
-            "searchDate": ("search date (YYYY-MM-DD)", "input", False),
-            "searchDurationInMinutes": ("search duration (in minutes)", "input", False),
-            "searchFilterType": ("search filter type: The types are 1 (Random), 2 (Random within a Date Range), 3 (Newest), and 4 (Newest Not Played)", "input", True),
-            "tags": ("tag", "list", ["id", "description"], False),
-            "thumbnailAssset": ("thumbnail asset", "dict", ["id", "description"], False),
+            "SCHEDULE_ID": ("id", "input", True),
+            "COLLECTIONS": ("collection", "list", ["id", "description"], False),
+            "END_SEARCH_DATE": ("end search date (YYYY-MM-DD)", "input", False),
+            "END_SEARCH_DURATION_IN_MINUTES": ("end search duration (in minutes)", "input", False),
+            "NAME": ("name", "input", False),
+            "RELATED_CONTNETS": ("related content", "list", ["id", "description"], False),
+            "SEARCH_DATE": ("search date (YYYY-MM-DD)", "input", False),
+            "SEARCH_DURATION_IN_MINUTES": ("search duration (in minutes)", "input", False),
+            "SEARCH_FILTER_TYPE": ("search filter type: The types are 1 (Random), 2 (Random within a Date Range), 3 (Newest), and 4 (Newest Not Played)", "input", True),
+            "TAGS": ("tag", "list", ["id", "description"], False),
+            "THUMBNAIL_ASSSET": ("thumbnail asset", "dict", ["id", "description"], False),
         }
 
         data = get_data(prompts)
@@ -377,11 +377,11 @@ def update_intelligent_playlist():
 def update_intelligent_schedule():
     try:
         prompts = {
-            "id": ("id", "input", True),
-            "defaultVideoAsset": ("default video asset", "dict", ["id", "description"], False),
-            "name": ("name", "input", False),
-            "thumbnailAsset": ("thumbnail asset", "dict", ["id", "description"], False),
-            "timeZoneId": ("time zone id", "input", False),
+            "SCHEDULE_ID": ("id", "input", True),
+            "DEFAULT_VIDEO_ASSET": ("default video asset", "dict", ["id", "description"], False),
+            "NAME": ("name", "input", False),
+            "THUMBNAIL_ASSET": ("thumbnail asset", "dict", ["id", "description"], False),
+            "TIME_ZONE_ID": ("time zone id", "input", False),
         }
 
         data = get_data(prompts)
@@ -394,11 +394,11 @@ def update_intelligent_schedule():
 def update_playlist():
     try:
         prompts = {
-            "id": ("id", "input", True),
-            "name": ("name", "input", False),
-            "thumbnailAsset": ("thumbnail asset", "dict", ["id", "description"], False),
-            "loopPlaylist": ("loop playlist", "bool", False),
-            "defaultVideoAsset": ("default video asset", "dict", ["id", "description"], False),
+            "SCHEDULE_ID": ("id", "input", True),
+            "NAME": ("name", "input", False),
+            "THUMBNAIL_ASSET": ("thumbnail asset", "dict", ["id", "description"], False),
+            "LOOP_PLAYLIST": ("loop playlist", "bool", False),
+            "DEFAULT_VIDEO_ASSET": ("default video asset", "dict", ["id", "description"], False),
         }
 
         data = get_data(prompts)
@@ -411,13 +411,13 @@ def update_playlist():
 def update_schedule_item_asset():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),
-            "asset": ("asset", "dict", ["id", "description"], False),
-            "days": ("days", "input", False),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", False),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", False),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", False),
+            "SCHEDULE_ID": ("schedule id", "input", True),
+            "ASSET": ("asset", "dict", ["id", "description"], False),
+            "DAYS": ("days", "input", False),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", False),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", False),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", False),
         }
 
         data = get_data(prompts)
@@ -432,13 +432,13 @@ def update_schedule_item_asset():
 def update_schedule_item_live_channel():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),
-            "days": ("days", "input", False),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", False),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", False),
-            "liveChannel": ("live channel", "dict", ["id", "description"], False),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", False),
+            "SCHEDULE_ID": ("schedule id", "input", True),
+            "DAYS": ("days", "input", False),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", False),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", False),
+            "LIVE_CHANNEL": ("live channel", "dict", ["id", "description"], False),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", False),
         }
 
         data = get_data(prompts)
@@ -453,13 +453,13 @@ def update_schedule_item_live_channel():
 def update_schedule_item_playlist():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),
-            "days": ("days", "input", False),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", False),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", False),
-            "playlistSchedule": ("playlistSchedule", "dict", ["id", "description"], False),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", False),
+            "SCHEDULE_ID": ("schedule id", "input", True),
+            "DAYS": ("days", "input", False),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", False),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", False),
+            "PLAYLIST_SCHEDULE": ("playlistSchedule", "dict", ["id", "description"], False),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", False),
         }
 
         data = get_data(prompts)
@@ -474,20 +474,20 @@ def update_schedule_item_playlist():
 def update_schedule_item_search_filter():
     try:
         prompts = {
-            "scheduleId": ("schedule id", "input", True),\
-            "collections": ("collection", "list", ["id", "description"], False),
-            "days": ("days", "input", False),
-            "durationTimeCode": ("duration time code (hh:mm:ss;fr)", "input", False),
-            "endSearchDate": ("end search date (YYYY-MM-DD)", "input", False),
-            "endSearchDurationInMinutes": ("end search duration (in minutes)", "input", False),
-            "endTimeCode": ("end time code (hh:mm:ss;fr)", "input", False),
-            "previousItem": ("previous item", "dict", ["id", "description"], False),
-            "relatedContents": ("related content", "list", ["id", "description"], False),
-            "searchDate": ("search date (YYYY-MM-DD)", "input", False),
-            "searchDurationInMinutes": ("search duration (in minutes)", "input", False),
-            "searchFilter": ("search filter: The types are 1 (Random), 2 (Random within a Date Range), 3 (Newest), and 4 (Newest Not Played)", "dict", ["id", "description"], False),
-            "tags": ("tag", "list", ["id", "description"], False),
-            "timeCode": ("time code (hh:mm:ss;fr)", "input", False),
+            "SCHEDULE_ID": ("schedule id", "input", True),\
+            "COLLECTIONS": ("collection", "list", ["id", "description"], False),
+            "DAYS": ("days", "input", False),
+            "DURATION_TIME_CODE": ("duration time code (hh:mm:ss;fr)", "input", False),
+            "END_SEARCH_DATE": ("end search date (YYYY-MM-DD)", "input", False),
+            "END_SEARCH_DURATION_IN_MINUTES": ("end search duration (in minutes)", "input", False),
+            "END_TIME_CODE": ("end time code (hh:mm:ss;fr)", "input", False),
+            "PREVIOUS_ITEM": ("previous item", "dict", ["id", "description"], False),
+            "RELATED_CONTENTS": ("related content", "list", ["id", "description"], False),
+            "SEARCH_DATE": ("search date (YYYY-MM-DD)", "input", False),
+            "SEARCH_DURATION_IN_MINUTES": ("search duration (in minutes)", "input", False),
+            "SEARCH_FILTER": ("search filter: The types are 1 (Random), 2 (Random within a Date Range), 3 (Newest), and 4 (Newest Not Played)", "dict", ["id", "description"], False),
+            "TAGS": ("tag", "list", ["id", "description"], False),
+            "TIME_CODE": ("time code (hh:mm:ss;fr)", "input", False),
         }
 
         data = get_data(prompts)
