@@ -6,7 +6,7 @@ from config import config
 
 nomad_sdk = Nomad_SDK(config)
 
-import json, datetime
+import json
 
 EVENT_CONTENT_DEFINITION_ID = "412a30e3-73ee-4eae-b739-e1fc87601c7d"
 
