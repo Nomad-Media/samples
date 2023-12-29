@@ -1,4 +1,4 @@
 **/__pycache__/
 **/node_modules/
 config.mjs
-config.py
+/config.py
