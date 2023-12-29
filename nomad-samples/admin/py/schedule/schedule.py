@@ -499,6 +499,9 @@ def update_schedule_item_search_filter():
     except:
         raise Exception()
     
+def exit():
+    sys.exit()
+    
 functions = {
     "1": create_intelligent_playlist,
     "2": create_intelligent_schedule,
@@ -528,7 +531,8 @@ functions = {
     "26": update_schedule_item_asset,
     "27": update_schedule_item_live_channel,
     "28": update_schedule_item_playlist,
-    "29": update_schedule_item_search_filter
+    "29": update_schedule_item_search_filter,
+    "30": exit
 }
 
 if __name__ == "__main__":

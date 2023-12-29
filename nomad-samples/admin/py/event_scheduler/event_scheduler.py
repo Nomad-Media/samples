@@ -212,6 +212,9 @@ def delete_live_schedule():
     except:
         raise Exception()
     
+def exit():
+    sys.exit()
+    
 functions = {
     "1": create_and_update_event,
     "2": add_live_schedule_to_event,
@@ -219,7 +222,8 @@ functions = {
     "4": get_live_schedule,
     "5": start_live_schedule,
     "6": stop_live_schedule,
-    "7": delete_live_schedule
+    "7": delete_live_schedule,
+    "8": exit
 }
 
 if __name__ == "__main__":
