@@ -98,7 +98,6 @@ def create_and_update_event():
             else:
                 data[key] = value
 
-        print("Creating event")
         INFO = nomad_sdk.create_and_update_event(**data)
         print(json.dumps(INFO, indent=4))
     except:
@@ -138,7 +137,6 @@ def add_live_schedule_to_event():
             else:
                 data[key] = value
 
-        print("Adding live schedule to event")
         INFO = nomad_sdk.add_live_schedule_to_event(**data)
         print(json.dumps(INFO, indent=4))
     except:
@@ -173,7 +171,6 @@ def extend_live_schedule():
                 prompt, type, required = value
                 data[key] = get_bool(prompt)
 
-        print("Extending live schedule")
         INFO = nomad_sdk.extend_live_schedule(**data)
         print(json.dumps(INFO, indent=4))
     except:
@@ -207,7 +204,6 @@ def start_live_schedule():
             prompt, type, required = value
             data[key] = get_input(prompt, required)
 
-        print("Getting live schedule")
         INFO = nomad_sdk.start_live_schedule(**data)
         print(json.dumps(INFO, indent=4))
     except:
@@ -224,7 +220,6 @@ def stop_live_schedule():
             prompt, type, required = value
             data[key] = get_input(prompt, required)
 
-        print("Getting live schedule")
         INFO = nomad_sdk.stop_live_schedule(**data)
         print(json.dumps(INFO, indent=4))
     except:
@@ -242,7 +237,6 @@ def delete_live_schedule():
             prompt, type, required = value
             data[key] = get_input(prompt, required)
 
-        print("Getting live schedule")
         INFO = nomad_sdk.delete_content(**data)
         print(json.dumps(INFO, indent=4))
     except:
