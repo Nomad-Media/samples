@@ -34,11 +34,7 @@ def get_data(prompts):
         type = value[1]
         if type == "input":
             prompt, type, required = value
-            if key == "RECURRING_DAYS":
-                days_input = get_input(prompt, required).split(",")
-                data[key] = [day for day in get_days() if day["title"] in days_input]
-            else:
-                data[key] = get_input(prompt, required)
+            data[key] = get_input(prompt, required)
         elif type == "dict":
             prompt, keys, type, required = value
             data[key] = get_dict(prompt, keys, required)
@@ -142,6 +138,8 @@ def extend_live_schedule():
         }
 
         data = get_data(prompts)
+
+        data["RECURRING_DAYS"] = [day for day in get_days() if day["title"] in data["RECURRING_DAYS"]]
 
         INFO = nomad_sdk.extend_live_schedule(**data)
         print(json.dumps(INFO, indent=4))
