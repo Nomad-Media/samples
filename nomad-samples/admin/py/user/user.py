@@ -6,8 +6,6 @@ from config import config
 
 nomad_sdk = Nomad_SDK(config)
 
-import json
-
 def get_input(prompt, required):
     return input(f"Enter {prompt}: ") if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else ""
 
