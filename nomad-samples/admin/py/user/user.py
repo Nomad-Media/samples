@@ -154,6 +154,9 @@ def delete_user_video_tracking_data():
     except:
         raise Exception()
     
+def exit():
+    sys.exit()
+
 functions = {
     "1": delete_user,
     "2": delete_user_content_attribute_data,
@@ -165,7 +168,8 @@ functions = {
     "8": delete_user_likes_data,
     "9": delete_user_saved_serach_data,
     "10": delete_user_session_data,
-    "11": delete_user_video_tracking_data
+    "11": delete_user_video_tracking_data,
+    "12": exit
 }
 
 if __name__ == "__main__":

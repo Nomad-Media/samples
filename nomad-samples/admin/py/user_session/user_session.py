@@ -26,9 +26,13 @@ def get_user_session():
     except:
         raise Exception()
     
+def exit():
+    sys.exit()
+    
 functions = {
     "1": change_session_status,
-    "2": get_user_session
+    "2": get_user_session,
+    "3": exit
 }
 
 if __name__ == "__main__":
