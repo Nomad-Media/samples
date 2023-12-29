@@ -25,6 +25,32 @@ def get_list(prompt, keys, required):
                 break
     return items
 
+def get_bool(prompt):
+    return True if input(f"{prompt} (y/n): ") == "y" else False
+
+def get_data(prompts):
+    data = {}
+    for key, value in prompts.items():
+        type = value[1]
+        if type == "input":
+            prompt, type, required = value
+            if key == "RECURRING_DAYS":
+                days_input = get_input(prompt, required).split(",")
+                data[key] = [day for day in get_days() if day["title"] in days_input]
+            else:
+                data[key] = get_input(prompt, required)
+        elif type == "dict":
+            prompt, keys, type, required = value
+            data[key] = get_dict(prompt, keys, required)
+        elif type == "list":
+            prompt, keys, type, required = value
+            data[key] = get_list(prompt, keys, required)
+        elif type == "bool":
+            prompt, type, required = value
+            data[key] = get_bool(prompt)
+
+    return data
+
 def get_days():
     SEARCH_INFO = nomad_sdk.search(None, None, None, 
         [
@@ -43,10 +69,6 @@ def get_days():
     print(json.dumps(SEARCH_INFO, indent=4))
 
     return SEARCH_INFO["items"]
-
-        
-def get_bool(prompt):
-    return True if input(f"{prompt} (y/n): ") == "y" else False
 
 def create_and_update_event():
     try:
@@ -80,23 +102,7 @@ def create_and_update_event():
             "LIVE_CHANNEL": ("live channel", "dict", ["id", "description"], False)
         }
 
-        data = {}
-        for key, value in prompts.items():
-            type = value[1]
-            if type == "input":
-                prompt, type, required = value
-                data[key] = get_input(prompt, required)
-            elif type == "dict":
-                prompt, type, keys, required = value
-                data[key] = get_dict(prompt, keys, required)
-            elif type == "list":
-                prompt, type, keys, required = value
-                data[key] = get_list(prompt, keys, required)
-            elif type == "bool":
-                prompt, type, required = value
-                data[key] = get_bool(prompt)
-            else:
-                data[key] = value
+        data = get_data(prompts)
 
         INFO = nomad_sdk.create_and_update_event(**data)
         print(json.dumps(INFO, indent=4))
@@ -119,23 +125,7 @@ def add_live_schedule_to_event():
             "EXTERNAL_OUTPUT_PROFILES": ("external output profile ", "list", ["id", "description"], False)
         }
 
-        data = {}
-        for key, value in prompts.items():
-            type = value[1]
-            if type == "input":
-                prompt, type, required = value
-                data[key] = get_input(prompt, required)
-            elif type == "dict":
-                prompt, type, keys, required = value
-                data[key] = get_dict(prompt, keys, required)
-            elif type == "list":
-                prompt, type, keys, required = value
-                data[key] = get_list(prompt, keys, required)
-            elif type == "bool":
-                prompt, type, required = value
-                data[key] = get_bool(prompt)
-            else:
-                data[key] = value
+        data = get_data(prompts)
 
         INFO = nomad_sdk.add_live_schedule_to_event(**data)
         print(json.dumps(INFO, indent=4))
@@ -151,25 +141,7 @@ def extend_live_schedule():
             "END_DATE": ("the end date of the event (YYYY-MM-DD)", "input", False),
         }
 
-        data = {}
-        for key, value in prompts.items():
-            type = value[1]
-            if type == "input":
-                prompt, type, required = value
-                if key == "RECURRING_DAYS":
-                    days_input = get_input(prompt, required).split(",")
-                    data[key] = [day for day in get_days() if day["title"] in days_input]
-                else:
-                    data[key] = get_input(prompt, required)
-            elif type == "dict":
-                prompt, keys, type, required = value
-                data[key] = get_dict(prompt, keys, required)
-            elif type == "list":
-                prompt, keys, type, required = value
-                data[key] = get_list(prompt, keys, required)
-            elif type == "bool":
-                prompt, type, required = value
-                data[key] = get_bool(prompt)
+        data = get_data(prompts)
 
         INFO = nomad_sdk.extend_live_schedule(**data)
         print(json.dumps(INFO, indent=4))
@@ -242,26 +214,26 @@ def delete_live_schedule():
     except:
         raise Exception()
     
-if __name__ == "__main__":
-    while True:
-        print("""Do you want to create/update event, add live schedule to event, extend live
-                 schedule, get live schedule, start live schedule, stop live schedule,"
-                 delete live schedule, or exit""")
-        USER_INPUT = input("create/update, add, extend, get, start, stop, delete, or exit for each option above respectively: ")
+functions = {
+    "1": create_and_update_event,
+    "2": add_live_schedule_to_event,
+    "3": extend_live_schedule,
+    "4": get_live_schedule,
+    "5": start_live_schedule,
+    "6": stop_live_schedule,
+    "7": delete_live_schedule
+}
 
-        if USER_INPUT == "create/update":
-            create_and_update_event()
-        elif USER_INPUT == "add":
-            add_live_schedule_to_event()
-        elif USER_INPUT == "extend":
-            extend_live_schedule()
-        elif USER_INPUT == "get":
-            get_live_schedule()
-        elif USER_INPUT == "start":
-            start_live_schedule()
-        elif USER_INPUT == "stop":
-            stop_live_schedule()
-        elif USER_INPUT == "delete":
-            delete_live_schedule()
-        elif USER_INPUT == "exit":
+if __name__ == "__main__":
+    print("Which function do you want to run?")
+    for key, value in functions.items():
+        print(f"{key}: {value.__name__}")
+
+    while True:
+        USER_INPUT = input("Enter the number of the function you want to run: ")
+
+        if USER_INPUT in functions:
+            functions[USER_INPUT]()
             break
+        else:
+            print("Invalid input")
