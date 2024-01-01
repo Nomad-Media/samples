@@ -8,19 +8,21 @@ nomad_sdk = Nomad_SDK(config)
 
 import json
 
+def get_input(prompt):
+    return input(f"Enter {prompt}: ") if input(f"Do you want to add {prompt} (y/n): ") == "y" else ""
+
 def update_user():
     try:
-        print("Leave fields you don't want to update blank")
-        ADDRESS = input("Enter new address: ")
-        ADDRESS2 = input("Enter new second address: ")
-        CITY = input("Enter new city: ")
-        STATE = input("Enter new state: ")
-        FIRST_NAME = input("Enter new first name: ")
-        LAST_NAME = input("Enter new last name: ")
-        PHONE_NUMBER = input("Enter new phone number: ")
-        PHONE_EXT = input("Enter new phone extention: ")
-        POSTAL_CODE = input("Enter new postal code: ")
-        ORGANIZATION = input("Enter new organization: ")
+        ADDRESS = get_input("Enter new address")
+        ADDRESS2 = get_input("Enter new second address")
+        CITY = get_input("Enter new city")
+        STATE = get_input("Enter new state")
+        FIRST_NAME = get_input("Enter new first name")
+        LAST_NAME = get_input("Enter new last name")
+        PHONE_NUMBER = get_input("Enter new phone number")
+        PHONE_EXT = get_input("Enter new phone extention")
+        POSTAL_CODE = get_input("Enter new postal code")
+        ORGANIZATION = get_input("Enter new organization")
 
         while True:
             COUNTRIES = nomad_sdk.misc_function("config/ea1d7060-6291-46b8-9468-135e7b94021b/lookups.json",
@@ -28,7 +30,7 @@ def update_user():
 
             COUNTRY = {}
 
-            COUNTRY_INPUT = input("Enter country: ")
+            COUNTRY_INPUT = get_input("Enter country")
             if COUNTRY_INPUT == "": 
                 COUNTRY = ""
                 break
@@ -53,8 +55,8 @@ def update_user():
 
 def change_email():
     try:
-        EMAIL = input("Enter your new email: ")
-        PASSWORD = input("Enter your password: ")
+        EMAIL = get_input("Enter your new email")
+        PASSWORD = get_input("Enter your password")
 
         print("Changing email")
         nomad_sdk.change_email(EMAIL, PASSWORD)
@@ -64,8 +66,8 @@ def change_email():
 
 def change_password():
     try:
-        CURRENT_PASSWORD = input("Enter your current password: ")
-        NEW_PASSWORD = input("Enter your new password: ")
+        CURRENT_PASSWORD = get_input("Enter your current password")
+        NEW_PASSWORD = get_input("Enter your new password")
 
         print("Changing password")
         nomad_sdk.change_password(CURRENT_PASSWORD, NEW_PASSWORD)
@@ -75,8 +77,8 @@ def change_password():
 
 if __name__ == "__main__":
     while True:
-        print("Do you want to update the user, change your email or password, or quit")
-        USER_INPUT = input("Enter user for update user, email for change email, password for change password, and exit to quit: ")
+        print("Do you want to update the user, change your email or password, or quit: ")
+        USER_INPUT = input("Enter user for update user, email for change email, password for change password, and exit to quit")
         
         if USER_INPUT == "user":
             update_user()
