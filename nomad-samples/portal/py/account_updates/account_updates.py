@@ -1,11 +1,14 @@
-from account.change_email import *
-from account.change_password import *
-from account.update_user import *
-from helpers.get_countries import *
+import sys, os
+sys.path.append(os.path.realpath('...'))
+
+from nomad_media_pip.nomad_sdk import Nomad_SDK
+from config import config
+
+nomad_sdk = Nomad_SDK(config)
 
 import json
 
-def update_user_main(AUTH_TOKEN):
+def update_user():
     try:
         print("Leave fields you don't want to update blank")
         ADDRESS = input("Enter new address: ")
@@ -20,7 +23,8 @@ def update_user_main(AUTH_TOKEN):
         ORGANIZATION = input("Enter new organization: ")
 
         while True:
-            COUNTRIES = get_countries(AUTH_TOKEN)
+            COUNTRIES = nomad_sdk.misc_function("config/ea1d7060-6291-46b8-9468-135e7b94021b/lookups.json",
+                                                "GET", None, True)[5]
 
             COUNTRY = {}
 
@@ -40,48 +44,46 @@ def update_user_main(AUTH_TOKEN):
 
 
         print("Updating user")
-        INFO = update_user(AUTH_TOKEN, ADDRESS, ADDRESS2, CITY, FIRST_NAME, LAST_NAME, \
+        INFO = nomad_sdk.update_user(ADDRESS, ADDRESS2, CITY, FIRST_NAME, LAST_NAME, \
                            PHONE_NUMBER, PHONE_EXT, POSTAL_CODE, ORGANIZATION, COUNTRY, STATE)
         
         print(json.dumps(INFO, indent=4))
     except:
         raise Exception()
 
-def change_email_main(AUTH_TOKEN):
+def change_email():
     try:
         EMAIL = input("Enter your new email: ")
         PASSWORD = input("Enter your password: ")
 
         print("Changing email")
-        #change_email(AUTH_TOKEN, EMAIL, PASSWORD)
+        nomad_sdk.change_email(EMAIL, PASSWORD)
         print("Email changed")
     except:
         raise Exception()
 
-def change_password_main(AUTH_TOKEN):
+def change_password():
     try:
         CURRENT_PASSWORD = input("Enter your current password: ")
         NEW_PASSWORD = input("Enter your new password: ")
 
         print("Changing password")
-        change_password(AUTH_TOKEN, CURRENT_PASSWORD, NEW_PASSWORD)
+        nomad_sdk.change_password(CURRENT_PASSWORD, NEW_PASSWORD)
         print("Password changed")
     except:
         raise Exception()
 
 if __name__ == "__main__":
-    AUTH_TOKEN = input("Enter your authentication token: ")
-    
     while True:
         print("Do you want to update the user, change your email or password, or quit")
         USER_INPUT = input("Enter user for update user, email for change email, password for change password, and exit to quit: ")
         
         if USER_INPUT == "user":
-            update_user_main(AUTH_TOKEN)
+            update_user()
         elif USER_INPUT == "email":
-            change_email_main(AUTH_TOKEN)
+            change_email()
         elif USER_INPUT == "password":
-            change_password_main(AUTH_TOKEN)
+            change_password()
         elif USER_INPUT == "exit":
             break
         else:
