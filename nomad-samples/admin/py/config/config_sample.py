@@ -18,7 +18,7 @@ def get_config():
     try:
         config_types = {"Admin": 1, "Lambda": 2, "GroundTruth": 3}
 
-        CONFIG_TYPE_NAME = input("Enter config type (Admin, Lambda, GroundTruth)")
+        CONFIG_TYPE_NAME = input("Enter config type (Admin, Lambda, GroundTruth): ")
         CONFIG_TYPE = config_types.get(CONFIG_TYPE_NAME)
 
         if CONFIG_TYPE is not None:
