@@ -88,7 +88,7 @@ def search():
 
         SIMILAR_ASSET_ID = input("Enter an asset id to find similar assets: ") if input("Do you want to find similar assets (y/n): ") == "y" else ""
         MIN_SCORE = input("Enter a minimum score: ") if input("Do you want to add a minimum score (y/n): ") == "y" else ""
-        EXCLUDE_TOTAL_RECORD_COUNT = input("Enter a total record count: ") if input("Do you want to exclude the total record count (y/n): ") == "y" else ""
+        EXCLUDE_TOTAL_RECORD_COUNT = input("Do you want to exclude the total record count (y/n): ") == "y"
         FILTER_BINDER = input("Enter a filter binder: ") if input("Do you want to add a filter binder (y/n): ") == "y" else ""
 
         print("Searching")
