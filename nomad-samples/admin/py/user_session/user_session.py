@@ -10,17 +10,20 @@ import json
 
 def change_session_status():
     try:
-        USER_SESSION_STATUS = input("Enter user session status: The options are Normal, ChatDisabled, SessionReplaced, Deactivated, SharedAccess, PendingInvite, Expired, DeleteInvite")
-        APPLICATON_ID = input("Enter application id: ")
+        USER_ID = input("Enter user id: (press enter to use current user id): ") or None
+        USER_SESSION_STATUS = input("Enter user session status: The options are Normal, ChatDisabled, SessionReplaced, Deactivated, SharedAccess, PendingInvite, Expired, DeleteInvite: ")
+        APPLICATON_ID = input("Enter application id: ") if input("Do you want to enter an application id (y/n): ") == "y" else None
 
-        nomad_sdk.change_session_status(USER_SESSION_STATUS, APPLICATON_ID)
+        nomad_sdk.change_session_status(USER_ID, USER_SESSION_STATUS, APPLICATON_ID)
 
     except:
         raise Exception()
     
 def get_user_session():
     try:
-        INFO = nomad_sdk.get_user_session()
+        USER_ID = input("Enter user id: (press enter to use current user id): ") or None
+
+        INFO = nomad_sdk.get_user_session(USER_ID)
         print(json.dumps(INFO, indent=4))
 
     except:
