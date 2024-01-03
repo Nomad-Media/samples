@@ -6,24 +6,11 @@ from config import config
 
 nomad_sdk = Nomad_SDK(config)
 
-def get_input(prompt, required):
-    return input(f"Enter {prompt}: ") if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else ""
+def get_input(prompt):
+    return input(f"Enter {prompt}: ") if input(f"Do you want to add {prompt} (y/n): ") == "y" else None
 
 def get_bool(prompt):
     return True if input(f"{prompt} (y/n): ") == "y" else False
-
-def get_data(prompts):
-    data = {}
-    for key, value in prompts.items():
-        type = value[1]
-        if type == "input":
-            prompt, type, required = value
-            data[key] = get_input(prompt, required)
-        elif type == "bool":
-            prompt, type, required = value
-            data[key] = get_bool(prompt)
-
-    return data
 
 def delete_user():
     try:
@@ -54,19 +41,18 @@ def delete_user_content_group_data():
     
 def delete_user_content_security_data():
     try:
-        prompts = {
-            "CONTENT_ID": ("content id", "input"),
-            "CONTENT_DEFINITION_ID": ("content definition id", "input"),
-            "USER_ID": ("user id", "input"),
-            "EMAIL": ("email", "input"),
-            "ID": ("id", "input"),
-            "KEY_NAME": ("key name", "input"),
-            "EXPIRATION_DATE": ("expiration date (YYYY-MM-DD)", "input")
-        }
+        USER_ID = input("Enter user id: (press enter to use current user id): ")
 
-        data = get_data(prompts)
+        CONTENT_ID = get_input("content id")
+        CONTENT_DEFINITION_ID = get_input("content definition id")
+        EMAIL = get_input("email")
+        ID = get_input("id")
+        KEY_NAME = get_input("key name")
+        EXPIRATION_DATE = get_input("expiration date (YYYY-MM-DD)")
         
-        nomad_sdk.delete_user_content_security_data(**data)
+        nomad_sdk.delete_user_content_security_data(CONTENT_ID, CONTENT_DEFINITION_ID,
+                                                    USER_ID, EMAIL, ID, KEY_NAME,
+                                                    EXPIRATION_DATE)
         
     except:
         raise Exception()
@@ -107,7 +93,7 @@ def delete_user_likes_data():
     except:
         raise Exception()
     
-def delete_user_saved_serach_data():
+def delete_user_saved_search_data():
     try:
         USER_ID = input("Enter user id: (press enter to use current user id): ")
         
@@ -119,6 +105,8 @@ def delete_user_saved_serach_data():
 def delete_user_session_data():
     try:
         USER_ID = input("Enter user id: (press enter to use current user id): ")
+        if USER_ID == "":
+            USER_ID = None
         
         nomad_sdk.delete_user_session_data(USER_ID)
         
@@ -127,30 +115,32 @@ def delete_user_session_data():
     
 def delete_user_video_tracking_data():
     try:
-        prompts = {
-            "ASSET_ID": ("asset id", "input"),
-            "CONTENT_ID": ("content id", "input"),
-            "VIDEO_TRACKING_ATTRIBUTE_ID": ("video tracking attribute id", "input"),
-            "USER_ID": ("user id", "input"),
-            "ID": ("id", "input"),
-            "IS_FIRST_QUARTILE": ("is first quartile", "bool"),
-            "IS_MIDPOINT": ("is midpoint", "bool"),
-            "IS_THIRD_QUARTILE": ("is third quartile", "bool"),
-            "IS_COMPLETE": ("is complete", "bool"),
-            "IS_HIDDEN": ("is hidden", "bool"),
-            "IS_LIVE_STREAM": ("is live stream", "bool"),
-            "MAX_SECOND": ("max second", "input"),
-            "LAST_SECOND": ("last second", "input"),
-            "TOTAL_SECONDS": ("total seconds", "input"),
-            "LAST_BEACON_DATE": ("last beacon date (YYYY-MM-DD)", "input"),
-            "KEY_NAME": ("key name", "input")
-        }
+        USER_ID = input("Enter user id: (press enter to use current user id): ")
+        if USER_ID == "":
+            USER_ID = None
 
-        data = get_data(prompts)
+        ASSET_ID = get_input("asset id")
+        CONTENT_ID = get_input("content id")
+        VIDEO_TRACKING_ATTRIBUTE_ID = get_input("video tracking attribute id")
+        ID = get_input("id")
+        IS_FIRST_QUARTILE = get_bool("is first quartile")
+        IS_MIDPOINT = get_bool("is midpoint")
+        IS_THIRD_QUARTILE = get_input("is third quartile")
+        IS_COMPLETE = get_bool("is complete")
+        IS_HIDDEN = get_bool("is hidden")
+        IS_LIVE_STREAM = get_bool("is live stream")
+        MAX_SECOND = get_input("max second")
+        LAST_SECOND = get_input("last second")
+        TOTAL_SECONDS = get_input("total seconds")
+        LAST_BEACON_DATE = get_input("last beacon date (YYYY-MM-DD)")
+        KEY_NAME = get_input("key name")
 
-        nomad_sdk.delete_user_video_tracking_data(**data)
+        nomad_sdk.delete_user_video_tracking_data(ASSET_ID, CONTENT_ID, VIDEO_TRACKING_ATTRIBUTE_ID,
+                                                  USER_ID, ID, IS_FIRST_QUARTILE, IS_MIDPOINT,
+                                                  IS_THIRD_QUARTILE, IS_COMPLETE, IS_HIDDEN,
+                                                  IS_LIVE_STREAM, MAX_SECOND, LAST_SECOND,
+                                                  TOTAL_SECONDS, LAST_BEACON_DATE, KEY_NAME)
 
-        
     except:
         raise Exception()
     
@@ -166,7 +156,7 @@ functions = {
     "6": delete_user_dislikes_data,
     "7": delete_user_favorites_data,
     "8": delete_user_likes_data,
-    "9": delete_user_saved_serach_data,
+    "9": delete_user_saved_search_data,
     "10": delete_user_session_data,
     "11": delete_user_video_tracking_data,
     "12": exit
