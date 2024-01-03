@@ -24,9 +24,10 @@ def get_content_main():
 def create_content_main():
     try:
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
+        LANGUAGE_ID = input("Enter language id: ") if input("Do you want to add a language id (y/n): ") == "y" else None
         
         print("Creating content")
-        ID = nomad_sdk.create_content(CONTENT_DEFINITION_ID)
+        ID = nomad_sdk.create_content(CONTENT_DEFINITION_ID, LANGUAGE_ID)
         print(json.dumps(ID, indent=4))
 
     except:
@@ -36,12 +37,11 @@ def update_content_main():
     try:
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
         ID = input("Enter the id: ")
-
         PROPERTIES = json.loads(input("Enter the property json: \n"))
+        LANGUAGE_ID = input("Enter language id: ") if input("Do you want to add a language id (y/n): ") == "y" else None
 
         print("Updating content")
-        INFO = nomad_sdk.update_content(ID, CONTENT_DEFINITION_ID, PROPERTIES)
-        print(json.dumps(INFO, indent=4))
+        nomad_sdk.update_content(ID, CONTENT_DEFINITION_ID, PROPERTIES, LANGUAGE_ID)
 
     except:
         raise Exception()
@@ -77,8 +77,8 @@ def get_content_user_tracking_main():
         CONTENT_DEFINITION_ID = input("Enter contentent definition id: ")
         SORT_COLUMN = input("Enter sort column: ")
         IS_DESC = input("Enter if you want the sort to be descending (y/n): ") == "y"
-        PAGE_INDEX = input("Enter page index: ") if input("Do you want to add a page index (y/n): ") == "y" else ""
-        PAGE_SIZE = input("Enter page size: ") if input("Do you want to add a page size (y/n): ") == "y" else ""
+        PAGE_INDEX = input("Enter page index: ") if input("Do you want to add a page index (y/n): ") == "y" else None
+        PAGE_SIZE = input("Enter page size: ") if input("Do you want to add a page size (y/n): ") == "y" else None
 
         print("Getting content user tracking")
         INFO = nomad_sdk.get_content_user_track(CONTENT_ID, CONTENT_DEFINITION_ID, SORT_COLUMN,
@@ -100,10 +100,10 @@ def get_content_user_tracking_touch_main():
 if __name__ == "__main__":
     while True:
         print("Do you want to get content by id, create a content, update a content, "\
-              "delete a content, deactivate content user tracking, get user tracking,"\
+              "delete a content, deactivate content user tracking, get user tracking, "\
               "get user tracking touch, or exit")
-        USER_INPUT = input("get, create, update, delete, get, deactivate, tracking"\
-                           "tracking, tracking touch ,or exit for each option above respectivly: ")
+        USER_INPUT = input("get, create, update, delete, get, deactivate, tracking, "\
+                           "tracking touch, or exit for each option above respectivly: ")
 
         if USER_INPUT == "create":
             create_content_main()
