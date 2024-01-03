@@ -11,15 +11,14 @@ import json
 def add_tag_or_collection_main():
     try:
         TYPE = "tag" if input("Enter tag or collection for what type of content you want to add: ") == "tag" else "collection"
-        CONTENT_ID = input(f"Enter the content id of the {TYPE}: ")
+        CONTENT_ID = input(f"Enter the id of the content to add the {TYPE} to: ")
         CONTENT_DEFINITION = input(f"Enter content definition of the {TYPE}: ")
         NAME = input(f"Enter the name of the {TYPE}: ")
         CREATE_NEW = True if input(f"Do you want to create a {TYPE} (y/n): ") == "y" else False
-        TAG_ID = input(f"Enter the {TYPE} id: ") if not CREATE_NEW else ""
-        CREATE_NEW_BOOL = True if CREATE_NEW == "true" else False
+        TAG_ID = input(f"Enter the {TYPE} id: ") if not CREATE_NEW else None
 
         print(f"Adding {TYPE}")
-        TAG_INFO = nomad_sdk.add_tag_or_collection(TYPE, CONTENT_ID, CONTENT_DEFINITION, NAME, TAG_ID, CREATE_NEW_BOOL)
+        TAG_INFO = nomad_sdk.add_tag_or_collection(TYPE, CONTENT_ID, CONTENT_DEFINITION, NAME, TAG_ID, CREATE_NEW)
         print(json.dumps(TAG_INFO, indent=4))
     except:
         raise Exception()
@@ -29,11 +28,11 @@ def remove_tag_or_collection_main():
     try:
         TYPE = "tag" if input("Enter tag or collection for what type of content you want to remove: ") == "tag" else "collection"
         TAG_ID = input(f"Enter the {TYPE} id: ")
-        CONTENT_ID = input(f"Enter the content id of the {TYPE}: ")
+        CONTENT_ID = input(f"Enter the id of the content to remove the {TYPE} from: ")
         CONTENT_DEFINITION = input(f"Enter content definition of the {TYPE}: ")
 
         print(f"Removing {TYPE}")
-        REMOVE_TAG_INFO = nomad_sdk.remove_tag_or_collection(TYPE, CONTENT_ID, TAG_ID, CONTENT_DEFINITION)
+        REMOVE_TAG_INFO = nomad_sdk.remove_tag_or_collection(TYPE, CONTENT_ID, CONTENT_DEFINITION, TAG_ID)
         print(json.dumps(REMOVE_TAG_INFO, indent=4))
     except:
         raise Exception()
@@ -95,15 +94,14 @@ def add_custom_properties_main():
     
 def bulk_update_metadata_main():
     try:
-        CONTENT_IDS = input("Enter the content ids of the content you want to update: (separate by comma) ").replace(" ","").split(",")
-        COLLECTION_IDS = input("Enter the collection ids of the content you want to update: (separate by comma) ").replace(" ","").split(",") if input("Do you want to add collection ids (y/n): ") == "y" else []
-        RELATED_CONTENT_IDS = input("Enter the related content ids of the content you want to update: (separate by comma) ").replace(" ","").split(",") if input("Do you want to add related content ids (y/n): ") == "y" else []
-        TAG_IDS = input("Enter the tag ids of the content you want to update: (separate by comma) ").replace(" ","").split(",") if input("Do you want to add tag ids (y/n): ") == "y" else []
-        SCHEMA_NAME = input("Enter the schema name of the content you want to update: ") if input("Do you want to add schema name (y/n): ") == "y" else ""
+        CONTENT_IDS = input("Enter the content ids of the content you want to update (separate by comma): ").replace(" ","").split(",")
+        COLLECTION_IDS = input("Enter the collection ids of the content you want to update (separate by comma): ").replace(" ","").split(",") if input("Do you want to add collection ids (y/n): ") == "y" else []
+        RELATED_CONTENT_IDS = input("Enter the related content ids of the content you want to update (separate by comma): ").replace(" ","").split(",") if input("Do you want to add related content ids (y/n): ") == "y" else []
+        TAG_IDS = input("Enter the tag ids of the content you want to update (separate by comma): ").replace(" ","").split(",") if input("Do you want to add tag ids (y/n): ") == "y" else []
+        SCHEMA_NAME = input("Enter the schema name of the content you want to update: ") if input("Do you want to add schema name (y/n): ") == "y" else None
             
-        INFO = nomad_sdk.bulk_update_metadata(CONTENT_IDS, COLLECTION_IDS, RELATED_CONTENT_IDS,
-                                              TAG_IDS, SCHEMA_NAME)
-        print(json.dumps(INFO, indent=4))
+        nomad_sdk.bulk_update_metadata(CONTENT_IDS, COLLECTION_IDS, RELATED_CONTENT_IDS,
+                                       TAG_IDS, SCHEMA_NAME)
     except:
         raise Exception()
     
@@ -136,8 +134,8 @@ if __name__ == "__main__":
               "add related content, delete related content, add custom properties, "\
               "bulk update metadata, create tag/collecton, get tag/collection, or exit")
         USER_INPUT = input("Enter add tag/collection, remove tag/collection, delete tag/collection, "\
-                           "add related, delete related, add custom, bulk, create, get, or exit "\
-                           "for each option above respetively: ")
+                           "add related, delete related, add custom, bulk, create tag/collection, "\
+                           "get tag/collection, or exit for each option above respetively: ")
         
         if USER_INPUT == "add tag/collection":
             add_tag_or_collection_main()
@@ -151,9 +149,9 @@ if __name__ == "__main__":
             delete_related_content_main()
         elif USER_INPUT == "bulk":
             bulk_update_metadata_main()
-        elif USER_INPUT == "create":
+        elif USER_INPUT == "create tag/collection":
             create_tag_or_collection_main()
-        elif USER_INPUT == "get":
+        elif USER_INPUT == "get tag/collection":
             get_tag_or_collection_main()
         elif USER_INPUT == "exit":
             break
