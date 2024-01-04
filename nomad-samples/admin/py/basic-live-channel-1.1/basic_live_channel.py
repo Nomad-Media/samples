@@ -11,81 +11,60 @@ import json
 def check_channel_names(name):
     CHANNELS = nomad_sdk.get_live_channels()
 
-    return next((True for channel in CHANNELS if channel["name"] == name), False)
+    return next((True for channel in CHANNELS if channel["name"] == name))
 
 def check_input_names(name):
     INPUTS = nomad_sdk.get_live_inputs()
 
-    return next((True for input in INPUTS if input["name"] == name), False)
+    return next((True for input in INPUTS if input["name"] == name))
 
 def get_channels_main():
     try:
-        # Give feedback to the console
-        print("Getting Live Channels...")
-
-        # Get the channels
         CHANNELS_RESPONSE = nomad_sdk.get_live_channels()
 
-        # Give feedback to the console
         print(json.dumps(CHANNELS_RESPONSE, indent=4))
 
     except:
         raise Exception("Getting live channels failed")
-    
-
 def get_channel_main():
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to get: ")
 
-        # Give feedback to the console
-        print("Getting the Live Channel...")
-
-        # Get the channel
         CHANNEL_RESPONSE = nomad_sdk.get_live_channel(CHANNEL_ID)
 
-        # Give feedback to the console
         print(json.dumps(CHANNEL_RESPONSE, indent=4))
 
     except:
         raise Exception("Getting live channel failed")
-    
-
-def get_inputs_main():
+def inputs_main():
     try:
-        # Give feedback to the console
-        print("Getting Live Inputs...")
 
-        # Get the inputs
         INPUTS_RESPONSE = nomad_sdk.get_live_inputs()
 
-        # Give feedback to the console
         print(json.dumps(INPUTS_RESPONSE, indent=4))
 
     except:
         raise Exception("Getting live inputs failed")
-    
-
-def get_input_main():
+def input_main():
     try:
         INPUT_ID = input("Enter the input id of the input you want to get: ")
 
-        # Give feedback to the console
-        print("Getting the Live Input...")
-
-        # Get the input
         INPUT_RESPONSE = nomad_sdk.get_live_input(INPUT_ID)
 
-        # Give feedback to the console
         print(json.dumps(INPUT_RESPONSE, indent=4))
 
     except:
         raise Exception("Getting live input failed")
 
+def live_channel_refresh_main():
+    try:
+        nomad_sdk.live_channel_refresh()
+
+    except:
+        raise Exception("Refreshing live channels failed")
 
 def create_live_channel_main():
-
     try:
-        # Create common random suffix for both, Live Channel and input, names
         while True:
             #test
             NAME = input("Enter Live Channel Name: ")
@@ -112,19 +91,15 @@ def create_live_channel_main():
         else:
             URL = None
 
-        print("Securtiy groups: Content Manager, Everyone, Guest")
         SECURITY_GROUPS = input("Enter the security groups of the channel (separated by comma): ").split(",") if input("Do you want to add security groups (y/n)?: ") == "y" else None
 
-        # Give feedback to the console
         print(f"Creating Live Channel [{NAME}]...")
 
-        # Create the channel
         CHANNEL_RESPONSE = nomad_sdk.create_live_channel(NAME, THUMBNAIL_IMAGE, FOLDER_ID, 
                                                ENABLE_HIGH_AVAILABLIITY, ENABLE_LIVE_CLIPPING,
                                                IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL,
                                                SECURITY_GROUPS)
         
-        # Check for errors
         if CHANNEL_RESPONSE == None or not "id" in CHANNEL_RESPONSE:
             print("Creating Channel failed")
             raise Exception()
@@ -134,12 +109,55 @@ def create_live_channel_main():
     except:
         raise Exception("Creating live channel failed")
 
+def clip_live_channel_main():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to clip: ")
+        START_TIME = input("Enter the start time of the clip (hh:mm:ss): ") if input("Do you want to set a start time (y/n)?: ") == "y" else None
+        END_TIME = input("Enter the end time of the clip (hh:mm:ss): ") if input("Do you want to set a end time (y/n)?: ") == "y" else None
+        NAME = input("Enter the name of the clip: ") if input("Do you want to set a name (y/n)?: ") == "y" else None
+        OUTPUT_FOLDER_ID = input("Enter the id of the folder you want to archive to: ")
+        TAGS_IDS = input("Enter the tags ids of the tags (separated by comma): ").split(",") if input("Do you want to add tags (y/n)?: ") == "y" else None
+        COLLECTION_IDS = input("Enter the collection ids of the collections (separated by comma): ").split(",") if input("Do you want to add collections (y/n)?: ") == "y" else None
+        RELATED_CONTENT_IDS = input("Enter the related content ids of the related content (separated by comma): ").split(",") if input("Do you want to add related content (y/n)?: ") == "y" else None
+        VIDEO_BITRATE = input("Enter the video bitrate of the clip: ") if input("Do you want to set a video bitrate (y/n)?: ") == "y" else None
+        AUDIO_TRACKS = input("Enter the audio tracks of the clip (separated by comma): ").split(",") if input("Do you want to set audio tracks (y/n)?: ") == "y" else None
+
+        CLIP_RESPONSE = nomad_sdk.clip_live_channel(CHANNEL_ID, START_TIME, END_TIME, NAME, 
+                                                    OUTPUT_FOLDER_ID, TAGS_IDS, COLLECTION_IDS,
+                                                    RELATED_CONTENT_IDS, VIDEO_BITRATE, 
+                                                    AUDIO_TRACKS)
+
+        print(json.dumps(CLIP_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Clipping live channel failed")
+    
+def get_next_event_main():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to get the next event from: ")
+
+        NEXT_EVENT_RESPONSE = nomad_sdk.next_event(CHANNEL_ID)
+
+        print(json.dumps(NEXT_EVENT_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Getting next event failed")
+    
+def start_output_tracking_main():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to start output tracking: ")
+
+        OUTPUT_TRACKING_RESPONSE = nomad_sdk.start_output_tracking(CHANNEL_ID)
+
+        print(json.dumps(OUTPUT_TRACKING_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Starting output tracking failed")
 
 def update_live_channel_main():
     try:
         ID = input("Enter the channel id of the channel you want to update: ")
 
-        # Create common random suffix for both, Live Channel and input, names
         while True:
             NAME = input("Enter Live Channel Name: ")
 
@@ -165,19 +183,15 @@ def update_live_channel_main():
         else:
             URL = None
 
-        print("Securtiy groups: Content Manager, Everyone, Guest")
         SECURITY_GROUPS = input("Enter the security groups of the channel (separated by comma): ").split(",") if input("Do you want to add security groups (y/n)?: ") == "y" else None
 
-        # Give feedback to the console
         print(f"Updating Live Channel [{NAME}]...")
 
-        # Create the channel
         CHANNEL_RESPONSE = nomad_sdk.update_live_channel(ID, NAME, THUMBNAIL_IMAGE, FOLDER_ID, 
                                                ENABLE_HIGH_AVAILABLIITY, ENABLE_LIVE_CLIPPING,
                                                IS_SECURE_OUTPUT, OUTPUT_SCREENSHOTS, TYPE, URL,
                                                SECURITY_GROUPS)
 
-        # Check for errors
         if CHANNEL_RESPONSE == None or not "id" in CHANNEL_RESPONSE:
             print("Updating Channel failed")
             raise Exception()
@@ -186,8 +200,6 @@ def update_live_channel_main():
 
     except:
         raise Exception("Updating live channel failed")
-
-    
 def add_asset_schedule_event_to_channel():
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to add an asset to: ")
@@ -196,34 +208,72 @@ def add_asset_schedule_event_to_channel():
         DURATION_TIME_CODE = input("Enter the duration of the asset you want to add to the channel (hh:mm:ss): ") if input("Do you want to set a duration (y/n)?: ") == "y" else None
         PREVIOUS_ID = input("Enter the schedule event id of the previous asset you want to add to the channel: ") if input("Do you want to set a previous asset (y/n)?: ") == "y" else None
 
-        # Give feedback to the console
-        print("Adding asset schedule event to the live channel...")
 
-        # Add slate to the channel
-        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = nomad_sdk.add_asset_schedule_event(CHANNEL_ID, ASSET_ID, IS_LOOP,
+        ADD_ASSET_SCHEDULE_EVENT_RESPONSE = nomad_sdk.add_asset_schedule_event(CHANNEL_ID, {"id": ASSET_ID}, IS_LOOP,
                                                                                DURATION_TIME_CODE, PREVIOUS_ID)
         print(json.dumps(ADD_ASSET_SCHEDULE_EVENT_RESPONSE, indent=4))
 
     except:
         raise Exception("Adding asset schedule event to channel failed")
 
+def get_asset_schedule_event():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to get an asset from: ")
+        SCHEDULE_EVENT_ID = input("Enter the schedule event id of the asset you want to get from the channel: ")
+
+        SCHEDULE_EVENT_RESPONSE = nomad_sdk.get_asset_schedule_event(CHANNEL_ID, SCHEDULE_EVENT_ID)
+
+        print(json.dumps(SCHEDULE_EVENT_RESPONSE, indent=4))
+    except:
+        raise Exception("Getting asset schedule event failed")
+    
+def update_asset_schedule_event():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to update an asset from: ")
+        SCHEDULE_EVENT_ID = input("Enter the schedule event id of the asset you want to update from the channel: ")
+
+        ASSET_ID = input("Enter the asset id of the asset you want to update from the channel: ") if input("Do you want to update the asset id (y/n)?: ") == "y" else None
+        IS_LOOP = input("Do you want to loop the input (y/n)?: ") == "y"
+        DURATION_TIME_CODE = input("Enter the duration of the asset you want to update from the channel (hh:mm:ss): ") if input("Do you want to set a duration (y/n)?: ") == "y" else None
+
+        if ASSET_ID:
+            ASSET = {"id": ASSET_ID}
+        else:
+            ASSET = None
+
+        UPDATE_ASSET_SCHEDULE_EVENT_RESPONSE = nomad_sdk.update_asset_schedule_event(SCHEDULE_EVENT_ID, CHANNEL_ID,
+                                                                                     ASSET, IS_LOOP,
+                                                                                     DURATION_TIME_CODE)
+        print(json.dumps(UPDATE_ASSET_SCHEDULE_EVENT_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Updating asset schedule event from channel failed")
 
 def remove_asset_schedule_event_from_channel():
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to remove an asset from: ")
         SCHEDULE_EVENT_ID = input("Enter the schedule event id of the asset you want to remove from the channel: ")
 
-        print("Removing asset schedule event from the live channel...")
         nomad_sdk.remove_asset_schedule_event(CHANNEL_ID, SCHEDULE_EVENT_ID)
-        print("Asset schedule event was removed successfully")
 
     except:
         raise Exception("Removing asset schedule event from channel failed")
     
+def move_asset_schedule_event_in_channel():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to move an asset from: ")
+        SCHEDULE_EVENT_ID = input("Enter the schedule event id of the asset you want to move from the channel: ")
+        PREVIOUS_ID = input("Enter the schedule event id of the previous asset you want to move from the channel: ")
 
+        MOVE_ASSET_SCHEDULE_EVENT = nomad_sdk.move_schedule_event(CHANNEL_ID, SCHEDULE_EVENT_ID, PREVIOUS_ID)
+
+        print(json.dumps(MOVE_ASSET_SCHEDULE_EVENT, indent=4))
+
+    except:
+        raise Exception("Moving asset schedule event in channel failed")
+    
 def create_live_input_main():
     try:
-        # Set the Live Input name
         while True:
             NAME = input("Enter Live Input Name: ")
 
@@ -256,14 +306,10 @@ def create_live_input_main():
         DESTINATIONS = input("Enter the destinations of the input (separated by comma): ").split(",") if input("Do you want to add destinations (y/n)?: ") == "y" else None
         SOURCES = input("Enter the sources of the input (separated by comma): ").split(",") if input("Do you want to add sources (y/n)?: ") == "y" else None
 
-        # Give feedback to the console
-        print("Creating Live Input...")
 
-        # Create the input
         INPUT_RESPONSE = nomad_sdk.create_live_input(NAME, TYPE, SOURCE, IS_STANDARD, VIDEO_ASSET_ID,
                                                      DESTINATIONS, SOURCES)
 
-        # Check for errors
         if INPUT_RESPONSE == None or not "id" in INPUT_RESPONSE:
             raise Exception()
 
@@ -277,7 +323,6 @@ def update_live_input_main():
     try:
         ID = input("Enter the input id of the input you want to update: ")
 
-        # Set the Live Input name
         while True:
             NAME = input("Enter Live Input Name: ")
 
@@ -312,14 +357,9 @@ def update_live_input_main():
         DESTINATIONS = input("Enter the destinations of the input (separated by comma): ").split(",") if input("Do you want to add destinations (y/n)?: ") == "y" else None
         SOURCES = input("Enter the sources of the input (separated by comma): ").split(",") if input("Do you want to add sources (y/n)?: ") == "y" else None
 
-        # Give feedback to the console
-        print("Updating Live Input...")
-
-        # Update the input
         INPUT_RESPONSE = nomad_sdk.update_live_input(ID, NAME, TYPE, SOURCE, IS_STANDARD, VIDEO_ASSET_ID,
                                                      DESTINATIONS, SOURCES)
 
-        # Check for errors
         if INPUT_RESPONSE == None or not "id" in INPUT_RESPONSE:
             raise Exception()
         
@@ -351,14 +391,9 @@ def add_live_input_to_live_channel():
 
         PREVIOUS_ID = input("Enter the schedule event id of the previous input you want to add to the channel: ") if input("Do you want to set a previous input (y/n)?: ") == "y" else None
 
-        # Give feedback to the console
-        print("Adding Live Input to the Live Channel...")
 
-        # Add the Live Input event to Live Channel
         ADD_INPUT_SCHEDULE_EVENT_RESPONSE = nomad_sdk.add_input_schedule_event(CHANNEL_ID, LIVE_INPUT, BACKUP_LIVE_INPUT,
                                                                                ON_AIR_TIME, PREVIOUS_ID)
-
-        # Check the response
         if (ADD_INPUT_SCHEDULE_EVENT_RESPONSE == None):
             raise Exception()
         
@@ -367,117 +402,102 @@ def add_live_input_to_live_channel():
     except:
         raise Exception("Adding Live Input to the Live Channel failed")
 
+def get_live_input_schedule_event():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to get an input from: ")
+        INPUT_ID = input("Enter the request id of the input you want to get from the channel: ")
+
+        INPUT_RESPONSE = nomad_sdk.get_input_schedule_event(CHANNEL_ID, INPUT_ID)
+
+        print(json.dumps(INPUT_RESPONSE, indent=4))
+    except:
+        raise Exception("Getting live input schedule event failed")
+    
+def update_live_input_schedule_event():
+    try:
+        CHANNEL_ID = input("Enter the channel id of the channel you want to update an input from: ")
+        EVENT_ID = input("Enter the event id of the input you want to update from the channel: ")
+
+        LIVE_INPUT_ID = input("Enter the input id of the input you want to update from the channel: ") if input("Do you want to update the input id (y/n)?: ") == "y" else None
+        LIVE_INPUT = {"id": LIVE_INPUT_ID} if LIVE_INPUT_ID else None
+
+        BACKUP_LIVE_INPUT_ID = input("Enter the input id of the backup input you want to update from the channel: ") if input("Do you want to update the backup input id (y/n)?: ") == "y" else None
+        BACKUP_LIVE_INPUT = {"id": BACKUP_LIVE_INPUT_ID} if BACKUP_LIVE_INPUT_ID else None
+
+        if input("Do you want to have a fixed on air time (y/n)?: ") == "y":
+            ON_AIR_TIME = input("Enter the on air time of the input you want to update from the channel (hh:mm:ss): ")
+        else:
+            ON_AIR_TIME = None
+
+        UPDATE_INPUT_SCHEDULE_EVENT_RESPONSE = nomad_sdk.update_input_schedule_event(EVENT_ID, CHANNEL_ID,
+                                                                                     LIVE_INPUT, BACKUP_LIVE_INPUT,
+                                                                                     ON_AIR_TIME)
+        print(json.dumps(UPDATE_INPUT_SCHEDULE_EVENT_RESPONSE, indent=4))
+
+    except:
+        raise Exception("Updating live input schedule event from channel failed")
 
 def remove_live_input_from_live_channel():
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to remove an input from: ")
         INPUT_ID = input("Enter the request id of the input you want to remove from the channel: ")
 
-        # Give feedback to the console
-        print("Removing Live Input from the Live Channel...")
-
-        # Remove the Live Input event from Live Channel
         nomad_sdk.remove_input_schedule_event(CHANNEL_ID, INPUT_ID)
 
-        print("Live Input was removed successfully")
-        
     except:
         raise Exception("Removing Live Input from the Live Channel failed")
-    
-
 
 def start_live_channel_main():
     try:
-        CHANNEL_ID = input("Enter the channel id of the channel you want to start: ")
-    
-        # Give feedback to the console
-        print("Starting the Live Channel: This could take a couple of minutes...")
-    
-        # Start the Live Channel
-        nomad_sdk.start_live_channel(CHANNEL_ID)
-    
-        # Give feedback to the console
-        print("Live Channel was started successfully")
+        CHANNEL_ID = input("Enter the channel id of the channel you want to start: ")    
+        nomad_sdk.start_live_channel(CHANNEL_ID)   
     except:
         raise Exception("Live Channel failed to start")
-    
-
 def stop_live_channel_main():
     try:
         CHANNEL_ID = input("Enter the channel id of the channel you want to stop: ")
 
-        # Give feedback to the console
-        print("Stopping the Live Channel: This could take a couple of minutes...")
 
-        # Stop the Live Channel
         nomad_sdk.stop_live_channel(CHANNEL_ID)
 
-        # Give feedback to the console
-        print("Live Channel was stopped successfully")
     except:
         raise Exception("Live Channel failed to stop")
 
 
 def delete_channel():
     CHANNEL_ID = input("Enter the Channel id of the channel you want to delete: ")
-
     DELETE_LIVE_INPUTS = input("Do you want to delete the inputs of the channel (y/n)?: ") == "y"
 
     try:
-        # Give feedback to the console
-        print("Deleting the Live Channel...")
-
-        # Delete the Live Channel
         nomad_sdk.delete_live_channel(CHANNEL_ID, DELETE_LIVE_INPUTS)
 
-        # Give feedback to the console
-        print("Live Channel was deleted successfully")
 
     except:
-        raise Exception("Failed to delete Live Channel")
-    
-    
+        raise Exception("Failed to delete Live Channel")    
 def delete_input():
     INPUT_ID = input("Enter the input id of the input you want to delete: ")
 
     try:
-        print("Deleting the Live Input...")
-
-        # Delete the Live Input
         nomad_sdk.delete_live_input(INPUT_ID)
 
-        # Give feedback to the console
-        print("Live Input was deleted successfully")
     except:
         raise Exception("Live Input failed to delete")
 
 
 def get_live_operators_main():
     try:
-        # Give feedback to the console
-        print("Getting Live Operators...")
-
-        # Get the Live Operators
         LIVE_OPERATORS_RESPONSE = nomad_sdk.get_live_operators()
 
-        # Give feedback to the console
         print(json.dumps(LIVE_OPERATORS_RESPONSE, indent=4))
 
     except:
         raise Exception("Getting live operators failed")
-    
-
 def get_live_operator_main():
     try:
         ID = input("Enter the id of the live operator you want to get: ")
 
-        # Give feedback to the console
-        print("Getting the Live Operator...")
-
-        # Get the Live Operator
         LIVE_OPERATOR_RESPONSE = nomad_sdk.get_live_operator(ID)
 
-        # Give feedback to the console
         print(json.dumps(LIVE_OPERATOR_RESPONSE, indent=4))
 
     except:
@@ -493,67 +513,38 @@ def start_broadcast_main():
         RELATED_CONTENT_IDS = input("Enter the related content ids of the related content (separated by comma): ").split(",")
         TAGS_IDS = input("Enter the tags ids of the tags (separated by comma): ").split(",")
 
-        # Give feedback to the console
-        print("Starting the broadcast...")
 
-        # Start the broadcast
         START_BROADCAST_RESPONSE = nomad_sdk.start_broadcast(CHANNEL_ID, PREROLL_ASSET_ID, 
                                                    POSTROLL_ASSET_ID, LIVE_INPUT_ID, 
                                                    RELATED_CONTENT_IDS, TAGS_IDS)
 
-        # Give feedback to the console
-        print("Broadcast was started successfully")
         print(json.dumps(START_BROADCAST_RESPONSE, indent=4))
 
     except:
         raise Exception("Broadcast failed to start")
-    
-
 def cancel_broadcast_main():
     try:
         ID = input("Enter the id of the broadcast you want to cancel: ")
 
-        # Give feedback to the console
-        print("Canceling the broadcast...")
-
-        # Cancel the broadcast
         nomad_sdk.cancel_broadcast(ID)
-
-        # Give feedback to the console
-        print("Broadcast was canceled successfully")
 
     except:
         raise Exception("Broadcast failed to cancel")
-    
-
 def stop_broadcast_main():
     try:
         ID = input("Enter the id of the broadcast you want to stop: ")
 
-        # Give feedback to the console
-        print("Stopping the broadcast...")
-
-        # Stop the broadcast
         nomad_sdk.stop_broadcast(ID)
 
-        # Give feedback to the console
-        print("Broadcast was stopped successfully")
 
     except:
         raise Exception("Broadcast failed to stop")
-    
-
 def get_completed_segments_main():
     try:
         ID = input("Enter the id of the live operator you want to get the segments from: ")
 
-        # Give feedback to the console
-        print("Getting segments...")
-
-        # Get the segments
         SEGMENTS_RESPONSE = nomad_sdk.get_completed_segments(ID)
 
-        # Give feedback to the console
         print(json.dumps(SEGMENTS_RESPONSE, indent=4))
 
     except:
@@ -564,31 +555,17 @@ def start_segment_main():
     try:
         ID = input("Enter the id of the segment you want to start: ")
 
-        # Give feedback to the console
-        print("Starting the segment...")
-
-        # Start the segment
         nomad_sdk.start_segment(ID)
-
-        # Give feedback to the console
-        print("Segment was started successfully")
 
     except:
         raise Exception("Segment failed to start")
-    
-
 def cancel_segment_main():
     try:
         ID = input("Enter the id of the segment you want to cancel: ")
 
-        # Give feedback to the console
-        print("Canceling the segment...")
 
-        # Cancel the segment
         nomad_sdk.cancel_segment(ID)
 
-        # Give feedback to the console
-        print("Segment was canceled successfully")
 
     except:
         raise Exception("Segment failed to cancel")
@@ -600,14 +577,9 @@ def complete_segment_main():
         RELATED_CONTENT_IDS = input("Enter the related content ids of the related content (separated by comma): ").split(",")
         TAGS_IDS = input("Enter the tags ids of the tags (separated by comma): ").split(",")
 
-        # Give feedback to the console
-        print("Completing the segment...")
 
-        # Complete the segment
         nomad_sdk.complete_segment(ID, RELATED_CONTENT_IDS, TAGS_IDS)
 
-        # Give feedback to the console
-        print("Segment was completed successfully")
 
     except:
         raise Exception("Segment failed to complete")
@@ -615,17 +587,20 @@ def complete_segment_main():
 
 if __name__ == "__main__":
     while True:
-        print("Do you want to get live channels, get a live channel, create a live channel, "\
-              "update a live channel, get live inputs, get a live input, create a live input, "\
-              "update a live input, add an asset schedule event, remove an asset schedule event, "\
-              "start a live channel, stop a live channel, add a live input to a live channel, remove "\
-              "an input from a channel, delete a live channel, delete a live input, get all operators, "\
-              "get a specific operator, start a broadcast, cancel a broadcast, stop a broadcast, "\
+        print("Do you want to get live channels, get a live channel, live channel refresh, create a live "\
+              "channel, clip a live channel, get next event, start output tracking, update a live channel, "\
+              "get live inputs, get a live input, create a live input, update a live input, add an asset "\
+              "schedule event, get an asset schedule event, update an asset schedule event, remove an asset "\
+              "schedule event, move a schedule event, start a live channel, stop a live channel, "\
+              "add a live input schedule event, get a live input schedule event, update a live input schedule "\
+              "event, remove a live input from a channel, delete a live channel, delete a live input, get all "\
+              "operators, get a specific operator, start a broadcast, cancel a broadcast, stop a broadcast, "\
               "get all completed segments, start a segment, cancel a segment, complete a segment, or exit")
-        USER_INPUT = input("Enter get channels, get channel, create channel, update channel, "\
-                           "get inputs, get input, create input, update input, "\
-                           "add event, remove event, start channel, stop channel, add input, "\
-                           "remove input, delete channel, delete input, get operators, get operator, "\
+        USER_INPUT = input("Enter get channels, get channel, channel refresh, clip channel, create channel, "\
+                           "clip channel, get next, start tracking, update channel, get inputs, get input, "\
+                           "create input, update input, add event, get event, update event, remove event, "\
+                           "move event, start channel, stop channel, add input, get input event, update input "\
+                           "event, remove input, delete channel, delete input, get operators, get operator, "\
                            "start broadcast, cancel broadcast, stop broadcast, get segments, start segment, "\
                            "cancel segment, complete segment, or exit for each option above respectivly: ")
         
@@ -636,13 +611,25 @@ if __name__ == "__main__":
             get_channel_main()
         
         elif USER_INPUT == "get inputs":
-            get_inputs_main()
+            inputs_main()
 
         elif USER_INPUT == "get input":
-            get_input_main()
+            input_main()
+
+        elif USER_INPUT == "channel refresh":
+            live_channel_refresh_main()
         
         elif USER_INPUT == "create channel":
             create_live_channel_main()
+
+        elif USER_INPUT == "clip channel":
+            clip_live_channel_main()
+
+        elif USER_INPUT == "get next":
+            get_next_event_main()
+
+        elif USER_INPUT == "start tracking":
+            start_output_tracking_main()
 
         elif USER_INPUT == "create input":
             create_live_input_main()
@@ -656,8 +643,17 @@ if __name__ == "__main__":
         elif USER_INPUT == "add event":
             add_asset_schedule_event_to_channel()
 
+        elif USER_INPUT == "get event":
+            get_asset_schedule_event()
+
+        elif USER_INPUT == "update event":
+            update_asset_schedule_event()
+
         elif USER_INPUT == "remove event":
             remove_asset_schedule_event_from_channel()
+
+        elif USER_INPUT == "move event":
+            move_asset_schedule_event_in_channel()
 
         elif USER_INPUT == "start channel":
             start_live_channel_main()
@@ -668,12 +664,18 @@ if __name__ == "__main__":
         elif USER_INPUT == "add input":
             add_live_input_to_live_channel()
 
+        elif USER_INPUT == "get input event":
+            get_live_input_schedule_event()
+
+        elif USER_INPUT == "update input event":
+            update_live_input_schedule_event()
+
         elif USER_INPUT == "remove input":
             remove_live_input_from_live_channel()
 
         elif USER_INPUT == "delete channel":
             delete_channel()
-    
+        
         elif USER_INPUT == "delete input":
             delete_input()
 

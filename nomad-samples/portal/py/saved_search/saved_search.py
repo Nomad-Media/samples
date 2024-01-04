@@ -11,7 +11,7 @@ nomad_sdk = Nomad_SDK(config)
 import json
 
 def get_input(prompt, required):
-    return input(f"Enter {prompt}: ") if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else ""
+    return input(f"Enter {prompt}: ") if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else None
 
 def get_dict(prompt, keys, required):
     return {key: input(f"Enter {prompt} {key}: ") for key in keys} if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else {}
@@ -39,8 +39,38 @@ def add_saved_search():
         QUERY = get_input("query", False)
         OFFSET = get_input("offset", False)
         SIZE = get_input("size", False)
-        FILTERS = get_list("filter", ["fieldName", "operator", "value"], False)
-        SORT_FIELDS = get_list("sort field", ["fieldName", "sortType"], False)
+
+        FILTER_YN = True if input("Do you want to add a filter (y/n)?: ") == "y" else False
+        FILTERS = []
+        while FILTER_YN:
+            FIELD_NAME = input("Enter field name: ")
+            OPERATOR = input("Enter operator: ")
+            VALUE = input("Enter value: ")
+
+            FILTER = { 
+                "fieldName": FIELD_NAME,
+                "operator": OPERATOR,
+                "value": VALUE
+            }
+
+            FILTERS.append(FILTER)
+
+            if input("Do you want to add another field (y/n)?: ") != "y": 
+                break
+
+        SORT_FIELDS = []
+        while True:
+            if input("Do you want to sort a field (y/n): ") == "y":
+                SORT_FIELDS_NAME = input("Enter a field name you want to sort by: ")
+                SORT_FIELDS_ORDER = input("Enter the order you want to sort the field by (ascending/descending): ")
+
+                SORT_FIELDS.append(
+                    {
+                        "fieldName": SORT_FIELDS_NAME, 
+                        "sortOrder": SORT_FIELDS_ORDER
+                    })
+            else:
+                break
         
         RESULT_FIELDS_YN = True if input("Do you want to enter the names of the fields you want to "\
                                       "include in your search results (y/n)?: ") == "y" else False
@@ -95,8 +125,38 @@ def get_search_saved():
         QUERY = get_input("query", False)
         OFFSET = get_input("offset", False)
         SIZE = get_input("size", False)
-        FILTERS = get_list("filter", ["fieldName", "operator", "value"], False)
-        SORT_FIELDS = get_list("sort field", ["fieldName", "sortType"], False)
+        
+        FILTER_YN = True if input("Do you want to add a filter (y/n)?: ") == "y" else False
+        FILTERS = []
+        while FILTER_YN:
+            FIELD_NAME = input("Enter field name: ")
+            OPERATOR = input("Enter operator: ")
+            VALUE = input("Enter value: ")
+
+            FILTER = { 
+                "fieldName": FIELD_NAME,
+                "operator": OPERATOR,
+                "value": VALUE
+            }
+
+            FILTERS.append(FILTER)
+
+            if input("Do you want to add another field (y/n)?: ") != "y": 
+                break
+
+        SORT_FIELDS = []
+        while True:
+            if input("Do you want to sort a field (y/n): ") == "y":
+                SORT_FIELDS_NAME = input("Enter a field name you want to sort by: ")
+                SORT_FIELDS_ORDER = input("Enter the order you want to sort the field by (ascending/descending): ")
+
+                SORT_FIELDS.append(
+                    {
+                        "fieldName": SORT_FIELDS_NAME, 
+                        "sortOrder": SORT_FIELDS_ORDER
+                    })
+            else:
+                break
         
         RESULT_FIELDS_YN = True if input("Do you want to enter the names of the fields you want to "\
                                       "include in your search results (y/n)?: ") == "y" else False
@@ -119,7 +179,7 @@ def get_search_saved():
                                                   SIMILAR_ASSET_ID, MIN_SCORE, 
                                                   EXCLUDE_TOTAL_RECORD_COUNT, FILTER_BINDER)
         
-        print(json.dumps(SEARCH_SAVED), indent=4)
+        print(json.dumps(SEARCH_SAVED, indent=4))
     except Exception as e:
         raise e
     
@@ -206,6 +266,7 @@ functions = {
 if __name__ == "__main__":
     print("Which function do you want to run?")
     for key, value in functions.items():
+        
         print(f"{key}: {value.__name__}")
 
     while True:
