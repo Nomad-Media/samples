@@ -12,7 +12,7 @@ def get_input(prompt, required):
     return input(f"{prompt}: ") if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else None
 
 def get_dict(prompt, keys, required):
-    return {key: input(f"{prompt} {key}: ") for key in keys} if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else {}
+    return {key: input(f"{prompt} {key}: ") for key in keys} if required or input(f"Do you want to add {prompt} (y/n): ") == "y" else None
 
 def get_list(prompt, keys, required):
     items = []
@@ -21,6 +21,7 @@ def get_list(prompt, keys, required):
             items.append({key: input(f"{prompt} {key}: ") for key in keys})
             if not required or input(f"Do you want to add another {prompt} (y/n): ") == "n":
                 break
+    
     return items
 
 def get_bool(prompt):
@@ -79,15 +80,14 @@ def clip_asset():
 
 def copy_asset():
     try:
-        ASSET_ID = get_input("asset id", True)
-        ACTION_ARGUMENTS = get_dict("action argument", ["key", "value"], False)
-        TARGET_IDS = get_input("target ids", True).split(",")
+        ASSET_IDS = get_input("asset ids", True).split(",")
+        DESTINATION_FOLDER_ID = get_input("destination folder id", True)
         BATCH_ACTION = get_dict("batch action", ["id", "description"], False)
         CONTENT_DEFINITION_ID = get_input("content definition id", False)
         SCHEMA_NAME = get_input("schema name", False)
         RESOLVER_EXCEMPT = get_bool("resolver exempt")
 
-        RESPONSE = nomad_sdk.copy_asset(ASSET_ID, ACTION_ARGUMENTS, TARGET_IDS,
+        RESPONSE = nomad_sdk.copy_asset(ASSET_IDS, DESTINATION_FOLDER_ID,
                                         BATCH_ACTION, CONTENT_DEFINITION_ID, 
                                         SCHEMA_NAME, RESOLVER_EXCEMPT)
         
@@ -146,7 +146,7 @@ def create_folder_asset():
 def create_placeholder_asset():
     try:
         PARENT_ID = get_input("parent id", True)
-        ASSET_NAME = get_input("asset name", True)
+        ASSET_NAME = get_input("asset name (include extention)", True)
 
         RESPONSE = nomad_sdk.create_placeholder_asset(PARENT_ID, ASSET_NAME)
 
@@ -158,7 +158,7 @@ def create_placeholder_asset():
 def create_screenshot_at_timecode():
     try:
         ASSET_ID = get_input("asset id", True)
-        TIME_CODE = get_input("time code", False)
+        TIME_CODE = get_input("time code", True)
 
         RESPONSE = nomad_sdk.create_screenshot_at_timecode(ASSET_ID, TIME_CODE)
 
@@ -183,10 +183,7 @@ def delete_asset():
     try:
         ASSET_ID = get_input("asset id", True)
 
-        RESPONSE = nomad_sdk.delete_asset(ASSET_ID)
-
-        print(json.dumps(RESPONSE, indent=4))
-
+        nomad_sdk.delete_asset(ASSET_ID)
     except Exception as e:
         print(e)
 
@@ -404,14 +401,13 @@ def local_restore_asset():
 def move_asset():
     try:
         ASSET_ID = get_input("asset id", True)
-        ACTION_ARGUMENTS = get_dict("action argument", ["key", "value"], False)
-        TARGET_IDS = get_input("target ids", True).split(",")
+        DESTINATION_FOLDER_ID = get_input("destination folder id", True)
         BATCH_ACTION = get_dict("batch action", ["id", "description"], False)
         CONTENT_DEFINITION_ID = get_input("content definition id", False)
         SCHEMA_NAME = get_input("schema name", False)
         RESOLVER_EXCEMPT = get_bool("resolver exempt")
 
-        RESPONSE = nomad_sdk.move_asset(ASSET_ID, ACTION_ARGUMENTS, TARGET_IDS,
+        RESPONSE = nomad_sdk.move_asset(ASSET_ID, DESTINATION_FOLDER_ID,
                                         BATCH_ACTION, CONTENT_DEFINITION_ID, 
                                         SCHEMA_NAME, RESOLVER_EXCEMPT)
         
@@ -426,7 +422,7 @@ def records_asset_tracking_beacon():
         TRACKING_EVENT = get_input("tracking event (Progress, FirstQuartile, Midpoint, "\
                                    "ThirdQuartile, Complete, Hide, LiveStream)", True)
         LIVE_CHANNEL_ID = get_input("live channel id", True)
-        CONTENT_ID = get_input("content id", False)
+        CONTENT_ID = get_input("content id", True)
         SECOND = get_input("second", True)
 
         nomad_sdk.records_asset_tracking_beacon(ASSET_ID, TRACKING_EVENT, LIVE_CHANNEL_ID, 
@@ -491,9 +487,8 @@ def reprocess_asset():
 def restore_asset():
     try:
         ASSET_ID = get_input("asset id", True)
-        PROFILE = get_input("profile", False)
 
-        RESPONSE = nomad_sdk.restore_asset(ASSET_ID, PROFILE)
+        RESPONSE = nomad_sdk.restore_asset(ASSET_ID)
 
         print(json.dumps(RESPONSE, indent=4))
 
@@ -541,12 +536,12 @@ def update_annotation():
     try:
         ASSET_ID = get_input("asset id", True)
         ANNOTATION_ID = get_input("annotation id", True)
-        START_TIME_CODE = get_input("start time code", True)
+        START_TIME_CODE = get_input("start time code", False)
         END_TIME_CODE = get_input("end time code", False)
-        FIRST_KEYWORD = get_input("first keyword", True)
-        SECOND_KEYWORD = get_input("second keyword", True)
-        DESCRIPTION = get_input("description", True)
-        COUNTRY = get_dict("country", ["id", "description"], True)
+        FIRST_KEYWORD = get_input("first keyword", False)
+        SECOND_KEYWORD = get_input("second keyword", False)
+        DESCRIPTION = get_input("description", False)
+        COUNTRY = get_dict("country", ["id", "description"], False)
         CONTENT_ID = get_input("content id", False)
         IMAGE_URL = get_input("image url", False)
 
@@ -558,6 +553,7 @@ def update_annotation():
 
     except Exception as e:
         print(e)
+
 
 def update_asset():
     try:
@@ -575,11 +571,9 @@ def update_asset():
                 if input("Do you want to add another custom property (y/n): ") == "n":
                     break
 
-        RESPONSE = nomad_sdk.update_asset(ASSET_ID, DISPLAY_NAME, DISPLAY_DATE, 
-                                          AVAILABLE_START_DATE, AVAILABLE_END_DATE, 
-                                          CUSTOM_PROPERTIES)
-        
-        print(json.dumps(RESPONSE, indent=4))
+        nomad_sdk.update_asset(ASSET_ID, DISPLAY_NAME, DISPLAY_DATE, 
+                               AVAILABLE_START_DATE, AVAILABLE_END_DATE, 
+                               CUSTOM_PROPERTIES)
 
     except Exception as e:
         print(e)
